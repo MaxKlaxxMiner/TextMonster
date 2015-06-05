@@ -50,9 +50,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="TextMonster\TextMonster.csproj">
+    <ProjectReference Include="TextMonsterSystem\TextMonsterSystem.csproj">
       <Project>{a928cbf1-3085-41f7-b7df-0bba60e987c8}</Project>
-      <Name>TextMonster</Name>
+      <Name>TextMonsterSystem</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

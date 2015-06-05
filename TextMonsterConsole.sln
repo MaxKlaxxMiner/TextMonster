@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMonsterConsole", "TextMonsterConsole.csproj", "{923CCC15-3B31-4126-9917-571973EBF832}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMonster", "TextMonster\TextMonster.csproj", "{A928CBF1-3085-41F7-B7DF-0BBA60E987C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMonsterSystem", "TextMonsterSystem\TextMonsterSystem.csproj", "{A928CBF1-3085-41F7-B7DF-0BBA60E987C8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMonsterTests", "TextMonsterTests\TextMonsterTests.csproj", "{A93B80C5-5649-4E42-A204-6B1D432D9173}"
 EndProject
