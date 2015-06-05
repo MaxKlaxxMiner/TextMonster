@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TextMonsterSystem
 {
-  public class TextMonster
+  public class TextMonsterSimple
   {
   }
 }
