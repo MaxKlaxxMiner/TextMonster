@@ -1,6 +1,8 @@
 ﻿#region # using *.*
-using System;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TextMonsterSystem.Memory;
+
 #endregion
 
 namespace TextMonsterTests
@@ -14,6 +16,10 @@ namespace TextMonsterTests
     [TestMethod]
     public void TestMethod1()
     {
+      var test = new TextMemorySimple();
+
+      test.mem.Add('a');
+
     }
   }
 }
