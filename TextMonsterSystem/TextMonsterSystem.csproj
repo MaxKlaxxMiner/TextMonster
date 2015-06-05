@@ -39,8 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TextMemory\ITextMemory.cs" />
-    <Compile Include="TextMemory\TextMemorySimple.cs" />
+    <Compile Include="Memory\ITextMemory.cs" />
+    <Compile Include="Memory\TextMemorySimple.cs" />
     <Compile Include="TextMonster.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
