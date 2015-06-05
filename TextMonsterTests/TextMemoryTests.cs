@@ -13,13 +13,20 @@ namespace TextMonsterTests
   [TestClass]
   public class TextMemoryTests
   {
-    [TestMethod]
-    public void TestMethod1()
+    static void TestBasics(ITextMemory mem)
     {
-      var test = new TextMemorySimple();
+      Assert.AreEqual(mem.Length, 0);
 
-      test.mem.Add('a');
 
+    }
+
+    [TestMethod]
+    public void TestMemorySimple()
+    {
+      using (var mem = new TextMemorySimple())
+      {
+        TestBasics(mem);
+      }
     }
   }
 }
