@@ -7,8 +7,8 @@
     <ProjectGuid>{A928CBF1-3085-41F7-B7DF-0BBA60E987C8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TextMonster</RootNamespace>
-    <AssemblyName>TextMonster</AssemblyName>
+    <RootNamespace>TextMonsterSystem</RootNamespace>
+    <AssemblyName>TextMonsterSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

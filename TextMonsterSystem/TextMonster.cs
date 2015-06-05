@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TextMonster
+namespace TextMonsterSystem
 {
   public class TextMonster
   {
