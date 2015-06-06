@@ -17,9 +17,14 @@ namespace TextMonsterSystem.Memory
     long Length { get; }
 
     /// <summary>
+    /// gibt die Anzahl der gespeicherten Zeichen als veränderbare MemoryPos zurück
+    /// </summary>
+    MemoryPos LengthP { get; }
+
+    /// <summary>
     /// gibt die theoretisch maximale Anzahl der verarbeitbaren Zeichen zurück (absolutes Limit)
     /// </summary>
-    long LengthMaximum { get; }
+    long LengthLimit { get; }
 
     /// <summary>
     /// gibt den aktuell genutzen Arbeitsspeicher zurück
@@ -30,5 +35,11 @@ namespace TextMonsterSystem.Memory
     /// gibt den aktuell genutzen Speicher auf der Festplatte zurück
     /// </summary>
     long ByteUsedDrive { get; }
+
+    /// <summary>
+    /// aktualisiert eine Speicherposition auf die aktuelle interne Revision (sofern notwendig)
+    /// </summary>
+    /// <param name="memPos">Speicher-Position, welche aktualisiert werden soll</param>
+    void UpdateMemoryPos(ref MemoryPos memPos);
   }
 }
