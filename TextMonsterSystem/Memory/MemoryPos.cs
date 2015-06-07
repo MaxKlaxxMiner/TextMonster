@@ -1,8 +1,12 @@
-﻿using System;
+﻿#region # using *.*
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+#endregion
 
 namespace TextMonsterSystem.Memory
 {
@@ -12,7 +16,7 @@ namespace TextMonsterSystem.Memory
   public struct MemoryPos
   {
     /// <summary>
-    /// merkt sich die aktuelle Revisions-Nummer, wann die Position gültig war bzw. noch ist
+    /// merkt sich die aktuelle Revisions-Nummer, wo die Position zugeordnet war
     /// </summary>
     internal long rev;
     /// <summary>

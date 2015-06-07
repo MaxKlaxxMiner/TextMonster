@@ -12,7 +12,10 @@ namespace TextMonsterConsole
   {
     void Test1()
     {
-//      test.
+      var t = new TextMemorySimple();
+      var g = t.Insert(0, 'a');
+
+
     }
 
     void Run()
