@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 #endregion
 
@@ -10,33 +11,55 @@ namespace TextMonsterSystem.Memory
   /// <summary>
   /// Interface für TextMemory-Systeme
   /// </summary>
-  public interface ITextMemory : IDisposable
+  public abstract class ITextMemory : IDisposable
   {
+    /// <summary>
+    /// merkt sich die aktuelle Speicher-Revision
+    /// </summary>
+    internal long memRev;
+
+    #region # --- Properties ---
     /// <summary>
     /// gibt die aktuelle Anzahl der gespeicherten Zeichen zurück
     /// </summary>
-    long Length { get; }
+    public abstract long Length { get; }
 
     /// <summary>
     /// gibt die theoretisch maximale Anzahl der verarbeitbaren Zeichen zurück (absolutes Limit)
     /// </summary>
-    long LengthLimit { get; }
+    public abstract long LengthLimit { get; }
 
     /// <summary>
     /// gibt den aktuell genutzen Arbeitsspeicher zurück
     /// </summary>
-    long ByteUsedRam { get; }
+    public abstract long ByteUsedRam { get; }
 
     /// <summary>
     /// gibt den aktuell genutzen Speicher auf der Festplatte zurück
     /// </summary>
-    long ByteUsedDrive { get; }
+    public abstract long ByteUsedDrive { get; }
+    #endregion
 
+    #region --- Methoden ---
     /// <summary>
     /// aktualisiert eine Speicherposition auf die aktuelle interne Revision (sofern notwendig)
     /// </summary>
     /// <param name="memPos">Speicher-Position, welche aktualisiert werden soll</param>
-    void UpdateMemoryPos(ref MemoryPos memPos);
+    public abstract void UpdateMemoryPos(ref MemoryPos memPos);
+
+    /// <summary>
+    /// wandelt eine Speicherposition in eine Zeichen-Position um
+    /// </summary>
+    /// <param name="offset">Speicherposition, welche umgerechnet werden soll</param>
+    /// <returns>entsprechende Zeichenposition</returns>
+    public abstract long GetCharPos(MemoryPos offset);
+
+    /// <summary>
+    /// wandelt eine Zeichenposition in eine Speicherposition um
+    /// </summary>
+    /// <param name="charPos">Zeichenposition, welche umgerechnet werden soll</param>
+    /// <returns>entsprechende Speicherposition</returns>
+    public abstract MemoryPos GetMemoryPos(long charPos);
 
     /// <summary>
     /// fügt ein einzelnes Zeichen in den Speicher ein
@@ -44,39 +67,18 @@ namespace TextMonsterSystem.Memory
     /// <param name="offset">Startposition, wo das Zeichen eingefügt werden soll</param>
     /// <param name="value">das Zeichen, welches eingefügt werden soll</param>
     /// <returns>neue Speicherposition am Ende des eingefügten Zeichens</returns>
-    MemoryPos Insert(long offset, char value);
-
-    /// <summary>
-    /// fügt ein Zeichenarray in den Speicher ein
-    /// </summary>
-    /// <param name="offset">Startposition, wo das Zeichenarray eingefügt werden soll</param>
-    /// <param name="values">die Zeichen, welche eingefügt werden sollen</param>
-    /// <returns>neue Speicherposition am Ende des eingefügten Zeichenarrays</returns>
-    MemoryPos Insert(long offset, char[] values);
-
-    /// <summary>
-    /// fügt eine Liste von Zeichen in den Speicher ein
-    /// </summary>
-    /// <param name="offset">Startposition, wo die Zeichen eingefügt werden sollen</param>
-    /// <param name="values">Enumerable der Zeichen, welche eingefügt werden sollen</param>
-    /// <returns>neue Speicherposition am Ende der eingefügten Zeichen</returns>
-    MemoryPos Insert(long offset, IEnumerable<char> values);
+    public abstract MemoryPos Insert(MemoryPos offset, char value);
 
     /// <summary>
     /// fügt ein einzelnes Zeichen in den Speicher ein
     /// </summary>
-    /// <param name="offset">Startposition, wo das Zeichen eingefügt werden soll</param>
+    /// <param name="charPos">Zeichenposition, wo das Zeichen eingefügt werden soll</param>
     /// <param name="value">das Zeichen, welches eingefügt werden soll</param>
     /// <returns>neue Speicherposition am Ende des eingefügten Zeichens</returns>
-    MemoryPos Insert(MemoryPos offset, char value);
-
-    /// <summary>
-    /// fügt ein Zeichenarray in den Speicher ein
-    /// </summary>
-    /// <param name="offset">Startposition, wo das Zeichenarray eingefügt werden soll</param>
-    /// <param name="values">die Zeichen, welche eingefügt werden sollen</param>
-    /// <returns>neue Speicherposition am Ende des eingefügten Zeichenarrays</returns>
-    MemoryPos Insert(MemoryPos offset, char[] values);
+    public MemoryPos Insert(long charPos, char value)
+    {
+      return Insert(GetMemoryPos(charPos), value);
+    }
 
     /// <summary>
     /// fügt eine Liste von Zeichen in den Speicher ein
@@ -84,6 +86,44 @@ namespace TextMonsterSystem.Memory
     /// <param name="offset">Startposition, wo die Zeichen eingefügt werden sollen</param>
     /// <param name="values">Enumerable der Zeichen, welche eingefügt werden sollen</param>
     /// <returns>neue Speicherposition am Ende der eingefügten Zeichen</returns>
-    MemoryPos Insert(MemoryPos offset, IEnumerable<char> values);
+    public MemoryPos Insert(MemoryPos offset, IEnumerable<char> values)
+    {
+      return values.Aggregate(offset, Insert);
+    }
+
+    /// <summary>
+    /// fügt eine Liste von Zeichen in den Speicher ein
+    /// </summary>
+    /// <param name="charPos">Startposition, wo die Zeichen eingefügt werden sollen</param>
+    /// <param name="values">Enumerable der Zeichen, welche eingefügt werden sollen</param>
+    /// <returns>neue Speicherposition am Ende der eingefügten Zeichen</returns>
+    public MemoryPos Insert(long charPos, IEnumerable<char> values)
+    {
+      return Insert(GetMemoryPos(charPos), values);
+    }
+
+    /// <summary>
+    /// löscht betimmte Zeichen aus dem Speicher
+    /// </summary>
+    /// <param name="offset">Startposition, wo Daten im Speicher gelöscht werden sollen</param>
+    /// <param name="end">Endposition, bis zu den Daten, welche Daten gelöscht werden sollen</param>
+    /// <returns>Länge der Daten, welche gelöscht wurden</returns>
+    public abstract void Remove(MemoryPos offset, MemoryPos end);
+
+    /// <summary>
+    /// löscht bestimmte Zeichen aus dem Speicher
+    /// </summary>
+    /// <param name="charPos">Startposition, wo Zeichen im Speicher gelöscht werden sollen</param>
+    /// <param name="length">Anzahl der Zeichen, welche gelöscht werden sollen</param>
+    public void Remove(long charPos, long length)
+    {
+      Remove(GetMemoryPos(charPos), GetMemoryPos(charPos + length));
+    }
+
+    /// <summary>
+    /// alle Ressourcen wieder frei geben
+    /// </summary>
+    public abstract void Dispose();
+    #endregion
   }
 }

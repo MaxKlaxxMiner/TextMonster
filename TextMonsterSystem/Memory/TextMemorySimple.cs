@@ -21,11 +21,6 @@ namespace TextMonsterSystem.Memory
     List<char> mem;
 
     /// <summary>
-    /// merkt sich die aktuelle Speicher-Revision
-    /// </summary>
-    long memRev;
-
-    /// <summary>
     /// merkt sich die Größen-Änderungen im Speicher
     /// </summary>
     List<MemLog> memLog;
@@ -59,50 +54,47 @@ namespace TextMonsterSystem.Memory
     /// <summary>
     /// gibt alle Ressourcen wieder frei
     /// </summary>
-    public void Dispose()
+    public override void Dispose()
     {
       mem = null;
       memLog = null;
     }
     #endregion
 
-    #region # // --- Properties und Methoden ---
-
-    #region # // --- public long Length... und Size... ---
+    #region # // --- Properties ---
     /// <summary>
     /// gibt die aktuelle Anzahl der gespeicherten Zeichen zurück
     /// </summary>
-    public long Length { get { return (long)mem.Count; } }
+    public override long Length { get { return (long)mem.Count; } }
 
     /// <summary>
     /// gibt die theoretisch maximale Anzahl der verarbeitbaren Zeichen zurück (absolutes Limit)
     /// </summary>
-    public long LengthLimit { get { return 536870912L; } }
+    public override long LengthLimit { get { return 536870912L; } }
 
     /// <summary>
     /// gibt den aktuell genutzen Arbeitsspeicher zurück
     /// </summary>
-    public long ByteUsedRam { get { return (long)mem.Capacity * 2L; } }
+    public override long ByteUsedRam { get { return (long)mem.Capacity * 2L; } }
 
     /// <summary>
     /// gibt den aktuell genutzen Speicher auf der Festplatte zurück
     /// </summary>
-    public long ByteUsedDrive { get { return 0; } }
-
+    public override long ByteUsedDrive { get { return 0; } }
     #endregion
 
-    #region # // --- public 
+    #region # // --- Methoden ---
     /// <summary>
     /// aktualisiert eine Speicherposition auf die aktuelle interne Revision (sofern notwendig)
     /// </summary>
     /// <param name="memPos">Speicher-Position, welche aktualisiert werden soll</param>
-    public void UpdateMemoryPos(ref MemoryPos memPos)
+    public override void UpdateMemoryPos(ref MemoryPos memPos)
     {
       while (memPos.rev < memRev)
       {
         var log = memLog[(int)memPos.rev];
         memPos.rev++;
-        
+
         if (log.pos >= memPos.pos) continue; // Log-Eintrag hat nur dahinter liegenden Speicher geändert -> überspringen
 
         memPos.pos += log.dif; // dahinter liegenden Speicher anpassen
@@ -112,49 +104,35 @@ namespace TextMonsterSystem.Memory
     }
 
     /// <summary>
-    /// fügt ein einzelnes Zeichen in den Speicher ein
+    /// wandelt eine Speicherposition in eine Zeichen-Position um
     /// </summary>
-    /// <param name="offset">Startposition, wo das Zeichen eingefügt werden soll</param>
-    /// <param name="value">das Zeichen, welches eingefügt werden soll</param>
-    /// <returns>neue Speicherposition am Ende des eingefügten Zeichens</returns>
-    public MemoryPos Insert(long offset, char value)
+    /// <param name="offset">Speicherposition, welche umgerechnet werden soll</param>
+    /// <returns>entsprechende Zeichenposition</returns>
+    public override long GetCharPos(MemoryPos offset)
     {
-      return this.Insert(new MemoryPos { pos = offset, rev = memRev }, value);
-    }
-
-    /// <summary>
-    /// fügt ein Zeichenarray in den Speicher ein
-    /// </summary>
-    /// <param name="offset">Startposition, wo das Zeichenarray eingefügt werden soll</param>
-    /// <param name="values">die Zeichen, welche eingefügt werden sollen</param>
-    /// <returns>neue Speicherposition am Ende des eingefügten Zeichenarrays</returns>
-    public MemoryPos Insert(long offset, char[] values)
-    {
-      return this.Insert(new MemoryPos { pos = offset, rev = memRev }, values);
-    }
-
-    /// <summary>
-    /// fügt eine Liste von Zeichen in den Speicher ein
-    /// </summary>
-    /// <param name="offset">Startposition, wo die Zeichen eingefügt werden sollen</param>
-    /// <param name="values">Enumerable der Zeichen, welche eingefügt werden sollen</param>
-    /// <returns>neue Speicherposition am Ende der eingefügten Zeichen</returns>
-    public MemoryPos Insert(long offset, IEnumerable<char> values)
-    {
-      return this.Insert(new MemoryPos { pos = offset, rev = memRev }, values);
-    }
-
-    /// <summary>
-    /// fügt ein einzelnes Zeichen in den Speicher ein
-    /// </summary>
-    /// <param name="offset">Startposition, wo das Zeichen eingefügt werden soll</param>
-    /// <param name="value">das Zeichen, welches eingefügt werden soll</param>
-    /// <returns>neue Speicherposition am Ende des eingefügten Zeichens</returns>
-    public MemoryPos Insert(MemoryPos offset, char value)
-    {
-      Debug.Assert(offset.pos <= Length, "OutOfRange?");
       UpdateMemoryPos(ref offset);
+      return offset.pos;
+    }
 
+    /// <summary>
+    /// wandelt eine Zeichenposition in eine Speicherposition um
+    /// </summary>
+    /// <param name="charPos">Zeichenposition, welche umgerechnet werden soll</param>
+    /// <returns>entsprechende Speicherposition</returns>
+    public override MemoryPos GetMemoryPos(long charPos)
+    {
+      return new MemoryPos { pos = charPos, rev = memRev };
+    }
+
+    /// <summary>
+    /// fügt ein einzelnes Zeichen in den Speicher ein
+    /// </summary>
+    /// <param name="offset">Startposition, wo das Zeichen eingefügt werden soll</param>
+    /// <param name="value">das Zeichen, welches eingefügt werden soll</param>
+    /// <returns>neue Speicherposition am Ende des eingefügten Zeichens</returns>
+    public override MemoryPos Insert(MemoryPos offset, char value)
+    {
+      UpdateMemoryPos(ref offset);
       mem.Insert((int)offset.pos, value);
 
       memLog.Add(new MemLog { pos = offset.pos, dif = 1 });
@@ -164,32 +142,16 @@ namespace TextMonsterSystem.Memory
     }
 
     /// <summary>
-    /// fügt ein Zeichenarray in den Speicher ein
+    /// löscht betimmte Zeichen aus dem Speicher
     /// </summary>
-    /// <param name="offset">Startposition, wo das Zeichenarray eingefügt werden soll</param>
-    /// <param name="values">die Zeichen, welche eingefügt werden sollen</param>
-    /// <returns>neue Speicherposition am Ende des eingefügten Zeichenarrays</returns>
-    public MemoryPos Insert(MemoryPos offset, char[] values) 
+    /// <param name="offset">Startposition, wo Daten im Speicher gelöscht werden sollen</param>
+    /// <param name="end">Endposition, bis zu den Daten, welche Daten gelöscht werden sollen</param>
+    /// <returns>Länge der Daten, welche gelöscht wurden</returns>
+    public override void Remove(MemoryPos offset, MemoryPos end)
     {
-      return this.Insert(offset, values.AsEnumerable());
+      throw new NotImplementedException();
     }
-
-    /// <summary>
-    /// fügt eine Liste von Zeichen in den Speicher ein
-    /// </summary>
-    /// <param name="offset">Startposition, wo die Zeichen eingefügt werden sollen</param>
-    /// <param name="values">Enumerable der Zeichen, welche eingefügt werden sollen</param>
-    /// <returns>neue Speicherposition am Ende der eingefügten Zeichen</returns>
-    public MemoryPos Insert(MemoryPos offset, IEnumerable<char> values)
-    {
-      foreach (char c in values)
-      {
-        offset = Insert(offset, c);
-      }
-      return offset;
-    }
-    #endregion
-
     #endregion
   }
+
 }

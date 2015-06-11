@@ -29,7 +29,7 @@ namespace TextMonsterSystem.Memory
     /// </summary>
     /// <param name="mem">aktuelle TextMemory-Klasse, welche für die Speicherverwaltung zuständig ist</param>
     /// <returns>aktuelle reale Speicherposition TextMemory</returns>
-    public long GetPos(ITextMemory mem)
+    internal long GetPos(ITextMemory mem)
     {
       mem.UpdateMemoryPos(ref this);
       return pos;
