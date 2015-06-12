@@ -18,7 +18,7 @@ namespace TextMonsterSystem.Memory
     /// <summary>
     /// merkt sich die Daten im Arbeitsspeicher
     /// </summary>
-    List<char> mem;
+    internal List<char> mem;
 
     /// <summary>
     /// merkt sich die Größen-Änderungen im Speicher
@@ -149,7 +149,13 @@ namespace TextMonsterSystem.Memory
     /// <returns>Länge der Daten, welche gelöscht wurden</returns>
     public override void Remove(MemoryPos offset, MemoryPos end)
     {
-      throw new NotImplementedException();
+      UpdateMemoryPos(ref offset);
+      UpdateMemoryPos(ref end);
+      long length = end.pos - offset.pos;
+      mem.RemoveRange((int)offset.pos, (int)length);
+
+      memLog.Add(new MemLog { pos = offset.pos, dif = length });
+      memRev++;
     }
     #endregion
   }
