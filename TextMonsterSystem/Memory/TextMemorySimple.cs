@@ -38,6 +38,14 @@ namespace TextMonsterSystem.Memory
       /// Speicheränderung (positiv = eingefügte Zeichen, negativ = gelöschte Zeichen)
       /// </summary>
       public long dif;
+      /// <summary>
+      /// gibt den Inhalt als lesbare Zeichenkette aus
+      /// </summary>
+      /// <returns>lesbare Zeichenkette</returns>
+      public override string ToString()
+      {
+        return (new { pos, dif }).ToString();
+      }
     }
     #endregion
 
@@ -154,7 +162,7 @@ namespace TextMonsterSystem.Memory
       long length = end.pos - offset.pos;
       mem.RemoveRange((int)offset.pos, (int)length);
 
-      memLog.Add(new MemLog { pos = offset.pos, dif = length });
+      memLog.Add(new MemLog { pos = offset.pos, dif = -length });
       memRev++;
     }
     #endregion

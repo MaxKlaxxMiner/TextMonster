@@ -40,7 +40,7 @@ namespace TextMonsterSystem.Memory
     public abstract long ByteUsedDrive { get; }
     #endregion
 
-    #region --- Methoden ---
+    #region # --- Methoden ---
     /// <summary>
     /// aktualisiert eine Speicherposition auf die aktuelle interne Revision (sofern notwendig)
     /// </summary>
@@ -118,6 +118,14 @@ namespace TextMonsterSystem.Memory
     public void Remove(long charPos, long length)
     {
       Remove(GetMemoryPos(charPos), GetMemoryPos(charPos + length));
+    }
+
+    /// <summary>
+    /// löscht alle Zeichen aus dem Speicher
+    /// </summary>
+    public void Clear()
+    {
+      Remove(0, this.Length);
     }
 
     /// <summary>
