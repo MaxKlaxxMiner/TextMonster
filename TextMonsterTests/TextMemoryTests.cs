@@ -180,9 +180,18 @@ namespace TextMonsterTests
     #endregion
 
     [TestMethod]
-    public void TestMemorySimple()
+    public void TestMemorySimpleMinimal()
     {
       using (var mem = new TextMemorySimpleMinimal())
+      {
+        TestBasics(mem);
+      }
+    }
+
+    [TestMethod]
+    public void TestMemorySimpleFull()
+    {
+      using (var mem = new TextMemorySimpleFull())
       {
         TestBasics(mem);
       }

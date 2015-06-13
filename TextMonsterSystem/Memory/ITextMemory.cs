@@ -75,7 +75,7 @@ namespace TextMonsterSystem.Memory
     /// <param name="charPos">Zeichenposition, wo das Zeichen eingefügt werden soll</param>
     /// <param name="value">das Zeichen, welches eingefügt werden soll</param>
     /// <returns>neue Speicherposition am Ende des eingefügten Zeichens</returns>
-    public MemoryPos Insert(long charPos, char value)
+    public virtual MemoryPos Insert(long charPos, char value)
     {
       return Insert(GetMemoryPos(charPos), value);
     }
@@ -86,7 +86,7 @@ namespace TextMonsterSystem.Memory
     /// <param name="offset">Startposition, wo die Zeichen eingefügt werden sollen</param>
     /// <param name="values">Enumerable der Zeichen, welche eingefügt werden sollen</param>
     /// <returns>neue Speicherposition am Ende der eingefügten Zeichen</returns>
-    public MemoryPos Insert(MemoryPos offset, IEnumerable<char> values)
+    public virtual MemoryPos Insert(MemoryPos offset, IEnumerable<char> values)
     {
       return values.Aggregate(offset, Insert);
     }
@@ -97,7 +97,7 @@ namespace TextMonsterSystem.Memory
     /// <param name="charPos">Startposition, wo die Zeichen eingefügt werden sollen</param>
     /// <param name="values">Enumerable der Zeichen, welche eingefügt werden sollen</param>
     /// <returns>neue Speicherposition am Ende der eingefügten Zeichen</returns>
-    public MemoryPos Insert(long charPos, IEnumerable<char> values)
+    public virtual MemoryPos Insert(long charPos, IEnumerable<char> values)
     {
       return Insert(GetMemoryPos(charPos), values);
     }
@@ -115,7 +115,7 @@ namespace TextMonsterSystem.Memory
     /// </summary>
     /// <param name="charPos">Startposition, wo Zeichen im Speicher gelöscht werden sollen</param>
     /// <param name="length">Anzahl der Zeichen, welche gelöscht werden sollen</param>
-    public void Remove(long charPos, long length)
+    public virtual void Remove(long charPos, long length)
     {
       Remove(GetMemoryPos(charPos), GetMemoryPos(charPos + length));
     }
@@ -134,7 +134,7 @@ namespace TextMonsterSystem.Memory
     /// <param name="charPos">Startposition, wo die Zeichen im Speicher gelesen werden sollen</param>
     /// <param name="length"></param>
     /// <returns></returns>
-    public char[] GetChars(long charPos, long length)
+    public virtual char[] GetChars(long charPos, long length)
     {
       return GetChars(GetMemoryPos(charPos), GetMemoryPos(charPos + length)).ToArray();
     }
@@ -142,7 +142,7 @@ namespace TextMonsterSystem.Memory
     /// <summary>
     /// löscht alle Zeichen aus dem Speicher
     /// </summary>
-    public void Clear()
+    public virtual void Clear()
     {
       Remove(0, this.Length);
     }
