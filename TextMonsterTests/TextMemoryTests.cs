@@ -72,6 +72,7 @@ namespace TextMonsterTests
     }
     #endregion
 
+    #region # static void TestBasicsRemove(ITextMemory mem, string ins, StringBuilder debugString)
     static void TestBasicsRemove(ITextMemory mem, string ins, StringBuilder debugString)
     {
       debugString.Insert(debugString.Length - 2, '#');
@@ -127,17 +128,24 @@ namespace TextMonsterTests
       Assert.AreEqual(mem.GetCharPos(t2), debugString.Length);
       TestComp(mem, debugString);
     }
+    #endregion
 
+    #region # static void TestComp(ITextMemory mem, StringBuilder debugString)
     static void TestComp(ITextMemory mem, StringBuilder debugString)
     {
-      if (mem is TextMemorySimple)
+      if (mem is TextMemorySimpleMinimal)
       {
-        var tmp = (TextMemorySimple)mem;
-        string tmpStr = new string(tmp.mem.ToArray());
-        Assert.AreEqual(debugString.ToString(), tmpStr);
+        var tmp = (TextMemorySimpleMinimal)mem;
+        string tmpStrIntern = new string(tmp.mem.ToArray());
+        Assert.AreEqual(debugString.ToString(), tmpStrIntern);
       }
-    }
 
+      string tmpStr = new string(mem.GetChars(0, mem.Length));
+      Assert.AreEqual(debugString.ToString(), tmpStr);
+    }
+    #endregion
+
+    #region # static void TestBasics(ITextMemory mem)
     static void TestBasics(ITextMemory mem)
     {
       string[] testStrings = new[]
@@ -146,7 +154,7 @@ namespace TextMonsterTests
         "HaHa",
         "Öl",
         "Héllo Wörld",
-        "Was du heute kannst besorgen das verschiebe nicht auf morgen!"
+        "Was du heute kannst besorgen, das verschiebe nicht auf morgen!"
       };
 
       StringBuilder debugString = new StringBuilder();
@@ -169,11 +177,12 @@ namespace TextMonsterTests
         debugString.Clear();
       }
     }
+    #endregion
 
     [TestMethod]
     public void TestMemorySimple()
     {
-      using (var mem = new TextMemorySimple())
+      using (var mem = new TextMemorySimpleMinimal())
       {
         TestBasics(mem);
       }

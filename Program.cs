@@ -10,17 +10,9 @@ namespace TextMonsterConsole
 {
   class Program
   {
-    void Test1()
-    {
-      var t = new TextMemorySimple();
-      var g = t.Insert(0, 'a');
-
-
-    }
-
     void Run()
     {
-      Test1();
+
     }
 
     static void Main()

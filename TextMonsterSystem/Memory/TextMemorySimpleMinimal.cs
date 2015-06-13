@@ -12,7 +12,7 @@ namespace TextMonsterSystem.Memory
   /// <summary>
   /// TextMemory mit minimalster Technik (langsam)
   /// </summary>
-  public sealed class TextMemorySimple : ITextMemory
+  public sealed class TextMemorySimpleMinimal : ITextMemory
   {
     #region # // --- Variablen ---
     /// <summary>
@@ -53,7 +53,7 @@ namespace TextMonsterSystem.Memory
     /// <summary>
     /// Konstruktor
     /// </summary>
-    public TextMemorySimple()
+    public TextMemorySimpleMinimal()
     {
       mem = new List<char>();
       memLog = new List<MemLog>();
@@ -165,7 +165,24 @@ namespace TextMonsterSystem.Memory
       memLog.Add(new MemLog { pos = offset.pos, dif = -length });
       memRev++;
     }
+
+    /// <summary>
+    /// gibt die Zeichen aus dem Speicher zurück
+    /// </summary>
+    /// <param name="offset">Startposition, wo die Zeichen im Speicher gelesen werden sollen</param>
+    /// <param name="end">Endposition, der Zeichen im Speicher (exklusive)</param>
+    /// <returns>Enumerable der entsprechenden Zeichen</returns>
+    public override IEnumerable<char> GetChars(MemoryPos offset, MemoryPos end)
+    {
+      UpdateMemoryPos(ref offset);
+      UpdateMemoryPos(ref end);
+      for (long p = offset.pos; p < end.pos; p++)
+      {
+        yield return mem[(int)p];
+      }
+    }
     #endregion
+
   }
 
 }
