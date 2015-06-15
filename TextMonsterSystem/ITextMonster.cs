@@ -8,40 +8,37 @@ using TextMonsterSystem.Memory;
 namespace TextMonsterSystem
 {
   /// <summary>
-  /// Textmonster-Klasse mit Basisfunktionalität
+  /// interface bzw. Basisklasse für alle Textmonster
   /// </summary>
-  public class TextMonsterSimple : ITextMonster
+  public abstract class ITextMonster : IDisposable
   {
     #region # --- Properties ---
     /// <summary>
     /// gibt die aktuelle Anzahl der gespeicherten Zeichen zurück
     /// </summary>
-    public override long Length { get { return 0L; } }
+    public abstract long Length { get; }
 
     /// <summary>
     /// gibt die theoretisch maximale Anzahl der verarbeitbaren Zeichen zurück (absolutes Limit)
     /// </summary>
-    public override long LengthLimit { get { return 0L; } }
+    public abstract long LengthLimit { get; }
 
     /// <summary>
     /// gibt den aktuell genutzen Arbeitsspeicher zurück
     /// </summary>
-    public override long ByteUsedRam { get { return 0L; } }
+    public abstract long ByteUsedRam { get; }
 
     /// <summary>
     /// gibt den aktuell genutzen Speicher auf der Festplatte zurück
     /// </summary>
-    public override long ByteUsedDrive { get { return 0L; } }
+    public abstract long ByteUsedDrive { get; }
     #endregion
 
     #region # --- Methoden ---
     /// <summary>
     /// alle Ressourcen wieder frei geben
     /// </summary>
-    public override void Dispose()
-    {
-
-    }
+    public abstract void Dispose();
     #endregion
   }
 }

@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="TextMemoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TextMonsterBasicsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TextMonsterSystem\TextMonsterSystem.csproj">
