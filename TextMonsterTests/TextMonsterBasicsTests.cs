@@ -20,9 +20,9 @@ namespace TextMonsterTests
     }
 
     [TestMethod]
-    public void TestSimple()
+    public void TestSimpleMinimal()
     {
-      using (var test = new TextMonsterSimple())
+      using (var test = new TextMonsterSimpleMinimal())
       {
         TestBasics(test);
       }

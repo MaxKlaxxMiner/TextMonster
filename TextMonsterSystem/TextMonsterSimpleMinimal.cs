@@ -11,7 +11,7 @@ namespace TextMonsterSystem
   /// <summary>
   /// Textmonster-Klasse mit Basisfunktionalität
   /// </summary>
-  public class TextMonsterSimple : ITextMonster
+  public class TextMonsterSimpleMinimal : ITextMonster
   {
     #region # // --- Variablen ---
     /// <summary>
@@ -24,7 +24,7 @@ namespace TextMonsterSystem
     /// <summary>
     /// Konstruktor
     /// </summary>
-    public TextMonsterSimple()
+    public TextMonsterSimpleMinimal()
     {
       mem = new TextMemorySimpleMinimal();
     }
