@@ -49,6 +49,7 @@
     <Compile Include="Core\MemoryPos.cs" />
     <Compile Include="Memory\TextMemorySimpleFull.cs" />
     <Compile Include="Memory\TextMemorySimpleMinimal.cs" />
+    <Compile Include="TextMonsterSimpleFull.cs" />
     <Compile Include="TextMonsterSimpleMinimal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

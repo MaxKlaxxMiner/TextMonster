@@ -9,53 +9,87 @@ using TextMonsterSystem.Memory;
 namespace TextMonsterSystem
 {
   /// <summary>
-  /// interface bzw. Basisklasse für alle Textmonster
+  /// Textmonster-Klasse mit Basisfunktionalität
   /// </summary>
-  public abstract class ITextMonster : IDisposable
+  public class TextMonsterSimpleFull : ITextMonster
   {
-    #region # --- Properties ---
+    #region # // --- Variablen ---
+    /// <summary>
+    /// Klasse, welche sich den Textspeicher merkt
+    /// </summary>
+    ITextMemory mem;
+    #endregion
+
+    #region # // --- Konstruktor / Dispose ---
+    /// <summary>
+    /// Konstruktor
+    /// </summary>
+    public TextMonsterSimpleFull()
+    {
+      mem = new TextMemorySimpleFull();
+    }
+
+    /// <summary>
+    /// alle Ressourcen wieder frei geben
+    /// </summary>
+    public override void Dispose()
+    {
+      mem.Dispose();
+    }
+    #endregion
+
+    #region # // --- Properties ---
     /// <summary>
     /// gibt die aktuelle Anzahl der gespeicherten Zeichen zurück
     /// </summary>
-    public abstract long Length { get; }
+    public override long Length { get { return mem.Length; } }
 
     /// <summary>
     /// gibt die theoretisch maximale Anzahl der verarbeitbaren Zeichen zurück (absolutes Limit)
     /// </summary>
-    public abstract long LengthLimit { get; }
+    public override long LengthLimit { get { return mem.LengthLimit; } }
 
     /// <summary>
     /// gibt den aktuell genutzen Arbeitsspeicher zurück
     /// </summary>
-    public abstract long ByteUsedRam { get; }
+    public override long ByteUsedRam { get { return mem.ByteUsedRam; } }
 
     /// <summary>
     /// gibt den aktuell genutzen Speicher auf der Festplatte zurück
     /// </summary>
-    public abstract long ByteUsedDrive { get; }
+    public override long ByteUsedDrive { get { return mem.ByteUsedDrive; } }
     #endregion
 
-    #region # --- Methoden ---
+    #region # // --- Methoden ---
     /// <summary>
     /// gibt die Speicherposition anhand einer absoluten Zeichenposition zurück
     /// </summary>
     /// <param name="charPos">Zeichenposition, welche abgefragt werden soll</param>
     /// <returns>passende Speicherposition</returns>
-    public abstract MemoryPos GetMemoryPos(long charPos);
+    public override MemoryPos GetMemoryPos(long charPos)
+    {
+      return mem.GetMemoryPos(charPos);
+    }
 
     /// <summary>
     /// gibt die Speicherposition anhand einer Textposition (Zeile, Spalten) zurück
     /// </summary>
     /// <param name="textPos">Textposition mit Zeilen und Spalten, welche abgefragt werden soll</param>
     /// <returns>passende Speicherposition</returns>
-    public abstract MemoryPos GetMemoryPos(TextPos textPos);
+    public override MemoryPos GetMemoryPos(TextPos textPos)
+    {
+      throw new NotImplementedException();
+    }
 
     /// <summary>
     /// gibt die Textposition (mit Zeilennummer und Spaltennummer) anhand einer Speicherposition zurück
     /// </summary>
     /// <param name="memPos">Speicherposition, welche abgefragt werden soll</param>
     /// <returns>passende Textposition</returns>
-    public abstract TextPos GetTextPos(MemoryPos memPos);
+    public override TextPos GetTextPos(MemoryPos memPos)
+    {
+      throw new NotImplementedException();
+    }
 
     /// <summary>
     /// gibt die Textposition (mit Zeilennummer und Spaltennummer) anhand einer absoluten Zeichenposition zurück
@@ -64,7 +98,7 @@ namespace TextMonsterSystem
     /// <returns>passende Textposition</returns>
     public virtual TextPos GetTextPos(long charPos)
     {
-      return GetTextPos(GetMemoryPos(charPos));
+      return GetTextPos(mem.GetMemoryPos(charPos));
     }
 
     /// <summary>
@@ -72,7 +106,10 @@ namespace TextMonsterSystem
     /// </summary>
     /// <param name="memPos">Speicherposition, welche abgefragt werden soll</param>
     /// <returns>passende absolute Zeichenposition</returns>
-    public abstract long GetCharPos(MemoryPos memPos);
+    public override long GetCharPos(MemoryPos memPos)
+    {
+      return mem.GetCharPos(memPos);
+    }
 
     /// <summary>
     /// gibt die absolute Zeichenposition anhand einer Textposition (mit Zeilennummer und Spaltennummer) zurück
@@ -81,13 +118,8 @@ namespace TextMonsterSystem
     /// <returns>passende absolute Zeichenposition</returns>
     public virtual long GetCharPos(TextPos textPos)
     {
-      return GetCharPos(GetMemoryPos(textPos));
+      return mem.GetCharPos(GetMemoryPos(textPos));
     }
-
-    /// <summary>
-    /// alle Ressourcen wieder frei geben
-    /// </summary>
-    public abstract void Dispose();
     #endregion
   }
 }

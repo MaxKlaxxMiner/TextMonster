@@ -27,5 +27,14 @@ namespace TextMonsterTests
         TestBasics(test);
       }
     }
+
+    [TestMethod]
+    public void TestSimpleFull()
+    {
+      using (var test = new TextMonsterSimpleFull())
+      {
+        TestBasics(test);
+      }
+    }
   }
 }
