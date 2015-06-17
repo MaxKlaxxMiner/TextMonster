@@ -1,14 +1,10 @@
 ﻿#region # using *.*
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TextMonsterSystem.Memory;
 
 #endregion
 
-namespace TextMonsterSystem.Memory
+namespace TextMonsterSystem.Core
 {
   /// <summary>
   /// merkt sich die Speicherposition in einer TextMemory-Klasse
