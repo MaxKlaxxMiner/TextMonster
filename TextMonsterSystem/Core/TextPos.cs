@@ -14,10 +14,10 @@ namespace TextMonsterSystem.Core
     /// <summary>
     /// merkt sich die ZeilenNummer (beginnend bei 1)
     /// </summary>
-    internal long line;
+    public long line;
     /// <summary>
     /// merkt sich die Spaltennummer (beginnend bei 1)
     /// </summary>
-    internal long column;
+    public long column;
   }
 }
