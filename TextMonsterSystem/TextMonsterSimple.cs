@@ -12,6 +12,29 @@ namespace TextMonsterSystem
   /// </summary>
   public class TextMonsterSimple : ITextMonster
   {
+    /// <summary>
+    /// Klasse, welche sich den Textspeicher merkt
+    /// </summary>
+    ITextMemory mem;
+
+    #region # // --- Konstruktor / Dispose ---
+    /// <summary>
+    /// Konstruktor
+    /// </summary>
+    public TextMonsterSimple()
+    {
+      mem = new TextMemorySimpleMinimal();
+    }
+
+    /// <summary>
+    /// alle Ressourcen wieder frei geben
+    /// </summary>
+    public override void Dispose()
+    {
+      mem.Dispose();
+    }
+    #endregion
+
     #region # --- Properties ---
     /// <summary>
     /// gibt die aktuelle Anzahl der gespeicherten Zeichen zurück
@@ -35,13 +58,6 @@ namespace TextMonsterSystem
     #endregion
 
     #region # --- Methoden ---
-    /// <summary>
-    /// alle Ressourcen wieder frei geben
-    /// </summary>
-    public override void Dispose()
-    {
-
-    }
     #endregion
   }
 }
