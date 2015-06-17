@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\TextPos.cs" />
     <Compile Include="ITextMonster.cs" />
     <Compile Include="Memory\ITextMemory.cs" />
     <Compile Include="Core\MemoryPos.cs" />
