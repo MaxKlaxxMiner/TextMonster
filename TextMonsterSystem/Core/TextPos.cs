@@ -12,11 +12,11 @@ namespace TextMonsterSystem.Core
   public struct TextPos
   {
     /// <summary>
-    /// merkt sich die ZeilenNummer (beginnend bei 1)
+    /// merkt sich die ZeilenNummer (beginnend bei 0)
     /// </summary>
     public long line;
     /// <summary>
-    /// merkt sich die Spaltennummer (beginnend bei 1)
+    /// merkt sich die Spaltennummer (beginnend bei 0)
     /// </summary>
     public long column;
   }
