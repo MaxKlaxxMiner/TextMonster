@@ -16,7 +16,8 @@ namespace TextMonsterTests
   {
     static void TestBasics(ITextMonster txt)
     {
-      
+      Assert.IsFalse(txt.LengthLimit < 1048576L, "LengthLimit zu klein < 1 MB");
+      Assert.IsFalse(txt.LengthLimit > 1048576L * 16777216L, "LengthLimit zu groß > 16 TB");
     }
 
     [TestMethod]
