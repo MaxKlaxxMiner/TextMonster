@@ -50,6 +50,11 @@ namespace TextMonsterSystem
     public override long LengthLimit { get { return mem.LengthLimit; } }
 
     /// <summary>
+    /// gibt die Anzahl der Zeilen zurück
+    /// </summary>
+    public override long Lines { get { return 1L; } }
+
+    /// <summary>
     /// gibt den aktuell genutzen Arbeitsspeicher zurück
     /// </summary>
     public override long ByteUsedRam { get { return mem.ByteUsedRam; } }

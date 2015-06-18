@@ -25,6 +25,11 @@ namespace TextMonsterSystem
     public abstract long LengthLimit { get; }
 
     /// <summary>
+    /// gibt die Anzahl der Zeilen zurück
+    /// </summary>
+    public abstract long Lines { get; }
+
+    /// <summary>
     /// gibt den aktuell genutzen Arbeitsspeicher zurück
     /// </summary>
     public abstract long ByteUsedRam { get; }
