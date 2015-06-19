@@ -109,7 +109,19 @@ namespace TextMonsterSystem
     }
     #endregion
 
+    #region # // --- Insert() ---
+    /// <summary>
+    /// fügt ein einzelnes Zeichen in den Speicher ein
+    /// </summary>
+    /// <param name="offset">Startposition, wo das Zeichen eingefügt werden soll</param>
+    /// <param name="value">das Zeichen, welches eingefügt werden soll</param>
+    /// <returns>neue Speicherposition am Ende des eingefügten Zeichens</returns>
+    public override MemoryPos Insert(MemoryPos offset, char value)
+    {
+      return mem.Insert(offset, value);
+    }
     #endregion
 
+    #endregion
   }
 }

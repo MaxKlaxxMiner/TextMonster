@@ -41,6 +41,8 @@ namespace TextMonsterSystem
     #endregion
 
     #region # --- Methoden ---
+
+    #region # // --- GetPos() ---
     /// <summary>
     /// gibt die Speicherposition anhand einer absoluten Zeichenposition zurück
     /// </summary>
@@ -88,11 +90,59 @@ namespace TextMonsterSystem
     {
       return GetCharPos(GetMemoryPos(textPos));
     }
+    #endregion
 
+    #region # // --- Insert() ---
+    /// <summary>
+    /// fügt ein einzelnes Zeichen in den Speicher ein
+    /// </summary>
+    /// <param name="offset">Startposition, wo das Zeichen eingefügt werden soll</param>
+    /// <param name="value">das Zeichen, welches eingefügt werden soll</param>
+    /// <returns>neue Speicherposition am Ende des eingefügten Zeichens</returns>
+    public abstract MemoryPos Insert(MemoryPos offset, char value);
+
+    /// <summary>
+    /// fügt ein einzelnes Zeichen in den Speicher ein
+    /// </summary>
+    /// <param name="charPos">Zeichenposition, wo das Zeichen eingefügt werden soll</param>
+    /// <param name="value">das Zeichen, welches eingefügt werden soll</param>
+    /// <returns>neue Speicherposition am Ende des eingefügten Zeichens</returns>
+    public virtual MemoryPos Insert(long charPos, char value)
+    {
+      return Insert(GetMemoryPos(charPos), value);
+    }
+
+    /// <summary>
+    /// fügt eine Liste von Zeichen in den Speicher ein
+    /// </summary>
+    /// <param name="offset">Startposition, wo die Zeichen eingefügt werden sollen</param>
+    /// <param name="values">Enumerable der Zeichen, welche eingefügt werden sollen</param>
+    /// <returns>neue Speicherposition am Ende der eingefügten Zeichen</returns>
+    public virtual MemoryPos Insert(MemoryPos offset, IEnumerable<char> values)
+    {
+      return values.Aggregate(offset, Insert);
+    }
+
+    /// <summary>
+    /// fügt eine Liste von Zeichen in den Speicher ein
+    /// </summary>
+    /// <param name="charPos">Startposition, wo die Zeichen eingefügt werden sollen</param>
+    /// <param name="values">Enumerable der Zeichen, welche eingefügt werden sollen</param>
+    /// <returns>neue Speicherposition am Ende der eingefügten Zeichen</returns>
+    public virtual MemoryPos Insert(long charPos, IEnumerable<char> values)
+    {
+      return Insert(GetMemoryPos(charPos), values);
+    }
+    #endregion
+
+    #region # // --- Dispose() ---
     /// <summary>
     /// alle Ressourcen wieder frei geben
     /// </summary>
     public abstract void Dispose();
     #endregion
+
+    #endregion
+
   }
 }

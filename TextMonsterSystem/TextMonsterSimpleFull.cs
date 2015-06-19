@@ -129,7 +129,52 @@ namespace TextMonsterSystem
     }
     #endregion
 
+    #region # // --- Insert() ---
+    /// <summary>
+    /// fügt ein einzelnes Zeichen in den Speicher ein
+    /// </summary>
+    /// <param name="offset">Startposition, wo das Zeichen eingefügt werden soll</param>
+    /// <param name="value">das Zeichen, welches eingefügt werden soll</param>
+    /// <returns>neue Speicherposition am Ende des eingefügten Zeichens</returns>
+    public override MemoryPos Insert(MemoryPos offset, char value)
+    {
+      return mem.Insert(offset, value);
+    }
+
+    /// <summary>
+    /// fügt ein einzelnes Zeichen in den Speicher ein
+    /// </summary>
+    /// <param name="charPos">Zeichenposition, wo das Zeichen eingefügt werden soll</param>
+    /// <param name="value">das Zeichen, welches eingefügt werden soll</param>
+    /// <returns>neue Speicherposition am Ende des eingefügten Zeichens</returns>
+    public override MemoryPos Insert(long charPos, char value)
+    {
+      return mem.Insert(charPos, value);
+    }
+
+    /// <summary>
+    /// fügt eine Liste von Zeichen in den Speicher ein
+    /// </summary>
+    /// <param name="offset">Startposition, wo die Zeichen eingefügt werden sollen</param>
+    /// <param name="values">Enumerable der Zeichen, welche eingefügt werden sollen</param>
+    /// <returns>neue Speicherposition am Ende der eingefügten Zeichen</returns>
+    public override MemoryPos Insert(MemoryPos offset, IEnumerable<char> values)
+    {
+      return mem.Insert(offset, values);
+    }
+
+    /// <summary>
+    /// fügt eine Liste von Zeichen in den Speicher ein
+    /// </summary>
+    /// <param name="charPos">Startposition, wo die Zeichen eingefügt werden sollen</param>
+    /// <param name="values">Enumerable der Zeichen, welche eingefügt werden sollen</param>
+    /// <returns>neue Speicherposition am Ende der eingefügten Zeichen</returns>
+    public override MemoryPos Insert(long charPos, IEnumerable<char> values)
+    {
+      return mem.Insert(charPos, values);
+    }
     #endregion
 
+    #endregion
   }
 }
