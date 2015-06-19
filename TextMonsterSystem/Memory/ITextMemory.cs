@@ -19,7 +19,7 @@ namespace TextMonsterSystem.Memory
     /// </summary>
     internal long memRev;
 
-    #region # --- Properties ---
+    #region # // --- Properties ---
     /// <summary>
     /// gibt die aktuelle Anzahl der gespeicherten Zeichen zurück
     /// </summary>
@@ -41,7 +41,9 @@ namespace TextMonsterSystem.Memory
     public abstract long ByteUsedDrive { get; }
     #endregion
 
-    #region # --- Methoden ---
+    #region # // --- Methoden ---
+
+    #region # // --- MemoryPos() ---
     /// <summary>
     /// aktualisiert eine Speicherposition auf die aktuelle interne Revision (sofern notwendig)
     /// </summary>
@@ -61,7 +63,9 @@ namespace TextMonsterSystem.Memory
     /// <param name="charPos">Zeichenposition, welche umgerechnet werden soll</param>
     /// <returns>entsprechende Speicherposition</returns>
     public abstract MemoryPos GetMemoryPos(long charPos);
+    #endregion
 
+    #region # // --- Insert() ---
     /// <summary>
     /// fügt ein einzelnes Zeichen in den Speicher ein
     /// </summary>
@@ -102,7 +106,9 @@ namespace TextMonsterSystem.Memory
     {
       return Insert(GetMemoryPos(charPos), values);
     }
+    #endregion
 
+    #region # // --- Remove() ---
     /// <summary>
     /// löscht betimmte Zeichen aus dem Speicher
     /// </summary>
@@ -120,7 +126,9 @@ namespace TextMonsterSystem.Memory
     {
       Remove(GetMemoryPos(charPos), GetMemoryPos(charPos + length));
     }
+    #endregion
 
+    #region # // --- GetChars() ---
     /// <summary>
     /// gibt die Zeichen aus dem Speicher zurück
     /// </summary>
@@ -139,7 +147,9 @@ namespace TextMonsterSystem.Memory
     {
       return GetChars(GetMemoryPos(charPos), GetMemoryPos(charPos + length)).ToArray();
     }
+    #endregion
 
+    #region # // --- Clear() ---
     /// <summary>
     /// löscht alle Zeichen aus dem Speicher
     /// </summary>
@@ -147,12 +157,16 @@ namespace TextMonsterSystem.Memory
     {
       Remove(0, this.Length);
     }
+    #endregion
 
+    #region # // --- Dispose() ---
     /// <summary>
     /// alle Ressourcen wieder frei geben
     /// </summary>
     public abstract void Dispose();
     #endregion
- 
+
+    #endregion
+
   }
 }
