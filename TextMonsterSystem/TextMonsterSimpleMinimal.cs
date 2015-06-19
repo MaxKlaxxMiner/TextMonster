@@ -11,7 +11,7 @@ namespace TextMonsterSystem
   /// <summary>
   /// Textmonster-Klasse mit Basisfunktionalität
   /// </summary>
-  public class TextMonsterSimpleMinimal : ITextMonster
+  public sealed class TextMonsterSimpleMinimal : ITextMonster
   {
     #region # // --- Variablen ---
     /// <summary>
@@ -66,6 +66,8 @@ namespace TextMonsterSystem
     #endregion
 
     #region # // --- Methoden ---
+
+    #region # // --- GetPos() ---
     /// <summary>
     /// gibt die Speicherposition anhand einer absoluten Zeichenposition zurück
     /// </summary>
@@ -106,5 +108,8 @@ namespace TextMonsterSystem
       return mem.GetCharPos(memPos);
     }
     #endregion
+
+    #endregion
+
   }
 }

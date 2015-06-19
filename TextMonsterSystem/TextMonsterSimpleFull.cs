@@ -11,7 +11,7 @@ namespace TextMonsterSystem
   /// <summary>
   /// Textmonster-Klasse mit Basisfunktionalität
   /// </summary>
-  public class TextMonsterSimpleFull : ITextMonster
+  public sealed class TextMonsterSimpleFull : ITextMonster
   {
     #region # // --- Variablen ---
     /// <summary>
@@ -66,6 +66,8 @@ namespace TextMonsterSystem
     #endregion
 
     #region # // --- Methoden ---
+
+    #region # // --- GetPos() ---
     /// <summary>
     /// gibt die Speicherposition anhand einer absoluten Zeichenposition zurück
     /// </summary>
@@ -101,7 +103,7 @@ namespace TextMonsterSystem
     /// </summary>
     /// <param name="charPos">absolute Zeichenposition, welche abgefragt werden soll</param>
     /// <returns>passende Textposition</returns>
-    public virtual TextPos GetTextPos(long charPos)
+    public override TextPos GetTextPos(long charPos)
     {
       return GetTextPos(mem.GetMemoryPos(charPos));
     }
@@ -121,10 +123,13 @@ namespace TextMonsterSystem
     /// </summary>
     /// <param name="textPos">Textposition, welche abgefragt werden soll</param>
     /// <returns>passende absolute Zeichenposition</returns>
-    public virtual long GetCharPos(TextPos textPos)
+    public override long GetCharPos(TextPos textPos)
     {
       return mem.GetCharPos(GetMemoryPos(textPos));
     }
     #endregion
+
+    #endregion
+
   }
 }
