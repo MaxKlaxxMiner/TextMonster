@@ -122,6 +122,20 @@ namespace TextMonsterSystem
     }
     #endregion
 
+    #region # // --- Remove() ---
+    /// <summary>
+    /// löscht betimmte Zeichen aus dem Speicher
+    /// </summary>
+    /// <param name="offset">Startposition, wo Daten im Speicher gelöscht werden sollen</param>
+    /// <param name="end">Endposition, bis zu den Daten, welche Daten gelöscht werden sollen</param>
+    /// <returns>Länge der Daten, welche gelöscht wurden</returns>
+    public override void Remove(MemoryPos offset, MemoryPos end)
+    {
+      mem.Remove(offset, end);
+    }
     #endregion
+
+    #endregion
+
   }
 }
