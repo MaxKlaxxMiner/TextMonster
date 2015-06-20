@@ -96,10 +96,10 @@ namespace TextMonsterSystem
     /// <summary>
     /// fügt ein einzelnes Zeichen in den Speicher ein
     /// </summary>
-    /// <param name="offset">Startposition, wo das Zeichen eingefügt werden soll</param>
+    /// <param name="memPos">Startposition, wo das Zeichen eingefügt werden soll</param>
     /// <param name="value">das Zeichen, welches eingefügt werden soll</param>
     /// <returns>neue Speicherposition am Ende des eingefügten Zeichens</returns>
-    public abstract MemoryPos Insert(MemoryPos offset, char value);
+    public abstract MemoryPos Insert(MemoryPos memPos, char value);
 
     /// <summary>
     /// fügt ein einzelnes Zeichen in den Speicher ein
@@ -115,12 +115,12 @@ namespace TextMonsterSystem
     /// <summary>
     /// fügt eine Liste von Zeichen in den Speicher ein
     /// </summary>
-    /// <param name="offset">Startposition, wo die Zeichen eingefügt werden sollen</param>
+    /// <param name="memPos">Startposition, wo die Zeichen eingefügt werden sollen</param>
     /// <param name="values">Enumerable der Zeichen, welche eingefügt werden sollen</param>
     /// <returns>neue Speicherposition am Ende der eingefügten Zeichen</returns>
-    public virtual MemoryPos Insert(MemoryPos offset, IEnumerable<char> values)
+    public virtual MemoryPos Insert(MemoryPos memPos, IEnumerable<char> values)
     {
-      return values.Aggregate(offset, Insert);
+      return values.Aggregate(memPos, Insert);
     }
 
     /// <summary>
@@ -139,10 +139,10 @@ namespace TextMonsterSystem
     /// <summary>
     /// löscht betimmte Zeichen aus dem Speicher
     /// </summary>
-    /// <param name="offset">Startposition, wo Daten im Speicher gelöscht werden sollen</param>
-    /// <param name="end">Endposition, bis zu den Daten, welche Daten gelöscht werden sollen</param>
+    /// <param name="memPosStart">Startposition, wo Daten im Speicher gelöscht werden sollen</param>
+    /// <param name="memPosEnd">Endposition, bis zu den Daten, welche Daten gelöscht werden sollen</param>
     /// <returns>Länge der Daten, welche gelöscht wurden</returns>
-    public abstract void Remove(MemoryPos offset, MemoryPos end);
+    public abstract void Remove(MemoryPos memPosStart, MemoryPos memPosEnd);
 
     /// <summary>
     /// löscht bestimmte Zeichen aus dem Speicher
@@ -159,10 +159,10 @@ namespace TextMonsterSystem
     /// <summary>
     /// gibt die Zeichen aus dem Speicher zurück
     /// </summary>
-    /// <param name="offset">Startposition, wo die Zeichen im Speicher gelesen werden sollen</param>
-    /// <param name="end">Endposition, der Zeichen im Speicher (exklusive)</param>
+    /// <param name="memPosStart">Startposition, wo die Zeichen im Speicher gelesen werden sollen</param>
+    /// <param name="memPosEnd">Endposition, der Zeichen im Speicher (exklusive)</param>
     /// <returns>Enumerable der entsprechenden Zeichen</returns>
-    public abstract IEnumerable<char> GetChars(MemoryPos offset, MemoryPos end);
+    public abstract IEnumerable<char> GetChars(MemoryPos memPosStart, MemoryPos memPosEnd);
 
     /// <summary>
     /// gibt die Zeichen aus dem Speicher zurück

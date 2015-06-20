@@ -115,12 +115,12 @@ namespace TextMonsterSystem.Memory
     /// <summary>
     /// wandelt eine Speicherposition in eine Zeichen-Position um
     /// </summary>
-    /// <param name="offset">Speicherposition, welche umgerechnet werden soll</param>
+    /// <param name="memPos">Speicherposition, welche umgerechnet werden soll</param>
     /// <returns>entsprechende Zeichenposition</returns>
-    public override long GetCharPos(MemoryPos offset)
+    public override long GetCharPos(MemoryPos memPos)
     {
-      UpdateMemoryPos(ref offset);
-      return offset.pos;
+      UpdateMemoryPos(ref memPos);
+      return memPos.pos;
     }
 
     /// <summary>
@@ -136,48 +136,48 @@ namespace TextMonsterSystem.Memory
     /// <summary>
     /// fügt ein einzelnes Zeichen in den Speicher ein
     /// </summary>
-    /// <param name="offset">Startposition, wo das Zeichen eingefügt werden soll</param>
+    /// <param name="memPos">Startposition, wo das Zeichen eingefügt werden soll</param>
     /// <param name="value">das Zeichen, welches eingefügt werden soll</param>
     /// <returns>neue Speicherposition am Ende des eingefügten Zeichens</returns>
-    public override MemoryPos Insert(MemoryPos offset, char value)
+    public override MemoryPos Insert(MemoryPos memPos, char value)
     {
-      UpdateMemoryPos(ref offset);
-      mem.Insert((int)offset.pos, value);
+      UpdateMemoryPos(ref memPos);
+      mem.Insert((int)memPos.pos, value);
 
-      memLog.Add(new MemLog { pos = offset.pos, dif = 1 });
+      memLog.Add(new MemLog { pos = memPos.pos, dif = 1 });
       memRev++;
 
-      return new MemoryPos { pos = offset.pos + 1, rev = memRev };
+      return new MemoryPos { pos = memPos.pos + 1, rev = memRev };
     }
 
     /// <summary>
     /// löscht betimmte Zeichen aus dem Speicher
     /// </summary>
-    /// <param name="offset">Startposition, wo Daten im Speicher gelöscht werden sollen</param>
-    /// <param name="end">Endposition, bis zu den Daten, welche Daten gelöscht werden sollen</param>
+    /// <param name="memPosStart">Startposition, wo Daten im Speicher gelöscht werden sollen</param>
+    /// <param name="memPosEnd">Endposition, bis zu den Daten, welche Daten gelöscht werden sollen</param>
     /// <returns>Länge der Daten, welche gelöscht wurden</returns>
-    public override void Remove(MemoryPos offset, MemoryPos end)
+    public override void Remove(MemoryPos memPosStart, MemoryPos memPosEnd)
     {
-      UpdateMemoryPos(ref offset);
-      UpdateMemoryPos(ref end);
-      long length = end.pos - offset.pos;
-      mem.RemoveRange((int)offset.pos, (int)length);
+      UpdateMemoryPos(ref memPosStart);
+      UpdateMemoryPos(ref memPosEnd);
+      long length = memPosEnd.pos - memPosStart.pos;
+      mem.RemoveRange((int)memPosStart.pos, (int)length);
 
-      memLog.Add(new MemLog { pos = offset.pos, dif = -length });
+      memLog.Add(new MemLog { pos = memPosStart.pos, dif = -length });
       memRev++;
     }
 
     /// <summary>
     /// gibt die Zeichen aus dem Speicher zurück
     /// </summary>
-    /// <param name="offset">Startposition, wo die Zeichen im Speicher gelesen werden sollen</param>
-    /// <param name="end">Endposition, der Zeichen im Speicher (exklusive)</param>
+    /// <param name="memPosStart">Startposition, wo die Zeichen im Speicher gelesen werden sollen</param>
+    /// <param name="memPosEnd">Endposition, der Zeichen im Speicher (exklusive)</param>
     /// <returns>Enumerable der entsprechenden Zeichen</returns>
-    public override IEnumerable<char> GetChars(MemoryPos offset, MemoryPos end)
+    public override IEnumerable<char> GetChars(MemoryPos memPosStart, MemoryPos memPosEnd)
     {
-      UpdateMemoryPos(ref offset);
-      UpdateMemoryPos(ref end);
-      for (long p = offset.pos; p < end.pos; p++)
+      UpdateMemoryPos(ref memPosStart);
+      UpdateMemoryPos(ref memPosEnd);
+      for (long p = memPosStart.pos; p < memPosEnd.pos; p++)
       {
         yield return mem[(int)p];
       }

@@ -133,12 +133,12 @@ namespace TextMonsterSystem
     /// <summary>
     /// fügt ein einzelnes Zeichen in den Speicher ein
     /// </summary>
-    /// <param name="offset">Startposition, wo das Zeichen eingefügt werden soll</param>
+    /// <param name="memPos">Startposition, wo das Zeichen eingefügt werden soll</param>
     /// <param name="value">das Zeichen, welches eingefügt werden soll</param>
     /// <returns>neue Speicherposition am Ende des eingefügten Zeichens</returns>
-    public override MemoryPos Insert(MemoryPos offset, char value)
+    public override MemoryPos Insert(MemoryPos memPos, char value)
     {
-      return mem.Insert(offset, value);
+      return mem.Insert(memPos, value);
     }
 
     /// <summary>
@@ -155,12 +155,12 @@ namespace TextMonsterSystem
     /// <summary>
     /// fügt eine Liste von Zeichen in den Speicher ein
     /// </summary>
-    /// <param name="offset">Startposition, wo die Zeichen eingefügt werden sollen</param>
+    /// <param name="memPos">Startposition, wo die Zeichen eingefügt werden sollen</param>
     /// <param name="values">Enumerable der Zeichen, welche eingefügt werden sollen</param>
     /// <returns>neue Speicherposition am Ende der eingefügten Zeichen</returns>
-    public override MemoryPos Insert(MemoryPos offset, IEnumerable<char> values)
+    public override MemoryPos Insert(MemoryPos memPos, IEnumerable<char> values)
     {
-      return mem.Insert(offset, values);
+      return mem.Insert(memPos, values);
     }
 
     /// <summary>
@@ -179,12 +179,12 @@ namespace TextMonsterSystem
     /// <summary>
     /// löscht betimmte Zeichen aus dem Speicher
     /// </summary>
-    /// <param name="offset">Startposition, wo Daten im Speicher gelöscht werden sollen</param>
-    /// <param name="end">Endposition, bis zu den Daten, welche Daten gelöscht werden sollen</param>
+    /// <param name="memPosStart">Startposition, wo Daten im Speicher gelöscht werden sollen</param>
+    /// <param name="memPosEnd">Endposition, bis zu den Daten, welche Daten gelöscht werden sollen</param>
     /// <returns>Länge der Daten, welche gelöscht wurden</returns>
-    public override void Remove(MemoryPos offset, MemoryPos end)
+    public override void Remove(MemoryPos memPosStart, MemoryPos memPosEnd)
     {
-      mem.Remove(offset, end);
+      mem.Remove(memPosStart, memPosEnd);
     }
 
     /// <summary>
@@ -202,12 +202,12 @@ namespace TextMonsterSystem
     /// <summary>
     /// gibt die Zeichen aus dem Speicher zurück
     /// </summary>
-    /// <param name="offset">Startposition, wo die Zeichen im Speicher gelesen werden sollen</param>
-    /// <param name="end">Endposition, der Zeichen im Speicher (exklusive)</param>
+    /// <param name="memPosStart">Startposition, wo die Zeichen im Speicher gelesen werden sollen</param>
+    /// <param name="memPosEnd">Endposition, der Zeichen im Speicher (exklusive)</param>
     /// <returns>Enumerable der entsprechenden Zeichen</returns>
-    public override IEnumerable<char> GetChars(MemoryPos offset, MemoryPos end)
+    public override IEnumerable<char> GetChars(MemoryPos memPosStart, MemoryPos memPosEnd)
     {
-      return mem.GetChars(offset, end);
+      return mem.GetChars(memPosStart, memPosEnd);
     }
 
     /// <summary>
