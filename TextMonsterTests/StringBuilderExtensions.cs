@@ -48,7 +48,7 @@ namespace TextMonsterTests
       int last = 0;
       for (int i = 0; i <= str.Length; i++)
       {
-        if (str[i] == '\n' || i == str.Length)
+        if (i == str.Length || str[i] == '\n')
         {
           int len = i - last;
           if (len > 0 && str[i - 1] == '\r') len--;
