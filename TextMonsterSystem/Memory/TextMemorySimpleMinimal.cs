@@ -190,7 +190,12 @@ namespace TextMonsterSystem.Memory
     /// <returns>Speicherposition auf den Anfang der Zeile</returns>
     public override MemoryPos GetLineStart(MemoryPos memPos)
     {
-      throw new NotImplementedException();
+      UpdateMemoryPos(memPos);
+      long pos = memPos.pos;
+
+      while (pos > 0 && mem[(int)pos - 1] != '\n') pos--;
+      
+      return new MemoryPos { pos = pos, rev = memRev };
     }
 
     /// <summary>
@@ -200,7 +205,13 @@ namespace TextMonsterSystem.Memory
     /// <returns>Speicherposition auf das Ende der Zeile (hinter dem letzten Zeichen)</returns>
     public override MemoryPos GetLineEnd(MemoryPos memPos)
     {
-      throw new NotImplementedException();
+      UpdateMemoryPos(memPos);
+      long pos = memPos.pos;
+
+      while (pos < mem.Count && mem[(int)pos] != '\n') pos++;
+      if (pos > 0 && mem[(int)pos - 1] == '\r') pos--;
+      
+      return new MemoryPos { pos = pos, rev = memRev };
     }
     #endregion
 
