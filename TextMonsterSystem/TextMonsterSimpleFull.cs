@@ -236,6 +236,16 @@ namespace TextMonsterSystem
     {
       throw new NotImplementedException();
     }
+
+    /// <summary>
+    /// gibt das Ende einer Zeile zurück
+    /// </summary>
+    /// <param name="memPos">Speicherposition ab welcher gesucht werden soll</param>
+    /// <returns>Speicherposition auf das Ende der Zeile (hinter dem letzten Zeichen)</returns>
+    public override MemoryPos GetLineEnd(MemoryPos memPos)
+    {
+      throw new NotImplementedException();
+    }
     #endregion
 
     #endregion
