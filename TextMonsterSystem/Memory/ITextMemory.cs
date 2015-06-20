@@ -48,7 +48,7 @@ namespace TextMonsterSystem.Memory
     /// aktualisiert eine Speicherposition auf die aktuelle interne Revision (sofern notwendig)
     /// </summary>
     /// <param name="memPos">Speicher-Position, welche aktualisiert werden soll</param>
-    public abstract void UpdateMemoryPos(ref MemoryPos memPos);
+    public abstract void UpdateMemoryPos(MemoryPos memPos);
 
     /// <summary>
     /// wandelt eine Speicherposition in eine Zeichen-Position um

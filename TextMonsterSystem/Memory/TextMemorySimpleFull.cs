@@ -97,7 +97,7 @@ namespace TextMonsterSystem.Memory
     /// aktualisiert eine Speicherposition auf die aktuelle interne Revision (sofern notwendig)
     /// </summary>
     /// <param name="memPos">Speicher-Position, welche aktualisiert werden soll</param>
-    public override void UpdateMemoryPos(ref MemoryPos memPos)
+    public override void UpdateMemoryPos(MemoryPos memPos)
     {
       while (memPos.rev < memRev)
       {
@@ -119,7 +119,7 @@ namespace TextMonsterSystem.Memory
     /// <returns>entsprechende Zeichenposition</returns>
     public override long GetCharPos(MemoryPos memPos)
     {
-      UpdateMemoryPos(ref memPos);
+      UpdateMemoryPos(memPos);
       return memPos.pos;
     }
 
@@ -141,7 +141,7 @@ namespace TextMonsterSystem.Memory
     /// <returns>neue Speicherposition am Ende des eingefügten Zeichens</returns>
     public override MemoryPos Insert(MemoryPos memPos, char value)
     {
-      UpdateMemoryPos(ref memPos);
+      UpdateMemoryPos(memPos);
       mem.Insert((int)memPos.pos, value);
 
       memLog.Add(new MemLog { pos = memPos.pos, dif = 1 });
@@ -174,7 +174,7 @@ namespace TextMonsterSystem.Memory
     /// <returns>neue Speicherposition am Ende der eingefügten Zeichen</returns>
     public override MemoryPos Insert(MemoryPos memPos, IEnumerable<char> values)
     {
-      UpdateMemoryPos(ref memPos);
+      UpdateMemoryPos(memPos);
 
       int oldCount = mem.Count;
       mem.InsertRange((int)memPos.pos, values);
@@ -214,8 +214,8 @@ namespace TextMonsterSystem.Memory
     /// <returns>Länge der Daten, welche gelöscht wurden</returns>
     public override void Remove(MemoryPos memPosStart, MemoryPos memPosEnd)
     {
-      UpdateMemoryPos(ref memPosStart);
-      UpdateMemoryPos(ref memPosEnd);
+      UpdateMemoryPos(memPosStart);
+      UpdateMemoryPos(memPosEnd);
       long length = memPosEnd.pos - memPosStart.pos;
       mem.RemoveRange((int)memPosStart.pos, (int)length);
 
@@ -244,8 +244,8 @@ namespace TextMonsterSystem.Memory
     /// <returns>Enumerable der entsprechenden Zeichen</returns>
     public override IEnumerable<char> GetChars(MemoryPos memPosStart, MemoryPos memPosEnd)
     {
-      UpdateMemoryPos(ref memPosStart);
-      UpdateMemoryPos(ref memPosEnd);
+      UpdateMemoryPos(memPosStart);
+      UpdateMemoryPos(memPosEnd);
       for (long p = memPosStart.pos; p < memPosEnd.pos; p++)
       {
         yield return mem[(int)p];

@@ -31,11 +31,18 @@ namespace TextMonsterSystem.Core
     {
       get
       {
-        return lineStart.Valid && lineEnd.Valid;
+        return lineStart != null && lineEnd != null;
       }
       set
       {
-        lineStart.Valid = lineEnd.Valid = value;
+        if (value)
+        {
+          if (!Valid) throw new ArgumentException();
+        }
+        else
+        {
+          lineStart = lineEnd = null;
+        }
       }
     }
   }
