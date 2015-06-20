@@ -18,6 +18,49 @@ namespace TextMonsterTests
   /// </summary>
   public static class StringBuilderExtensions
   {
+    #region # // --- kleine Tools für den StringBuilder ---
+    
+    #region # long Lines(this StringBuilder str) // gibt die Anzahl der Zeilen in einem Stringbuilder zurück
+    /// <summary>
+    /// gibt die Anzahl der Zeilen in einem Stringbuilder zurück
+    /// </summary>
+    /// <param name="str">StringBuilder, welcher ausgelesen werden soll</param>
+    /// <returns>Anzahl der Zeilen, welche enthalten sind (mindestens 1)</returns>
+    public static long Lines(this StringBuilder str)
+    {
+      long count = 1;
+      for (int i = 0; i < str.Length; i++)
+      {
+        if (str[i] == '\n') count++;
+      }
+      return count;
+    }
+    #endregion
+
+    #region # IEnumerable<string> ReadLines(this StringBuilder str) // gibt die einzelnen Zeilen zurück
+    /// <summary>
+    /// gibt die einzelnen Zeilen zurück
+    /// </summary>
+    /// <param name="str">StringBuilder, welcher ausgelesen werden soll</param>
+    /// <returns>Enumerable der Zeilen, welche ausgelesen wurden</returns>
+    public static IEnumerable<string> ReadLines(this StringBuilder str)
+    {
+      int last = 0;
+      for (int i = 0; i <= str.Length; i++)
+      {
+        if (str[i] == '\n' || i == str.Length)
+        {
+          int len = i - last;
+          if (len > 0 && str[i - 1] == '\r') len--;
+          yield return str.ToString(last, len);
+          last = i + 1;
+        }
+      }
+    }
+    #endregion
+
+    #endregion
+
     #region # void Comp(this StringBuilder str, ITextMemory mem) // vergleicht den kompletten Inhalt mit Speichersystem
     /// <summary>
     /// vergleicht den kompletten Inhalt mit einem Speichersystem
@@ -40,23 +83,6 @@ namespace TextMonsterTests
     }
     #endregion
 
-    #region # long Lines(this StringBuilder str) // gibt die Anzahl der Zeilen in einem Stringbuilder zurück
-    /// <summary>
-    /// gibt die Anzahl der Zeilen in einem Stringbuilder zurück
-    /// </summary>
-    /// <param name="str">StringBuilder, welcher ausgelesen werden soll</param>
-    /// <returns>Anzahl der Zeilen, welche enthalten sind (mindestens 1)</returns>
-    public static long Lines(this StringBuilder str)
-    {
-      long count = 1;
-      for (int i = 0; i < str.Length; i++)
-      {
-        if (str[i] == '\n') count++;
-      }
-      return count;
-    }
-    #endregion
-
     #region # void Comp(this StringBuilder str, ITextMonster txt) // vergleicht den kompletten Inhalt mit einem Textmonster
     /// <summary>
     /// vergleicht den kompletten Inhalt mit einem Textmonster
@@ -72,7 +98,6 @@ namespace TextMonsterTests
 
       // --- Inhalte Zeilenweise vergleichen ---
       Assert.AreEqual(str.Lines(), txt.Lines);
-
       
     }
     #endregion
