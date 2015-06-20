@@ -135,6 +135,19 @@ namespace TextMonsterSystem
     }
     #endregion
 
+    #region # // --- GetChars() ---
+    /// <summary>
+    /// gibt die Zeichen aus dem Speicher zurück
+    /// </summary>
+    /// <param name="offset">Startposition, wo die Zeichen im Speicher gelesen werden sollen</param>
+    /// <param name="end">Endposition, der Zeichen im Speicher (exklusive)</param>
+    /// <returns>Enumerable der entsprechenden Zeichen</returns>
+    public override IEnumerable<char> GetChars(MemoryPos offset, MemoryPos end)
+    {
+      return mem.GetChars(offset, end);
+    }
+    #endregion
+
     #endregion
 
   }

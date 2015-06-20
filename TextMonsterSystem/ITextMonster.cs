@@ -155,6 +155,27 @@ namespace TextMonsterSystem
     }
     #endregion
 
+    #region # // --- GetChars() ---
+    /// <summary>
+    /// gibt die Zeichen aus dem Speicher zurück
+    /// </summary>
+    /// <param name="offset">Startposition, wo die Zeichen im Speicher gelesen werden sollen</param>
+    /// <param name="end">Endposition, der Zeichen im Speicher (exklusive)</param>
+    /// <returns>Enumerable der entsprechenden Zeichen</returns>
+    public abstract IEnumerable<char> GetChars(MemoryPos offset, MemoryPos end);
+
+    /// <summary>
+    /// gibt die Zeichen aus dem Speicher zurück
+    /// </summary>
+    /// <param name="charPos">Startposition, wo die Zeichen im Speicher gelesen werden sollen</param>
+    /// <param name="length"></param>
+    /// <returns></returns>
+    public virtual char[] GetChars(long charPos, long length)
+    {
+      return GetChars(GetMemoryPos(charPos), GetMemoryPos(charPos + length)).ToArray();
+    }
+    #endregion
+
     #region # // --- Dispose() ---
     /// <summary>
     /// alle Ressourcen wieder frei geben
