@@ -23,14 +23,14 @@ namespace TextMonsterTests
       var t1 = mem.Insert(0, ins[0]);
       Assert.AreEqual(mem.GetCharPos(t1), 1);
       Assert.AreEqual(mem.Length, startLength + 1);
-      TestComp(mem, debugString);
+      debugString.Comp(mem);
 
       debugString.Insert(1, ins[1]);
       var t2 = mem.Insert(1, ins[1]);
       Assert.AreEqual(mem.GetCharPos(t1), 1);
       Assert.AreEqual(mem.GetCharPos(t2), 2);
       Assert.AreEqual(mem.Length, startLength + 2);
-      TestComp(mem, debugString);
+      debugString.Comp(mem);
 
       debugString.Insert(0, ins[0]);
       var t3 = mem.Insert(0, ins[0]);
@@ -38,7 +38,7 @@ namespace TextMonsterTests
       Assert.AreEqual(mem.GetCharPos(t1), 2);
       Assert.AreEqual(mem.GetCharPos(t2), 3);
       Assert.AreEqual(mem.Length, startLength + 3);
-      TestComp(mem, debugString);
+      debugString.Comp(mem);
 
       debugString.Insert(1, ins[1]);
       var t4 = mem.Insert(1, ins[1]);
@@ -47,7 +47,7 @@ namespace TextMonsterTests
       Assert.AreEqual(mem.GetCharPos(t1), 3);
       Assert.AreEqual(mem.GetCharPos(t2), 4);
       Assert.AreEqual(mem.Length, startLength + 4);
-      TestComp(mem, debugString);
+      debugString.Comp(mem);
 
       debugString.Insert(2, ins);
       var t5 = mem.Insert(t4, ins);
@@ -57,7 +57,7 @@ namespace TextMonsterTests
       Assert.AreEqual(mem.GetCharPos(t1), 3 + ins.Length);
       Assert.AreEqual(mem.GetCharPos(t2), 4 + ins.Length);
       Assert.AreEqual(mem.Length, startLength + 4 + ins.Length);
-      TestComp(mem, debugString);
+      debugString.Comp(mem);
 
       debugString.Insert(2 + ins.Length, ins);
       var t6 = mem.Insert(t5, ins);
@@ -68,7 +68,7 @@ namespace TextMonsterTests
       Assert.AreEqual(mem.GetCharPos(t1), 3 + ins.Length * 2);
       Assert.AreEqual(mem.GetCharPos(t2), 4 + ins.Length * 2);
       Assert.AreEqual(mem.Length, startLength + 4 + ins.Length * 2);
-      TestComp(mem, debugString);
+      debugString.Comp(mem);
     }
     #endregion
 
@@ -78,70 +78,55 @@ namespace TextMonsterTests
       debugString.Insert(debugString.Length - 2, '#');
       var t2 = mem.Insert(mem.Length - 2, '#');
       Assert.AreEqual(mem.GetCharPos(t2), debugString.Length - 2);
-      TestComp(mem, debugString);
+      debugString.Comp(mem);
 
       debugString.Insert(2, '#');
       var t1 = mem.Insert(2, '#');
       Assert.AreEqual(mem.GetCharPos(t1), 3);
       Assert.AreEqual(mem.GetCharPos(t2), debugString.Length - 2);
-      TestComp(mem, debugString);
+      debugString.Comp(mem);
 
       debugString.Remove(debugString.Length / 4, debugString.Length / 2);
       mem.Remove(mem.Length / 4, mem.Length / 2);
       Assert.AreEqual(mem.GetCharPos(t1), 3);
       Assert.AreEqual(mem.GetCharPos(t2), debugString.Length - 2);
-      TestComp(mem, debugString);
+      debugString.Comp(mem);
 
       debugString.Remove(0, 1);
       mem.Remove(0, 1);
-      TestComp(mem, debugString);
+      debugString.Comp(mem);
 
       debugString.Remove(2, ins.Length);
       mem.Remove(2, ins.Length);
-      TestComp(mem, debugString);
+      debugString.Comp(mem);
 
       debugString.Remove(ins.Length + 2, 4);
       mem.Remove(ins.Length + 2, 4);
-      TestComp(mem, debugString);
       Assert.AreEqual(mem.GetCharPos(t1), 2);
       Assert.AreEqual(mem.GetCharPos(t2), debugString.ToString().LastIndexOf('#') + 1);
+      debugString.Comp(mem);
 
       debugString.Remove(0, 2 + ins.Length);
       mem.Remove(0, 2 + ins.Length);
-      TestComp(mem, debugString);
       Assert.AreEqual(mem.GetCharPos(t1), 0);
       Assert.AreEqual(mem.GetCharPos(t2), debugString.ToString().LastIndexOf('#') + 1);
+      debugString.Comp(mem);
 
       debugString.Remove(debugString.Length - 2, 2);
       mem.Remove(mem.Length - 2, 2);
-      TestComp(mem, debugString);
+      debugString.Comp(mem);
 
       debugString.Remove(ins.Length, debugString.Length - ins.Length * 2 - 1);
       mem.Remove(ins.Length, mem.Length - ins.Length * 2 - 1);
       Assert.AreEqual(mem.GetCharPos(t1), 0);
       Assert.AreEqual(mem.GetCharPos(t2), debugString.ToString().LastIndexOf('#') + 1);
-      TestComp(mem, debugString);
+      debugString.Comp(mem);
 
       debugString.Remove(ins.Length, ins.Length + 1);
       mem.Remove(ins.Length, ins.Length + 1);
       Assert.AreEqual(mem.GetCharPos(t1), 0);
       Assert.AreEqual(mem.GetCharPos(t2), debugString.Length);
-      TestComp(mem, debugString);
-    }
-    #endregion
-
-    #region # static void TestComp(ITextMemory mem, StringBuilder debugString)
-    static void TestComp(ITextMemory mem, StringBuilder debugString)
-    {
-      if (mem is TextMemorySimpleMinimal)
-      {
-        var tmp = (TextMemorySimpleMinimal)mem;
-        string tmpStrIntern = new string(tmp.mem.ToArray());
-        Assert.AreEqual(debugString.ToString(), tmpStrIntern);
-      }
-
-      string tmpStr = new string(mem.GetChars(0, mem.Length));
-      Assert.AreEqual(debugString.ToString(), tmpStr);
+      debugString.Comp(mem);
     }
     #endregion
 
@@ -166,12 +151,12 @@ namespace TextMonsterTests
         {
           TestBasicsInsert(mem, testString, debugString);
           Assert.AreEqual(mem.Length, (4 + testString.Length * 2) * count);
-          TestComp(mem, debugString);
+          debugString.Comp(mem);
         }
 
         // --- Remove testen ---
         TestBasicsRemove(mem, testString, debugString);
-        TestComp(mem, debugString);
+        debugString.Comp(mem);
 
         mem.Clear();
         debugString.Clear();

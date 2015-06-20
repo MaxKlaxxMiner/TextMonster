@@ -54,6 +54,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="StringBuilderExtensions.cs" />
     <Compile Include="TextMemoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextMonsterBasicsTests.cs" />
