@@ -57,5 +57,25 @@ namespace TextMonsterTests
     }
     #endregion
 
+    #region # void Comp(this StringBuilder str, ITextMonster txt) // vergleicht den kompletten Inhalt mit einem Textmonster
+    /// <summary>
+    /// vergleicht den kompletten Inhalt mit einem Textmonster
+    /// </summary>
+    /// <param name="str">StringBuilder, welcher eine komplette Kopie der Daten enthält</param>
+    /// <param name="txt">TextMonster, welcher die gleichen Daten enthalten sollte</param>
+    public static void Comp(this StringBuilder str, ITextMonster txt)
+    {
+      // --- Inhalte Zeichenweise vergleichen ---
+      Assert.AreEqual(str.Length, txt.Length);
+      string tmpStr = new string(txt.GetChars(0, txt.Length));
+      Assert.AreEqual(str.ToString(), tmpStr);
+
+      // --- Inhalte Zeilenweise vergleichen ---
+      Assert.AreEqual(str.Lines(), txt.Lines);
+
+      
+    }
+    #endregion
+
   }
 }
