@@ -180,6 +180,15 @@ namespace TextMonsterSystem
     }
     #endregion
 
+    #region # // --- GetLine() ---
+    /// <summary>
+    /// gibt den Anfang einer Zeile zurück
+    /// </summary>
+    /// <param name="memPos">Speicherposition ab welcher gesucht werden soll</param>
+    /// <returns>Speicherposition auf den Anfang der Zeile</returns>
+    public abstract MemoryPos GetLineStart(MemoryPos memPos);
+    #endregion
+
     #region # // --- Dispose() ---
     /// <summary>
     /// alle Ressourcen wieder frei geben
