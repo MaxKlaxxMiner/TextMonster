@@ -1,5 +1,6 @@
 ﻿#region # using *.*
 
+using System;
 using TextMonsterSystem.Memory;
 
 #endregion
@@ -29,6 +30,22 @@ namespace TextMonsterSystem.Core
     {
       mem.UpdateMemoryPos(ref this);
       return pos;
+    }
+
+    /// <summary>
+    /// gibt an, ob die Speicherposition gültig ist oder setzt diese (kann nur auf "false" gesetzt werden)
+    /// </summary>
+    public bool Valid
+    {
+      get
+      {
+        return rev >= 0;
+      }
+      set
+      {
+        if (value == true && !Valid) throw new ArgumentException();
+        rev = -1;
+      }
     }
   }
 }
