@@ -61,10 +61,17 @@ namespace TextMonsterTests
         Assert.AreEqual(test.count, linesLinux.Length);
         Assert.AreEqual(test.count, linesWindows.Length);
 
+        Assert.IsNull(test.strLinux.GetLine(-1));
+        Assert.IsNull(test.strWindows.GetLine(-1));
+        Assert.IsNull(test.strLinux.GetLine(test.count));
+        Assert.IsNull(test.strWindows.GetLine(test.count));
+
         for (int i = 0; i < test.lines.Length; i++)
         {
           Assert.AreEqual(test.lines[i], linesLinux[i]);
           Assert.AreEqual(test.lines[i], linesWindows[i]);
+          Assert.AreEqual(test.lines[i], test.strLinux.GetLine(i));
+          Assert.AreEqual(test.lines[i], test.strWindows.GetLine(i));
         }
       }
     }

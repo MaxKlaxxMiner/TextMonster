@@ -59,6 +59,37 @@ namespace TextMonsterTests
     }
     #endregion
 
+    #region # string GetLine(this StringBuilder str, long lineNumber) // gibt eine bestimmte Zeile aus dem StringBuilder zurück
+    /// <summary>
+    /// gibt eine bestimmte Zeile aus dem StringBuilder zurück
+    /// </summary>
+    /// <param name="str">StringBuilder, welcher ausgelesen werden soll</param>
+    /// <param name="lineNumber">Nummer der Zeile, welche zurück gegeben werden soll (beginnend bei 0)</param>
+    /// <returns>ausgelesene Zeile oder "null" wenn die Zeilennummer ungültig ist</returns>
+    public static string GetLine(this StringBuilder str, long lineNumber)
+    {
+      int last = -1;
+      for (int i = 0; i < str.Length; i++)
+      {
+        if (str[i] == '\n')
+        {
+          if (lineNumber == 0)
+          {
+            int len = i - last - 1;
+            if (len > 0 && str[i - 1] == '\r') len--;
+            return str.ToString(last + 1, len);
+          }
+          lineNumber--;
+          last = i;
+        }
+      }
+      if (lineNumber != 0) return null;
+      int len2 = str.Length - last - 1;
+      if (len2 > 0 && str[str.Length - 1] == '\r') len2--;
+      return str.ToString(last + 1, len2);
+    }
+    #endregion
+
     #endregion
 
     #region # void Comp(this StringBuilder str, ITextMemory mem) // vergleicht den kompletten Inhalt mit Speichersystem
