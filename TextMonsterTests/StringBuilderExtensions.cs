@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TextMonsterSystem;
 using TextMonsterSystem.Memory;
 
 #endregion
@@ -17,9 +18,9 @@ namespace TextMonsterTests
   /// </summary>
   public static class StringBuilderExtensions
   {
-    #region # public static void Comp(this StringBuilder str, ITextMemory mem) // fügt einen kompletten Test mit einem SpeicherSystem und vergleicht den kompletten Inhalt
+    #region # void Comp(this StringBuilder str, ITextMemory mem) // vergleicht den kompletten Inhalt mit Speichersystem
     /// <summary>
-    /// fügt einen kompletten Test mit einem SpeicherSystem und vergleicht den kompletten Inhalt
+    /// vergleicht den kompletten Inhalt mit einem Speichersystem
     /// </summary>
     /// <param name="str">StringBuilder, welcher eine komplette Kopie der Daten enthält</param>
     /// <param name="mem">Speichersystem, welcher die gleichen Daten enthalten sollte</param>
@@ -36,6 +37,23 @@ namespace TextMonsterTests
 
       string tmpStr = new string(mem.GetChars(0, mem.Length));
       Assert.AreEqual(str.ToString(), tmpStr);
+    }
+    #endregion
+
+    #region # long Lines(this StringBuilder str) // gibt die Anzahl der Zeilen in einem Stringbuilder zurück
+    /// <summary>
+    /// gibt die Anzahl der Zeilen in einem Stringbuilder zurück
+    /// </summary>
+    /// <param name="str">StringBuilder, welcher ausgelesen werden soll</param>
+    /// <returns>Anzahl der Zeilen, welche enthalten sind (mindestens 1)</returns>
+    public static long Lines(this StringBuilder str)
+    {
+      long count = 1;
+      for (int i = 0; i < str.Length; i++)
+      {
+        if (str[i] == '\n') count++;
+      }
+      return count;
     }
     #endregion
 
