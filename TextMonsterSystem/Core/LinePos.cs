@@ -24,5 +24,19 @@ namespace TextMonsterSystem.Core
     /// </summary>
     internal MemoryPos lineEnd;
 
+    /// <summary>
+    /// gibt an, ob die Speicherposition gültig ist oder setzt diese (kann nur auf "false" gesetzt werden)
+    /// </summary>
+    public bool Valid
+    {
+      get
+      {
+        return lineStart.Valid && lineEnd.Valid;
+      }
+      set
+      {
+        lineStart.Valid = lineEnd.Valid = value;
+      }
+    }
   }
 }

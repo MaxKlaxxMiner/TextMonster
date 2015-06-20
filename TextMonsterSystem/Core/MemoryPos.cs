@@ -43,8 +43,14 @@ namespace TextMonsterSystem.Core
       }
       set
       {
-        if (value == true && !Valid) throw new ArgumentException();
-        rev = -1;
+        if (value)
+        {
+          if (!Valid) throw new ArgumentException();
+        }
+        else
+        {
+          rev = -1;
+        }
       }
     }
   }
