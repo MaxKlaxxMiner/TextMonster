@@ -215,8 +215,8 @@ namespace TextMonsterSystem
       if (!linePos.Valid) return LinePos.InvalidPos;
 
       long p = GetCharPos(linePos.lineEnd) + 1;
-      if (p >= Length) return LinePos.InvalidPos;
-      if (GetChars(p, 1).First() == '\r') p++;
+      if (p > Length) return LinePos.InvalidPos;
+      if (p < Length && GetChars(p, 1).First() == '\r') p++;
 
       MemoryPos nextLineStart = GetMemoryPos(p);
       return new LinePos { lineStart = nextLineStart, lineEnd = GetLineEnd(nextLineStart) };
