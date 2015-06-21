@@ -144,6 +144,19 @@ namespace TextMonsterSystem
     {
       return GetChars(GetMemoryPos(charPos), GetMemoryPos(charPos + length)).ToArray();
     }
+
+    /// <summary>
+    /// gibt die Zeichen einer Zeile zurück
+    /// </summary>
+    /// <param name="linePos">Zeile, welche zurückgegeben werden soll</param>
+    /// <param name="charOffset">Anfangposition in der Zeile</param>
+    /// <returns>Enumerable mit den entsprechenden Zeichen</returns>
+    public virtual IEnumerable<char> GetChars(LinePos linePos, long charOffset)
+    {
+      if (!linePos.Valid) return Enumerable.Empty<char>();
+
+      return GetChars(linePos.lineStart, linePos.lineEnd).Skip((int)charOffset);
+    }
     #endregion
 
     #region # // --- GetLine() ---
