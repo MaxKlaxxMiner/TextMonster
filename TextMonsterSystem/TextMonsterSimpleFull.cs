@@ -173,17 +173,6 @@ namespace TextMonsterSystem
     {
       return mem.GetChars(memPosStart, memPosEnd);
     }
-
-    /// <summary>
-    /// gibt die Zeichen aus dem Speicher zurück
-    /// </summary>
-    /// <param name="charPos">Startposition, wo die Zeichen im Speicher gelesen werden sollen</param>
-    /// <param name="length"></param>
-    /// <returns>Array mit den entsprechenden Zeichen</returns>
-    public override char[] GetChars(long charPos, long length)
-    {
-      return mem.GetChars(charPos, length);
-    }
     #endregion
 
     #region # // --- GetLine() ---
