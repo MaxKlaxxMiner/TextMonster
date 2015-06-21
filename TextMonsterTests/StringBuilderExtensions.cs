@@ -90,6 +90,35 @@ namespace TextMonsterTests
     }
     #endregion
 
+    #region # int GetLineStart(this StringBuilder str, int pos) // gibt die Zeichenposition vom Anfang einer Zeile zurück
+    /// <summary>
+    /// gibt die Zeichenposition vom Anfang einer Zeile zurück
+    /// </summary>
+    /// <param name="str">StringBuilder, welcher durchsucht werden soll</param>
+    /// <param name="pos">Zeichenposition, ab welcher gesucht werden soll</param>
+    /// <returns>gefundene Zeichenposition am Anfang der Zeile</returns>
+    public static int GetLineStart(this StringBuilder str, int pos)
+    {
+      while (pos > 0 && str[pos - 1] != '\n') pos--;
+      return pos;
+    }
+    #endregion
+
+    #region # int GetLineEnd(this StringBuilder str, int pos) // gibt die Zeichenposition vom Ende einer Zeile zurück (zeigt auf das erste Zeichen vom Zeilenumbruch)
+    /// <summary>
+    /// gibt die Zeichenposition vom Ende einer Zeile zurück (zeigt auf das erste Zeichen vom Zeilenumbruch)
+    /// </summary>
+    /// <param name="str">StringBuilder, welcher durchsucht werden soll</param>
+    /// <param name="pos">Zeichenposition, ab welcher gesucht werden soll</param>
+    /// <returns>gefunden Zeichenposition am Ende der Zeile</returns>
+    public static int GetLineEnd(this StringBuilder str, int pos)
+    {
+      while (pos < str.Length && str[pos] != '\n') pos++;
+      if (pos > 0 && str[pos - 1] == '\r') pos--;
+      return pos;
+    }
+    #endregion
+
     #endregion
 
     #region # void Comp(this StringBuilder str, ITextMemory mem) // vergleicht den kompletten Inhalt mit Speichersystem
