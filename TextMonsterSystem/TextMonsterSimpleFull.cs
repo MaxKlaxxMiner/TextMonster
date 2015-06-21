@@ -290,6 +290,29 @@ namespace TextMonsterSystem
       MemoryPos prevLineEnd = mem.GetMemoryPos(p);
       return new LinePos { lineStart = mem.GetLineStart(prevLineEnd), lineEnd = prevLineEnd };
     }
+
+    /// <summary>
+    /// gibt die Position einer bestimmten Zeile zurück
+    /// </summary>
+    /// <param name="lineNumber">Zeilennummer, welche zurück gegeben werden soll (beginnend bei 0)</param>
+    /// <returns>entsprechende Zeilenposition</returns>
+    public override LinePos GetLine(long lineNumber)
+    {
+      if (lineNumber < 0) return LinePos.InvalidPos;
+
+      long p = 0;
+      long memLength = mem.Length;
+      while (lineNumber > 0)
+      {
+        p = mem.GetCharPos(mem.GetLineEnd(mem.GetMemoryPos(p))) + 1;
+        if (p > memLength) return LinePos.InvalidPos;
+        if (p < memLength && mem.GetChars(p, 1).First() == '\r') p++;
+        lineNumber--;
+      }
+
+      MemoryPos lineStart = mem.GetMemoryPos(p);
+      return new LinePos { lineStart = lineStart, lineEnd = mem.GetLineEnd(lineStart) };
+    }
     #endregion
 
     #endregion
