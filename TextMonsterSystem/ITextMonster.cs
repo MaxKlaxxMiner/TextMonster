@@ -221,6 +221,23 @@ namespace TextMonsterSystem
       MemoryPos nextLineStart = GetMemoryPos(p);
       return new LinePos { lineStart = nextLineStart, lineEnd = GetLineEnd(nextLineStart) };
     }
+
+    /// <summary>
+    /// gibt die Position der vorhergehenden Zeile zurück
+    /// </summary>
+    /// <param name="linePos">bisherige Zeilenposition</param>
+    /// <returns>vorhergehende Zeilenposition</returns>
+    public virtual LinePos GetPrevLine(LinePos linePos)
+    {
+      if (!linePos.Valid) return LinePos.InvalidPos;
+
+      long p = GetCharPos(linePos.lineStart) - 1;
+      if (p < 0) return LinePos.InvalidPos;
+      if (p > 0 && GetChars(p - 1, 1).First() == '\r') p--;
+
+      MemoryPos prevLineEnd = GetMemoryPos(p);
+      return new LinePos { lineStart = GetLineStart(prevLineEnd), lineEnd = prevLineEnd };
+    }
     #endregion
 
     #region # // --- Dispose() ---
