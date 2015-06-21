@@ -234,7 +234,7 @@ namespace TextMonsterSystem
     /// <returns>Speicherposition auf den Anfang der Zeile</returns>
     public override MemoryPos GetLineStart(MemoryPos memPos)
     {
-      throw new NotImplementedException();
+      return mem.GetLineStart(memPos);
     }
 
     /// <summary>
@@ -244,7 +244,7 @@ namespace TextMonsterSystem
     /// <returns>Speicherposition auf das Ende der Zeile (hinter dem letzten Zeichen)</returns>
     public override MemoryPos GetLineEnd(MemoryPos memPos)
     {
-      throw new NotImplementedException();
+      return mem.GetLineEnd(memPos);
     }
     #endregion
 
