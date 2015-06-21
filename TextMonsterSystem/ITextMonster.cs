@@ -204,6 +204,24 @@ namespace TextMonsterSystem
     {
       return new LinePos { lineStart = GetLineStart(memPos), lineEnd = GetLineEnd(memPos) };
     }
+
+    /// <summary>
+    /// gibt Position der nachfolgenden Zeile zurück
+    /// </summary>
+    /// <param name="linePos">vorherige Zeilenposition</param>
+    /// <returns>nachfolgende Zeilenposition</returns>
+    public virtual LinePos GetNextLine(LinePos linePos)
+    {
+      if (!linePos.Valid) return LinePos.InvalidPos;
+
+      long p = GetCharPos(linePos.lineEnd) + 1;
+      if (p >= Length) return LinePos.InvalidPos;
+      if (GetChars(p, 1).First() == '\r') p++;
+
+      MemoryPos nextLineStart = GetMemoryPos(p);
+      return new LinePos { lineStart = nextLineStart, lineEnd = GetLineEnd(nextLineStart) };
+    }
+
     #endregion
 
     #region # // --- Dispose() ---
