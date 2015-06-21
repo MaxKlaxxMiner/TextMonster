@@ -130,6 +130,25 @@ namespace TextMonsterTests
     }
     #endregion
 
+    #region # static void TestBasicsLines(ITextMemory mem, string ins, StringBuilder debugString)
+    static void TestBasicsLines(ITextMemory mem, string ins, StringBuilder debugString)
+    {
+      for (int i = 0; i <= debugString.Length; i++)
+      {
+        var searchPos = mem.GetMemoryPos((long)i);
+
+        var lineStartPos = mem.GetLineStart(searchPos);
+        var lineEndPos = mem.GetLineEnd(searchPos);
+
+        int lineStart = (int)mem.GetCharPos(lineStartPos);
+        int lineEnd = (int)mem.GetCharPos(lineEndPos);
+
+        Assert.AreEqual(debugString.GetLineStart(i), lineStart);
+        Assert.AreEqual(debugString.GetLineEnd(i), lineEnd);
+      }
+    }
+    #endregion
+
     #region # static void TestBasics(ITextMemory mem)
     static void TestBasics(ITextMemory mem)
     {
@@ -139,7 +158,15 @@ namespace TextMonsterTests
         "HaHa",
         "Öl",
         "Héllo Wörld",
-        "Was du heute kannst besorgen, das verschiebe nicht auf morgen!"
+        "\tWas du heute kannst besorgen, das verschiebe nicht auf morgen!\r\n",
+        "Zeilen Linux\n",
+        "\nZeilen Linux",
+        "Zeilen\nLinux",
+        "\nZeilen\nLinux\n",
+        "Zeilen Windows\r\n",
+        "\r\nZeilen Windows",
+        "Zeilen\r\nWindows",
+        "\r\nZeilen\r\nWindows\r\n",
       };
 
       StringBuilder debugString = new StringBuilder();
@@ -153,6 +180,10 @@ namespace TextMonsterTests
           Assert.AreEqual(mem.Length, (4 + testString.Length * 2) * count);
           debugString.Comp(mem);
         }
+
+        // --- Zeilen testen ---
+        TestBasicsLines(mem, testString, debugString);
+        debugString.Comp(mem);
 
         // --- Remove testen ---
         TestBasicsRemove(mem, testString, debugString);
