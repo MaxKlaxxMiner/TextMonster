@@ -166,12 +166,11 @@ namespace TextMonsterSystem
     /// <summary>
     /// gibt die Zeichen aus dem Speicher zurück
     /// </summary>
-    /// <param name="memPosStart">Startposition, wo die Zeichen im Speicher gelesen werden sollen</param>
-    /// <param name="memPosEnd">Endposition, der Zeichen im Speicher (exklusive)</param>
+    /// <param name="memPos">Startposition, wo die Zeichen im Speicher gelesen werden sollen</param>
     /// <returns>Enumerable mit den entsprechenden Zeichen</returns>
-    public override IEnumerable<char> GetChars(MemoryPos memPosStart, MemoryPos memPosEnd)
+    public override IEnumerable<char> GetChars(MemoryPos memPos)
     {
-      return mem.GetChars(memPosStart, memPosEnd);
+      return mem.GetChars(memPos);
     }
     #endregion
 

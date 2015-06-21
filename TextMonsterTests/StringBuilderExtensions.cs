@@ -153,7 +153,7 @@ namespace TextMonsterTests
     {
       // --- Inhalte Zeichenweise vergleichen ---
       Assert.AreEqual(str.Length, txt.Length);
-      string tmpStr = new string(txt.GetChars(txt.GetMemoryPos(0L), txt.GetMemoryPos(txt.Length)).ToArray());
+      string tmpStr = new string(txt.GetChars(txt.GetMemoryPos(0L)).ToArray());
       Assert.AreEqual(str.ToString(), tmpStr);
 
       // --- Inhalte Zeilenweise vergleichen ---

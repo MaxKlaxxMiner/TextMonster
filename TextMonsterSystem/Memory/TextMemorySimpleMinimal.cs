@@ -170,16 +170,14 @@ namespace TextMonsterSystem.Memory
     /// <summary>
     /// gibt die Zeichen aus dem Speicher zurück
     /// </summary>
-    /// <param name="memPosStart">Startposition, wo die Zeichen im Speicher gelesen werden sollen</param>
-    /// <param name="memPosEnd">Endposition, der Zeichen im Speicher (exklusive)</param>
+    /// <param name="memPos">Startposition, wo die Zeichen im Speicher gelesen werden sollen</param>
     /// <returns>Enumerable der entsprechenden Zeichen</returns>
-    public override IEnumerable<char> GetChars(MemoryPos memPosStart, MemoryPos memPosEnd)
+    public override IEnumerable<char> GetChars(MemoryPos memPos)
     {
-      UpdateMemoryPos(memPosStart);
-      UpdateMemoryPos(memPosEnd);
-      for (long p = memPosStart.pos; p < memPosEnd.pos; p++)
+      UpdateMemoryPos(memPos);
+      for (int p = (int)memPos.pos; p < mem.Count; p++)
       {
-        yield return mem[(int)p];
+        yield return mem[p];
       }
     }
 

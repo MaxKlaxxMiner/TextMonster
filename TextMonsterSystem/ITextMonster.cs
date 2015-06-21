@@ -130,9 +130,8 @@ namespace TextMonsterSystem
     /// gibt die Zeichen aus dem Speicher zurück
     /// </summary>
     /// <param name="memPosStart">Startposition, wo die Zeichen im Speicher gelesen werden sollen</param>
-    /// <param name="memPosEnd">Endposition, der Zeichen im Speicher (exklusive)</param>
     /// <returns>Enumerable mit den entsprechenden Zeichen</returns>
-    public abstract IEnumerable<char> GetChars(MemoryPos memPosStart, MemoryPos memPosEnd);
+    public abstract IEnumerable<char> GetChars(MemoryPos memPos);
 
     /// <summary>
     /// gibt die Zeichen einer Zeile zurück
@@ -144,7 +143,9 @@ namespace TextMonsterSystem
     {
       if (!linePos.Valid) return Enumerable.Empty<char>();
 
-      return GetChars(linePos.lineStart, linePos.lineEnd).Skip((int)charOffset);
+      long charCount = GetCharPos(linePos.lineEnd) - GetCharPos(linePos.lineStart);
+
+      return GetChars(linePos.lineStart).Take((int)charCount).Skip((int)charOffset);
     }
     #endregion
 
@@ -184,7 +185,7 @@ namespace TextMonsterSystem
 
       long p = GetCharPos(linePos.lineEnd) + 1;
       if (p > Length) return LinePos.InvalidPos;
-      if (p < Length && GetChars(GetMemoryPos(p), GetMemoryPos(p + 1)).First() == '\r') p++;
+      if (p < Length && GetChars(GetMemoryPos(p)).First() == '\r') p++;
 
       MemoryPos nextLineStart = GetMemoryPos(p);
       return new LinePos { lineStart = nextLineStart, lineEnd = GetLineEnd(nextLineStart) };
@@ -201,7 +202,7 @@ namespace TextMonsterSystem
 
       long p = GetCharPos(linePos.lineStart) - 1;
       if (p < 0) return LinePos.InvalidPos;
-      if (p > 0 && GetChars(GetMemoryPos(p - 1), GetMemoryPos(p)).First() == '\r') p--;
+      if (p > 0 && GetChars(GetMemoryPos(p - 1)).First() == '\r') p--;
 
       MemoryPos prevLineEnd = GetMemoryPos(p);
       return new LinePos { lineStart = GetLineStart(prevLineEnd), lineEnd = prevLineEnd };
