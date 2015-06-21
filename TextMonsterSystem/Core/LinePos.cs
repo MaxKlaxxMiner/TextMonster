@@ -45,5 +45,10 @@ namespace TextMonsterSystem.Core
         }
       }
     }
+
+    /// <summary>
+    /// gibt eine ungültige Zeilenposition zurück
+    /// </summary>
+    public static readonly LinePos InvalidPos = new LinePos { lineStart = null, lineEnd = null };
   }
 }
