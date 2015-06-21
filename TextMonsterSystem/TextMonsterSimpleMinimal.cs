@@ -83,26 +83,6 @@ namespace TextMonsterSystem
     }
 
     /// <summary>
-    /// gibt die Speicherposition anhand einer Textposition (Zeile, Spalten) zurück
-    /// </summary>
-    /// <param name="textPos">Textposition mit Zeilen und Spalten, welche abgefragt werden soll</param>
-    /// <returns>passende Speicherposition</returns>
-    public override MemoryPos GetMemoryPos(TextPos textPos)
-    {
-      throw new NotImplementedException();
-    }
-
-    /// <summary>
-    /// gibt die Textposition (mit Zeilennummer und Spaltennummer) anhand einer Speicherposition zurück
-    /// </summary>
-    /// <param name="memPos">Speicherposition, welche abgefragt werden soll</param>
-    /// <returns>passende Textposition</returns>
-    public override TextPos GetTextPos(MemoryPos memPos)
-    {
-      throw new NotImplementedException();
-    }
-
-    /// <summary>
     /// gibt die absolute Zeichenposition anhand einer Speicherposition zurück
     /// </summary>
     /// <param name="memPos">Speicherposition, welche abgefragt werden soll</param>

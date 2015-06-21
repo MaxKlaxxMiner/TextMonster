@@ -55,45 +55,11 @@ namespace TextMonsterSystem
     public abstract MemoryPos GetMemoryPos(long charPos);
 
     /// <summary>
-    /// gibt die Speicherposition anhand einer Textposition (Zeile, Spalten) zurück
-    /// </summary>
-    /// <param name="textPos">Textposition mit Zeilen und Spalten, welche abgefragt werden soll</param>
-    /// <returns>passende Speicherposition</returns>
-    public abstract MemoryPos GetMemoryPos(TextPos textPos);
-
-    /// <summary>
-    /// gibt die Textposition (mit Zeilennummer und Spaltennummer) anhand einer Speicherposition zurück
-    /// </summary>
-    /// <param name="memPos">Speicherposition, welche abgefragt werden soll</param>
-    /// <returns>passende Textposition</returns>
-    public abstract TextPos GetTextPos(MemoryPos memPos);
-
-    /// <summary>
-    /// gibt die Textposition (mit Zeilennummer und Spaltennummer) anhand einer absoluten Zeichenposition zurück
-    /// </summary>
-    /// <param name="charPos">absolute Zeichenposition, welche abgefragt werden soll</param>
-    /// <returns>passende Textposition</returns>
-    public virtual TextPos GetTextPos(long charPos)
-    {
-      return GetTextPos(GetMemoryPos(charPos));
-    }
-
-    /// <summary>
     /// gibt die absolute Zeichenposition anhand einer Speicherposition zurück
     /// </summary>
     /// <param name="memPos">Speicherposition, welche abgefragt werden soll</param>
     /// <returns>passende absolute Zeichenposition</returns>
     public abstract long GetCharPos(MemoryPos memPos);
-
-    /// <summary>
-    /// gibt die absolute Zeichenposition anhand einer Textposition (mit Zeilennummer und Spaltennummer) zurück
-    /// </summary>
-    /// <param name="textPos">Textposition, welche abgefragt werden soll</param>
-    /// <returns>passende absolute Zeichenposition</returns>
-    public virtual long GetCharPos(TextPos textPos)
-    {
-      return GetCharPos(GetMemoryPos(textPos));
-    }
     #endregion
 
     #region # // --- Insert() ---
