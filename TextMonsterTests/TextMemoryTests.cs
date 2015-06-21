@@ -152,26 +152,9 @@ namespace TextMonsterTests
     #region # static void TestBasics(ITextMemory mem)
     static void TestBasics(ITextMemory mem)
     {
-      string[] testStrings = new[]
-      {
-        "ha",
-        "HaHa",
-        "Öl",
-        "Héllo Wörld",
-        "\tWas du heute kannst besorgen, das verschiebe nicht auf morgen!\r\n",
-        "Zeilen Linux\n",
-        "\nZeilen Linux",
-        "Zeilen\nLinux",
-        "\nZeilen\nLinux\n",
-        "Zeilen Windows\r\n",
-        "\r\nZeilen Windows",
-        "Zeilen\r\nWindows",
-        "\r\nZeilen\r\nWindows\r\n",
-      };
-
       StringBuilder debugString = new StringBuilder();
 
-      foreach (string testString in testStrings)
+      foreach (string testString in TestData.TestStrings)
       {
         // --- Insert testen ---
         for (long count = 1; count <= 10; count++)

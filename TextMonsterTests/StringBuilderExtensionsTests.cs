@@ -22,70 +22,7 @@ namespace TextMonsterTests
     [TestMethod]
     public void TestStringBuilderLines()
     {
-      string[] testSource = 
-      {
-        "",
-        "\n",
-        "bla\n",
-        "bla\n\n",
-        "\nbla",
-        "\n\nbla",
-        "\n\nbla\n\n",
-        "bla\nbla",
-        "\nbla\nbla",
-        "\nbla\nbla\n",
-        "bla\nbla\nbla\n",
-        "bla\nbla\nbla\nbla",
-        "bla\nbla\n\nbla\nbla",
-        "bla\nbla\n\n\nbla\nbla",
-        "b\nla\nbla\n\n\nbla\nbla",
-        "\nb\nla\nbla\n\n\nbla\nbla",
-        "\nb\nla\nbla\n\n\nbla\nbla\n",
-        "\nb\nla\nbla\n\n\nbla\nbla\nb",
-        "\nb\nla\nbla\n\n\nbla\nbla\nb\n",
-      };
-
-      var testData = testSource.Select(x =>
-      new
-      {
-        strLinux = new StringBuilder(x),
-        strWindows = new StringBuilder(x.Replace("\n", "\r\n")),
-        count = x.Split('\n').Length,
-        lines = x.Split('\n'),
-        linesStartLinux = new List<int>(),
-        linesEndLinux = new List<int>(),
-        linesStartWindows = new List<int>(),
-        linesEndWindows = new List<int>(),
-      }).ToArray();
-
-      foreach (var test in testData)
-      {
-        test.linesStartLinux.Add(0);
-        test.linesStartWindows.Add(0);
-
-        for (int i = 1; i < test.lines.Length; i++)
-        {
-          int posLinux = test.linesStartLinux[i - 1] + test.lines[i - 1].Length;
-          int posWindows = test.linesStartWindows[i - 1] + test.lines[i - 1].Length;
-          test.linesStartLinux.Add(posLinux + 1);
-          test.linesStartWindows.Add(posWindows + 2);
-          test.linesEndLinux.Add(posLinux);
-          test.linesEndWindows.Add(posWindows);
-        }
-
-        if (test.strLinux.Length > 0 && test.strLinux[test.strLinux.Length - 1] == '\n')
-        {
-          test.linesEndLinux.Add(test.strLinux.Length - 1);
-          test.linesEndWindows.Add(test.strWindows.Length - 2);
-        }
-        else
-        {
-          test.linesEndLinux.Add(test.strLinux.Length);
-          test.linesEndWindows.Add(test.strWindows.Length);
-        }
-      }
-
-      foreach (var test in testData)
+      foreach (var test in TestData.TestLines)
       {
         Assert.AreEqual(test.count, test.strLinux.Lines());
         Assert.AreEqual(test.count, test.strWindows.Lines());
@@ -101,21 +38,21 @@ namespace TextMonsterTests
         Assert.IsNull(test.strWindows.GetLine(test.count));
 
         // --- ReadLines() prüfen ---
-        for (int i = 0; i < test.lines.Length; i++)
+        for (int i = 0; i < test.count; i++)
         {
-          Assert.AreEqual(test.lines[i], linesLinux[i]);
-          Assert.AreEqual(test.lines[i], linesWindows[i]);
+          Assert.AreEqual(test.linesRaw[i], linesLinux[i]);
+          Assert.AreEqual(test.linesRaw[i], linesWindows[i]);
         }
 
         // --- GetLine() prüfen ---
-        for (int i = 0; i < test.lines.Length; i++)
+        for (int i = 0; i < test.count; i++)
         {
-          Assert.AreEqual(test.lines[i], test.strLinux.GetLine(i));
-          Assert.AreEqual(test.lines[i], test.strWindows.GetLine(i));
+          Assert.AreEqual(test.linesRaw[i], test.strLinux.GetLine(i));
+          Assert.AreEqual(test.linesRaw[i], test.strWindows.GetLine(i));
         }
 
         // --- GetLineStart() und GetLineEnd() prüfen ---
-        for (int i = 0; i < test.lines.Length; i++)
+        for (int i = 0; i < test.count; i++)
         {
           for (int c = test.linesStartLinux[i]; c <= test.linesEndLinux[i]; c++)
           {
