@@ -206,7 +206,7 @@ namespace TextMonsterSystem
     }
 
     /// <summary>
-    /// gibt Position der nachfolgenden Zeile zurück
+    /// gibt die Position der nachfolgenden Zeile zurück
     /// </summary>
     /// <param name="linePos">vorherige Zeilenposition</param>
     /// <returns>nachfolgende Zeilenposition</returns>
@@ -221,7 +221,6 @@ namespace TextMonsterSystem
       MemoryPos nextLineStart = GetMemoryPos(p);
       return new LinePos { lineStart = nextLineStart, lineEnd = GetLineEnd(nextLineStart) };
     }
-
     #endregion
 
     #region # // --- Dispose() ---
