@@ -256,6 +256,40 @@ namespace TextMonsterSystem
     {
       return new LinePos { lineStart = mem.GetLineStart(memPos), lineEnd = mem.GetLineEnd(memPos) };
     }
+
+    /// <summary>
+    /// gibt die Position der nachfolgenden Zeile zurück
+    /// </summary>
+    /// <param name="linePos">vorherige Zeilenposition</param>
+    /// <returns>nachfolgende Zeilenposition</returns>
+    public override LinePos GetNextLine(LinePos linePos)
+    {
+      if (!linePos.Valid) return LinePos.InvalidPos;
+
+      long p = mem.GetCharPos(linePos.lineEnd) + 1;
+      if (p >= Length) return LinePos.InvalidPos;
+      if (mem.GetChars(p, 1).First() == '\r') p++;
+
+      MemoryPos nextLineStart = mem.GetMemoryPos(p);
+      return new LinePos { lineStart = nextLineStart, lineEnd = mem.GetLineEnd(nextLineStart) };
+    }
+
+    /// <summary>
+    /// gibt die Position der vorhergehenden Zeile zurück
+    /// </summary>
+    /// <param name="linePos">bisherige Zeilenposition</param>
+    /// <returns>vorhergehende Zeilenposition</returns>
+    public override LinePos GetPrevLine(LinePos linePos)
+    {
+      if (!linePos.Valid) return LinePos.InvalidPos;
+
+      long p = mem.GetCharPos(linePos.lineStart) - 1;
+      if (p < 0) return LinePos.InvalidPos;
+      if (p > 0 && mem.GetChars(p - 1, 1).First() == '\r') p--;
+
+      MemoryPos prevLineEnd = mem.GetMemoryPos(p);
+      return new LinePos { lineStart = mem.GetLineStart(prevLineEnd), lineEnd = prevLineEnd };
+    }
     #endregion
 
     #endregion
