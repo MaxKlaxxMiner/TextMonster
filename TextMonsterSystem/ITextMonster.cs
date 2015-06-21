@@ -194,6 +194,16 @@ namespace TextMonsterSystem
     /// <param name="memPos">Speicherposition ab welcher gesucht werden soll</param>
     /// <returns>Speicherposition auf das Ende der Zeile (hinter dem letzten Zeichen)</returns>
     public abstract MemoryPos GetLineEnd(MemoryPos memPos);
+
+    /// <summary>
+    /// gibt Position einer gesamten Zeile zurück
+    /// </summary>
+    /// <param name="memPos">Speicherposition ab welcher gesucht werden soll</param>
+    /// <returns>Position der gesamten Zeile (Anfang und Ende der Zeile)</returns>
+    public virtual LinePos GetLine(MemoryPos memPos)
+    {
+      return new LinePos { lineStart = GetLineStart(memPos), lineEnd = GetLineEnd(memPos) };
+    }
     #endregion
 
     #region # // --- Dispose() ---
