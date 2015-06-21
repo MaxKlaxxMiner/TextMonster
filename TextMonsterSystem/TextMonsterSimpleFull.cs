@@ -246,6 +246,16 @@ namespace TextMonsterSystem
     {
       return mem.GetLineEnd(memPos);
     }
+
+    /// <summary>
+    /// gibt Position einer gesamten Zeile zurück
+    /// </summary>
+    /// <param name="memPos">Speicherposition ab welcher gesucht werden soll</param>
+    /// <returns>Position der gesamten Zeile (Anfang und Ende der Zeile)</returns>
+    public override LinePos GetLine(MemoryPos memPos)
+    {
+      return new LinePos { lineStart = mem.GetLineStart(memPos), lineEnd = mem.GetLineEnd(memPos) };
+    }
     #endregion
 
     #endregion
