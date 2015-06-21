@@ -125,7 +125,7 @@ namespace TextMonsterSystem
     /// </summary>
     /// <param name="memPosStart">Startposition, wo die Zeichen im Speicher gelesen werden sollen</param>
     /// <param name="memPosEnd">Endposition, der Zeichen im Speicher (exklusive)</param>
-    /// <returns>Enumerable der entsprechenden Zeichen</returns>
+    /// <returns>Enumerable mit den entsprechenden Zeichen</returns>
     public override IEnumerable<char> GetChars(MemoryPos memPosStart, MemoryPos memPosEnd)
     {
       return mem.GetChars(memPosStart, memPosEnd);
