@@ -24,6 +24,7 @@ namespace TextMonsterTests
       Assert.IsFalse(txt.LengthLimit > 1048576L * 16777216L, "LengthLimit zu groß > 16 TB");
     }
 
+#if DEBUG
     [TestMethod]
     public void TestSimpleMinimal()
     {
@@ -32,6 +33,7 @@ namespace TextMonsterTests
         TestBasics(test);
       }
     }
+#endif
 
     [TestMethod]
     public void TestSimpleFull()

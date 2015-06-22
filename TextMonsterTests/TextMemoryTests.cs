@@ -178,6 +178,7 @@ namespace TextMonsterTests
     }
     #endregion
 
+#if DEBUG
     [TestMethod]
     public void TestMemorySimpleMinimal()
     {
@@ -186,6 +187,7 @@ namespace TextMonsterTests
         TestBasics(mem);
       }
     }
+#endif
 
     [TestMethod]
     public void TestMemorySimpleFull()

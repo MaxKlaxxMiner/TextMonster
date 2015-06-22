@@ -8,6 +8,7 @@ using TextMonsterSystem.Core;
 
 #endregion
 
+#if DEBUG
 namespace TextMonsterSystem.Memory
 {
   /// <summary>
@@ -216,3 +217,4 @@ namespace TextMonsterSystem.Memory
   }
 
 }
+#endif
