@@ -130,14 +130,6 @@ namespace TextMonsterTests
     public static void Comp(this StringBuilder str, ITextMemory mem)
     {
       Assert.AreEqual(str.Length, mem.Length);
-
-      if (mem is TextMemorySimpleMinimal)
-      {
-        var tmp = (TextMemorySimpleMinimal)mem;
-        string tmpStrIntern = new string(tmp.mem.ToArray());
-        Assert.AreEqual(str.ToString(), tmpStrIntern);
-      }
-
       string tmpStr = new string(mem.GetChars(0, mem.Length));
       Assert.AreEqual(str.ToString(), tmpStr);
     }
