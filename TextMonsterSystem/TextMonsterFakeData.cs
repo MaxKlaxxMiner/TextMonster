@@ -375,7 +375,22 @@ namespace TextMonsterSystem
     /// <returns>Speicherposition auf den Anfang der Zeile</returns>
     public override MemoryPos GetLineStart(MemoryPos memPos)
     {
-      throw new NotImplementedException("todo");
+      long pos = memPos.pos;
+      long blockNum = pos / genBlockSize;
+      pos -= genBlockSize * blockNum;
+
+      foreach (var genLine in genLines)
+      {
+        long len = genLine.Length;
+        if (len <= pos)
+        {
+          pos -= len;
+          continue;
+        }
+        break;
+      }
+
+      return new MemoryPos { pos = memPos.pos - pos };
     }
 
     /// <summary>
@@ -385,7 +400,23 @@ namespace TextMonsterSystem
     /// <returns>Speicherposition auf das Ende der Zeile (hinter dem letzten Zeichen)</returns>
     public override MemoryPos GetLineEnd(MemoryPos memPos)
     {
-      throw new NotImplementedException("todo");
+      long pos = memPos.pos;
+      long blockNum = pos / genBlockSize;
+      pos -= genBlockSize * blockNum;
+
+      foreach (var genLine in genLines)
+      {
+        long len = genLine.Length;
+        if (len <= pos)
+        {
+          pos -= len;
+          continue;
+        }
+        pos -= len;
+        break;
+      }
+
+      return new MemoryPos { pos = memPos.pos - pos };
     }
 
     /// <summary>
@@ -395,8 +426,7 @@ namespace TextMonsterSystem
     /// <returns>Position der gesamten Zeile (Anfang und Ende der Zeile)</returns>
     public override LinePos GetLine(MemoryPos memPos)
     {
-      throw new NotImplementedException("todo");
-      //      return new LinePos { lineStart = mem.GetLineStart(memPos), lineEnd = mem.GetLineEnd(memPos) };
+      return new LinePos { lineStart = GetLineStart(memPos), lineEnd = GetLineEnd(memPos) };
     }
 
     /// <summary>
@@ -406,15 +436,16 @@ namespace TextMonsterSystem
     /// <returns>nachfolgende Zeilenposition</returns>
     public override LinePos GetNextLine(LinePos linePos)
     {
-      throw new NotImplementedException("todo");
-      //if (!linePos.Valid) return LinePos.InvalidPos;
+      if (!linePos.Valid) return LinePos.InvalidPos;
 
-      //long p = mem.GetCharPos(linePos.lineEnd) + 1;
-      //if (p > mem.Length) return LinePos.InvalidPos;
-      //if (p < mem.Length && mem.GetChars(p, 1).First() == '\r') p++;
+      long len = Length;
+      long p = linePos.lineEnd.pos + 1;
+      if (p > len) return LinePos.InvalidPos;
 
-      //MemoryPos nextLineStart = mem.GetMemoryPos(p);
-      //return new LinePos { lineStart = nextLineStart, lineEnd = mem.GetLineEnd(nextLineStart) };
+      MemoryPos nextLineStart = new MemoryPos { pos = p };
+      if (p < len && GetChars(nextLineStart).First() == '\r') nextLineStart.pos++;
+
+      return new LinePos { lineStart = nextLineStart, lineEnd = GetLineEnd(nextLineStart) };
     }
 
     /// <summary>
@@ -424,15 +455,14 @@ namespace TextMonsterSystem
     /// <returns>vorhergehende Zeilenposition</returns>
     public override LinePos GetPrevLine(LinePos linePos)
     {
-      throw new NotImplementedException("todo");
-      //if (!linePos.Valid) return LinePos.InvalidPos;
+      if (!linePos.Valid) return LinePos.InvalidPos;
 
-      //long p = mem.GetCharPos(linePos.lineStart) - 1;
-      //if (p < 0) return LinePos.InvalidPos;
-      //if (p > 0 && mem.GetChars(p - 1, 1).First() == '\r') p--;
+      long p = linePos.lineStart.pos - 1;
+      if (p < 0) return LinePos.InvalidPos;
+      if (p > 0 && GetChars(new MemoryPos { pos = p - 1 }).First() == '\r') p--;
+      MemoryPos prevLineEnd = new MemoryPos { pos = p };
 
-      //MemoryPos prevLineEnd = mem.GetMemoryPos(p);
-      //return new LinePos { lineStart = mem.GetLineStart(prevLineEnd), lineEnd = prevLineEnd };
+      return new LinePos { lineStart = GetLineStart(prevLineEnd), lineEnd = prevLineEnd };
     }
 
     /// <summary>
@@ -442,21 +472,17 @@ namespace TextMonsterSystem
     /// <returns>entsprechende Zeilenposition</returns>
     public override LinePos GetLine(long lineNumber)
     {
-      throw new NotImplementedException("todo");
-      //if (lineNumber < 0) return LinePos.InvalidPos;
+      if (lineNumber < 0) return LinePos.InvalidPos;
 
-      //long p = 0;
-      //long memLength = mem.Length;
-      //while (lineNumber > 0)
-      //{
-      //  p = mem.GetCharPos(mem.GetLineEnd(mem.GetMemoryPos(p))) + 1;
-      //  if (p > memLength) return LinePos.InvalidPos;
-      //  if (p < memLength && mem.GetChars(p, 1).First() == '\r') p++;
-      //  lineNumber--;
-      //}
+      long pos = 0;
+      pos += lineNumber / genLines.Length * genBlockSize;
+      lineNumber = lineNumber % genLines.Length;
+      for (int i = 0; i < lineNumber; i++)
+      {
+        pos += genLines[i].Length;
+      }
 
-      //MemoryPos lineStart = mem.GetMemoryPos(p);
-      //return new LinePos { lineStart = lineStart, lineEnd = mem.GetLineEnd(lineStart) };
+      return new LinePos { lineStart = new MemoryPos { pos = pos }, lineEnd = new MemoryPos { pos = pos + genLines[lineNumber].Length } };
     }
     #endregion
 
