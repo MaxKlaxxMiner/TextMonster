@@ -4,14 +4,18 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using TextMonster;
+
 #endregion
 
 namespace TestTool
 {
   class Program
   {
+    #region # // --- CreateTestFiles ---
     static void CreateTestFiles(long size)
     {
       Console.WriteLine(TestFile.CreateFilePrime(TestFile.FileType.Binary, size));
@@ -31,6 +35,7 @@ namespace TestTool
       CreateTestFiles(100000000); // 100 MByte
       Console.Clear();
     }
+    #endregion
 
     static void SpeedCheck(string name, Func<string, object> method)
     {
@@ -50,6 +55,11 @@ namespace TestTool
         Console.WriteLine(" total size:   {0:N2} MByte", (long)testData / 1048576.0);
         Console.WriteLine();
       }
+      else if (testData is int)
+      {
+        Console.WriteLine(" total count:  {0:N0}", (int)testData);
+        Console.WriteLine();
+      }
       else
       {
         Console.WriteLine("  used memory: {0:N2} MByte", (newMem - oldMem) / 1048576.0);
@@ -59,6 +69,9 @@ namespace TestTool
       Console.WriteLine();
     }
 
+    static readonly Encoding Latin1 = Encoding.GetEncoding("ISO-8859-1");
+
+    #region # // --- SpeedCheckBinary ---
     const int BufSize = 4096;
 
     static object ReadTest(string fileName)
@@ -99,10 +112,8 @@ namespace TestTool
       return bytesTotal;
     }
 
-    static void Main(string[] args)
+    static void SpeedCheckBinary()
     {
-      CreateTestFiles();
-
       SpeedCheck("ReadTest()", ReadTest);
       SpeedCheck("ReadTestNative()", ReadTestNative);
       Console.Clear();
@@ -111,6 +122,93 @@ namespace TestTool
         SpeedCheck("ReadTest()", ReadTest);
         SpeedCheck("ReadTestNative()", ReadTestNative);
       }
+    }
+    #endregion
+
+    #region # // --- SpeedCheckTextLines ---
+    static object LinesCount(string fileName)
+    {
+      int lineCount = 0;
+      var mem = new MemoryStream(fullFile);
+      using (var sr = new StreamReader(mem))
+      {
+        while (sr.ReadLine() != null) lineCount++;
+      }
+      return lineCount;
+    }
+
+    static object LinesCount2(string fileName)
+    {
+      int lineCount = 0;
+      var mem = new MemoryStream(fullFile);
+      using (var sr = new StreamReader(mem, Latin1, false, 65536))
+      {
+        while (sr.ReadLine() != null) lineCount++;
+      }
+      return lineCount;
+    }
+
+    static object LinesCountRaw(string fileName)
+    {
+      int lineCount = 0;
+      var buf = fullFile;
+      for (int i = 0; i < buf.Length; i++)
+      {
+        if (buf[i] != '\n') continue;
+        lineCount++;
+      }
+      return lineCount;
+    }
+
+    static unsafe int LinesCountRawXInternal(byte* buf, int last)
+    {
+      int lineCount = 0;
+      int p = 0;
+      for (; p < last; )
+      {
+        int next = UnsafeHelper.IndexOfConst(buf + p, (byte)'\n');
+        p += next + 1;
+        lineCount++;
+      }
+      return lineCount;
+    }
+
+    static unsafe object LinesCountRawX(string fileName)
+    {
+      fixed (byte* bufP = &fullFile[0])
+      {
+        int last = fullFile.Length;
+        while (last > 0 && bufP[last] != '\n') last--;
+        if (last == 0 && bufP[0] != '\n') return 0;
+        return LinesCountRawXInternal(bufP, last);
+      }
+    }
+
+    static byte[] fullFile;
+    static void SpeedCheckTextLines()
+    {
+      fullFile = File.ReadAllBytes(TestFile.CreateFilePrime(TestFile.FileType.Xml, 100000000));
+
+      SpeedCheck("LinesCount() - StreamReader", LinesCount);
+      SpeedCheck("LinesCount2() - StreamReader optimized", LinesCount2);
+      SpeedCheck("LinesCountRaw() - DirectBytes", LinesCountRaw);
+      SpeedCheck("LinesCountRawX() - x64-Search", LinesCountRawX);
+      for (int i = 0; i < 3; i++)
+      {
+        SpeedCheck("LinesCount() - StreamReader", LinesCount);
+        SpeedCheck("LinesCount2() - StreamReader optimized", LinesCount2);
+        SpeedCheck("LinesCountRaw() - DirectBytes", LinesCountRaw);
+        SpeedCheck("LinesCountRawX() - x64-Search", LinesCountRawX);
+      }
+    }
+    #endregion
+
+    static void Main(string[] args)
+    {
+      CreateTestFiles();
+
+      //SpeedCheckBinary();
+      SpeedCheckTextLines();
     }
   }
 }
