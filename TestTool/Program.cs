@@ -69,8 +69,6 @@ namespace TestTool
       Console.WriteLine();
     }
 
-    static readonly Encoding Latin1 = Encoding.GetEncoding("ISO-8859-1");
-
     #region # // --- SpeedCheckBinary ---
     const int BufSize = 4096;
 
@@ -126,6 +124,8 @@ namespace TestTool
     #endregion
 
     #region # // --- SpeedCheckTextLines ---
+    static readonly Encoding Latin1 = Encoding.GetEncoding("ISO-8859-1");
+
     static object LinesCount(string fileName)
     {
       int lineCount = 0;
@@ -205,10 +205,10 @@ namespace TestTool
 
     static void Main(string[] args)
     {
-      CreateTestFiles();
+      //CreateTestFiles();
 
       //SpeedCheckBinary();
-      SpeedCheckTextLines();
+      //SpeedCheckTextLines();
     }
   }
 }

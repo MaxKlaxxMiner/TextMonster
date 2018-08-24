@@ -1,5 +1,11 @@
 ﻿#region # using *.*
+
+using System;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text;
+// ReSharper disable MemberCanBePrivate.Global
+
 // ReSharper disable UnusedMember.Global
 #endregion
 
@@ -172,6 +178,199 @@ namespace TextMonster
     static bool _IndexOfHasByteSub(ulong val, ulong bSub)
     {
       return ((val - (bSub - 0x0101010101010101) & 0x7e7e7e7e7e7e7e7e) - 0x0101010101010101 & 0x8080808080808080) != 0;
+    }
+    #endregion
+
+    #region # // --- MemMove ---
+    /// <summary>
+    /// kopiert einen Speicherbereich in einen anderen
+    /// </summary>
+    /// <param name="dest">Zieladresse, wohin der Bereich kopiert werden soll</param>
+    /// <param name="src">Quelladresse, woher der Bereich gelesen werden soll</param>
+    /// <param name="len">Anzahl der Bytes, welche kopiert werden sollen (muss größergleich 0 sein!)</param>
+    public static void MemMove(byte* dest, byte* src, long len)
+    {
+      long offset = len & 15;
+      switch (offset)
+      {
+        case 1: *dest = *src; break;
+        case 2: *(short*)dest = *(short*)src; break;
+        case 3: *(short*)dest = *(short*)src; *(dest + 2) = *(src + 2); break;
+        case 4: *(int*)dest = *(int*)src; break;
+        case 5: *(int*)dest = *(int*)src; *(dest + 4) = *(src + 4); break;
+        case 6: *(int*)dest = *(int*)src; *(short*)(dest + 4) = *(short*)(src + 4); break;
+        case 7: *(int*)dest = *(int*)src; *(int*)(dest + 3) = *(int*)(src + 3); break;
+        case 8: *(long*)dest = *(long*)src; break;
+        case 9: *(long*)dest = *(long*)src; *(dest + 8) = *(src + 8); break;
+        case 10: *(long*)dest = *(long*)src; *(short*)(dest + 8) = *(short*)(src + 8); break;
+        case 11: *(long*)dest = *(long*)src; *(int*)(dest + 7) = *(int*)(src + 7); break;
+        case 12: *(long*)dest = *(long*)src; *(int*)(dest + 8) = *(int*)(src + 8); break;
+        case 13: *(long*)dest = *(long*)src; *(long*)(dest + 5) = *(long*)(src + 5); break;
+        case 14: *(long*)dest = *(long*)src; *(long*)(dest + 6) = *(long*)(src + 6); break;
+        case 15: *(long*)dest = *(long*)src; *(long*)(dest + 7) = *(long*)(src + 7); break;
+      }
+      for (; offset != len; offset += 16)
+      {
+        *(long*)(dest + offset) = *(long*)(src + offset);
+        *(long*)(dest + offset + 8) = *(long*)(src + offset + 8);
+      }
+    }
+    #endregion
+
+    #region # // --- CompareBytes ---
+    /// <summary>
+    /// vergleicht zwei Byte-Arrays gibt true zurück, wenn diese übereinstimmen, oder false wenn etwas nicht gepasst hat (es nie eine Exception geworfen)
+    /// </summary>
+    /// <param name="sourceBytes">Quelldaten, welche geprüft werden sollen</param>
+    /// <param name="sourceOffset">Startposition in den Quelldaten</param>
+    /// <param name="compareBytes">die zu vergleichenden Bytes</param>
+    /// <param name="length">Länge der zu überprüfenden Bytes (muss kleinergleich compareBytes.Length sein)</param>
+    /// <returns>true, wenn die Bytekette übereinstimmt oder false, wenn die Bytekette nicht gleich order fehlerhaft ist</returns>
+    public static bool CompareBytes(byte[] sourceBytes, int sourceOffset, byte[] compareBytes, int length = 0)
+    {
+      if (sourceBytes == null || compareBytes == null) return false; // Null-Check
+      if (length == 0) length = compareBytes.Length;
+      if (sourceOffset < 0 || sourceOffset + length > sourceBytes.Length || length > compareBytes.Length || length <= 0) return false; // Bound-Checks
+
+      fixed (byte* sourceP = &sourceBytes[sourceOffset])
+      fixed (byte* compareP = &compareBytes[0])
+      {
+        return CompareBytesInternal(sourceP, compareP, length);
+      }
+    }
+
+    /// <summary>
+    /// vergleicht zwei Byte-Arrays gibt true zurück, wenn diese übereinstimmen, oder false wenn etwas nicht gepasst hat (es nie eine Exception geworfen)
+    /// </summary>
+    /// <param name="source">Quelldaten, welche geprüft werden sollen</param>
+    /// <param name="compareBytes">die zu vergleichenden Bytes</param>
+    /// <param name="length">Länge der zu überprüfenden Bytes (muss kleinergleich compareBytes.Length sein)</param>
+    /// <returns>true, wenn die Bytekette übereinstimmt oder false, wenn die Bytekette nicht gleich order fehlerhaft ist</returns>
+    public static bool CompareBytes(byte* source, byte[] compareBytes, int length = 0)
+    {
+      if (compareBytes == null) return false; // Null-Check
+      if (length == 0) length = compareBytes.Length;
+      if (length > compareBytes.Length || length <= 0) return false; // Bound-Checks
+
+      fixed (byte* compareP = &compareBytes[0])
+      {
+        return CompareBytesInternal(source, compareP, length);
+      }
+    }
+
+    /// <summary>
+    /// vergleicht zwei Speicherbereiche
+    /// </summary>
+    /// <param name="src">Zeiger auf Quelldaten, welche verglichen werden sollen</param>
+    /// <param name="cmp">Zeiger auf Vergleichsdaten, welche verglichen werden sollen</param>
+    /// <param name="len">Länge der zu vergleichen Daten in Bytes</param>
+    /// <returns>true, wenn alle Bytes übereinstimmen</returns>
+    static bool CompareBytesInternal(byte* src, byte* cmp, int len)
+    {
+      int i = 0;
+
+      // --- 64-Bit Schnellvergleich ---
+      len -= sizeof(long);
+      for (; i <= len; i += sizeof(long))
+      {
+        if (*(long*)(src + i) != *(long*)(cmp + i)) return false;
+      }
+      len += sizeof(long);
+
+      // --- restliche Bytes vergleichen ---
+      for (; i < len; i++)
+      {
+        if (src[i] != cmp[i]) return false;
+      }
+
+      return true; // keinen Unterschied gefunden
+    }
+    #endregion
+
+    #region # // --- GetString ---
+    /// <summary>
+    /// merkt sich den UTF8-Decoder
+    /// </summary>
+    static readonly Decoder Utf8Decoder = Encoding.UTF8.GetDecoder();
+
+    /// <summary>
+    /// schnelle Methode um einen leeren String zu erstellen
+    /// </summary>
+    public static readonly Func<int, string> FastAllocateString = GenFastAllocateString();
+
+    /// <summary>
+    /// gibt die Methode "string.FastAllocateString" zurück
+    /// </summary>
+    /// <returns>Delegate auf die Methode</returns>
+    static Func<int, string> GenFastAllocateString()
+    {
+      try
+      {
+        return (Func<int, string>)Delegate.CreateDelegate(typeof(Func<int, string>), typeof(string).GetMethod("FastAllocateString", BindingFlags.NonPublic | BindingFlags.Static));
+      }
+      catch
+      {
+        return count => new string('\0', count); // Fallback 
+      }
+    }
+
+    /// <summary>
+    /// prüft, ob in einem bestimmten Speicherbereich Utf8-Zeichen bzw. andere Sonderzeichen (größer als 0x7f) vorhanden sind
+    /// </summary>
+    /// <param name="buf">Buffer, welcher geprüft werden soll</param>
+    /// <param name="bytes">Anzahl der zu überprüfenden Bytes</param>
+    /// <returns>true, wenn Utf8- oder andere Sonderzeichen gefunden wurden</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool CheckUtf8Chars(byte* buf, int bytes)
+    {
+      int bytes8 = bytes & 0x7fffffff - 7;
+      int p;
+      for (p = 0; p < bytes8; p += 8)
+      {
+        if ((*(ulong*)(buf + p) & 0x8080808080808080) != 0) return true;
+      }
+      for (; p < bytes; p++)
+      {
+        if ((buf[p] & 0x80) != 0) return true;
+      }
+      return false; // keine Utf8-Zeichen gefunden
+    }
+
+    /// <summary>
+    /// dekodiert einen Utf8-String
+    /// </summary>
+    /// <param name="buf">Buffer, welcher ausgelesen werden soll</param>
+    /// <param name="bytes">Anzahl der Bytes, welche gelesen werden sollen</param>
+    /// <returns>fertig dekodierte Zeichenkette</returns>
+    public static string GetUtf8String(byte* buf, int bytes)
+    {
+      if (bytes <= 0) return "";
+      if (!CheckUtf8Chars(buf, bytes)) return GetLatin1String(buf, bytes);
+
+      int chars = Utf8Decoder.GetCharCount(buf, bytes, false);
+      string output = FastAllocateString(chars);
+      fixed (char* cP = output)
+      {
+        Utf8Decoder.GetChars(buf, bytes, cP, chars, false);
+      }
+      return output;
+    }
+
+    /// <summary>
+    /// dekodiert einen Latin1-String
+    /// </summary>
+    /// <param name="buf">Buffer, welcher ausgelesen werden soll</param>
+    /// <param name="bytes">Anzahl der Bytes, welche gelesen werden sollen</param>
+    /// <returns>fertig dekodierte Zeichenkette</returns>
+    public static string GetLatin1String(byte* buf, int bytes)
+    {
+      if (bytes <= 0) return "";
+      string output = FastAllocateString(bytes);
+      fixed (char* cP = output)
+      {
+        for (int i = 0; i < bytes; i++) cP[i] = (char)buf[i];
+      }
+      return output;
     }
     #endregion
   }
