@@ -289,6 +289,11 @@ namespace TextMonster
 
     #region # // --- GetString ---
     /// <summary>
+    /// Latin1-Zeichensatz (wie in MySql)
+    /// </summary>
+    public static readonly Encoding Latin1 = Encoding.GetEncoding("ISO-8859-1");
+
+    /// <summary>
     /// merkt sich den UTF8-Decoder
     /// </summary>
     static readonly Decoder Utf8Decoder = Encoding.UTF8.GetDecoder();

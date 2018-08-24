@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextMonster", "TextMonster\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTool", "TestTool\TestTool.csproj", "{C018CAB9-69EB-4227-9F68-3A090E693C90}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnsafeTextHelper", "UnsafeTextHelper\UnsafeTextHelper.csproj", "{14249979-027F-4A27-9623-61BCBEF4AA6A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{C018CAB9-69EB-4227-9F68-3A090E693C90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C018CAB9-69EB-4227-9F68-3A090E693C90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C018CAB9-69EB-4227-9F68-3A090E693C90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14249979-027F-4A27-9623-61BCBEF4AA6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14249979-027F-4A27-9623-61BCBEF4AA6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14249979-027F-4A27-9623-61BCBEF4AA6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14249979-027F-4A27-9623-61BCBEF4AA6A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

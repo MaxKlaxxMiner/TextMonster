@@ -8,7 +8,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using TextMonster;
-
 #endregion
 
 namespace TestTool
@@ -124,8 +123,6 @@ namespace TestTool
     #endregion
 
     #region # // --- SpeedCheckTextLines ---
-    static readonly Encoding Latin1 = Encoding.GetEncoding("ISO-8859-1");
-
     static object LinesCount(string fileName)
     {
       int lineCount = 0;
@@ -141,7 +138,7 @@ namespace TestTool
     {
       int lineCount = 0;
       var mem = new MemoryStream(fullFile);
-      using (var sr = new StreamReader(mem, Latin1, false, 65536))
+      using (var sr = new StreamReader(mem, UnsafeHelper.Latin1, false, 65536))
       {
         while (sr.ReadLine() != null) lineCount++;
       }
