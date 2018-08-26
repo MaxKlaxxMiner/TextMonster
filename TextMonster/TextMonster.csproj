@@ -44,7 +44,30 @@
     <Compile Include="UnsafeReader.cs" />
     <Compile Include="UnsafeHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Xml\BaseUriAnnotation.cs" />
+    <Compile Include="Xml\XHashtable.cs" />
+    <Compile Include="Xml\XNamespace.cs" />
+    <Compile Include="Xml\XName.cs" />
+    <Compile Include="Xml\XAttribute.cs" />
+    <Compile Include="Xml\SaveOptions.cs" />
+    <Compile Include="Xml\LoadOptions.cs" />
+    <Compile Include="Xml\XObjectChange.cs" />
+    <Compile Include="Xml\XObjectChangeEventArgs.cs" />
+    <Compile Include="Xml\IDtdEntityInfo.cs" />
+    <Compile Include="Xml\IDtdDefaultAttributeInfo.cs" />
+    <Compile Include="Xml\IDtdAttributeInfo.cs" />
+    <Compile Include="Xml\IDtdAttributeListInfo.cs" />
+    <Compile Include="Xml\IDtdInfo.cs" />
+    <Compile Include="Xml\XDocumentType.cs" />
+    <Compile Include="Xml\XDeclaration.cs" />
+    <Compile Include="Xml\XDocument.cs" />
+    <Compile Include="Xml\IXmlLineInfo.cs" />
+    <Compile Include="Xml\XObject.cs" />
+    <Compile Include="Xml\XNode.cs" />
+    <Compile Include="Xml\XContainer.cs" />
+    <Compile Include="Xml\XElement.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
