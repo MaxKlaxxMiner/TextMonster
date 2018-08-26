@@ -6,18 +6,18 @@ namespace TextMonster.Xml
   [Serializable]
   internal sealed class NameSerializer : IObjectReference, ISerializable
   {
-    private string expandedName;
+    readonly string expandedName;
 
-    private NameSerializer(SerializationInfo info, StreamingContext context)
+    NameSerializer(SerializationInfo info, StreamingContext context)
     {
       if (info == null)
         throw new ArgumentNullException("info");
-      this.expandedName = info.GetString("name");
+      expandedName = info.GetString("name");
     }
 
     object IObjectReference.GetRealObject(StreamingContext context)
     {
-      return (object)XName.Get(this.expandedName);
+      return XName.Get(expandedName);
     }
 
     void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)

@@ -3,7 +3,7 @@ namespace TextMonster.Xml
 {
   internal class BaseUriAnnotation
   {
-    internal string baseUri;
+    internal readonly string baseUri;
 
     public BaseUriAnnotation(string baseUri)
     {

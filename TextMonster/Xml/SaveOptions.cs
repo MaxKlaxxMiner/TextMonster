@@ -10,6 +10,6 @@ namespace TextMonster.Xml
   {
     None = 0,
     DisableFormatting = 1,
-    OmitDuplicateNamespaces = 2,
+    OmitDuplicateNamespaces = 2
   }
 }

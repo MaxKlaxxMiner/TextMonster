@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Xml;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace TextMonster.Xml
 {
@@ -9,10 +11,10 @@ namespace TextMonster.Xml
   /// <filterpriority>2</filterpriority>
   public class XDocumentType : XNode
   {
-    private string name;
-    private string publicId;
-    private string systemId;
-    private string internalSubset;
+    string name;
+    string publicId;
+    string systemId;
+    string internalSubset;
 
     /// <summary>
     /// Ruft die interne Teilmenge für die Dokumenttypdefinition (DTD) ab oder legt diese fest.
@@ -25,15 +27,15 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.internalSubset;
+        return internalSubset;
       }
       set
       {
-        bool flag = this.NotifyChanging((object)this, XObjectChangeEventArgs.Value);
-        this.internalSubset = value;
+        bool flag = NotifyChanging(this, XObjectChangeEventArgs.Value);
+        internalSubset = value;
         if (!flag)
           return;
-        this.NotifyChanged((object)this, XObjectChangeEventArgs.Value);
+        NotifyChanged(this, XObjectChangeEventArgs.Value);
       }
     }
 
@@ -48,16 +50,16 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.name;
+        return name;
       }
       set
       {
         value = XmlConvert.VerifyName(value);
-        bool flag = this.NotifyChanging((object)this, XObjectChangeEventArgs.Name);
-        this.name = value;
+        bool flag = NotifyChanging(this, XObjectChangeEventArgs.Name);
+        name = value;
         if (!flag)
           return;
-        this.NotifyChanged((object)this, XObjectChangeEventArgs.Name);
+        NotifyChanged(this, XObjectChangeEventArgs.Name);
       }
     }
 
@@ -87,15 +89,15 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.publicId;
+        return publicId;
       }
       set
       {
-        bool flag = this.NotifyChanging((object)this, XObjectChangeEventArgs.Value);
-        this.publicId = value;
+        bool flag = NotifyChanging(this, XObjectChangeEventArgs.Value);
+        publicId = value;
         if (!flag)
           return;
-        this.NotifyChanged((object)this, XObjectChangeEventArgs.Value);
+        NotifyChanged(this, XObjectChangeEventArgs.Value);
       }
     }
 
@@ -110,15 +112,15 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.systemId;
+        return systemId;
       }
       set
       {
-        bool flag = this.NotifyChanging((object)this, XObjectChangeEventArgs.Value);
-        this.systemId = value;
+        bool flag = NotifyChanging(this, XObjectChangeEventArgs.Value);
+        systemId = value;
         if (!flag)
           return;
-        this.NotifyChanged((object)this, XObjectChangeEventArgs.Value);
+        NotifyChanged(this, XObjectChangeEventArgs.Value);
       }
     }
 
@@ -141,18 +143,18 @@ namespace TextMonster.Xml
     public XDocumentType(XDocumentType other)
     {
       if (other == null) throw new ArgumentNullException("other");
-      this.name = other.name;
-      this.publicId = other.publicId;
-      this.systemId = other.systemId;
-      this.internalSubset = other.internalSubset;
+      name = other.name;
+      publicId = other.publicId;
+      systemId = other.systemId;
+      internalSubset = other.internalSubset;
     }
 
     internal XDocumentType(XmlReader r)
     {
-      this.name = r.Name;
-      this.publicId = r.GetAttribute("PUBLIC");
-      this.systemId = r.GetAttribute("SYSTEM");
-      this.internalSubset = r.Value;
+      name = r.Name;
+      publicId = r.GetAttribute("PUBLIC");
+      systemId = r.GetAttribute("SYSTEM");
+      internalSubset = r.Value;
       r.Read();
     }
 
@@ -164,25 +166,25 @@ namespace TextMonster.Xml
     {
       if (writer == null)
         throw new ArgumentNullException("writer");
-      writer.WriteDocType(this.name, this.publicId, this.systemId, this.internalSubset);
+      writer.WriteDocType(name, publicId, systemId, internalSubset);
     }
 
     internal override XNode CloneNode()
     {
-      return (XNode)new XDocumentType(this);
+      return new XDocumentType(this);
     }
 
     internal override bool DeepEquals(XNode node)
     {
-      XDocumentType xdocumentType = node as XDocumentType;
-      if (xdocumentType != null && this.name == xdocumentType.name && (this.publicId == xdocumentType.publicId && this.systemId == xdocumentType.SystemId))
-        return this.internalSubset == xdocumentType.internalSubset;
+      var xdocumentType = node as XDocumentType;
+      if (xdocumentType != null && name == xdocumentType.name && (publicId == xdocumentType.publicId && systemId == xdocumentType.SystemId))
+        return internalSubset == xdocumentType.internalSubset;
       return false;
     }
 
     internal override int GetDeepHashCode()
     {
-      return this.name.GetHashCode() ^ (this.publicId != null ? this.publicId.GetHashCode() : 0) ^ (this.systemId != null ? this.systemId.GetHashCode() : 0) ^ (this.internalSubset != null ? this.internalSubset.GetHashCode() : 0);
+      return name.GetHashCode() ^ (publicId != null ? publicId.GetHashCode() : 0) ^ (systemId != null ? systemId.GetHashCode() : 0) ^ (internalSubset != null ? internalSubset.GetHashCode() : 0);
     }
   }
 }

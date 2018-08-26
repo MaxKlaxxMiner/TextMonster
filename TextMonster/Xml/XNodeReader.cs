@@ -5,31 +5,30 @@ namespace TextMonster.Xml
 {
   internal class XNodeReader : XmlReader, IXmlLineInfo
   {
-    private object source;
-    private object parent;
-    private ReadState state;
-    private XNode root;
-    private XmlNameTable nameTable;
-    private bool omitDuplicateNamespaces;
-    private bool dtdInfoInitialized;
+    object source;
+    object parent;
+    ReadState state;
+    XNode root;
+    readonly XmlNameTable nameTable;
+    readonly bool omitDuplicateNamespaces;
 
     public override int AttributeCount
     {
       get
       {
-        if (!this.IsInteractive)
+        if (!IsInteractive)
           return 0;
         int num = 0;
-        XElement inAttributeScope = this.GetElementInAttributeScope();
+        var inAttributeScope = GetElementInAttributeScope();
         if (inAttributeScope != null)
         {
-          XAttribute candidateAttribute = inAttributeScope.lastAttr;
+          var candidateAttribute = inAttributeScope.lastAttr;
           if (candidateAttribute != null)
           {
             do
             {
               candidateAttribute = candidateAttribute.next;
-              if (!this.omitDuplicateNamespaces || !this.IsDuplicateNamespaceAttribute(candidateAttribute))
+              if (!omitDuplicateNamespaces || !IsDuplicateNamespaceAttribute(candidateAttribute))
                 ++num;
             }
             while (candidateAttribute != inAttributeScope.lastAttr);
@@ -43,10 +42,10 @@ namespace TextMonster.Xml
     {
       get
       {
-        XObject xobject1 = this.source as XObject;
+        var xobject1 = source as XObject;
         if (xobject1 != null)
           return xobject1.BaseUri;
-        XObject xobject2 = this.parent as XObject;
+        var xobject2 = parent as XObject;
         if (xobject2 != null)
           return xobject2.BaseUri;
         return string.Empty;
@@ -57,14 +56,14 @@ namespace TextMonster.Xml
     {
       get
       {
-        if (!this.IsInteractive)
+        if (!IsInteractive)
           return 0;
-        XObject o1 = this.source as XObject;
+        var o1 = source as XObject;
         if (o1 != null)
-          return XNodeReader.GetDepth(o1);
-        XObject o2 = this.parent as XObject;
+          return GetDepth(o1);
+        var o2 = parent as XObject;
         if (o2 != null)
-          return XNodeReader.GetDepth(o2) + 1;
+          return GetDepth(o2) + 1;
         return 0;
       }
     }
@@ -73,7 +72,7 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.state == ReadState.EndOfFile;
+        return state == ReadState.EndOfFile;
       }
     }
 
@@ -81,13 +80,13 @@ namespace TextMonster.Xml
     {
       get
       {
-        if (!this.IsInteractive)
+        if (!IsInteractive)
           return false;
-        XElement inAttributeScope = this.GetElementInAttributeScope();
+        var inAttributeScope = GetElementInAttributeScope();
         if (inAttributeScope == null || inAttributeScope.lastAttr == null)
           return false;
-        if (this.omitDuplicateNamespaces)
-          return this.GetFirstNonDuplicateNamespaceAttribute(inAttributeScope.lastAttr.next) != null;
+        if (omitDuplicateNamespaces)
+          return GetFirstNonDuplicateNamespaceAttribute(inAttributeScope.lastAttr.next) != null;
         return true;
       }
     }
@@ -96,9 +95,9 @@ namespace TextMonster.Xml
     {
       get
       {
-        if (!this.IsInteractive)
+        if (!IsInteractive)
           return false;
-        XObject xobject = this.source as XObject;
+        var xobject = source as XObject;
         if (xobject == null)
           return true;
         switch (xobject.NodeType)
@@ -120,9 +119,9 @@ namespace TextMonster.Xml
     {
       get
       {
-        if (!this.IsInteractive)
+        if (!IsInteractive)
           return false;
-        XElement xelement = this.source as XElement;
+        var xelement = source as XElement;
         if (xelement != null)
           return xelement.IsEmpty;
         return false;
@@ -133,7 +132,7 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.nameTable.Add(this.GetLocalName());
+        return nameTable.Add(GetLocalName());
       }
     }
 
@@ -141,10 +140,10 @@ namespace TextMonster.Xml
     {
       get
       {
-        string prefix = this.GetPrefix();
+        string prefix = GetPrefix();
         if (prefix.Length == 0)
-          return this.nameTable.Add(this.GetLocalName());
-        return this.nameTable.Add(prefix + ":" + this.GetLocalName());
+          return nameTable.Add(GetLocalName());
+        return nameTable.Add(prefix + ":" + GetLocalName());
       }
     }
 
@@ -152,7 +151,7 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.nameTable.Add(this.GetNamespaceURI());
+        return nameTable.Add(GetNamespaceUri());
       }
     }
 
@@ -160,7 +159,7 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.nameTable;
+        return nameTable;
       }
     }
 
@@ -168,19 +167,19 @@ namespace TextMonster.Xml
     {
       get
       {
-        if (!this.IsInteractive)
+        if (!IsInteractive)
           return XmlNodeType.None;
-        XObject xobject = this.source as XObject;
+        var xobject = source as XObject;
         if (xobject != null)
         {
-          if (this.IsEndElement)
+          if (IsEndElement)
             return XmlNodeType.EndElement;
-          XmlNodeType nodeType = xobject.NodeType;
+          var nodeType = xobject.NodeType;
           if (nodeType != XmlNodeType.Text)
             return nodeType;
           return xobject.parent != null && xobject.parent.parent == null && xobject.parent is XDocument ? XmlNodeType.Whitespace : XmlNodeType.Text;
         }
-        return this.parent is XDocument ? XmlNodeType.Whitespace : XmlNodeType.Text;
+        return parent is XDocument ? XmlNodeType.Whitespace : XmlNodeType.Text;
       }
     }
 
@@ -188,7 +187,7 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.nameTable.Add(this.GetPrefix());
+        return nameTable.Add(GetPrefix());
       }
     }
 
@@ -196,7 +195,7 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.state;
+        return state;
       }
     }
 
@@ -204,7 +203,7 @@ namespace TextMonster.Xml
     {
       get
       {
-        return new XmlReaderSettings()
+        return new XmlReaderSettings
         {
           CheckCharacters = false
         };
@@ -215,11 +214,11 @@ namespace TextMonster.Xml
     {
       get
       {
-        if (!this.IsInteractive)
+        if (!IsInteractive)
           return string.Empty;
-        XObject xobject = this.source as XObject;
+        var xobject = source as XObject;
         if (xobject == null)
-          return (string)this.source;
+          return (string)source;
         switch (xobject.NodeType)
         {
           case XmlNodeType.Attribute:
@@ -243,15 +242,15 @@ namespace TextMonster.Xml
     {
       get
       {
-        if (!this.IsInteractive)
+        if (!IsInteractive)
           return string.Empty;
-        XElement xelement = this.GetElementInScope();
+        var xelement = GetElementInScope();
         if (xelement != null)
         {
-          XName name = XNamespace.Xml.GetName("lang");
+          var name = XNamespace.Xml.GetName("lang");
           do
           {
-            XAttribute xattribute = xelement.Attribute(name);
+            var xattribute = xelement.Attribute(name);
             if (xattribute != null)
               return xattribute.Value;
             xelement = xelement.parent as XElement;
@@ -266,15 +265,15 @@ namespace TextMonster.Xml
     {
       get
       {
-        if (!this.IsInteractive)
+        if (!IsInteractive)
           return XmlSpace.None;
-        XElement xelement = this.GetElementInScope();
+        var xelement = GetElementInScope();
         if (xelement != null)
         {
-          XName name = XNamespace.Xml.GetName("space");
+          var name = XNamespace.Xml.GetName("space");
           do
           {
-            XAttribute xattribute = xelement.Attribute(name);
+            var xattribute = xelement.Attribute(name);
             if (xattribute != null)
             {
               string str = xattribute.Value.Trim(' ', '\t', '\n', '\r');
@@ -295,19 +294,19 @@ namespace TextMonster.Xml
     {
       get
       {
-        if (this.IsEndElement)
+        if (IsEndElement)
         {
-          XElement xelement = this.source as XElement;
+          var xelement = source as XElement;
           if (xelement != null)
           {
-            LineInfoEndElementAnnotation elementAnnotation = xelement.Annotation<LineInfoEndElementAnnotation>();
+            var elementAnnotation = xelement.Annotation<LineInfoEndElementAnnotation>();
             if (elementAnnotation != null)
               return elementAnnotation.lineNumber;
           }
         }
         else
         {
-          IXmlLineInfo xmlLineInfo = this.source as IXmlLineInfo;
+          var xmlLineInfo = source as IXmlLineInfo;
           if (xmlLineInfo != null)
             return xmlLineInfo.LineNumber;
         }
@@ -319,19 +318,19 @@ namespace TextMonster.Xml
     {
       get
       {
-        if (this.IsEndElement)
+        if (IsEndElement)
         {
-          XElement xelement = this.source as XElement;
+          var xelement = source as XElement;
           if (xelement != null)
           {
-            LineInfoEndElementAnnotation elementAnnotation = xelement.Annotation<LineInfoEndElementAnnotation>();
+            var elementAnnotation = xelement.Annotation<LineInfoEndElementAnnotation>();
             if (elementAnnotation != null)
               return elementAnnotation.linePosition;
           }
         }
         else
         {
-          IXmlLineInfo xmlLineInfo = this.source as IXmlLineInfo;
+          var xmlLineInfo = source as IXmlLineInfo;
           if (xmlLineInfo != null)
             return xmlLineInfo.LinePosition;
         }
@@ -339,32 +338,32 @@ namespace TextMonster.Xml
       }
     }
 
-    private bool IsEndElement
+    bool IsEndElement
     {
       get
       {
-        return this.parent == this.source;
+        return parent == source;
       }
       set
       {
-        this.parent = value ? this.source : (object)null;
+        parent = value ? source : null;
       }
     }
 
-    private bool IsInteractive
+    bool IsInteractive
     {
       get
       {
-        return this.state == ReadState.Interactive;
+        return state == ReadState.Interactive;
       }
     }
 
     internal XNodeReader(XNode node, XmlNameTable nameTable, ReaderOptions options)
     {
-      this.source = (object)node;
-      this.root = node;
-      this.nameTable = nameTable != null ? nameTable : XNodeReader.CreateNameTable();
-      this.omitDuplicateNamespaces = (options & ReaderOptions.OmitDuplicateNamespaces) != ReaderOptions.None;
+      source = node;
+      root = node;
+      this.nameTable = nameTable ?? CreateNameTable();
+      omitDuplicateNamespaces = (options & ReaderOptions.OmitDuplicateNamespaces) != ReaderOptions.None;
     }
 
     internal XNodeReader(XNode node, XmlNameTable nameTable)
@@ -372,7 +371,7 @@ namespace TextMonster.Xml
     {
     }
 
-    private static int GetDepth(XObject o)
+    static int GetDepth(XObject o)
     {
       int num = 0;
       for (; o.parent != null; o = (XObject)o.parent)
@@ -382,33 +381,33 @@ namespace TextMonster.Xml
       return num;
     }
 
-    private string GetLocalName()
+    string GetLocalName()
     {
-      if (!this.IsInteractive)
+      if (!IsInteractive)
         return string.Empty;
-      XElement xelement = this.source as XElement;
+      var xelement = source as XElement;
       if (xelement != null)
         return xelement.Name.LocalName;
-      XAttribute xattribute = this.source as XAttribute;
+      var xattribute = source as XAttribute;
       if (xattribute != null)
         return xattribute.Name.LocalName;
-      XProcessingInstruction xprocessingInstruction = this.source as XProcessingInstruction;
+      var xprocessingInstruction = source as XProcessingInstruction;
       if (xprocessingInstruction != null)
         return xprocessingInstruction.Target;
-      XDocumentType xdocumentType = this.source as XDocumentType;
+      var xdocumentType = source as XDocumentType;
       if (xdocumentType != null)
         return xdocumentType.Name;
       return string.Empty;
     }
 
-    private string GetNamespaceURI()
+    string GetNamespaceUri()
     {
-      if (!this.IsInteractive)
+      if (!IsInteractive)
         return string.Empty;
-      XElement xelement = this.source as XElement;
+      var xelement = source as XElement;
       if (xelement != null)
         return xelement.Name.NamespaceName;
-      XAttribute xattribute = this.source as XAttribute;
+      var xattribute = source as XAttribute;
       if (xattribute == null)
         return string.Empty;
       string namespaceName = xattribute.Name.NamespaceName;
@@ -417,14 +416,14 @@ namespace TextMonster.Xml
       return namespaceName;
     }
 
-    private string GetPrefix()
+    string GetPrefix()
     {
-      if (!this.IsInteractive)
+      if (!IsInteractive)
         return string.Empty;
-      XElement xelement = this.source as XElement;
+      var xelement = source as XElement;
       if (xelement != null)
         return xelement.GetPrefixOfNamespace(xelement.Name.Namespace) ?? string.Empty;
-      XAttribute xattribute = this.source as XAttribute;
+      var xattribute = source as XAttribute;
       if (xattribute != null)
       {
         string prefixOfNamespace = xattribute.GetPrefixOfNamespace(xattribute.Name.Namespace);
@@ -436,23 +435,23 @@ namespace TextMonster.Xml
 
     public override void Close()
     {
-      this.source = (object)null;
-      this.parent = (object)null;
-      this.root = (XNode)null;
-      this.state = ReadState.Closed;
+      source = null;
+      parent = null;
+      root = null;
+      state = ReadState.Closed;
     }
 
     public override string GetAttribute(string name)
     {
-      if (!this.IsInteractive)
-        return (string)null;
-      XElement inAttributeScope = this.GetElementInAttributeScope();
+      if (!IsInteractive)
+        return null;
+      var inAttributeScope = GetElementInAttributeScope();
       if (inAttributeScope != null)
       {
         string localName;
         string namespaceName;
-        XNodeReader.GetNameInAttributeScope(name, inAttributeScope, out localName, out namespaceName);
-        XAttribute candidateAttribute = inAttributeScope.lastAttr;
+        GetNameInAttributeScope(name, inAttributeScope, out localName, out namespaceName);
+        var candidateAttribute = inAttributeScope.lastAttr;
         if (candidateAttribute != null)
         {
           do
@@ -460,16 +459,16 @@ namespace TextMonster.Xml
             candidateAttribute = candidateAttribute.next;
             if (candidateAttribute.Name.LocalName == localName && candidateAttribute.Name.NamespaceName == namespaceName)
             {
-              if (this.omitDuplicateNamespaces && this.IsDuplicateNamespaceAttribute(candidateAttribute))
-                return (string)null;
+              if (omitDuplicateNamespaces && IsDuplicateNamespaceAttribute(candidateAttribute))
+                return null;
               return candidateAttribute.Value;
             }
           }
           while (candidateAttribute != inAttributeScope.lastAttr);
         }
-        return (string)null;
+        return null;
       }
-      XDocumentType xdocumentType = this.source as XDocumentType;
+      var xdocumentType = source as XDocumentType;
       if (xdocumentType != null)
       {
         if (name == "PUBLIC")
@@ -477,24 +476,24 @@ namespace TextMonster.Xml
         if (name == "SYSTEM")
           return xdocumentType.SystemId;
       }
-      return (string)null;
+      return null;
     }
 
     public override string GetAttribute(string localName, string namespaceName)
     {
-      if (!this.IsInteractive)
-        return (string)null;
-      XElement inAttributeScope = this.GetElementInAttributeScope();
+      if (!IsInteractive)
+        return null;
+      var inAttributeScope = GetElementInAttributeScope();
       if (inAttributeScope != null)
       {
         if (localName == "xmlns")
         {
-          if (namespaceName != null && namespaceName.Length == 0)
-            return (string)null;
+          if (namespaceName.Length == 0)
+            return null;
           if (namespaceName == "http://www.w3.org/2000/xmlns/")
             namespaceName = string.Empty;
         }
-        XAttribute candidateAttribute = inAttributeScope.lastAttr;
+        var candidateAttribute = inAttributeScope.lastAttr;
         if (candidateAttribute != null)
         {
           do
@@ -502,68 +501,66 @@ namespace TextMonster.Xml
             candidateAttribute = candidateAttribute.next;
             if (candidateAttribute.Name.LocalName == localName && candidateAttribute.Name.NamespaceName == namespaceName)
             {
-              if (this.omitDuplicateNamespaces && this.IsDuplicateNamespaceAttribute(candidateAttribute))
-                return (string)null;
+              if (omitDuplicateNamespaces && IsDuplicateNamespaceAttribute(candidateAttribute))
+                return null;
               return candidateAttribute.Value;
             }
           }
           while (candidateAttribute != inAttributeScope.lastAttr);
         }
       }
-      return (string)null;
+      return null;
     }
 
     public override string GetAttribute(int index)
     {
-      if (!this.IsInteractive)
-        return (string)null;
+      if (!IsInteractive)
+        return null;
       if (index < 0)
-        return (string)null;
-      XElement inAttributeScope = this.GetElementInAttributeScope();
+        return null;
+      var inAttributeScope = GetElementInAttributeScope();
       if (inAttributeScope != null)
       {
-        XAttribute candidateAttribute = inAttributeScope.lastAttr;
+        var candidateAttribute = inAttributeScope.lastAttr;
         if (candidateAttribute != null)
         {
           do
           {
             candidateAttribute = candidateAttribute.next;
-            if ((!this.omitDuplicateNamespaces || !this.IsDuplicateNamespaceAttribute(candidateAttribute)) && index-- == 0)
+            if ((!omitDuplicateNamespaces || !IsDuplicateNamespaceAttribute(candidateAttribute)) && index-- == 0)
               return candidateAttribute.Value;
           }
           while (candidateAttribute != inAttributeScope.lastAttr);
         }
       }
-      return (string)null;
+      return null;
     }
 
     public override string LookupNamespace(string prefix)
     {
-      if (!this.IsInteractive)
-        return (string)null;
-      if (prefix == null)
-        return (string)null;
-      XElement elementInScope = this.GetElementInScope();
+      if (!IsInteractive)
+        return null;
+      var elementInScope = GetElementInScope();
       if (elementInScope != null)
       {
-        XNamespace xnamespace = prefix.Length == 0 ? elementInScope.GetDefaultNamespace() : elementInScope.GetNamespaceOfPrefix(prefix);
-        if (xnamespace != (XNamespace)null)
-          return this.nameTable.Add(xnamespace.NamespaceName);
+        var xnamespace = prefix.Length == 0 ? elementInScope.GetDefaultNamespace() : elementInScope.GetNamespaceOfPrefix(prefix);
+        if (xnamespace != null)
+          return nameTable.Add(xnamespace.NamespaceName);
       }
-      return (string)null;
+      return null;
     }
 
     public override bool MoveToAttribute(string name)
     {
-      if (!this.IsInteractive)
+      if (!IsInteractive)
         return false;
-      XElement inAttributeScope = this.GetElementInAttributeScope();
+      var inAttributeScope = GetElementInAttributeScope();
       if (inAttributeScope != null)
       {
         string localName;
         string namespaceName;
-        XNodeReader.GetNameInAttributeScope(name, inAttributeScope, out localName, out namespaceName);
-        XAttribute candidateAttribute = inAttributeScope.lastAttr;
+        GetNameInAttributeScope(name, inAttributeScope, out localName, out namespaceName);
+        var candidateAttribute = inAttributeScope.lastAttr;
         if (candidateAttribute != null)
         {
           do
@@ -571,10 +568,10 @@ namespace TextMonster.Xml
             candidateAttribute = candidateAttribute.next;
             if (candidateAttribute.Name.LocalName == localName && candidateAttribute.Name.NamespaceName == namespaceName)
             {
-              if (this.omitDuplicateNamespaces && this.IsDuplicateNamespaceAttribute(candidateAttribute))
+              if (omitDuplicateNamespaces && IsDuplicateNamespaceAttribute(candidateAttribute))
                 return false;
-              this.source = (object)candidateAttribute;
-              this.parent = (object)null;
+              source = candidateAttribute;
+              parent = null;
               return true;
             }
           }
@@ -586,19 +583,19 @@ namespace TextMonster.Xml
 
     public override bool MoveToAttribute(string localName, string namespaceName)
     {
-      if (!this.IsInteractive)
+      if (!IsInteractive)
         return false;
-      XElement inAttributeScope = this.GetElementInAttributeScope();
+      var inAttributeScope = GetElementInAttributeScope();
       if (inAttributeScope != null)
       {
         if (localName == "xmlns")
         {
-          if (namespaceName != null && namespaceName.Length == 0)
+          if (namespaceName.Length == 0)
             return false;
           if (namespaceName == "http://www.w3.org/2000/xmlns/")
             namespaceName = string.Empty;
         }
-        XAttribute candidateAttribute = inAttributeScope.lastAttr;
+        var candidateAttribute = inAttributeScope.lastAttr;
         if (candidateAttribute != null)
         {
           do
@@ -606,10 +603,10 @@ namespace TextMonster.Xml
             candidateAttribute = candidateAttribute.next;
             if (candidateAttribute.Name.LocalName == localName && candidateAttribute.Name.NamespaceName == namespaceName)
             {
-              if (this.omitDuplicateNamespaces && this.IsDuplicateNamespaceAttribute(candidateAttribute))
+              if (omitDuplicateNamespaces && IsDuplicateNamespaceAttribute(candidateAttribute))
                 return false;
-              this.source = (object)candidateAttribute;
-              this.parent = (object)null;
+              source = candidateAttribute;
+              parent = null;
               return true;
             }
           }
@@ -621,23 +618,23 @@ namespace TextMonster.Xml
 
     public override void MoveToAttribute(int index)
     {
-      if (!this.IsInteractive)
+      if (!IsInteractive)
         return;
       if (index < 0)
         throw new ArgumentOutOfRangeException("index");
-      XElement inAttributeScope = this.GetElementInAttributeScope();
+      var inAttributeScope = GetElementInAttributeScope();
       if (inAttributeScope != null)
       {
-        XAttribute candidateAttribute = inAttributeScope.lastAttr;
+        var candidateAttribute = inAttributeScope.lastAttr;
         if (candidateAttribute != null)
         {
           do
           {
             candidateAttribute = candidateAttribute.next;
-            if ((!this.omitDuplicateNamespaces || !this.IsDuplicateNamespaceAttribute(candidateAttribute)) && index-- == 0)
+            if ((!omitDuplicateNamespaces || !IsDuplicateNamespaceAttribute(candidateAttribute)) && index-- == 0)
             {
-              this.source = (object)candidateAttribute;
-              this.parent = (object)null;
+              source = candidateAttribute;
+              parent = null;
               return;
             }
           }
@@ -649,83 +646,83 @@ namespace TextMonster.Xml
 
     public override bool MoveToElement()
     {
-      if (!this.IsInteractive)
+      if (!IsInteractive)
         return false;
-      XAttribute xattribute = this.source as XAttribute ?? this.parent as XAttribute;
+      var xattribute = source as XAttribute ?? parent as XAttribute;
       if (xattribute == null || xattribute.parent == null)
         return false;
-      this.source = (object)xattribute.parent;
-      this.parent = (object)null;
+      source = xattribute.parent;
+      parent = null;
       return true;
     }
 
     public override bool MoveToFirstAttribute()
     {
-      if (!this.IsInteractive)
+      if (!IsInteractive)
         return false;
-      XElement inAttributeScope = this.GetElementInAttributeScope();
+      var inAttributeScope = GetElementInAttributeScope();
       if (inAttributeScope == null || inAttributeScope.lastAttr == null)
         return false;
-      if (this.omitDuplicateNamespaces)
+      if (omitDuplicateNamespaces)
       {
-        object obj = (object)this.GetFirstNonDuplicateNamespaceAttribute(inAttributeScope.lastAttr.next);
+        var obj = GetFirstNonDuplicateNamespaceAttribute(inAttributeScope.lastAttr.next);
         if (obj == null)
           return false;
-        this.source = obj;
+        source = obj;
       }
       else
-        this.source = (object)inAttributeScope.lastAttr.next;
+        source = inAttributeScope.lastAttr.next;
       return true;
     }
 
     public override bool MoveToNextAttribute()
     {
-      if (!this.IsInteractive)
+      if (!IsInteractive)
         return false;
-      XElement xelement = this.source as XElement;
+      var xelement = source as XElement;
       if (xelement != null)
       {
-        if (this.IsEndElement || xelement.lastAttr == null)
+        if (IsEndElement || xelement.lastAttr == null)
           return false;
-        if (this.omitDuplicateNamespaces)
+        if (omitDuplicateNamespaces)
         {
-          object obj = (object)this.GetFirstNonDuplicateNamespaceAttribute(xelement.lastAttr.next);
+          var obj = GetFirstNonDuplicateNamespaceAttribute(xelement.lastAttr.next);
           if (obj == null)
             return false;
-          this.source = obj;
+          source = obj;
         }
         else
-          this.source = (object)xelement.lastAttr.next;
+          source = xelement.lastAttr.next;
         return true;
       }
-      XAttribute xattribute = this.source as XAttribute ?? this.parent as XAttribute;
+      var xattribute = source as XAttribute ?? parent as XAttribute;
       if (xattribute == null || xattribute.parent == null || ((XElement)xattribute.parent).lastAttr == xattribute)
         return false;
-      if (this.omitDuplicateNamespaces)
+      if (omitDuplicateNamespaces)
       {
-        object obj = (object)this.GetFirstNonDuplicateNamespaceAttribute(xattribute.next);
+        var obj = GetFirstNonDuplicateNamespaceAttribute(xattribute.next);
         if (obj == null)
           return false;
-        this.source = obj;
+        source = obj;
       }
       else
-        this.source = (object)xattribute.next;
-      this.parent = (object)null;
+        source = xattribute.next;
+      parent = null;
       return true;
     }
 
     public override bool Read()
     {
-      switch (this.state)
+      switch (state)
       {
         case ReadState.Initial:
-        this.state = ReadState.Interactive;
-        XDocument d = this.source as XDocument;
+        state = ReadState.Interactive;
+        var d = source as XDocument;
         if (d != null)
-          return this.ReadIntoDocument(d);
+          return ReadIntoDocument(d);
         return true;
         case ReadState.Interactive:
-        return this.Read(false);
+        return Read(false);
         default:
         return false;
       }
@@ -733,41 +730,41 @@ namespace TextMonster.Xml
 
     public override bool ReadAttributeValue()
     {
-      if (!this.IsInteractive)
+      if (!IsInteractive)
         return false;
-      XAttribute a = this.source as XAttribute;
+      var a = source as XAttribute;
       if (a != null)
-        return this.ReadIntoAttribute(a);
+        return ReadIntoAttribute(a);
       return false;
     }
 
     public override bool ReadToDescendant(string localName, string namespaceName)
     {
-      if (!this.IsInteractive)
+      if (!IsInteractive)
         return false;
-      this.MoveToElement();
-      XElement xelement1 = this.source as XElement;
-      if (xelement1 != null && !xelement1.IsEmpty && !this.IsEndElement)
+      MoveToElement();
+      var xelement1 = source as XElement;
+      if (xelement1 != null && !xelement1.IsEmpty && !IsEndElement)
       {
-        foreach (XElement xelement2 in xelement1.Descendants())
+        foreach (var xelement2 in xelement1.Descendants())
         {
           if (xelement2.Name.LocalName == localName && xelement2.Name.NamespaceName == namespaceName)
           {
-            this.source = (object)xelement2;
+            source = xelement2;
             return true;
           }
         }
-        this.IsEndElement = true;
+        IsEndElement = true;
       }
       return false;
     }
 
     public override bool ReadToFollowing(string localName, string namespaceName)
     {
-      while (this.Read())
+      while (Read())
       {
-        XElement xelement = this.source as XElement;
-        if (xelement != null && !this.IsEndElement && (xelement.Name.LocalName == localName && xelement.Name.NamespaceName == namespaceName))
+        var xelement = source as XElement;
+        if (xelement != null && !IsEndElement && (xelement.Name.LocalName == localName && xelement.Name.NamespaceName == namespaceName))
           return true;
       }
       return false;
@@ -775,39 +772,39 @@ namespace TextMonster.Xml
 
     public override bool ReadToNextSibling(string localName, string namespaceName)
     {
-      if (!this.IsInteractive)
+      if (!IsInteractive)
         return false;
-      this.MoveToElement();
-      if (this.source != this.root)
+      MoveToElement();
+      if (source != root)
       {
-        XNode xnode = this.source as XNode;
+        var xnode = source as XNode;
         if (xnode != null)
         {
-          foreach (XElement xelement in xnode.ElementsAfterSelf())
+          foreach (var xelement in xnode.ElementsAfterSelf())
           {
             if (xelement.Name.LocalName == localName && xelement.Name.NamespaceName == namespaceName)
             {
-              this.source = (object)xelement;
-              this.IsEndElement = false;
+              source = xelement;
+              IsEndElement = false;
               return true;
             }
           }
           if (xnode.parent is XElement)
           {
-            this.source = (object)xnode.parent;
-            this.IsEndElement = true;
+            source = xnode.parent;
+            IsEndElement = true;
             return false;
           }
         }
-        else if (this.parent is XElement)
+        else if (parent is XElement)
         {
-          this.source = this.parent;
-          this.parent = (object)null;
-          this.IsEndElement = true;
+          source = parent;
+          parent = null;
+          IsEndElement = true;
           return false;
         }
       }
-      return this.ReadToEnd();
+      return ReadToEnd();
     }
 
     public override void ResolveEntity()
@@ -816,78 +813,78 @@ namespace TextMonster.Xml
 
     public override void Skip()
     {
-      if (!this.IsInteractive)
+      if (!IsInteractive)
         return;
-      this.Read(true);
+      Read(true);
     }
 
     bool IXmlLineInfo.HasLineInfo()
     {
-      if (this.IsEndElement)
+      if (IsEndElement)
       {
-        XElement xelement = this.source as XElement;
+        var xelement = source as XElement;
         if (xelement != null)
           return xelement.Annotation<LineInfoEndElementAnnotation>() != null;
       }
       else
       {
-        IXmlLineInfo xmlLineInfo = this.source as IXmlLineInfo;
+        var xmlLineInfo = source as IXmlLineInfo;
         if (xmlLineInfo != null)
           return xmlLineInfo.HasLineInfo();
       }
       return false;
     }
 
-    private static XmlNameTable CreateNameTable()
+    static XmlNameTable CreateNameTable()
     {
-      XmlNameTable xmlNameTable = (XmlNameTable)new System.Xml.NameTable();
+      var xmlNameTable = (XmlNameTable)new NameTable();
       xmlNameTable.Add(string.Empty);
       xmlNameTable.Add("http://www.w3.org/2000/xmlns/");
       xmlNameTable.Add("http://www.w3.org/XML/1998/namespace");
       return xmlNameTable;
     }
 
-    private XElement GetElementInAttributeScope()
+    XElement GetElementInAttributeScope()
     {
-      XElement xelement = this.source as XElement;
+      var xelement = source as XElement;
       if (xelement != null)
       {
-        if (this.IsEndElement)
-          return (XElement)null;
+        if (IsEndElement)
+          return null;
         return xelement;
       }
-      XAttribute xattribute1 = this.source as XAttribute;
+      var xattribute1 = source as XAttribute;
       if (xattribute1 != null)
         return (XElement)xattribute1.parent;
-      XAttribute xattribute2 = this.parent as XAttribute;
+      var xattribute2 = parent as XAttribute;
       if (xattribute2 != null)
         return (XElement)xattribute2.parent;
-      return (XElement)null;
+      return null;
     }
 
-    private XElement GetElementInScope()
+    XElement GetElementInScope()
     {
-      XElement xelement1 = this.source as XElement;
+      var xelement1 = source as XElement;
       if (xelement1 != null)
         return xelement1;
-      XNode xnode = this.source as XNode;
+      var xnode = source as XNode;
       if (xnode != null)
         return xnode.parent as XElement;
-      XAttribute xattribute1 = this.source as XAttribute;
+      var xattribute1 = source as XAttribute;
       if (xattribute1 != null)
         return (XElement)xattribute1.parent;
-      XElement xelement2 = this.parent as XElement;
+      var xelement2 = parent as XElement;
       if (xelement2 != null)
         return xelement2;
-      XAttribute xattribute2 = this.parent as XAttribute;
+      var xattribute2 = parent as XAttribute;
       if (xattribute2 != null)
         return (XElement)xattribute2.parent;
-      return (XElement)null;
+      return null;
     }
 
-    private static void GetNameInAttributeScope(string qualifiedName, XElement e, out string localName, out string namespaceName)
+    static void GetNameInAttributeScope(string qualifiedName, XElement e, out string localName, out string namespaceName)
     {
-      if (qualifiedName != null && qualifiedName.Length != 0)
+      if (!string.IsNullOrEmpty(qualifiedName))
       {
         int length = qualifiedName.IndexOf(':');
         if (length != 0 && length != qualifiedName.Length - 1)
@@ -898,8 +895,8 @@ namespace TextMonster.Xml
             namespaceName = string.Empty;
             return;
           }
-          XNamespace namespaceOfPrefix = e.GetNamespaceOfPrefix(qualifiedName.Substring(0, length));
-          if (namespaceOfPrefix != (XNamespace)null)
+          var namespaceOfPrefix = e.GetNamespaceOfPrefix(qualifiedName.Substring(0, length));
+          if (namespaceOfPrefix != null)
           {
             localName = qualifiedName.Substring(length + 1, qualifiedName.Length - length - 1);
             namespaceName = namespaceOfPrefix.NamespaceName;
@@ -907,144 +904,144 @@ namespace TextMonster.Xml
           }
         }
       }
-      localName = (string)null;
-      namespaceName = (string)null;
+      localName = null;
+      namespaceName = null;
     }
 
-    private bool Read(bool skipContent)
+    bool Read(bool skipContent)
     {
-      XElement e = this.source as XElement;
+      var e = source as XElement;
       if (e != null)
       {
-        if (((e.IsEmpty ? 1 : (this.IsEndElement ? 1 : 0)) | (skipContent ? 1 : 0)) != 0)
-          return this.ReadOverNode((XNode)e);
-        return this.ReadIntoElement(e);
+        if (((e.IsEmpty ? 1 : (IsEndElement ? 1 : 0)) | (skipContent ? 1 : 0)) != 0)
+          return ReadOverNode(e);
+        return ReadIntoElement(e);
       }
-      XNode n = this.source as XNode;
+      var n = source as XNode;
       if (n != null)
-        return this.ReadOverNode(n);
-      XAttribute a = this.source as XAttribute;
+        return ReadOverNode(n);
+      var a = source as XAttribute;
       if (a != null)
-        return this.ReadOverAttribute(a, skipContent);
-      return this.ReadOverText(skipContent);
+        return ReadOverAttribute(a, skipContent);
+      return ReadOverText(skipContent);
     }
 
-    private bool ReadIntoDocument(XDocument d)
+    bool ReadIntoDocument(XDocument d)
     {
-      XNode xnode = d.content as XNode;
+      var xnode = d.content as XNode;
       if (xnode != null)
       {
-        this.source = (object)xnode.next;
+        source = xnode.next;
         return true;
       }
       string str = d.content as string;
       if (str == null || str.Length <= 0)
-        return this.ReadToEnd();
-      this.source = (object)str;
-      this.parent = (object)d;
+        return ReadToEnd();
+      source = str;
+      parent = d;
       return true;
     }
 
-    private bool ReadIntoElement(XElement e)
+    bool ReadIntoElement(XElement e)
     {
-      XNode xnode = e.content as XNode;
+      var xnode = e.content as XNode;
       if (xnode != null)
       {
-        this.source = (object)xnode.next;
+        source = xnode.next;
         return true;
       }
       string str = e.content as string;
       if (str == null)
-        return this.ReadToEnd();
+        return ReadToEnd();
       if (str.Length > 0)
       {
-        this.source = (object)str;
-        this.parent = (object)e;
+        source = str;
+        parent = e;
       }
       else
       {
-        this.source = (object)e;
-        this.IsEndElement = true;
+        source = e;
+        IsEndElement = true;
       }
       return true;
     }
 
-    private bool ReadIntoAttribute(XAttribute a)
+    bool ReadIntoAttribute(XAttribute a)
     {
-      this.source = (object)a.value;
-      this.parent = (object)a;
+      source = a.value;
+      parent = a;
       return true;
     }
 
-    private bool ReadOverAttribute(XAttribute a, bool skipContent)
+    bool ReadOverAttribute(XAttribute a, bool skipContent)
     {
-      XElement e = (XElement)a.parent;
+      var e = (XElement)a.parent;
       if (e == null)
-        return this.ReadToEnd();
+        return ReadToEnd();
       if (e.IsEmpty | skipContent)
-        return this.ReadOverNode((XNode)e);
-      return this.ReadIntoElement(e);
+        return ReadOverNode(e);
+      return ReadIntoElement(e);
     }
 
-    private bool ReadOverNode(XNode n)
+    bool ReadOverNode(XNode n)
     {
-      if (n == this.root)
-        return this.ReadToEnd();
-      XNode xnode = n.next;
+      if (n == root)
+        return ReadToEnd();
+      var xnode = n.next;
       if (xnode == null || xnode == n || n == n.parent.content)
       {
         if (n.parent == null || n.parent.parent == null && n.parent is XDocument)
-          return this.ReadToEnd();
-        this.source = (object)n.parent;
-        this.IsEndElement = true;
+          return ReadToEnd();
+        source = n.parent;
+        IsEndElement = true;
       }
       else
       {
-        this.source = (object)xnode;
-        this.IsEndElement = false;
+        source = xnode;
+        IsEndElement = false;
       }
       return true;
     }
 
-    private bool ReadOverText(bool skipContent)
+    bool ReadOverText(bool skipContent)
     {
-      if (this.parent is XElement)
+      if (parent is XElement)
       {
-        this.source = this.parent;
-        this.parent = (object)null;
-        this.IsEndElement = true;
+        source = parent;
+        parent = null;
+        IsEndElement = true;
         return true;
       }
-      if (!(this.parent is XAttribute))
-        return this.ReadToEnd();
-      XAttribute a = (XAttribute)this.parent;
-      this.parent = (object)null;
-      return this.ReadOverAttribute(a, skipContent);
+      if (!(parent is XAttribute))
+        return ReadToEnd();
+      var a = (XAttribute)parent;
+      parent = null;
+      return ReadOverAttribute(a, skipContent);
     }
 
-    private bool ReadToEnd()
+    bool ReadToEnd()
     {
-      this.state = ReadState.EndOfFile;
+      state = ReadState.EndOfFile;
       return false;
     }
 
-    private bool IsDuplicateNamespaceAttribute(XAttribute candidateAttribute)
+    bool IsDuplicateNamespaceAttribute(XAttribute candidateAttribute)
     {
       if (!candidateAttribute.IsNamespaceDeclaration)
         return false;
-      return this.IsDuplicateNamespaceAttributeInner(candidateAttribute);
+      return IsDuplicateNamespaceAttributeInner(candidateAttribute);
     }
 
-    private bool IsDuplicateNamespaceAttributeInner(XAttribute candidateAttribute)
+    bool IsDuplicateNamespaceAttributeInner(XAttribute candidateAttribute)
     {
       if (candidateAttribute.Name.LocalName == "xml")
         return true;
-      XElement xelement1 = candidateAttribute.parent as XElement;
-      if (xelement1 == this.root || xelement1 == null)
+      var xelement1 = candidateAttribute.parent as XElement;
+      if (xelement1 == root || xelement1 == null)
         return false;
-      for (XElement xelement2 = xelement1.parent as XElement; xelement2 != null; xelement2 = xelement2.parent as XElement)
+      for (var xelement2 = xelement1.parent as XElement; xelement2 != null; xelement2 = xelement2.parent as XElement)
       {
-        XAttribute xattribute = xelement2.lastAttr;
+        var xattribute = xelement2.lastAttr;
         if (xattribute != null)
         {
           while (!(xattribute.name == candidateAttribute.name))
@@ -1056,28 +1053,28 @@ namespace TextMonster.Xml
           return xattribute.Value == candidateAttribute.Value;
         }
       label_11:
-        if (xelement2 == this.root)
+        if (xelement2 == root)
           return false;
       }
       return false;
     }
 
-    private XAttribute GetFirstNonDuplicateNamespaceAttribute(XAttribute candidate)
+    XAttribute GetFirstNonDuplicateNamespaceAttribute(XAttribute candidate)
     {
-      if (!this.IsDuplicateNamespaceAttribute(candidate))
+      if (!IsDuplicateNamespaceAttribute(candidate))
         return candidate;
-      XElement xelement = candidate.parent as XElement;
+      var xelement = candidate.parent as XElement;
       if (xelement != null && candidate != xelement.lastAttr)
       {
         do
         {
           candidate = candidate.next;
-          if (!this.IsDuplicateNamespaceAttribute(candidate))
+          if (!IsDuplicateNamespaceAttribute(candidate))
             return candidate;
         }
         while (candidate != xelement.lastAttr);
       }
-      return (XAttribute)null;
+      return null;
     }
   }
 }

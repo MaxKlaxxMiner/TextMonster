@@ -4,6 +4,8 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Xml;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace TextMonster.Xml
 {
@@ -13,8 +15,8 @@ namespace TextMonster.Xml
   /// <filterpriority>2</filterpriority>
   public abstract class XNode : XObject
   {
-    private static XNodeDocumentOrderComparer documentOrderComparer;
-    private static XNodeEqualityComparer equalityComparer;
+    static XNodeDocumentOrderComparer documentOrderComparer;
+    static XNodeEqualityComparer equalityComparer;
     internal XNode next;
 
     /// <summary>
@@ -29,9 +31,9 @@ namespace TextMonster.Xml
     {
       get
       {
-        if (this.parent != null && this != this.parent.content)
-          return this.next;
-        return (XNode)null;
+        if (parent != null && this != parent.content)
+          return next;
+        return null;
       }
     }
 
@@ -47,10 +49,10 @@ namespace TextMonster.Xml
     {
       get
       {
-        if (this.parent == null)
-          return (XNode)null;
-        XNode xnode1 = ((XNode)this.parent.content).next;
-        XNode xnode2 = (XNode)null;
+        if (parent == null)
+          return null;
+        var xnode1 = ((XNode)parent.content).next;
+        var xnode2 = (XNode)null;
         for (; xnode1 != this; xnode1 = xnode1.next)
           xnode2 = xnode1;
         return xnode2;
@@ -66,12 +68,7 @@ namespace TextMonster.Xml
     /// </returns>
     public static XNodeDocumentOrderComparer DocumentOrderComparer
     {
-      get
-      {
-        if (XNode.documentOrderComparer == null)
-          XNode.documentOrderComparer = new XNodeDocumentOrderComparer();
-        return XNode.documentOrderComparer;
-      }
+      get { return documentOrderComparer ?? (documentOrderComparer = new XNodeDocumentOrderComparer()); }
     }
 
     /// <summary>
@@ -83,12 +80,7 @@ namespace TextMonster.Xml
     /// </returns>
     public static XNodeEqualityComparer EqualityComparer
     {
-      get
-      {
-        if (XNode.equalityComparer == null)
-          XNode.equalityComparer = new XNodeEqualityComparer();
-        return XNode.equalityComparer;
-      }
+      get { return equalityComparer ?? (equalityComparer = new XNodeEqualityComparer()); }
     }
 
     internal XNode()
@@ -101,9 +93,9 @@ namespace TextMonster.Xml
     /// <param name="content">Ein Inhaltsobjekt, das einfache Inhalte oder eine Auflistung von Inhaltsobjekten enthält, die hinter diesem Knoten hinzugefügt werden sollen.</param><exception cref="T:System.InvalidOperationException">Das übergeordnete Element ist null.</exception>
     public void AddAfterSelf(object content)
     {
-      if (this.parent == null)
+      if (parent == null)
         throw new InvalidOperationException("InvalidOperation_MissingParent");
-      new Inserter(this.parent, this).Add(content);
+      new Inserter(parent, this).Add(content);
     }
 
     /// <summary>
@@ -112,7 +104,7 @@ namespace TextMonster.Xml
     /// <param name="content">Eine Parameterliste von Inhaltsobjekten.</param><exception cref="T:System.InvalidOperationException">Das übergeordnete Element ist null.</exception>
     public void AddAfterSelf(params object[] content)
     {
-      this.AddAfterSelf((object)content);
+      AddAfterSelf((object)content);
     }
 
     /// <summary>
@@ -121,14 +113,14 @@ namespace TextMonster.Xml
     /// <param name="content">Ein Inhaltsobjekt, das einfache Inhalte oder eine Auflistung von Inhaltsobjekten enthält, die vor diesem Knoten hinzugefügt werden sollen.</param><exception cref="T:System.InvalidOperationException">Das übergeordnete Element ist null.</exception>
     public void AddBeforeSelf(object content)
     {
-      if (this.parent == null)
+      if (parent == null)
         throw new InvalidOperationException("InvalidOperation_MissingParent");
-      XNode anchor = (XNode)this.parent.content;
+      var anchor = (XNode)parent.content;
       while (anchor.next != this)
         anchor = anchor.next;
-      if (anchor == this.parent.content)
-        anchor = (XNode)null;
-      new Inserter(this.parent, anchor).Add(content);
+      if (anchor == parent.content)
+        anchor = null;
+      new Inserter(parent, anchor).Add(content);
     }
 
     /// <summary>
@@ -137,7 +129,7 @@ namespace TextMonster.Xml
     /// <param name="content">Eine Parameterliste von Inhaltsobjekten.</param><exception cref="T:System.InvalidOperationException">Das übergeordnete Element ist null.</exception>
     public void AddBeforeSelf(params object[] content)
     {
-      this.AddBeforeSelf((object)content);
+      AddBeforeSelf((object)content);
     }
 
     /// <summary>
@@ -149,7 +141,7 @@ namespace TextMonster.Xml
     /// </returns>
     public IEnumerable<XElement> Ancestors()
     {
-      return this.GetAncestors((XName)null, false);
+      return GetAncestors(null, false);
     }
 
     /// <summary>
@@ -162,9 +154,9 @@ namespace TextMonster.Xml
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
     public IEnumerable<XElement> Ancestors(XName name)
     {
-      if (!(name != (XName)null))
+      if (!(name != null))
         return XElement.EmptySequence;
-      return this.GetAncestors(name, false);
+      return GetAncestors(name, false);
     }
 
     /// <summary>
@@ -186,16 +178,16 @@ namespace TextMonster.Xml
       if (n1.parent != n2.parent)
       {
         int num = 0;
-        XNode xnode1 = n1;
+        var xnode1 = n1;
         while (xnode1.parent != null)
         {
-          xnode1 = (XNode)xnode1.parent;
+          xnode1 = xnode1.parent;
           ++num;
         }
-        XNode xnode2 = n2;
+        var xnode2 = n2;
         while (xnode2.parent != null)
         {
-          xnode2 = (XNode)xnode2.parent;
+          xnode2 = xnode2.parent;
           --num;
         }
         if (xnode1 != xnode2)
@@ -204,7 +196,7 @@ namespace TextMonster.Xml
         {
           do
           {
-            n2 = (XNode)n2.parent;
+            n2 = n2.parent;
             ++num;
           }
           while (num != 0);
@@ -215,7 +207,7 @@ namespace TextMonster.Xml
         {
           do
           {
-            n1 = (XNode)n1.parent;
+            n1 = n1.parent;
             --num;
           }
           while (num != 0);
@@ -223,11 +215,11 @@ namespace TextMonster.Xml
             return 1;
         }
         for (; n1.parent != n2.parent; n2 = (XNode)n2.parent)
-          n1 = (XNode)n1.parent;
+          n1 = n1.parent;
       }
       else if (n1.parent == null)
         throw new InvalidOperationException("InvalidOperation_MissingAncestor");
-      XNode xnode = (XNode)n1.parent.content;
+      var xnode = (XNode)n1.parent.content;
       do
       {
         xnode = xnode.next;
@@ -248,7 +240,7 @@ namespace TextMonster.Xml
     /// <filterpriority>2</filterpriority>
     public XmlReader CreateReader()
     {
-      return (XmlReader)new XNodeReader(this, (XmlNameTable)null);
+      return new XNodeReader(this, null);
     }
 
     /// <summary>
@@ -261,7 +253,7 @@ namespace TextMonster.Xml
     /// <param name="readerOptions">Ein <see cref="T:System.Xml.Linq.ReaderOptions"/>-Objekt, das angibt, ob doppelte Namespaces ausgelassen werden sollen.</param>
     public XmlReader CreateReader(ReaderOptions readerOptions)
     {
-      return (XmlReader)new XNodeReader(this, (XmlNameTable)null, readerOptions);
+      return new XNodeReader(this, null, readerOptions);
     }
 
     /// <summary>
@@ -273,7 +265,7 @@ namespace TextMonster.Xml
     /// </returns>
     public IEnumerable<XNode> NodesAfterSelf()
     {
-      XNode n = this;
+      var n = this;
       while (n.parent != null && n != n.parent.content)
       {
         n = n.next;
@@ -290,9 +282,9 @@ namespace TextMonster.Xml
     /// </returns>
     public IEnumerable<XNode> NodesBeforeSelf()
     {
-      if (this.parent != null)
+      if (parent != null)
       {
-        XNode n = (XNode)this.parent.content;
+        var n = (XNode)parent.content;
         do
         {
           n = n.next;
@@ -301,8 +293,8 @@ namespace TextMonster.Xml
           else
             break;
         }
-        while (this.parent != null && this.parent == n.parent);
-        n = (XNode)null;
+        while (parent != null && parent == n.parent);
+        n = null;
       }
     }
 
@@ -315,7 +307,7 @@ namespace TextMonster.Xml
     /// </returns>
     public IEnumerable<XElement> ElementsAfterSelf()
     {
-      return this.GetElementsAfterSelf((XName)null);
+      return GetElementsAfterSelf(null);
     }
 
     /// <summary>
@@ -328,9 +320,9 @@ namespace TextMonster.Xml
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
     public IEnumerable<XElement> ElementsAfterSelf(XName name)
     {
-      if (!(name != (XName)null))
+      if (!(name != null))
         return XElement.EmptySequence;
-      return this.GetElementsAfterSelf(name);
+      return GetElementsAfterSelf(name);
     }
 
     /// <summary>
@@ -342,7 +334,7 @@ namespace TextMonster.Xml
     /// </returns>
     public IEnumerable<XElement> ElementsBeforeSelf()
     {
-      return this.GetElementsBeforeSelf((XName)null);
+      return GetElementsBeforeSelf(null);
     }
 
     /// <summary>
@@ -355,9 +347,9 @@ namespace TextMonster.Xml
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
     public IEnumerable<XElement> ElementsBeforeSelf(XName name)
     {
-      if (!(name != (XName)null))
+      if (!(name != null))
         return XElement.EmptySequence;
-      return this.GetElementsBeforeSelf(name);
+      return GetElementsBeforeSelf(name);
     }
 
     /// <summary>
@@ -370,7 +362,7 @@ namespace TextMonster.Xml
     /// <param name="node">Der <see cref="T:System.Xml.Linq.XNode"/>, dessen Dokumentreihenfolge verglichen werden soll.</param>
     public bool IsAfter(XNode node)
     {
-      return XNode.CompareDocumentOrder(this, node) > 0;
+      return CompareDocumentOrder(this, node) > 0;
     }
 
     /// <summary>
@@ -383,7 +375,7 @@ namespace TextMonster.Xml
     /// <param name="node">Der <see cref="T:System.Xml.Linq.XNode"/>, dessen Dokumentreihenfolge verglichen werden soll.</param>
     public bool IsBefore(XNode node)
     {
-      return XNode.CompareDocumentOrder(this, node) < 0;
+      return CompareDocumentOrder(this, node) < 0;
     }
 
     /// <summary>
@@ -403,19 +395,19 @@ namespace TextMonster.Xml
       switch (reader.NodeType)
       {
         case XmlNodeType.Element:
-        return (XNode)new XElement(reader);
+        return new XElement(reader);
         case XmlNodeType.Text:
         case XmlNodeType.Whitespace:
         case XmlNodeType.SignificantWhitespace:
-        return (XNode)new XText(reader);
+        return new XText(reader);
         case XmlNodeType.CDATA:
-        return (XNode)new XCData(reader);
+        return new XcData(reader);
         case XmlNodeType.ProcessingInstruction:
-        return (XNode)new XProcessingInstruction(reader);
+        return new XProcessingInstruction(reader);
         case XmlNodeType.Comment:
-        return (XNode)new XComment(reader);
+        return new XComment(reader);
         case XmlNodeType.DocumentType:
-        return (XNode)new XDocumentType(reader);
+        return new XDocumentType(reader);
         default:
         throw new InvalidOperationException("InvalidOperation_UnexpectedNodeType");
       }
@@ -427,9 +419,9 @@ namespace TextMonster.Xml
     /// <exception cref="T:System.InvalidOperationException">Das übergeordnete Element ist null.</exception>
     public void Remove()
     {
-      if (this.parent == null)
+      if (parent == null)
         throw new InvalidOperationException("InvalidOperation_MissingParent");
-      this.parent.RemoveNode(this);
+      parent.RemoveNode(this);
     }
 
     /// <summary>
@@ -440,12 +432,12 @@ namespace TextMonster.Xml
     {
       if (this.parent == null)
         throw new InvalidOperationException("InvalidOperation_MissingParent");
-      XContainer parent = this.parent;
-      XNode anchor = (XNode)this.parent.content;
+      var parent = this.parent;
+      var anchor = (XNode)this.parent.content;
       while (anchor.next != this)
         anchor = anchor.next;
       if (anchor == this.parent.content)
-        anchor = (XNode)null;
+        anchor = null;
       this.parent.RemoveNode(this);
       if (anchor != null && anchor.parent != parent)
         throw new InvalidOperationException("InvalidOperation_ExternalCode");
@@ -458,7 +450,7 @@ namespace TextMonster.Xml
     /// <param name="content">Eine Parameterliste des neuen Inhalts.</param>
     public void ReplaceWith(params object[] content)
     {
-      this.ReplaceWith((object)content);
+      ReplaceWith((object)content);
     }
 
     /// <summary>
@@ -470,7 +462,7 @@ namespace TextMonster.Xml
     /// </returns>
     public override string ToString()
     {
-      return this.GetXmlString(this.GetSaveOptionsFromAnnotations());
+      return GetXmlString(GetSaveOptionsFromAnnotations());
     }
 
     /// <summary>
@@ -483,7 +475,7 @@ namespace TextMonster.Xml
     /// <param name="options">Ein <see cref="T:System.Xml.Linq.SaveOptions"/>, das Formatierungsverhalten angibt.</param>
     public string ToString(SaveOptions options)
     {
-      return this.GetXmlString(options);
+      return GetXmlString(options);
     }
 
     /// <summary>
@@ -519,44 +511,44 @@ namespace TextMonster.Xml
 
     internal IEnumerable<XElement> GetAncestors(XName name, bool self)
     {
-      for (XElement e = (self ? this : (XNode)this.parent) as XElement; e != null; e = e.parent as XElement)
+      for (var e = (self ? this : (XNode)parent) as XElement; e != null; e = e.parent as XElement)
       {
-        if (name == (XName)null || e.name == name)
+        if (name == null || e.name == name)
           yield return e;
       }
     }
 
-    private IEnumerable<XElement> GetElementsAfterSelf(XName name)
+    IEnumerable<XElement> GetElementsAfterSelf(XName name)
     {
-      XNode n = this;
+      var n = this;
       while (n.parent != null && n != n.parent.content)
       {
         n = n.next;
-        XElement xelement = n as XElement;
-        if (xelement != null && (name == (XName)null || xelement.name == name))
+        var xelement = n as XElement;
+        if (xelement != null && (name == null || xelement.name == name))
           yield return xelement;
       }
     }
 
-    private IEnumerable<XElement> GetElementsBeforeSelf(XName name)
+    IEnumerable<XElement> GetElementsBeforeSelf(XName name)
     {
-      if (this.parent != null)
+      if (parent != null)
       {
-        XNode n = (XNode)this.parent.content;
+        var n = (XNode)parent.content;
         do
         {
           n = n.next;
           if (n != this)
           {
-            XElement xelement = n as XElement;
-            if (xelement != null && (name == (XName)null || xelement.name == name))
+            var xelement = n as XElement;
+            if (xelement != null && (name == null || xelement.name == name))
               yield return xelement;
           }
           else
             break;
         }
-        while (this.parent != null && this.parent == n.parent);
-        n = (XNode)null;
+        while (parent != null && parent == n.parent);
+        n = null;
       }
     }
 
@@ -564,18 +556,18 @@ namespace TextMonster.Xml
 
     internal static XmlReaderSettings GetXmlReaderSettings(LoadOptions o)
     {
-      XmlReaderSettings xmlReaderSettings = new XmlReaderSettings();
+      var xmlReaderSettings = new XmlReaderSettings();
       if ((o & LoadOptions.PreserveWhitespace) == LoadOptions.None)
         xmlReaderSettings.IgnoreWhitespace = true;
       xmlReaderSettings.DtdProcessing = DtdProcessing.Parse;
       xmlReaderSettings.MaxCharactersFromEntities = 10000000L;
-      xmlReaderSettings.XmlResolver = (XmlResolver)null;
+      xmlReaderSettings.XmlResolver = null;
       return xmlReaderSettings;
     }
 
     internal static XmlWriterSettings GetXmlWriterSettings(SaveOptions o)
     {
-      XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
+      var xmlWriterSettings = new XmlWriterSettings();
       if ((o & SaveOptions.DisableFormatting) == SaveOptions.None)
         xmlWriterSettings.Indent = true;
       if ((o & SaveOptions.OmitDuplicateNamespaces) != SaveOptions.None)
@@ -583,25 +575,24 @@ namespace TextMonster.Xml
       return xmlWriterSettings;
     }
 
-    private string GetXmlString(SaveOptions o)
+    string GetXmlString(SaveOptions o)
     {
-      using (StringWriter stringWriter = new StringWriter((IFormatProvider)CultureInfo.InvariantCulture))
+      using (var stringWriter = new StringWriter(CultureInfo.InvariantCulture))
       {
-        XmlWriterSettings settings = new XmlWriterSettings();
-        settings.OmitXmlDeclaration = true;
+        var settings = new XmlWriterSettings { OmitXmlDeclaration = true };
         if ((o & SaveOptions.DisableFormatting) == SaveOptions.None)
           settings.Indent = true;
         if ((o & SaveOptions.OmitDuplicateNamespaces) != SaveOptions.None)
           settings.NamespaceHandling |= NamespaceHandling.OmitDuplicates;
         if (this is XText)
           settings.ConformanceLevel = ConformanceLevel.Fragment;
-        using (XmlWriter writer = XmlWriter.Create((TextWriter)stringWriter, settings))
+        using (var writer = XmlWriter.Create(stringWriter, settings))
         {
-          XDocument xdocument = this as XDocument;
+          var xdocument = this as XDocument;
           if (xdocument != null)
             xdocument.WriteContentTo(writer);
           else
-            this.WriteTo(writer);
+            WriteTo(writer);
         }
         return stringWriter.ToString();
       }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Xml;
+// ReSharper disable UnusedMember.Global
 
 namespace TextMonster.Xml
 {
@@ -11,9 +12,9 @@ namespace TextMonster.Xml
   /// </summary>
   public class XAttribute : XObject
   {
-    private static IEnumerable<XAttribute> emptySequence;
+    static IEnumerable<XAttribute> emptySequence;
     internal XAttribute next;
-    internal XName name;
+    internal readonly XName name;
     internal string value;
 
     /// <summary>
@@ -25,12 +26,7 @@ namespace TextMonster.Xml
     /// </returns>
     public static IEnumerable<XAttribute> EmptySequence
     {
-      get
-      {
-        if (XAttribute.emptySequence == null)
-          XAttribute.emptySequence = (IEnumerable<XAttribute>)new XAttribute[0];
-        return XAttribute.emptySequence;
-      }
+      get { return emptySequence ?? (emptySequence = new XAttribute[0]); }
     }
 
     /// <summary>
@@ -44,9 +40,9 @@ namespace TextMonster.Xml
     {
       get
       {
-        string namespaceName = this.name.NamespaceName;
+        string namespaceName = name.NamespaceName;
         if (namespaceName.Length == 0)
-          return this.name.LocalName == "xmlns";
+          return name.LocalName == "xmlns";
         return namespaceName == "http://www.w3.org/2000/xmlns/";
       }
     }
@@ -62,7 +58,7 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.name;
+        return name;
       }
     }
 
@@ -78,9 +74,9 @@ namespace TextMonster.Xml
     {
       get
       {
-        if (this.parent == null || ((XElement)this.parent).lastAttr == this)
-          return (XAttribute)null;
-        return this.next;
+        if (parent == null || ((XElement)parent).lastAttr == this)
+          return null;
+        return next;
       }
     }
 
@@ -111,13 +107,13 @@ namespace TextMonster.Xml
     {
       get
       {
-        if (this.parent == null)
-          return (XAttribute)null;
-        XAttribute xattribute = ((XElement)this.parent).lastAttr;
+        if (parent == null)
+          return null;
+        var xattribute = ((XElement)parent).lastAttr;
         while (xattribute.next != this)
           xattribute = xattribute.next;
-        if (xattribute == ((XElement)this.parent).lastAttr)
-          return (XAttribute)null;
+        if (xattribute == ((XElement)parent).lastAttr)
+          return null;
         return xattribute;
       }
     }
@@ -134,18 +130,18 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.value;
+        return value;
       }
       set
       {
         if (value == null)
           throw new ArgumentNullException("value");
-        XAttribute.ValidateAttribute(this.name, value);
-        bool flag = this.NotifyChanging((object)this, XObjectChangeEventArgs.Value);
+        ValidateAttribute(name, value);
+        bool flag = NotifyChanging(this, XObjectChangeEventArgs.Value);
         this.value = value;
         if (!flag)
           return;
-        this.NotifyChanged((object)this, XObjectChangeEventArgs.Value);
+        NotifyChanged(this, XObjectChangeEventArgs.Value);
       }
     }
 
@@ -155,12 +151,12 @@ namespace TextMonster.Xml
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/> des Attributs.</param><param name="value">Ein <see cref="T:System.Object"/>, das den Wert des Attributs enthält.</param><exception cref="T:System.ArgumentNullException">Der <paramref name="name"/>-Parameter oder der <paramref name="value"/>-Parameter ist null.</exception>
     public XAttribute(XName name, object value)
     {
-      if (name == (XName)null)
+      if (name == null)
         throw new ArgumentNullException("name");
       if (value == null)
         throw new ArgumentNullException("value");
       string stringValue = XContainer.GetStringValue(value);
-      XAttribute.ValidateAttribute(name, stringValue);
+      ValidateAttribute(name, stringValue);
       this.name = name;
       this.value = stringValue;
     }
@@ -173,8 +169,8 @@ namespace TextMonster.Xml
     {
       if (other == null)
         throw new ArgumentNullException("other");
-      this.name = other.name;
-      this.value = other.value;
+      name = other.name;
+      value = other.value;
     }
 
     /// <summary>
@@ -188,7 +184,7 @@ namespace TextMonster.Xml
     public static explicit operator string(XAttribute attribute)
     {
       if (attribute == null)
-        return (string)null;
+        return null;
       return attribute.value;
     }
 
@@ -219,7 +215,7 @@ namespace TextMonster.Xml
     {
       if (attribute == null)
         return new bool?();
-      return new bool?(XmlConvert.ToBoolean(attribute.value.ToLower(CultureInfo.InvariantCulture)));
+      return XmlConvert.ToBoolean(attribute.value.ToLower(CultureInfo.InvariantCulture));
     }
 
     /// <summary>
@@ -249,7 +245,7 @@ namespace TextMonster.Xml
     {
       if (attribute == null)
         return new int?();
-      return new int?(XmlConvert.ToInt32(attribute.value));
+      return XmlConvert.ToInt32(attribute.value);
     }
 
     /// <summary>
@@ -279,7 +275,7 @@ namespace TextMonster.Xml
     {
       if (attribute == null)
         return new uint?();
-      return new uint?(XmlConvert.ToUInt32(attribute.value));
+      return XmlConvert.ToUInt32(attribute.value);
     }
 
     /// <summary>
@@ -309,7 +305,7 @@ namespace TextMonster.Xml
     {
       if (attribute == null)
         return new long?();
-      return new long?(XmlConvert.ToInt64(attribute.value));
+      return XmlConvert.ToInt64(attribute.value);
     }
 
     /// <summary>
@@ -339,7 +335,7 @@ namespace TextMonster.Xml
     {
       if (attribute == null)
         return new ulong?();
-      return new ulong?(XmlConvert.ToUInt64(attribute.value));
+      return XmlConvert.ToUInt64(attribute.value);
     }
 
     /// <summary>
@@ -369,7 +365,7 @@ namespace TextMonster.Xml
     {
       if (attribute == null)
         return new float?();
-      return new float?(XmlConvert.ToSingle(attribute.value));
+      return XmlConvert.ToSingle(attribute.value);
     }
 
     /// <summary>
@@ -399,7 +395,7 @@ namespace TextMonster.Xml
     {
       if (attribute == null)
         return new double?();
-      return new double?(XmlConvert.ToDouble(attribute.value));
+      return XmlConvert.ToDouble(attribute.value);
     }
 
     /// <summary>
@@ -410,7 +406,7 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Decimal"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in einen <see cref="T:System.Decimal"/>-Wert umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Attribut enthält keinen gültigen <see cref="T:System.Decimal"/>-Wert.</exception><exception cref="T:System.ArgumentNullException">Der <paramref name="attribute"/>-Parameter ist null.</exception>
-    public static explicit operator Decimal(XAttribute attribute)
+    public static explicit operator decimal(XAttribute attribute)
     {
       if (attribute == null)
         throw new ArgumentNullException("attribute");
@@ -425,11 +421,11 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.Decimal"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.Decimal"/> umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Attribut enthält keinen gültigen <see cref="T:System.Decimal"/>-Wert.</exception>
-    public static explicit operator Decimal?(XAttribute attribute)
+    public static explicit operator decimal?(XAttribute attribute)
     {
       if (attribute == null)
-        return new Decimal?();
-      return new Decimal?(XmlConvert.ToDecimal(attribute.value));
+        return new decimal?();
+      return XmlConvert.ToDecimal(attribute.value);
     }
 
     /// <summary>
@@ -444,7 +440,7 @@ namespace TextMonster.Xml
     {
       if (attribute == null)
         throw new ArgumentNullException("attribute");
-      return DateTime.Parse(attribute.value, (IFormatProvider)CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
+      return DateTime.Parse(attribute.value, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
     }
 
     /// <summary>
@@ -459,7 +455,7 @@ namespace TextMonster.Xml
     {
       if (attribute == null)
         return new DateTime?();
-      return new DateTime?(DateTime.Parse(attribute.value, (IFormatProvider)CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind));
+      return DateTime.Parse(attribute.value, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
     }
 
     /// <summary>
@@ -489,7 +485,7 @@ namespace TextMonster.Xml
     {
       if (attribute == null)
         return new DateTimeOffset?();
-      return new DateTimeOffset?(XmlConvert.ToDateTimeOffset(attribute.value));
+      return XmlConvert.ToDateTimeOffset(attribute.value);
     }
 
     /// <summary>
@@ -519,7 +515,7 @@ namespace TextMonster.Xml
     {
       if (attribute == null)
         return new TimeSpan?();
-      return new TimeSpan?(XmlConvert.ToTimeSpan(attribute.value));
+      return XmlConvert.ToTimeSpan(attribute.value);
     }
 
     /// <summary>
@@ -549,7 +545,7 @@ namespace TextMonster.Xml
     {
       if (attribute == null)
         return new Guid?();
-      return new Guid?(XmlConvert.ToGuid(attribute.value));
+      return XmlConvert.ToGuid(attribute.value);
     }
 
     /// <summary>
@@ -558,9 +554,9 @@ namespace TextMonster.Xml
     /// <exception cref="T:System.InvalidOperationException">Das übergeordnete Element ist null.</exception>
     public void Remove()
     {
-      if (this.parent == null)
+      if (parent == null)
         throw new InvalidOperationException("InvalidOperation_MissingParent");
-      ((XElement)this.parent).RemoveAttribute(this);
+      ((XElement)parent).RemoveAttribute(this);
     }
 
     /// <summary>
@@ -571,7 +567,7 @@ namespace TextMonster.Xml
     {
       if (value == null)
         throw new ArgumentNullException("value");
-      this.Value = XContainer.GetStringValue(value);
+      Value = XContainer.GetStringValue(value);
     }
 
     /// <summary>
@@ -583,20 +579,20 @@ namespace TextMonster.Xml
     /// </returns>
     public override string ToString()
     {
-      using (StringWriter stringWriter = new StringWriter((IFormatProvider)CultureInfo.InvariantCulture))
+      using (var stringWriter = new StringWriter(CultureInfo.InvariantCulture))
       {
-        using (XmlWriter xmlWriter = XmlWriter.Create((TextWriter)stringWriter, new XmlWriterSettings()
+        using (var xmlWriter = XmlWriter.Create(stringWriter, new XmlWriterSettings
         {
           ConformanceLevel = ConformanceLevel.Fragment
         }))
-          xmlWriter.WriteAttributeString(this.GetPrefixOfNamespace(this.name.Namespace), this.name.LocalName, this.name.NamespaceName, this.value);
+          xmlWriter.WriteAttributeString(GetPrefixOfNamespace(name.Namespace), name.LocalName, name.NamespaceName, value);
         return stringWriter.ToString().Trim();
       }
     }
 
     internal int GetDeepHashCode()
     {
-      return this.name.GetHashCode() ^ this.value.GetHashCode();
+      return name.GetHashCode() ^ value.GetHashCode();
     }
 
     internal string GetPrefixOfNamespace(XNamespace ns)
@@ -604,16 +600,16 @@ namespace TextMonster.Xml
       string namespaceName = ns.NamespaceName;
       if (namespaceName.Length == 0)
         return string.Empty;
-      if (this.parent != null)
-        return ((XElement)this.parent).GetPrefixOfNamespace(ns);
+      if (parent != null)
+        return ((XElement)parent).GetPrefixOfNamespace(ns);
       if (namespaceName == "http://www.w3.org/XML/1998/namespace")
         return "xml";
       if (namespaceName == "http://www.w3.org/2000/xmlns/")
         return "xmlns";
-      return (string)null;
+      return null;
     }
 
-    private static void ValidateAttribute(XName name, string value)
+    static void ValidateAttribute(XName name, string value)
     {
       string namespaceName = name.NamespaceName;
       if (namespaceName == "http://www.w3.org/2000/xmlns/")
@@ -638,7 +634,7 @@ namespace TextMonster.Xml
       }
       else
       {
-        if (namespaceName.Length != 0 || !(name.LocalName == "xmlns"))
+        if (namespaceName.Length != 0 || name.LocalName != "xmlns")
           return;
         if (value == "http://www.w3.org/XML/1998/namespace")
           throw new ArgumentException("Argument_NamespaceDeclarationXml");

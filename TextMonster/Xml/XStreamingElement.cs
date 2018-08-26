@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Xml;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace TextMonster.Xml
 {
@@ -25,13 +27,13 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.name;
+        return name;
       }
       set
       {
-        if (value == (XName)null)
+        if (value == null)
           throw new ArgumentNullException("value");
-        this.name = value;
+        name = value;
       }
     }
 
@@ -41,18 +43,9 @@ namespace TextMonster.Xml
     /// <param name="name">Ein <see cref="T:System.Xml.Linq.XName"/>, der den Namen des Elements enthält.</param>
     public XStreamingElement(XName name)
     {
-      if (name == (XName)null)
+      if (name == null)
         throw new ArgumentNullException("name");
       this.name = name;
-    }
-
-    /// <summary>
-    /// Initialisiert eine neue Instanz der <see cref="T:System.Xml.Linq.XStreamingElement"/>-Klasse mit dem angegebenen Namen und Inhalt.
-    /// </summary>
-    /// <param name="name">Ein <see cref="T:System.Xml.Linq.XName"/>, der den Elementnamen enthält.</param><param name="content">Der Inhalt des Elements.</param>
-    public XStreamingElement(XName name, object content)
-    {
-      // ISSUE: unable to decompile the method.
     }
 
     /// <summary>
@@ -62,7 +55,7 @@ namespace TextMonster.Xml
     public XStreamingElement(XName name, params object[] content)
       : this(name)
     {
-      this.content = (object)content;
+      this.content = content;
     }
 
     /// <summary>
@@ -73,13 +66,13 @@ namespace TextMonster.Xml
     {
       if (content == null)
         return;
-      List<object> list = this.content as List<object>;
+      var list = this.content as List<object>;
       if (list == null)
       {
         list = new List<object>();
         if (this.content != null)
           list.Add(this.content);
-        this.content = (object)list;
+        this.content = list;
       }
       list.Add(content);
     }
@@ -90,67 +83,40 @@ namespace TextMonster.Xml
     /// <param name="content">Inhalt, der dem Streamingelement hinzugefügt werden soll.</param>
     public void Add(params object[] content)
     {
-      this.Add((object)content);
-    }
-
-    /// <summary>
-    /// Serialisiert dieses Streamingelement in einer Datei.
-    /// </summary>
-    /// <param name="fileName">Ein <see cref="T:System.String"/>, der den Namen der Datei enthält.</param>
-    public void Save(string fileName)
-    {
-      this.Save(fileName, SaveOptions.None);
+      Add((object)content);
     }
 
     /// <summary>
     /// Serialisiert dieses Streamingelement in eine Datei, wobei optional die Formatierung deaktiviert wird.
     /// </summary>
     /// <param name="fileName">Ein <see cref="T:System.String"/>, der den Namen der Datei enthält.</param><param name="options">Ein <see cref="T:System.Xml.Linq.SaveOptions"/>-Objekt, das das Formatierungsverhalten angibt.</param>
-    public void Save(string fileName, SaveOptions options)
+    public void Save(string fileName, SaveOptions options = SaveOptions.None)
     {
-      XmlWriterSettings xmlWriterSettings = XNode.GetXmlWriterSettings(options);
-      using (XmlWriter writer = XmlWriter.Create(fileName, xmlWriterSettings))
-        this.Save(writer);
-    }
-
-    /// <summary>
-    /// Gibt dieses <see cref="T:System.Xml.Linq.XStreamingElement"/> an den angegebenen <see cref="T:System.IO.Stream"/> aus.
-    /// </summary>
-    /// <param name="stream">Der Stream, in den dieses <see cref="T:System.Xml.Linq.XDocument"/> ausgegeben werden soll.</param>
-    public void Save(Stream stream)
-    {
-      this.Save(stream, SaveOptions.None);
+      var xmlWriterSettings = XNode.GetXmlWriterSettings(options);
+      using (var writer = XmlWriter.Create(fileName, xmlWriterSettings))
+        Save(writer);
     }
 
     /// <summary>
     /// Gibt dieses <see cref="T:System.Xml.Linq.XStreamingElement"/> zum angegebenen <see cref="T:System.IO.Stream"/> aus und gibt Formatierungsverhalten optional an.
     /// </summary>
     /// <param name="stream">Der Stream, in den dieses <see cref="T:System.Xml.Linq.XDocument"/> ausgegeben werden soll.</param><param name="options">Ein <see cref="T:System.Xml.Linq.SaveOptions"/>-Objekt, das das Formatierungsverhalten angibt.</param>
-    public void Save(Stream stream, SaveOptions options)
+    public void Save(Stream stream, SaveOptions options = SaveOptions.None)
     {
-      XmlWriterSettings xmlWriterSettings = XNode.GetXmlWriterSettings(options);
-      using (XmlWriter writer = XmlWriter.Create(stream, xmlWriterSettings))
-        this.Save(writer);
-    }
-
-    /// <summary>
-    /// Serialisiert dieses Streamingelement in einen <see cref="T:System.IO.TextWriter"/>.
-    /// </summary>
-    /// <param name="textWriter">Ein <see cref="T:System.IO.TextWriter"/>, in den das <see cref="T:System.Xml.Linq.XStreamingElement"/> geschrieben wird.</param>
-    public void Save(TextWriter textWriter)
-    {
-      this.Save(textWriter, SaveOptions.None);
+      var xmlWriterSettings = XNode.GetXmlWriterSettings(options);
+      using (var writer = XmlWriter.Create(stream, xmlWriterSettings))
+        Save(writer);
     }
 
     /// <summary>
     /// Serialisiert dieses Streamingelement in einen <see cref="T:System.IO.TextWriter"/>, wobei optional die Formatierung deaktiviert wird.
     /// </summary>
     /// <param name="textWriter">Der <see cref="T:System.IO.TextWriter"/>, an den das XML ausgegeben werden soll.</param><param name="options">Ein <see cref="T:System.Xml.Linq.SaveOptions"/>, das Formatierungsverhalten angibt.</param>
-    public void Save(TextWriter textWriter, SaveOptions options)
+    public void Save(TextWriter textWriter, SaveOptions options = SaveOptions.None)
     {
-      XmlWriterSettings xmlWriterSettings = XNode.GetXmlWriterSettings(options);
-      using (XmlWriter writer = XmlWriter.Create(textWriter, xmlWriterSettings))
-        this.Save(writer);
+      var xmlWriterSettings = XNode.GetXmlWriterSettings(options);
+      using (var writer = XmlWriter.Create(textWriter, xmlWriterSettings))
+        Save(writer);
     }
 
     /// <summary>
@@ -162,7 +128,7 @@ namespace TextMonster.Xml
       if (writer == null)
         throw new ArgumentNullException("writer");
       writer.WriteStartDocument();
-      this.WriteTo(writer);
+      WriteTo(writer);
       writer.WriteEndDocument();
     }
 
@@ -175,7 +141,7 @@ namespace TextMonster.Xml
     /// </returns>
     public override string ToString()
     {
-      return this.GetXmlString(SaveOptions.None);
+      return GetXmlString(SaveOptions.None);
     }
 
     /// <summary>
@@ -188,7 +154,7 @@ namespace TextMonster.Xml
     /// <param name="options">Ein <see cref="T:System.Xml.Linq.SaveOptions"/>, das Formatierungsverhalten angibt.</param>
     public string ToString(SaveOptions options)
     {
-      return this.GetXmlString(options);
+      return GetXmlString(options);
     }
 
     /// <summary>
@@ -202,18 +168,17 @@ namespace TextMonster.Xml
       new StreamingElementWriter(writer).WriteStreamingElement(this);
     }
 
-    private string GetXmlString(SaveOptions o)
+    string GetXmlString(SaveOptions o)
     {
-      using (StringWriter stringWriter = new StringWriter((IFormatProvider)CultureInfo.InvariantCulture))
+      using (var stringWriter = new StringWriter(CultureInfo.InvariantCulture))
       {
-        XmlWriterSettings settings = new XmlWriterSettings();
-        settings.OmitXmlDeclaration = true;
+        var settings = new XmlWriterSettings { OmitXmlDeclaration = true };
         if ((o & SaveOptions.DisableFormatting) == SaveOptions.None)
           settings.Indent = true;
         if ((o & SaveOptions.OmitDuplicateNamespaces) != SaveOptions.None)
           settings.NamespaceHandling |= NamespaceHandling.OmitDuplicates;
-        using (XmlWriter writer = XmlWriter.Create((TextWriter)stringWriter, settings))
-          this.WriteTo(writer);
+        using (var writer = XmlWriter.Create(stringWriter, settings))
+          WriteTo(writer);
         return stringWriter.ToString();
       }
     }

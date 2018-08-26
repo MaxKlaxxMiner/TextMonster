@@ -10,13 +10,6 @@ namespace TextMonster.Xml
   public sealed class XNodeDocumentOrderComparer : IComparer, IComparer<XNode>
   {
     /// <summary>
-    /// Initialisiert eine neue Instanz der <see cref="T:System.Xml.Linq.XNodeDocumentOrderComparer"/>-Klasse.
-    /// </summary>
-    public XNodeDocumentOrderComparer()
-    {
-    }
-
-    /// <summary>
     /// Vergleicht zwei Knoten, um ihre relative Dokumentreihenfolge zu bestimmen.
     /// </summary>
     /// 
@@ -31,13 +24,13 @@ namespace TextMonster.Xml
 
     int IComparer.Compare(object x, object y)
     {
-      XNode x1 = x as XNode;
+      var x1 = x as XNode;
       if (x1 == null && x != null)
         throw new ArgumentException("Argument_MustBeDerivedFrom");
-      XNode y1 = y as XNode;
+      var y1 = y as XNode;
       if (y1 == null && y != null)
         throw new ArgumentException("Argument_MustBeDerivedFrom");
-      return this.Compare(x1, y1);
+      return Compare(x1, y1);
     }
   }
 }

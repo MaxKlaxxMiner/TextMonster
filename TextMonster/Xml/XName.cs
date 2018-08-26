@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using System.Xml;
+// ReSharper disable UnusedMember.Global
 
 namespace TextMonster.Xml
 {
@@ -10,9 +11,9 @@ namespace TextMonster.Xml
   [Serializable]
   public sealed class XName : IEquatable<XName>, ISerializable
   {
-    private XNamespace ns;
-    private string localName;
-    private int hashCode;
+    readonly XNamespace ns;
+    readonly string localName;
+    readonly int hashCode;
 
     /// <summary>
     /// Ruft den lokalen (nicht qualifizierten) Teil des Namens ab.
@@ -25,7 +26,7 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.localName;
+        return localName;
       }
     }
 
@@ -40,7 +41,7 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.ns;
+        return ns;
       }
     }
 
@@ -55,7 +56,7 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.ns.NamespaceName;
+        return ns.NamespaceName;
       }
     }
 
@@ -63,7 +64,7 @@ namespace TextMonster.Xml
     {
       this.ns = ns;
       this.localName = XmlConvert.VerifyNCName(localName);
-      this.hashCode = ns.GetHashCode() ^ localName.GetHashCode();
+      hashCode = ns.GetHashCode() ^ localName.GetHashCode();
     }
 
     /// <summary>
@@ -78,8 +79,8 @@ namespace TextMonster.Xml
     public static implicit operator XName(string expandedName)
     {
       if (expandedName == null)
-        return (XName)null;
-      return XName.Get(expandedName);
+        return null;
+      return Get(expandedName);
     }
 
     /// <summary>
@@ -117,9 +118,9 @@ namespace TextMonster.Xml
     /// </returns>
     public override string ToString()
     {
-      if (this.ns.NamespaceName.Length == 0)
-        return this.localName;
-      return "{" + this.ns.NamespaceName + "}" + this.localName;
+      if (ns.NamespaceName.Length == 0)
+        return localName;
+      return "{" + ns.NamespaceName + "}" + localName;
     }
 
     /// <summary>
@@ -136,7 +137,7 @@ namespace TextMonster.Xml
         throw new ArgumentNullException("expandedName");
       if (expandedName.Length == 0)
         throw new ArgumentException("Argument_InvalidExpandedName");
-      if ((int)expandedName[0] != 123)
+      if (expandedName[0] != 123)
         return XNamespace.None.GetName(expandedName);
       int num = expandedName.LastIndexOf('}');
       if (num <= 1 || num == expandedName.Length - 1)
@@ -167,7 +168,7 @@ namespace TextMonster.Xml
     /// <param name="obj">Der <see cref="T:System.Xml.Linq.XName"/>, der mit dem aktuellen <see cref="T:System.Xml.Linq.XName"/> verglichen werden soll.</param>
     public override bool Equals(object obj)
     {
-      return this == obj;
+      return ReferenceEquals(this, obj);
     }
 
     /// <summary>
@@ -179,7 +180,7 @@ namespace TextMonster.Xml
     /// </returns>
     public override int GetHashCode()
     {
-      return this.hashCode;
+      return hashCode;
     }
 
     bool IEquatable<XName>.Equals(XName other)
@@ -191,7 +192,7 @@ namespace TextMonster.Xml
     {
       if (info == null)
         throw new ArgumentNullException("info");
-      info.AddValue("name", (object)this.ToString());
+      info.AddValue("name", ToString());
       info.SetType(typeof(NameSerializer));
     }
   }

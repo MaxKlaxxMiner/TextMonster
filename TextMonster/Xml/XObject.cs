@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable EventNeverSubscribedTo.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace TextMonster.Xml
 {
@@ -25,18 +28,18 @@ namespace TextMonster.Xml
     {
       get
       {
-        XObject xobject = this;
+        var xobject = this;
         while (true)
         {
           for (; xobject == null || xobject.annotations != null; xobject = (XObject)xobject.parent)
           {
             if (xobject == null)
               return string.Empty;
-            BaseUriAnnotation baseUriAnnotation = xobject.Annotation<BaseUriAnnotation>();
+            var baseUriAnnotation = xobject.Annotation<BaseUriAnnotation>();
             if (baseUriAnnotation != null)
               return baseUriAnnotation.baseUri;
           }
-          xobject = (XObject)xobject.parent;
+          xobject = xobject.parent;
         }
       }
     }
@@ -52,9 +55,9 @@ namespace TextMonster.Xml
     {
       get
       {
-        XObject xobject = this;
+        var xobject = this;
         while (xobject.parent != null)
-          xobject = (XObject)xobject.parent;
+          xobject = xobject.parent;
         return xobject as XDocument;
       }
     }
@@ -79,7 +82,7 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.parent as XElement;
+        return parent as XElement;
       }
     }
 
@@ -87,7 +90,7 @@ namespace TextMonster.Xml
     {
       get
       {
-        LineInfoAnnotation lineInfoAnnotation = this.Annotation<LineInfoAnnotation>();
+        var lineInfoAnnotation = Annotation<LineInfoAnnotation>();
         if (lineInfoAnnotation != null)
           return lineInfoAnnotation.lineNumber;
         return 0;
@@ -98,7 +101,7 @@ namespace TextMonster.Xml
     {
       get
       {
-        LineInfoAnnotation lineInfoAnnotation = this.Annotation<LineInfoAnnotation>();
+        var lineInfoAnnotation = Annotation<LineInfoAnnotation>();
         if (lineInfoAnnotation != null)
           return lineInfoAnnotation.linePosition;
         return 0;
@@ -109,7 +112,7 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.Annotation<BaseUriAnnotation>() != null;
+        return Annotation<BaseUriAnnotation>() != null;
       }
     }
 
@@ -122,11 +125,11 @@ namespace TextMonster.Xml
       {
         if (value == null)
           return;
-        XObjectChangeAnnotation changeAnnotation = this.Annotation<XObjectChangeAnnotation>();
+        var changeAnnotation = Annotation<XObjectChangeAnnotation>();
         if (changeAnnotation == null)
         {
           changeAnnotation = new XObjectChangeAnnotation();
-          this.AddAnnotation((object)changeAnnotation);
+          AddAnnotation(changeAnnotation);
         }
         changeAnnotation.changed += value;
       }
@@ -134,13 +137,13 @@ namespace TextMonster.Xml
       {
         if (value == null)
           return;
-        XObjectChangeAnnotation changeAnnotation = this.Annotation<XObjectChangeAnnotation>();
+        var changeAnnotation = Annotation<XObjectChangeAnnotation>();
         if (changeAnnotation == null)
           return;
         changeAnnotation.changed -= value;
         if (changeAnnotation.changing != null || changeAnnotation.changed != null)
           return;
-        this.RemoveAnnotations<XObjectChangeAnnotation>();
+        RemoveAnnotations<XObjectChangeAnnotation>();
       }
     }
 
@@ -153,11 +156,11 @@ namespace TextMonster.Xml
       {
         if (value == null)
           return;
-        XObjectChangeAnnotation changeAnnotation = this.Annotation<XObjectChangeAnnotation>();
+        var changeAnnotation = Annotation<XObjectChangeAnnotation>();
         if (changeAnnotation == null)
         {
           changeAnnotation = new XObjectChangeAnnotation();
-          this.AddAnnotation((object)changeAnnotation);
+          AddAnnotation(changeAnnotation);
         }
         changeAnnotation.changing += value;
       }
@@ -165,13 +168,13 @@ namespace TextMonster.Xml
       {
         if (value == null)
           return;
-        XObjectChangeAnnotation changeAnnotation = this.Annotation<XObjectChangeAnnotation>();
+        var changeAnnotation = Annotation<XObjectChangeAnnotation>();
         if (changeAnnotation == null)
           return;
         changeAnnotation.changing -= value;
         if (changeAnnotation.changing != null || changeAnnotation.changed != null)
           return;
-        this.RemoveAnnotations<XObjectChangeAnnotation>();
+        RemoveAnnotations<XObjectChangeAnnotation>();
       }
     }
 
@@ -198,21 +201,21 @@ namespace TextMonster.Xml
     /// <param name="type">Der <see cref="T:System.Type"/> der abzurufenden Anmerkung.</param>
     public object Annotation(Type type)
     {
-      if (type == (Type)null)
+      if (type == null)
         throw new ArgumentNullException("type");
-      if (this.annotations != null)
+      if (annotations != null)
       {
-        object[] objArray = this.annotations as object[];
+        var objArray = annotations as object[];
         if (objArray == null)
         {
-          if (type.IsInstanceOfType(this.annotations))
-            return this.annotations;
+          if (type.IsInstanceOfType(annotations))
+            return annotations;
         }
         else
         {
           for (int index = 0; index < objArray.Length; ++index)
           {
-            object o = objArray[index];
+            var o = objArray[index];
             if (o != null)
             {
               if (type.IsInstanceOfType(o))
@@ -223,7 +226,7 @@ namespace TextMonster.Xml
           }
         }
       }
-      return (object)null;
+      return null;
     }
 
     /// <summary>
@@ -236,18 +239,18 @@ namespace TextMonster.Xml
     /// <typeparam name="T">Der Typ der abzurufenden Anmerkung.</typeparam>
     public T Annotation<T>() where T : class
     {
-      if (this.annotations != null)
+      if (annotations != null)
       {
-        object[] objArray = this.annotations as object[];
+        var objArray = annotations as object[];
         if (objArray == null)
-          return this.annotations as T;
+          return annotations as T;
         for (int index = 0; index < objArray.Length; ++index)
         {
-          object obj1 = objArray[index];
+          var obj1 = objArray[index];
           if (obj1 != null)
           {
-            T obj2 = obj1 as T;
-            if ((object)obj2 != null)
+            var obj2 = obj1 as T;
+            if (obj2 != null)
               return obj2;
           }
           else
@@ -267,26 +270,26 @@ namespace TextMonster.Xml
     /// <param name="type">Der <see cref="T:System.Type"/> der abzurufenden Anmerkungen.</param>
     public IEnumerable<object> Annotations(Type type)
     {
-      if (type == (Type)null)
+      if (type == null)
         throw new ArgumentNullException("type");
-      return this.AnnotationsIterator(type);
+      return AnnotationsIterator(type);
     }
 
-    private IEnumerable<object> AnnotationsIterator(Type type)
+    IEnumerable<object> AnnotationsIterator(Type type)
     {
-      if (this.annotations != null)
+      if (annotations != null)
       {
-        object[] a = this.annotations as object[];
+        var a = annotations as object[];
         if (a == null)
         {
-          if (type.IsInstanceOfType(this.annotations))
-            yield return this.annotations;
+          if (type.IsInstanceOfType(annotations))
+            yield return annotations;
         }
         else
         {
           for (int i = 0; i < a.Length; ++i)
           {
-            object o = a[i];
+            var o = a[i];
             if (o != null)
             {
               if (type.IsInstanceOfType(o))
@@ -296,7 +299,7 @@ namespace TextMonster.Xml
               break;
           }
         }
-        a = (object[])null;
+        a = null;
       }
     }
 
@@ -310,31 +313,31 @@ namespace TextMonster.Xml
     /// <typeparam name="T">Der Typ der abzurufenden Anmerkungen.</typeparam>
     public IEnumerable<T> Annotations<T>() where T : class
     {
-      if (this.annotations != null)
+      if (annotations != null)
       {
-        object[] a = this.annotations as object[];
+        var a = annotations as object[];
         if (a == null)
         {
-          T obj = this.annotations as T;
-          if ((object)obj != null)
+          var obj = annotations as T;
+          if (obj != null)
             yield return obj;
         }
         else
         {
           for (int i = 0; i < a.Length; ++i)
           {
-            object obj1 = a[i];
+            var obj1 = a[i];
             if (obj1 != null)
             {
-              T obj2 = obj1 as T;
-              if ((object)obj2 != null)
+              var obj2 = obj1 as T;
+              if (obj2 != null)
                 yield return obj2;
             }
             else
               break;
           }
         }
-        a = (object[])null;
+        a = null;
       }
     }
 
@@ -344,16 +347,16 @@ namespace TextMonster.Xml
     /// <param name="type">Der <see cref="T:System.Type"/> der zu entfernenden Anmerkungen.</param>
     public void RemoveAnnotations(Type type)
     {
-      if (type == (Type)null)
+      if (type == null)
         throw new ArgumentNullException("type");
-      if (this.annotations == null)
+      if (annotations == null)
         return;
-      object[] objArray = this.annotations as object[];
+      var objArray = annotations as object[];
       if (objArray == null)
       {
-        if (!type.IsInstanceOfType(this.annotations))
+        if (!type.IsInstanceOfType(annotations))
           return;
-        this.annotations = (object)null;
+        annotations = null;
       }
       else
       {
@@ -361,7 +364,7 @@ namespace TextMonster.Xml
         int num = 0;
         for (; index < objArray.Length; ++index)
         {
-          object o = objArray[index];
+          var o = objArray[index];
           if (o != null)
           {
             if (!type.IsInstanceOfType(o))
@@ -372,12 +375,12 @@ namespace TextMonster.Xml
         }
         if (num == 0)
         {
-          this.annotations = (object)null;
+          annotations = null;
         }
         else
         {
           while (num < index)
-            objArray[num++] = (object)null;
+            objArray[num++] = null;
         }
       }
     }
@@ -388,14 +391,14 @@ namespace TextMonster.Xml
     /// <typeparam name="T">Der Typ der zu entfernenden Anmerkungen.</typeparam>
     public void RemoveAnnotations<T>() where T : class
     {
-      if (this.annotations == null)
+      if (annotations == null)
         return;
-      object[] objArray = this.annotations as object[];
+      var objArray = annotations as object[];
       if (objArray == null)
       {
-        if (!(this.annotations is T))
+        if (!(annotations is T))
           return;
-        this.annotations = (object)null;
+        annotations = null;
       }
       else
       {
@@ -403,7 +406,7 @@ namespace TextMonster.Xml
         int num = 0;
         for (; index < objArray.Length; ++index)
         {
-          object obj = objArray[index];
+          var obj = objArray[index];
           if (obj != null)
           {
             if (!(obj is T))
@@ -414,54 +417,52 @@ namespace TextMonster.Xml
         }
         if (num == 0)
         {
-          this.annotations = (object)null;
+          annotations = null;
         }
         else
         {
           while (num < index)
-            objArray[num++] = (object)null;
+            objArray[num++] = null;
         }
       }
     }
 
     bool IXmlLineInfo.HasLineInfo()
     {
-      return this.Annotation<LineInfoAnnotation>() != null;
+      return Annotation<LineInfoAnnotation>() != null;
     }
 
-    internal bool NotifyChanged(object sender, XObjectChangeEventArgs e)
+    internal void NotifyChanged(object sender, XObjectChangeEventArgs e)
     {
-      bool flag = false;
-      XObject xobject = this;
+      var xobject = this;
       while (true)
       {
         for (; xobject == null || xobject.annotations != null; xobject = (XObject)xobject.parent)
         {
           if (xobject == null)
-            return flag;
-          XObjectChangeAnnotation changeAnnotation = xobject.Annotation<XObjectChangeAnnotation>();
+            return;
+          var changeAnnotation = xobject.Annotation<XObjectChangeAnnotation>();
           if (changeAnnotation != null)
           {
-            flag = true;
             if (changeAnnotation.changed != null)
               changeAnnotation.changed(sender, e);
           }
         }
-        xobject = (XObject)xobject.parent;
+        xobject = xobject.parent;
       }
     }
 
     internal bool NotifyChanging(object sender, XObjectChangeEventArgs e)
     {
       bool flag = false;
-      XObject xobject = this;
+      var xobject = this;
       while (true)
       {
         for (; xobject == null || xobject.annotations != null; xobject = (XObject)xobject.parent)
         {
           if (xobject == null)
             return flag;
-          XObjectChangeAnnotation changeAnnotation = xobject.Annotation<XObjectChangeAnnotation>();
+          var changeAnnotation = xobject.Annotation<XObjectChangeAnnotation>();
           if (changeAnnotation != null)
           {
             flag = true;
@@ -469,23 +470,23 @@ namespace TextMonster.Xml
               changeAnnotation.changing(sender, e);
           }
         }
-        xobject = (XObject)xobject.parent;
+        xobject = xobject.parent;
       }
     }
 
     internal void SetBaseUri(string baseUri)
     {
-      this.AddAnnotation((object)new BaseUriAnnotation(baseUri));
+      AddAnnotation(new BaseUriAnnotation(baseUri));
     }
 
     internal void SetLineInfo(int lineNumber, int linePosition)
     {
-      this.AddAnnotation((object)new LineInfoAnnotation(lineNumber, linePosition));
+      AddAnnotation(new LineInfoAnnotation(lineNumber, linePosition));
     }
 
     internal bool SkipNotify()
     {
-      XObject xobject = this;
+      var xobject = this;
       while (true)
       {
         for (; xobject == null || xobject.annotations != null; xobject = (XObject)xobject.parent)
@@ -495,24 +496,24 @@ namespace TextMonster.Xml
           if (xobject.Annotations<XObjectChangeAnnotation>() != null)
             return false;
         }
-        xobject = (XObject)xobject.parent;
+        xobject = xobject.parent;
       }
     }
 
     internal SaveOptions GetSaveOptionsFromAnnotations()
     {
-      XObject xobject = this;
+      var xobject = this;
       while (true)
       {
         for (; xobject == null || xobject.annotations != null; xobject = (XObject)xobject.parent)
         {
           if (xobject == null)
             return SaveOptions.None;
-          object obj = xobject.Annotation(typeof(SaveOptions));
+          var obj = xobject.Annotation(typeof(SaveOptions));
           if (obj != null)
             return (SaveOptions)obj;
         }
-        xobject = (XObject)xobject.parent;
+        xobject = xobject.parent;
       }
     }
   }

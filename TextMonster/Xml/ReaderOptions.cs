@@ -9,6 +9,6 @@ namespace TextMonster.Xml
   public enum ReaderOptions
   {
     None = 0,
-    OmitDuplicateNamespaces = 1,
+    OmitDuplicateNamespaces = 1
   }
 }

@@ -6,17 +6,17 @@ namespace TextMonster.Xml
 {
   internal class XNodeBuilder : XmlWriter
   {
-    private List<object> content;
-    private XContainer parent;
-    private XName attrName;
-    private string attrValue;
-    private XContainer root;
+    List<object> content;
+    XContainer parent;
+    XName attrName;
+    string attrValue;
+    readonly XContainer root;
 
     public override XmlWriterSettings Settings
     {
       get
       {
-        return new XmlWriterSettings()
+        return new XmlWriterSettings
         {
           ConformanceLevel = ConformanceLevel.Auto
         };
@@ -33,12 +33,12 @@ namespace TextMonster.Xml
 
     public XNodeBuilder(XContainer container)
     {
-      this.root = container;
+      root = container;
     }
 
     public override void Close()
     {
-      this.root.Add((object)this.content);
+      root.Add(content);
     }
 
     public override void Flush()
@@ -57,38 +57,38 @@ namespace TextMonster.Xml
 
     public override void WriteCData(string text)
     {
-      this.AddNode((XNode)new XCData(text));
+      AddNode(new XcData(text));
     }
 
     public override void WriteCharEntity(char ch)
     {
-      this.AddString(new string(ch, 1));
+      AddString(new string(ch, 1));
     }
 
     public override void WriteChars(char[] buffer, int index, int count)
     {
-      this.AddString(new string(buffer, index, count));
+      AddString(new string(buffer, index, count));
     }
 
     public override void WriteComment(string text)
     {
-      this.AddNode((XNode)new XComment(text));
+      AddNode(new XComment(text));
     }
 
     public override void WriteDocType(string name, string pubid, string sysid, string subset)
     {
-      this.AddNode((XNode)new XDocumentType(name, pubid, sysid, subset));
+      AddNode(new XDocumentType(name, pubid, sysid, subset));
     }
 
     public override void WriteEndAttribute()
     {
-      XAttribute xattribute = new XAttribute(this.attrName, (object)this.attrValue);
-      this.attrName = (XName)null;
-      this.attrValue = (string)null;
-      if (this.parent != null)
-        this.parent.Add((object)xattribute);
+      var xattribute = new XAttribute(attrName, attrValue);
+      attrName = null;
+      attrValue = null;
+      if (parent != null)
+        parent.Add(xattribute);
       else
-        this.Add((object)xattribute);
+        Add(xattribute);
     }
 
     public override void WriteEndDocument()
@@ -97,67 +97,67 @@ namespace TextMonster.Xml
 
     public override void WriteEndElement()
     {
-      this.parent = this.parent.parent;
+      parent = parent.parent;
     }
 
     public override void WriteEntityRef(string name)
     {
-      if (!(name == "amp"))
+      if (name != "amp")
       {
-        if (!(name == "apos"))
+        if (name != "apos")
         {
-          if (!(name == "gt"))
+          if (name != "gt")
           {
-            if (!(name == "lt"))
+            if (name != "lt")
             {
-              if (!(name == "quot"))
+              if (name != "quot")
                 throw new NotSupportedException("NotSupported_WriteEntityRef");
-              this.AddString("\"");
+              AddString("\"");
             }
             else
-              this.AddString("<");
+              AddString("<");
           }
           else
-            this.AddString(">");
+            AddString(">");
         }
         else
-          this.AddString("'");
+          AddString("'");
       }
       else
-        this.AddString("&");
+        AddString("&");
     }
 
     public override void WriteFullEndElement()
     {
-      XElement xelement = (XElement)this.parent;
+      var xelement = (XElement)parent;
       if (xelement.IsEmpty)
-        xelement.Add((object)string.Empty);
-      this.parent = xelement.parent;
+        xelement.Add(string.Empty);
+      parent = xelement.parent;
     }
 
     public override void WriteProcessingInstruction(string name, string text)
     {
       if (name == "xml")
         return;
-      this.AddNode((XNode)new XProcessingInstruction(name, text));
+      AddNode(new XProcessingInstruction(name, text));
     }
 
     public override void WriteRaw(char[] buffer, int index, int count)
     {
-      this.AddString(new string(buffer, index, count));
+      AddString(new string(buffer, index, count));
     }
 
     public override void WriteRaw(string data)
     {
-      this.AddString(data);
+      AddString(data);
     }
 
     public override void WriteStartAttribute(string prefix, string localName, string namespaceName)
     {
       if (prefix == null)
         throw new ArgumentNullException("prefix");
-      this.attrName = XNamespace.Get(prefix.Length == 0 ? string.Empty : namespaceName).GetName(localName);
-      this.attrValue = string.Empty;
+      attrName = XNamespace.Get(prefix.Length == 0 ? string.Empty : namespaceName).GetName(localName);
+      attrValue = string.Empty;
     }
 
     public override void WriteStartDocument()
@@ -170,17 +170,17 @@ namespace TextMonster.Xml
 
     public override void WriteStartElement(string prefix, string localName, string namespaceName)
     {
-      this.AddNode((XNode)new XElement(XNamespace.Get(namespaceName).GetName(localName)));
+      AddNode(new XElement(XNamespace.Get(namespaceName).GetName(localName)));
     }
 
     public override void WriteString(string text)
     {
-      this.AddString(text);
+      AddString(text);
     }
 
     public override void WriteSurrogateCharEntity(char lowCh, char highCh)
     {
-      this.AddString(new string(new char[2]
+      AddString(new string(new[]
       {
         highCh,
         lowCh
@@ -189,43 +189,43 @@ namespace TextMonster.Xml
 
     public override void WriteValue(DateTimeOffset value)
     {
-      this.WriteString(XmlConvert.ToString(value));
+      WriteString(XmlConvert.ToString(value));
     }
 
     public override void WriteWhitespace(string ws)
     {
-      this.AddString(ws);
+      AddString(ws);
     }
 
-    private void Add(object o)
+    void Add(object o)
     {
-      if (this.content == null)
-        this.content = new List<object>();
-      this.content.Add(o);
+      if (content == null)
+        content = new List<object>();
+      content.Add(o);
     }
 
-    private void AddNode(XNode n)
+    void AddNode(XNode n)
     {
-      if (this.parent != null)
-        this.parent.Add((object)n);
+      if (parent != null)
+        parent.Add(n);
       else
-        this.Add((object)n);
-      XContainer xcontainer = n as XContainer;
+        Add(n);
+      var xcontainer = n as XContainer;
       if (xcontainer == null)
         return;
-      this.parent = xcontainer;
+      parent = xcontainer;
     }
 
-    private void AddString(string s)
+    void AddString(string s)
     {
       if (s == null)
         return;
-      if (this.attrValue != null)
-        this.attrValue = this.attrValue + s;
-      else if (this.parent != null)
-        this.parent.Add((object)s);
+      if (attrValue != null)
+        attrValue = attrValue + s;
+      else if (parent != null)
+        parent.Add(s);
       else
-        this.Add((object)s);
+        Add(s);
     }
   }
 }

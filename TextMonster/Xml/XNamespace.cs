@@ -8,17 +8,13 @@ namespace TextMonster.Xml
   /// </summary>
   public sealed class XNamespace
   {
-    internal const string xmlPrefixNamespace = "http://www.w3.org/XML/1998/namespace";
-    internal const string xmlnsPrefixNamespace = "http://www.w3.org/2000/xmlns/";
-    private static XHashtable<WeakReference> namespaces;
-    private static WeakReference refNone;
-    private static WeakReference refXml;
-    private static WeakReference refXmlns;
-    private string namespaceName;
-    private int hashCode;
-    private XHashtable<XName> names;
-    private const int NamesCapacity = 8;
-    private const int NamespacesCapacity = 32;
+    static XHashtable<WeakReference> namespaces;
+    static WeakReference refNone;
+    static WeakReference refXml;
+    static WeakReference refXmlns;
+    readonly string namespaceName;
+    readonly int hashCode;
+    readonly XHashtable<XName> names;
 
     /// <summary>
     /// Ruft den URI (Uniform Resource Identifier) dieses Namespaces ab.
@@ -31,7 +27,7 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.namespaceName;
+        return namespaceName;
       }
     }
 
@@ -46,7 +42,7 @@ namespace TextMonster.Xml
     {
       get
       {
-        return XNamespace.EnsureNamespace(ref XNamespace.refNone, string.Empty);
+        return EnsureNamespace(ref refNone, string.Empty);
       }
     }
 
@@ -61,7 +57,7 @@ namespace TextMonster.Xml
     {
       get
       {
-        return XNamespace.EnsureNamespace(ref XNamespace.refXml, "http://www.w3.org/XML/1998/namespace");
+        return EnsureNamespace(ref refXml, "http://www.w3.org/XML/1998/namespace");
       }
     }
 
@@ -76,15 +72,15 @@ namespace TextMonster.Xml
     {
       get
       {
-        return XNamespace.EnsureNamespace(ref XNamespace.refXmlns, "http://www.w3.org/2000/xmlns/");
+        return EnsureNamespace(ref refXmlns, "http://www.w3.org/2000/xmlns/");
       }
     }
 
-    internal XNamespace(string namespaceName)
+    XNamespace(string namespaceName)
     {
       this.namespaceName = namespaceName;
-      this.hashCode = namespaceName.GetHashCode();
-      this.names = new XHashtable<XName>(new XHashtable<XName>.ExtractKeyDelegate(XNamespace.ExtractLocalName), 8);
+      hashCode = namespaceName.GetHashCode();
+      names = new XHashtable<XName>(ExtractLocalName, 8);
     }
 
     /// <summary>
@@ -99,8 +95,8 @@ namespace TextMonster.Xml
     public static implicit operator XNamespace(string namespaceName)
     {
       if (namespaceName == null)
-        return (XNamespace)null;
-      return XNamespace.Get(namespaceName);
+        return null;
+      return Get(namespaceName);
     }
 
     /// <summary>
@@ -113,7 +109,7 @@ namespace TextMonster.Xml
     /// <param name="ns">Ein <see cref="T:System.Xml.Linq.XNamespace"/>, der den Namespace enthält.</param><param name="localName">Ein <see cref="T:System.String"/>, der den lokalen Namen enthält.</param>
     public static XName operator +(XNamespace ns, string localName)
     {
-      if (ns == (XNamespace)null)
+      if (ns == null)
         throw new ArgumentNullException("ns");
       return ns.GetName(localName);
     }
@@ -156,7 +152,7 @@ namespace TextMonster.Xml
     {
       if (localName == null)
         throw new ArgumentNullException("localName");
-      return this.GetName(localName, 0, localName.Length);
+      return GetName(localName, 0, localName.Length);
     }
 
     /// <summary>
@@ -168,7 +164,7 @@ namespace TextMonster.Xml
     /// </returns>
     public override string ToString()
     {
-      return this.namespaceName;
+      return namespaceName;
     }
 
     /// <summary>
@@ -183,7 +179,7 @@ namespace TextMonster.Xml
     {
       if (namespaceName == null)
         throw new ArgumentNullException("namespaceName");
-      return XNamespace.Get(namespaceName, 0, namespaceName.Length);
+      return Get(namespaceName, 0, namespaceName.Length);
     }
 
     /// <summary>
@@ -196,7 +192,7 @@ namespace TextMonster.Xml
     /// <param name="obj">Der <see cref="T:System.Xml.Linq.XNamespace"/>, der mit dem aktuellen <see cref="T:System.Xml.Linq.XNamespace"/> verglichen werden soll.</param>
     public override bool Equals(object obj)
     {
-      return this == obj;
+      return ReferenceEquals(this, obj);
     }
 
     /// <summary>
@@ -208,67 +204,67 @@ namespace TextMonster.Xml
     /// </returns>
     public override int GetHashCode()
     {
-      return this.hashCode;
+      return hashCode;
     }
 
     internal XName GetName(string localName, int index, int count)
     {
       XName xname;
-      if (this.names.TryGetValue(localName, index, count, out xname))
+      if (names.TryGetValue(localName, index, count, out xname))
         return xname;
-      return this.names.Add(new XName(this, localName.Substring(index, count)));
+      return names.Add(new XName(this, localName.Substring(index, count)));
     }
 
     internal static XNamespace Get(string namespaceName, int index, int count)
     {
       if (count == 0)
-        return XNamespace.None;
-      if (XNamespace.namespaces == null)
-        Interlocked.CompareExchange<XHashtable<WeakReference>>(ref XNamespace.namespaces, new XHashtable<WeakReference>(new XHashtable<WeakReference>.ExtractKeyDelegate(XNamespace.ExtractNamespace), 32), (XHashtable<WeakReference>)null);
+        return None;
+      if (namespaces == null)
+        Interlocked.CompareExchange(ref namespaces, new XHashtable<WeakReference>(ExtractNamespace, 32), null);
       XNamespace xnamespace;
       do
       {
         WeakReference weakReference;
-        if (!XNamespace.namespaces.TryGetValue(namespaceName, index, count, out weakReference))
+        if (!namespaces.TryGetValue(namespaceName, index, count, out weakReference))
         {
           if (count == "http://www.w3.org/XML/1998/namespace".Length && string.CompareOrdinal(namespaceName, index, "http://www.w3.org/XML/1998/namespace", 0, count) == 0)
-            return XNamespace.Xml;
+            return Xml;
           if (count == "http://www.w3.org/2000/xmlns/".Length && string.CompareOrdinal(namespaceName, index, "http://www.w3.org/2000/xmlns/", 0, count) == 0)
-            return XNamespace.Xmlns;
-          weakReference = XNamespace.namespaces.Add(new WeakReference((object)new XNamespace(namespaceName.Substring(index, count))));
+            return Xmlns;
+          weakReference = namespaces.Add(new WeakReference(new XNamespace(namespaceName.Substring(index, count))));
         }
-        xnamespace = weakReference != null ? (XNamespace)weakReference.Target : (XNamespace)null;
+        xnamespace = weakReference != null ? (XNamespace)weakReference.Target : null;
       }
-      while (xnamespace == (XNamespace)null);
+      while (xnamespace == null);
       return xnamespace;
     }
 
-    private static string ExtractLocalName(XName n)
+    static string ExtractLocalName(XName n)
     {
       return n.LocalName;
     }
 
-    private static string ExtractNamespace(WeakReference r)
+    static string ExtractNamespace(WeakReference r)
     {
       XNamespace xnamespace;
-      if (r == null || (xnamespace = (XNamespace)r.Target) == (XNamespace)null)
-        return (string)null;
+      if (r == null || (xnamespace = (XNamespace)r.Target) == null)
+        return null;
       return xnamespace.NamespaceName;
     }
 
-    private static XNamespace EnsureNamespace(ref WeakReference refNmsp, string namespaceName)
+    static XNamespace EnsureNamespace(ref WeakReference refNmsp, string namespaceName)
     {
       XNamespace xnamespace;
       while (true)
       {
-        WeakReference comparand = refNmsp;
+        var comparand = refNmsp;
         if (comparand != null)
         {
           xnamespace = (XNamespace)comparand.Target;
-          if (xnamespace != (XNamespace)null)
+          if (xnamespace != null)
             break;
         }
-        Interlocked.CompareExchange<WeakReference>(ref refNmsp, new WeakReference((object)new XNamespace(namespaceName)), comparand);
+        Interlocked.CompareExchange(ref refNmsp, new WeakReference(new XNamespace(namespaceName)), comparand);
       }
       return xnamespace;
     }

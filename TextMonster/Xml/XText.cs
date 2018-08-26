@@ -38,17 +38,17 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.text;
+        return text;
       }
       set
       {
         if (value == null)
           throw new ArgumentNullException("value");
-        bool flag = this.NotifyChanging((object)this, XObjectChangeEventArgs.Value);
-        this.text = value;
+        bool flag = NotifyChanging(this, XObjectChangeEventArgs.Value);
+        text = value;
         if (!flag)
           return;
-        this.NotifyChanged((object)this, XObjectChangeEventArgs.Value);
+        NotifyChanged(this, XObjectChangeEventArgs.Value);
       }
     }
 
@@ -60,7 +60,7 @@ namespace TextMonster.Xml
     {
       if (value == null)
         throw new ArgumentNullException("value");
-      this.text = value;
+      text = value;
     }
 
     /// <summary>
@@ -71,12 +71,12 @@ namespace TextMonster.Xml
     {
       if (other == null)
         throw new ArgumentNullException("other");
-      this.text = other.text;
+      text = other.text;
     }
 
     internal XText(XmlReader r)
     {
-      this.text = r.Value;
+      text = r.Value;
       r.Read();
     }
 
@@ -88,32 +88,32 @@ namespace TextMonster.Xml
     {
       if (writer == null)
         throw new ArgumentNullException("writer");
-      if (this.parent is XDocument)
-        writer.WriteWhitespace(this.text);
+      if (parent is XDocument)
+        writer.WriteWhitespace(text);
       else
-        writer.WriteString(this.text);
+        writer.WriteString(text);
     }
 
     internal override void AppendText(StringBuilder sb)
     {
-      sb.Append(this.text);
+      sb.Append(text);
     }
 
     internal override XNode CloneNode()
     {
-      return (XNode)new XText(this);
+      return new XText(this);
     }
 
     internal override bool DeepEquals(XNode node)
     {
-      if (node != null && this.NodeType == node.NodeType)
-        return this.text == ((XText)node).text;
+      if (node != null && NodeType == node.NodeType)
+        return text == ((XText)node).text;
       return false;
     }
 
     internal override int GetDeepHashCode()
     {
-      return this.text.GetHashCode();
+      return text.GetHashCode();
     }
   }
 }

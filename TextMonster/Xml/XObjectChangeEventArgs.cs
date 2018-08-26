@@ -1,4 +1,6 @@
 ﻿using System;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace TextMonster.Xml
 {
@@ -24,7 +26,7 @@ namespace TextMonster.Xml
     /// Ereignisargument für ein <see cref="F:System.Xml.Linq.XObjectChange.Value"/>-Änderungsereignis.
     /// </summary>
     public static readonly XObjectChangeEventArgs Value = new XObjectChangeEventArgs(XObjectChange.Value);
-    private XObjectChange objectChange;
+    readonly XObjectChange objectChange;
 
     /// <summary>
     /// Ruft den Typ der Änderung ab.
@@ -37,7 +39,7 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.objectChange;
+        return objectChange;
       }
     }
 

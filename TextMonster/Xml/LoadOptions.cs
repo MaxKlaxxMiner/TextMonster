@@ -11,6 +11,6 @@ namespace TextMonster.Xml
     None = 0,
     PreserveWhitespace = 1,
     SetBaseUri = 2,
-    SetLineInfo = 4,
+    SetLineInfo = 4
   }
 }

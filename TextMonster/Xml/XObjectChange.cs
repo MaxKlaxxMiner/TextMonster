@@ -10,6 +10,6 @@ namespace TextMonster.Xml
     Add,
     Remove,
     Name,
-    Value,
+    Value
   }
 }

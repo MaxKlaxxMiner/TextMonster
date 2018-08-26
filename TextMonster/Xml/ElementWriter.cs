@@ -4,37 +4,37 @@ namespace TextMonster.Xml
 {
   internal struct ElementWriter
   {
-    private XmlWriter writer;
-    private NamespaceResolver resolver;
+    readonly XmlWriter writer;
+    NamespaceResolver resolver;
 
     public ElementWriter(XmlWriter writer)
     {
       this.writer = writer;
-      this.resolver = new NamespaceResolver();
+      resolver = new NamespaceResolver();
     }
 
     public void WriteElement(XElement e)
     {
-      this.PushAncestors(e);
-      XElement xelement = e;
-      XNode xnode = (XNode)e;
+      PushAncestors(e);
+      var xelement = e;
+      var xnode = (XNode)e;
       while (true)
       {
         e = xnode as XElement;
         if (e != null)
         {
-          this.WriteStartElement(e);
+          WriteStartElement(e);
           if (e.content == null)
           {
-            this.WriteEndElement();
+            WriteEndElement();
           }
           else
           {
             string text = e.content as string;
             if (text != null)
             {
-              this.writer.WriteString(text);
-              this.WriteFullEndElement();
+              writer.WriteString(text);
+              WriteFullEndElement();
             }
             else
             {
@@ -44,11 +44,11 @@ namespace TextMonster.Xml
           }
         }
         else
-          xnode.WriteTo(this.writer);
+          xnode.WriteTo(writer);
         while (xnode != xelement && xnode == xnode.parent.content)
         {
-          xnode = (XNode)xnode.parent;
-          this.WriteFullEndElement();
+          xnode = xnode.parent;
+          WriteFullEndElement();
         }
         if (xnode != xelement)
           xnode = xnode.next;
@@ -57,22 +57,22 @@ namespace TextMonster.Xml
       }
     }
 
-    private string GetPrefixOfNamespace(XNamespace ns, bool allowDefaultNamespace)
+    string GetPrefixOfNamespace(XNamespace ns, bool allowDefaultNamespace)
     {
       string namespaceName = ns.NamespaceName;
       if (namespaceName.Length == 0)
         return string.Empty;
-      string prefixOfNamespace = this.resolver.GetPrefixOfNamespace(ns, allowDefaultNamespace);
+      string prefixOfNamespace = resolver.GetPrefixOfNamespace(ns, allowDefaultNamespace);
       if (prefixOfNamespace != null)
         return prefixOfNamespace;
       if (namespaceName == "http://www.w3.org/XML/1998/namespace")
         return "xml";
       if (namespaceName == "http://www.w3.org/2000/xmlns/")
         return "xmlns";
-      return (string)null;
+      return null;
     }
 
-    private void PushAncestors(XElement e)
+    void PushAncestors(XElement e)
     {
     label_0:
       XAttribute xattribute;
@@ -93,54 +93,54 @@ namespace TextMonster.Xml
       {
         xattribute = xattribute.next;
         if (xattribute.IsNamespaceDeclaration)
-          this.resolver.AddFirst(xattribute.Name.NamespaceName.Length == 0 ? string.Empty : xattribute.Name.LocalName, XNamespace.Get(xattribute.Value));
+          resolver.AddFirst(xattribute.Name.NamespaceName.Length == 0 ? string.Empty : xattribute.Name.LocalName, XNamespace.Get(xattribute.Value));
       }
       while (xattribute != e.lastAttr);
       goto label_0;
     }
 
-    private void PushElement(XElement e)
+    void PushElement(XElement e)
     {
-      this.resolver.PushScope();
-      XAttribute xattribute = e.lastAttr;
+      resolver.PushScope();
+      var xattribute = e.lastAttr;
       if (xattribute == null)
         return;
       do
       {
         xattribute = xattribute.next;
         if (xattribute.IsNamespaceDeclaration)
-          this.resolver.Add(xattribute.Name.NamespaceName.Length == 0 ? string.Empty : xattribute.Name.LocalName, XNamespace.Get(xattribute.Value));
+          resolver.Add(xattribute.Name.NamespaceName.Length == 0 ? string.Empty : xattribute.Name.LocalName, XNamespace.Get(xattribute.Value));
       }
       while (xattribute != e.lastAttr);
     }
 
-    private void WriteEndElement()
+    void WriteEndElement()
     {
-      this.writer.WriteEndElement();
-      this.resolver.PopScope();
+      writer.WriteEndElement();
+      resolver.PopScope();
     }
 
-    private void WriteFullEndElement()
+    void WriteFullEndElement()
     {
-      this.writer.WriteFullEndElement();
-      this.resolver.PopScope();
+      writer.WriteFullEndElement();
+      resolver.PopScope();
     }
 
-    private void WriteStartElement(XElement e)
+    void WriteStartElement(XElement e)
     {
-      this.PushElement(e);
-      XNamespace namespace1 = e.Name.Namespace;
-      this.writer.WriteStartElement(this.GetPrefixOfNamespace(namespace1, true), e.Name.LocalName, namespace1.NamespaceName);
-      XAttribute xattribute = e.lastAttr;
+      PushElement(e);
+      var namespace1 = e.Name.Namespace;
+      writer.WriteStartElement(GetPrefixOfNamespace(namespace1, true), e.Name.LocalName, namespace1.NamespaceName);
+      var xattribute = e.lastAttr;
       if (xattribute == null)
         return;
       do
       {
         xattribute = xattribute.next;
-        XNamespace namespace2 = xattribute.Name.Namespace;
+        var namespace2 = xattribute.Name.Namespace;
         string localName = xattribute.Name.LocalName;
         string namespaceName = namespace2.NamespaceName;
-        this.writer.WriteAttributeString(this.GetPrefixOfNamespace(namespace2, false), localName, namespaceName.Length != 0 || !(localName == "xmlns") ? namespaceName : "http://www.w3.org/2000/xmlns/", xattribute.Value);
+        writer.WriteAttributeString(GetPrefixOfNamespace(namespace2, false), localName, namespaceName.Length != 0 || localName != "xmlns" ? namespaceName : "http://www.w3.org/2000/xmlns/", xattribute.Value);
       }
       while (xattribute != e.lastAttr);
     }

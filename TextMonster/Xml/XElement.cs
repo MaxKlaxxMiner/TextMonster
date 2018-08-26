@@ -6,6 +6,8 @@ using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace TextMonster.Xml
 {
@@ -14,7 +16,7 @@ namespace TextMonster.Xml
   /// </summary>
   public class XElement : XContainer, IXmlSerializable
   {
-    private static IEnumerable<XElement> emptySequence;
+    static IEnumerable<XElement> emptySequence;
     internal XName name;
     internal XAttribute lastAttr;
 
@@ -27,12 +29,7 @@ namespace TextMonster.Xml
     /// </returns>
     public static IEnumerable<XElement> EmptySequence
     {
-      get
-      {
-        if (XElement.emptySequence == null)
-          XElement.emptySequence = (IEnumerable<XElement>)new XElement[0];
-        return XElement.emptySequence;
-      }
+      get { return emptySequence ?? (emptySequence = new XElement[0]); }
     }
 
     /// <summary>
@@ -47,9 +44,9 @@ namespace TextMonster.Xml
     {
       get
       {
-        if (this.lastAttr == null)
-          return (XAttribute)null;
-        return this.lastAttr.next;
+        if (lastAttr == null)
+          return null;
+        return lastAttr.next;
       }
     }
 
@@ -64,7 +61,7 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.lastAttr != null;
+        return lastAttr != null;
       }
     }
 
@@ -79,13 +76,13 @@ namespace TextMonster.Xml
     {
       get
       {
-        XNode xnode = this.content as XNode;
+        var xnode = content as XNode;
         if (xnode != null)
         {
           while (!(xnode is XElement))
           {
             xnode = xnode.next;
-            if (xnode == this.content)
+            if (xnode == content)
               goto label_4;
           }
           return true;
@@ -106,7 +103,7 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.content == null;
+        return content == null;
       }
     }
 
@@ -122,7 +119,7 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.lastAttr;
+        return lastAttr;
       }
     }
 
@@ -137,17 +134,17 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.name;
+        return name;
       }
       set
       {
-        if (value == (XName)null)
+        if (value == null)
           throw new ArgumentNullException("value");
-        bool flag = this.NotifyChanging((object)this, XObjectChangeEventArgs.Name);
-        this.name = value;
+        bool flag = NotifyChanging(this, XObjectChangeEventArgs.Name);
+        name = value;
         if (!flag)
           return;
-        this.NotifyChanged((object)this, XObjectChangeEventArgs.Name);
+        NotifyChanged(this, XObjectChangeEventArgs.Name);
       }
     }
 
@@ -177,21 +174,21 @@ namespace TextMonster.Xml
     {
       get
       {
-        if (this.content == null)
+        if (content == null)
           return string.Empty;
-        string str = this.content as string;
+        string str = content as string;
         if (str != null)
           return str;
-        StringBuilder sb = new StringBuilder();
-        this.AppendText(sb);
+        var sb = new StringBuilder();
+        AppendText(sb);
         return sb.ToString();
       }
       set
       {
         if (value == null)
           throw new ArgumentNullException("value");
-        this.RemoveNodes();
-        this.Add((object)value);
+        RemoveNodes();
+        Add(value);
       }
     }
 
@@ -201,7 +198,7 @@ namespace TextMonster.Xml
     /// <param name="name">Ein <see cref="T:System.Xml.Linq.XName"/>, der den Namen des Elements enthält.</param>
     public XElement(XName name)
     {
-      if (name == (XName)null)
+      if (name == null)
         throw new ArgumentNullException("name");
       this.name = name;
     }
@@ -213,7 +210,7 @@ namespace TextMonster.Xml
     public XElement(XName name, object content)
       : this(name)
     {
-      this.AddContentSkipNotify(content);
+      AddContentSkipNotify(content);
     }
 
     /// <summary>
@@ -230,16 +227,16 @@ namespace TextMonster.Xml
     /// </summary>
     /// <param name="other">Ein <see cref="T:System.Xml.Linq.XElement"/>-Objekt, aus dem kopiert werden soll.</param>
     public XElement(XElement other)
-      : base((XContainer)other)
+      : base(other)
     {
-      this.name = other.name;
-      XAttribute other1 = other.lastAttr;
+      name = other.name;
+      var other1 = other.lastAttr;
       if (other1 == null)
         return;
       do
       {
         other1 = other1.next;
-        this.AppendAttributeSkipNotify(new XAttribute(other1));
+        AppendAttributeSkipNotify(new XAttribute(other1));
       }
       while (other1 != other.lastAttr);
     }
@@ -252,23 +249,18 @@ namespace TextMonster.Xml
     {
       if (other == null)
         throw new ArgumentNullException("other");
-      this.name = other.name;
-      this.AddContentSkipNotify(other.content);
+      name = other.name;
+      AddContentSkipNotify(other.content);
     }
 
     internal XElement()
-      : this((XName)"default")
+      : this("default")
     {
     }
 
-    internal XElement(XmlReader r)
-      : this(r, LoadOptions.None)
+    internal XElement(XmlReader r, LoadOptions o = LoadOptions.None)
     {
-    }
-
-    internal XElement(XmlReader r, LoadOptions o)
-    {
-      this.ReadElementFrom(r, o);
+      ReadElementFrom(r, o);
     }
 
     /// <summary>
@@ -282,7 +274,7 @@ namespace TextMonster.Xml
     public static explicit operator string(XElement element)
     {
       if (element == null)
-        return (string)null;
+        return null;
       return element.Value;
     }
 
@@ -313,7 +305,7 @@ namespace TextMonster.Xml
     {
       if (element == null)
         return new bool?();
-      return new bool?(XmlConvert.ToBoolean(element.Value.ToLower(CultureInfo.InvariantCulture)));
+      return XmlConvert.ToBoolean(element.Value.ToLower(CultureInfo.InvariantCulture));
     }
 
     /// <summary>
@@ -343,7 +335,7 @@ namespace TextMonster.Xml
     {
       if (element == null)
         return new int?();
-      return new int?(XmlConvert.ToInt32(element.Value));
+      return XmlConvert.ToInt32(element.Value);
     }
 
     /// <summary>
@@ -373,7 +365,7 @@ namespace TextMonster.Xml
     {
       if (element == null)
         return new uint?();
-      return new uint?(XmlConvert.ToUInt32(element.Value));
+      return XmlConvert.ToUInt32(element.Value);
     }
 
     /// <summary>
@@ -403,7 +395,7 @@ namespace TextMonster.Xml
     {
       if (element == null)
         return new long?();
-      return new long?(XmlConvert.ToInt64(element.Value));
+      return XmlConvert.ToInt64(element.Value);
     }
 
     /// <summary>
@@ -433,7 +425,7 @@ namespace TextMonster.Xml
     {
       if (element == null)
         return new ulong?();
-      return new ulong?(XmlConvert.ToUInt64(element.Value));
+      return XmlConvert.ToUInt64(element.Value);
     }
 
     /// <summary>
@@ -463,7 +455,7 @@ namespace TextMonster.Xml
     {
       if (element == null)
         return new float?();
-      return new float?(XmlConvert.ToSingle(element.Value));
+      return XmlConvert.ToSingle(element.Value);
     }
 
     /// <summary>
@@ -493,7 +485,7 @@ namespace TextMonster.Xml
     {
       if (element == null)
         return new double?();
-      return new double?(XmlConvert.ToDouble(element.Value));
+      return XmlConvert.ToDouble(element.Value);
     }
 
     /// <summary>
@@ -504,7 +496,7 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Decimal"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XElement"/> enthält.
     /// </returns>
     /// <param name="element">Das <see cref="T:System.Xml.Linq.XElement"/>, das in <see cref="T:System.Decimal"/> umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Element enthält keinen gültigen <see cref="T:System.Decimal"/>-Wert.</exception><exception cref="T:System.ArgumentNullException">Der <paramref name="element"/>-Parameter ist null.</exception>
-    public static explicit operator Decimal(XElement element)
+    public static explicit operator decimal(XElement element)
     {
       if (element == null)
         throw new ArgumentNullException("element");
@@ -519,11 +511,11 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.Decimal"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XElement"/> enthält.
     /// </returns>
     /// <param name="element">Das <see cref="T:System.Xml.Linq.XElement"/>, das in ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.Decimal"/> umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Element enthält keinen gültigen <see cref="T:System.Decimal"/>-Wert.</exception>
-    public static explicit operator Decimal?(XElement element)
+    public static explicit operator decimal?(XElement element)
     {
       if (element == null)
-        return new Decimal?();
-      return new Decimal?(XmlConvert.ToDecimal(element.Value));
+        return new decimal?();
+      return XmlConvert.ToDecimal(element.Value);
     }
 
     /// <summary>
@@ -538,7 +530,7 @@ namespace TextMonster.Xml
     {
       if (element == null)
         throw new ArgumentNullException("element");
-      return DateTime.Parse(element.Value, (IFormatProvider)CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
+      return DateTime.Parse(element.Value, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
     }
 
     /// <summary>
@@ -553,7 +545,7 @@ namespace TextMonster.Xml
     {
       if (element == null)
         return new DateTime?();
-      return new DateTime?(DateTime.Parse(element.Value, (IFormatProvider)CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind));
+      return DateTime.Parse(element.Value, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
     }
 
     /// <summary>
@@ -583,7 +575,7 @@ namespace TextMonster.Xml
     {
       if (element == null)
         return new DateTimeOffset?();
-      return new DateTimeOffset?(XmlConvert.ToDateTimeOffset(element.Value));
+      return XmlConvert.ToDateTimeOffset(element.Value);
     }
 
     /// <summary>
@@ -613,7 +605,7 @@ namespace TextMonster.Xml
     {
       if (element == null)
         return new TimeSpan?();
-      return new TimeSpan?(XmlConvert.ToTimeSpan(element.Value));
+      return XmlConvert.ToTimeSpan(element.Value);
     }
 
     /// <summary>
@@ -643,7 +635,7 @@ namespace TextMonster.Xml
     {
       if (element == null)
         return new Guid?();
-      return new Guid?(XmlConvert.ToGuid(element.Value));
+      return XmlConvert.ToGuid(element.Value);
     }
 
     /// <summary>
@@ -655,7 +647,7 @@ namespace TextMonster.Xml
     /// </returns>
     public IEnumerable<XElement> AncestorsAndSelf()
     {
-      return this.GetAncestors((XName)null, true);
+      return GetAncestors(null, true);
     }
 
     /// <summary>
@@ -668,9 +660,9 @@ namespace TextMonster.Xml
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
     public IEnumerable<XElement> AncestorsAndSelf(XName name)
     {
-      if (!(name != (XName)null))
-        return XElement.EmptySequence;
-      return this.GetAncestors(name, true);
+      if (!(name != null))
+        return EmptySequence;
+      return GetAncestors(name, true);
     }
 
     /// <summary>
@@ -683,7 +675,7 @@ namespace TextMonster.Xml
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/> des abzurufenden <see cref="T:System.Xml.Linq.XAttribute"/>.</param>
     public XAttribute Attribute(XName name)
     {
-      XAttribute xattribute = this.lastAttr;
+      var xattribute = lastAttr;
       if (xattribute != null)
       {
         do
@@ -692,9 +684,9 @@ namespace TextMonster.Xml
           if (xattribute.name == name)
             return xattribute;
         }
-        while (xattribute != this.lastAttr);
+        while (xattribute != lastAttr);
       }
-      return (XAttribute)null;
+      return null;
     }
 
     /// <summary>
@@ -706,7 +698,7 @@ namespace TextMonster.Xml
     /// </returns>
     public IEnumerable<XAttribute> Attributes()
     {
-      return this.GetAttributes((XName)null);
+      return GetAttributes(null);
     }
 
     /// <summary>
@@ -719,9 +711,9 @@ namespace TextMonster.Xml
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
     public IEnumerable<XAttribute> Attributes(XName name)
     {
-      if (!(name != (XName)null))
+      if (!(name != null))
         return XAttribute.EmptySequence;
-      return this.GetAttributes(name);
+      return GetAttributes(name);
     }
 
     /// <summary>
@@ -733,7 +725,7 @@ namespace TextMonster.Xml
     /// </returns>
     public IEnumerable<XNode> DescendantNodesAndSelf()
     {
-      return this.GetDescendantNodes(true);
+      return GetDescendantNodes(true);
     }
 
     /// <summary>
@@ -745,7 +737,7 @@ namespace TextMonster.Xml
     /// </returns>
     public IEnumerable<XElement> DescendantsAndSelf()
     {
-      return this.GetDescendants((XName)null, true);
+      return GetDescendants(null, true);
     }
 
     /// <summary>
@@ -758,9 +750,9 @@ namespace TextMonster.Xml
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
     public IEnumerable<XElement> DescendantsAndSelf(XName name)
     {
-      if (!(name != (XName)null))
-        return XElement.EmptySequence;
-      return this.GetDescendants(name, true);
+      if (!(name != null))
+        return EmptySequence;
+      return GetDescendants(name, true);
     }
 
     /// <summary>
@@ -773,7 +765,7 @@ namespace TextMonster.Xml
     /// <filterpriority>2</filterpriority>
     public XNamespace GetDefaultNamespace()
     {
-      string namespaceOfPrefixInScope = this.GetNamespaceOfPrefixInScope("xmlns", (XElement)null);
+      string namespaceOfPrefixInScope = GetNamespaceOfPrefixInScope("xmlns", null);
       if (namespaceOfPrefixInScope == null)
         return XNamespace.None;
       return XNamespace.Get(namespaceOfPrefixInScope);
@@ -795,12 +787,12 @@ namespace TextMonster.Xml
         throw new ArgumentException("Argument_InvalidPrefix");
       if (prefix == "xmlns")
         return XNamespace.Xmlns;
-      string namespaceOfPrefixInScope = this.GetNamespaceOfPrefixInScope(prefix, (XElement)null);
+      string namespaceOfPrefixInScope = GetNamespaceOfPrefixInScope(prefix, null);
       if (namespaceOfPrefixInScope != null)
         return XNamespace.Get(namespaceOfPrefixInScope);
       if (prefix == "xml")
         return XNamespace.Xml;
-      return (XNamespace)null;
+      return null;
     }
 
     /// <summary>
@@ -813,14 +805,14 @@ namespace TextMonster.Xml
     /// <param name="ns">Ein <see cref="T:System.Xml.Linq.XNamespace"/>, der gesucht werden soll.</param><filterpriority>2</filterpriority>
     public string GetPrefixOfNamespace(XNamespace ns)
     {
-      if (ns == (XNamespace)null)
+      if (ns == null)
         throw new ArgumentNullException("ns");
       string namespaceName = ns.NamespaceName;
       bool flag1 = false;
-      XElement outOfScope = this;
+      var outOfScope = this;
       do
       {
-        XAttribute xattribute = outOfScope.lastAttr;
+        var xattribute = outOfScope.lastAttr;
         if (xattribute != null)
         {
           bool flag2 = false;
@@ -829,7 +821,7 @@ namespace TextMonster.Xml
             xattribute = xattribute.next;
             if (xattribute.IsNamespaceDeclaration)
             {
-              if (xattribute.Value == namespaceName && xattribute.Name.NamespaceName.Length != 0 && (!flag1 || this.GetNamespaceOfPrefixInScope(xattribute.Name.LocalName, outOfScope) == null))
+              if (xattribute.Value == namespaceName && xattribute.Name.NamespaceName.Length != 0 && (!flag1 || GetNamespaceOfPrefixInScope(xattribute.Name.LocalName, outOfScope) == null))
                 return xattribute.Name.LocalName;
               flag2 = true;
             }
@@ -842,25 +834,12 @@ namespace TextMonster.Xml
       while (outOfScope != null);
       if (namespaceName == "http://www.w3.org/XML/1998/namespace")
       {
-        if (!flag1 || this.GetNamespaceOfPrefixInScope("xml", (XElement)null) == null)
+        if (!flag1 || GetNamespaceOfPrefixInScope("xml", null) == null)
           return "xml";
       }
       else if (namespaceName == "http://www.w3.org/2000/xmlns/")
         return "xmlns";
-      return (string)null;
-    }
-
-    /// <summary>
-    /// Lädt ein <see cref="T:System.Xml.Linq.XElement"/> aus einer Datei.
-    /// </summary>
-    /// 
-    /// <returns>
-    /// Ein <see cref="T:System.Xml.Linq.XElement"/> mit dem Inhalt der angegebenen Datei.
-    /// </returns>
-    /// <param name="uri">Eine URI-Zeichenfolge, die auf die Datei verweist, die in ein neues <see cref="T:System.Xml.Linq.XElement"/> geladen werden soll.</param>
-    public static XElement Load(string uri)
-    {
-      return XElement.Load(uri, LoadOptions.None);
+      return null;
     }
 
     /// <summary>
@@ -871,24 +850,11 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.Linq.XElement"/> mit dem Inhalt der angegebenen Datei.
     /// </returns>
     /// <param name="uri">Eine URI-Zeichenfolge, die auf die Datei verweist, die in ein <see cref="T:System.Xml.Linq.XElement"/> geladen werden soll.</param><param name="options">Ein <see cref="T:System.Xml.Linq.LoadOptions"/>, das Leerraumverhalten angibt und festlegt, ob Basis-URI- und Zeileninformationen geladen werden.</param>
-    public static XElement Load(string uri, LoadOptions options)
+    public static XElement Load(string uri, LoadOptions options = LoadOptions.None)
     {
-      XmlReaderSettings xmlReaderSettings = XNode.GetXmlReaderSettings(options);
-      using (XmlReader reader = XmlReader.Create(uri, xmlReaderSettings))
-        return XElement.Load(reader, options);
-    }
-
-    /// <summary>
-    /// Erstellt mit dem angegebenen Stream eine neue <see cref="T:System.Xml.Linq.XElement"/>-Instanz.
-    /// </summary>
-    /// 
-    /// <returns>
-    /// Ein <see cref="T:System.Xml.Linq.XElement"/>-Objekt, mit dem die im Stream enthaltenen Daten gelesen werden.
-    /// </returns>
-    /// <param name="stream">Der Stream, der die XML-Daten enthält.</param>
-    public static XElement Load(Stream stream)
-    {
-      return XElement.Load(stream, LoadOptions.None);
+      var xmlReaderSettings = GetXmlReaderSettings(options);
+      using (var reader = XmlReader.Create(uri, xmlReaderSettings))
+        return Load(reader, options);
     }
 
     /// <summary>
@@ -899,24 +865,11 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.Linq.XElement"/>-Objekt, mit dem die im Stream enthaltenen Daten gelesen werden.
     /// </returns>
     /// <param name="stream">Der Stream, der die XML-Daten enthält.</param><param name="options">Ein <see cref="T:System.Xml.Linq.LoadOptions"/>-Objekt, das angibt, ob Basis-URI- und Zeileninformationen geladen werden.</param>
-    public static XElement Load(Stream stream, LoadOptions options)
+    public static XElement Load(Stream stream, LoadOptions options = LoadOptions.None)
     {
-      XmlReaderSettings xmlReaderSettings = XNode.GetXmlReaderSettings(options);
-      using (XmlReader reader = XmlReader.Create(stream, xmlReaderSettings))
-        return XElement.Load(reader, options);
-    }
-
-    /// <summary>
-    /// Lädt ein <see cref="T:System.Xml.Linq.XElement"/> aus einem <see cref="T:System.IO.TextReader"/>.
-    /// </summary>
-    /// 
-    /// <returns>
-    /// Ein <see cref="T:System.Xml.Linq.XElement"/> mit dem XML, das aus dem angegebenen <see cref="T:System.IO.TextReader"/> gelesen wurde.
-    /// </returns>
-    /// <param name="textReader">Ein <see cref="T:System.IO.TextReader"/>, dessen <see cref="T:System.Xml.Linq.XElement"/>-Inhalt gelesen wird.</param>
-    public static XElement Load(TextReader textReader)
-    {
-      return XElement.Load(textReader, LoadOptions.None);
+      var xmlReaderSettings = GetXmlReaderSettings(options);
+      using (var reader = XmlReader.Create(stream, xmlReaderSettings))
+        return Load(reader, options);
     }
 
     /// <summary>
@@ -927,24 +880,11 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.Linq.XElement"/> mit dem XML, das aus dem angegebenen <see cref="T:System.IO.TextReader"/> gelesen wurde.
     /// </returns>
     /// <param name="textReader">Ein <see cref="T:System.IO.TextReader"/>, dessen <see cref="T:System.Xml.Linq.XElement"/>-Inhalt gelesen wird.</param><param name="options">Ein <see cref="T:System.Xml.Linq.LoadOptions"/>, das Leerraumverhalten angibt und festlegt, ob Basis-URI- und Zeileninformationen geladen werden.</param>
-    public static XElement Load(TextReader textReader, LoadOptions options)
+    public static XElement Load(TextReader textReader, LoadOptions options = LoadOptions.None)
     {
-      XmlReaderSettings xmlReaderSettings = XNode.GetXmlReaderSettings(options);
-      using (XmlReader reader = XmlReader.Create(textReader, xmlReaderSettings))
-        return XElement.Load(reader, options);
-    }
-
-    /// <summary>
-    /// Lädt ein <see cref="T:System.Xml.Linq.XElement"/> aus einem <see cref="T:System.Xml.XmlReader"/>.
-    /// </summary>
-    /// 
-    /// <returns>
-    /// Ein <see cref="T:System.Xml.Linq.XElement"/>, das die XML-Daten enthält, die aus dem angegebenen <see cref="T:System.Xml.XmlReader"/> gelesen wurden.
-    /// </returns>
-    /// <param name="reader">Ein <see cref="T:System.Xml.XmlReader"/>, der zum Ermitteln des Inhalts von <see cref="T:System.Xml.Linq.XElement"/> gelesen wird.</param>
-    public static XElement Load(XmlReader reader)
-    {
-      return XElement.Load(reader, LoadOptions.None);
+      var xmlReaderSettings = GetXmlReaderSettings(options);
+      using (var reader = XmlReader.Create(textReader, xmlReaderSettings))
+        return Load(reader, options);
     }
 
     /// <summary>
@@ -955,30 +895,17 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.Linq.XElement"/>, das die XML-Daten enthält, die aus dem angegebenen <see cref="T:System.Xml.XmlReader"/> gelesen wurden.
     /// </returns>
     /// <param name="reader">Ein <see cref="T:System.Xml.XmlReader"/>, der zum Ermitteln des Inhalts von <see cref="T:System.Xml.Linq.XElement"/> gelesen wird.</param><param name="options">Ein <see cref="T:System.Xml.Linq.LoadOptions"/>, das Leerraumverhalten angibt und festlegt, ob Basis-URI- und Zeileninformationen geladen werden.</param>
-    public static XElement Load(XmlReader reader, LoadOptions options)
+    public static XElement Load(XmlReader reader, LoadOptions options = LoadOptions.None)
     {
       if (reader == null)
         throw new ArgumentNullException("reader");
       if (reader.MoveToContent() != XmlNodeType.Element)
         throw new InvalidOperationException("InvalidOperation_ExpectedNodeType");
-      XElement xelement = new XElement(reader, options);
-      int num = (int)reader.MoveToContent();
+      var xelement = new XElement(reader, options);
+      reader.MoveToContent();
       if (!reader.EOF)
         throw new InvalidOperationException("InvalidOperation_ExpectedEndOfFile");
       return xelement;
-    }
-
-    /// <summary>
-    /// Lädt ein <see cref="T:System.Xml.Linq.XElement"/> aus einer Zeichenfolge, die XML enthält.
-    /// </summary>
-    /// 
-    /// <returns>
-    /// Ein <see cref="T:System.Xml.Linq.XElement"/>, das aus der Zeichenfolge aufgefüllt wird, die XML enthält.
-    /// </returns>
-    /// <param name="text">Ein <see cref="T:System.String"/>, der XML enthält.</param>
-    public static XElement Parse(string text)
-    {
-      return XElement.Parse(text, LoadOptions.None);
     }
 
     /// <summary>
@@ -989,13 +916,13 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.Linq.XElement"/>, das aus der Zeichenfolge aufgefüllt wird, die XML enthält.
     /// </returns>
     /// <param name="text">Ein <see cref="T:System.String"/>, der XML enthält.</param><param name="options">Ein <see cref="T:System.Xml.Linq.LoadOptions"/>, das Leerraumverhalten angibt und festlegt, ob Basis-URI- und Zeileninformationen geladen werden.</param>
-    public static XElement Parse(string text, LoadOptions options)
+    public static XElement Parse(string text, LoadOptions options = LoadOptions.None)
     {
-      using (StringReader stringReader = new StringReader(text))
+      using (var stringReader = new StringReader(text))
       {
-        XmlReaderSettings xmlReaderSettings = XNode.GetXmlReaderSettings(options);
-        using (XmlReader reader = XmlReader.Create((TextReader)stringReader, xmlReaderSettings))
-          return XElement.Load(reader, options);
+        var xmlReaderSettings = GetXmlReaderSettings(options);
+        using (var reader = XmlReader.Create(stringReader, xmlReaderSettings))
+          return Load(reader, options);
       }
     }
 
@@ -1004,8 +931,8 @@ namespace TextMonster.Xml
     /// </summary>
     public void RemoveAll()
     {
-      this.RemoveAttributes();
-      this.RemoveNodes();
+      RemoveAttributes();
+      RemoveNodes();
     }
 
     /// <summary>
@@ -1013,25 +940,25 @@ namespace TextMonster.Xml
     /// </summary>
     public void RemoveAttributes()
     {
-      if (this.SkipNotify())
+      if (SkipNotify())
       {
-        this.RemoveAttributesSkipNotify();
+        RemoveAttributesSkipNotify();
       }
       else
       {
-        while (this.lastAttr != null)
+        while (lastAttr != null)
         {
-          XAttribute xattribute = this.lastAttr.next;
-          this.NotifyChanging((object)xattribute, XObjectChangeEventArgs.Remove);
-          if (this.lastAttr == null || xattribute != this.lastAttr.next)
+          var xattribute = lastAttr.next;
+          NotifyChanging(xattribute, XObjectChangeEventArgs.Remove);
+          if (lastAttr == null || xattribute != lastAttr.next)
             throw new InvalidOperationException("InvalidOperation_ExternalCode");
-          if (xattribute != this.lastAttr)
-            this.lastAttr.next = xattribute.next;
+          if (xattribute != lastAttr)
+            lastAttr.next = xattribute.next;
           else
-            this.lastAttr = (XAttribute)null;
-          xattribute.parent = (XContainer)null;
-          xattribute.next = (XAttribute)null;
-          this.NotifyChanged((object)xattribute, XObjectChangeEventArgs.Remove);
+            lastAttr = null;
+          xattribute.parent = null;
+          xattribute.next = null;
+          NotifyChanged(xattribute, XObjectChangeEventArgs.Remove);
         }
       }
     }
@@ -1042,9 +969,9 @@ namespace TextMonster.Xml
     /// <param name="content">Der Inhalt, durch den die untergeordneten Knoten und die Attribute dieses Elements ersetzt werden.</param>
     public void ReplaceAll(object content)
     {
-      content = XContainer.GetContentSnapshot(content);
-      this.RemoveAll();
-      this.Add(content);
+      content = GetContentSnapshot(content);
+      RemoveAll();
+      Add(content);
     }
 
     /// <summary>
@@ -1053,7 +980,7 @@ namespace TextMonster.Xml
     /// <param name="content">Eine Parameterliste von Inhaltsobjekten.</param>
     public void ReplaceAll(params object[] content)
     {
-      this.ReplaceAll((object)content);
+      ReplaceAll((object)content);
     }
 
     /// <summary>
@@ -1062,9 +989,9 @@ namespace TextMonster.Xml
     /// <param name="content">Der Inhalt, durch den die Attribute dieses Elements ersetzt werden.</param>
     public void ReplaceAttributes(object content)
     {
-      content = XContainer.GetContentSnapshot(content);
-      this.RemoveAttributes();
-      this.Add(content);
+      content = GetContentSnapshot(content);
+      RemoveAttributes();
+      Add(content);
     }
 
     /// <summary>
@@ -1073,7 +1000,7 @@ namespace TextMonster.Xml
     /// <param name="content">Eine Parameterliste von Inhaltsobjekten.</param>
     public void ReplaceAttributes(params object[] content)
     {
-      this.ReplaceAttributes((object)content);
+      ReplaceAttributes((object)content);
     }
 
     /// <summary>
@@ -1082,7 +1009,7 @@ namespace TextMonster.Xml
     /// <param name="fileName">Ein <see cref="T:System.String"/>, der den Namen der Datei enthält.</param>
     public void Save(string fileName)
     {
-      this.Save(fileName, this.GetSaveOptionsFromAnnotations());
+      Save(fileName, GetSaveOptionsFromAnnotations());
     }
 
     /// <summary>
@@ -1091,9 +1018,9 @@ namespace TextMonster.Xml
     /// <param name="fileName">Ein <see cref="T:System.String"/>, der den Namen der Datei enthält.</param><param name="options">Ein <see cref="T:System.Xml.Linq.SaveOptions"/>, das Formatierungsverhalten angibt.</param>
     public void Save(string fileName, SaveOptions options)
     {
-      XmlWriterSettings xmlWriterSettings = XNode.GetXmlWriterSettings(options);
-      using (XmlWriter writer = XmlWriter.Create(fileName, xmlWriterSettings))
-        this.Save(writer);
+      var xmlWriterSettings = GetXmlWriterSettings(options);
+      using (var writer = XmlWriter.Create(fileName, xmlWriterSettings))
+        Save(writer);
     }
 
     /// <summary>
@@ -1102,7 +1029,7 @@ namespace TextMonster.Xml
     /// <param name="stream">Der Stream, in den dieses <see cref="T:System.Xml.Linq.XElement"/> ausgegeben werden soll.</param>
     public void Save(Stream stream)
     {
-      this.Save(stream, this.GetSaveOptionsFromAnnotations());
+      Save(stream, GetSaveOptionsFromAnnotations());
     }
 
     /// <summary>
@@ -1111,9 +1038,9 @@ namespace TextMonster.Xml
     /// <param name="stream">Der Stream, in den dieses <see cref="T:System.Xml.Linq.XElement"/> ausgegeben werden soll.</param><param name="options">Ein <see cref="T:System.Xml.Linq.SaveOptions"/>-Objekt, das das Formatierungsverhalten angibt.</param>
     public void Save(Stream stream, SaveOptions options)
     {
-      XmlWriterSettings xmlWriterSettings = XNode.GetXmlWriterSettings(options);
-      using (XmlWriter writer = XmlWriter.Create(stream, xmlWriterSettings))
-        this.Save(writer);
+      var xmlWriterSettings = GetXmlWriterSettings(options);
+      using (var writer = XmlWriter.Create(stream, xmlWriterSettings))
+        Save(writer);
     }
 
     /// <summary>
@@ -1122,7 +1049,7 @@ namespace TextMonster.Xml
     /// <param name="textWriter">Ein <see cref="T:System.IO.TextWriter"/>, in den das <see cref="T:System.Xml.Linq.XElement"/> geschrieben wird.</param>
     public void Save(TextWriter textWriter)
     {
-      this.Save(textWriter, this.GetSaveOptionsFromAnnotations());
+      Save(textWriter, GetSaveOptionsFromAnnotations());
     }
 
     /// <summary>
@@ -1131,9 +1058,9 @@ namespace TextMonster.Xml
     /// <param name="textWriter">Der <see cref="T:System.IO.TextWriter"/>, an den das XML ausgegeben werden soll.</param><param name="options">Ein <see cref="T:System.Xml.Linq.SaveOptions"/>, das Formatierungsverhalten angibt.</param>
     public void Save(TextWriter textWriter, SaveOptions options)
     {
-      XmlWriterSettings xmlWriterSettings = XNode.GetXmlWriterSettings(options);
-      using (XmlWriter writer = XmlWriter.Create(textWriter, xmlWriterSettings))
-        this.Save(writer);
+      var xmlWriterSettings = GetXmlWriterSettings(options);
+      using (var writer = XmlWriter.Create(textWriter, xmlWriterSettings))
+        Save(writer);
     }
 
     /// <summary>
@@ -1145,7 +1072,7 @@ namespace TextMonster.Xml
       if (writer == null)
         throw new ArgumentNullException("writer");
       writer.WriteStartDocument();
-      this.WriteTo(writer);
+      WriteTo(writer);
       writer.WriteEndDocument();
     }
 
@@ -1155,17 +1082,17 @@ namespace TextMonster.Xml
     /// <param name="name">Ein <see cref="T:System.Xml.Linq.XName"/>, der den Namen des zu ändernden Attributs enthält.</param><param name="value">Der Wert, der dem Attribut zugewiesen werden soll. Das Attribut wird entfernt, wenn der Wert null ist. Andernfalls wird der Wert in seine Zeichenfolgenentsprechung konvertiert und der <see cref="P:System.Xml.Linq.XAttribute.Value"/>-Eigenschaft des Attributs zugewiesen.</param><exception cref="T:System.ArgumentException">Der <paramref name="value"/> ist eine Instanz von <see cref="T:System.Xml.Linq.XObject"/></exception>
     public void SetAttributeValue(XName name, object value)
     {
-      XAttribute a = this.Attribute(name);
+      var a = Attribute(name);
       if (value == null)
       {
         if (a == null)
           return;
-        this.RemoveAttribute(a);
+        RemoveAttribute(a);
       }
       else if (a != null)
-        a.Value = XContainer.GetStringValue(value);
+        a.Value = GetStringValue(value);
       else
-        this.AppendAttribute(new XAttribute(name, value));
+        AppendAttribute(new XAttribute(name, value));
     }
 
     /// <summary>
@@ -1174,17 +1101,17 @@ namespace TextMonster.Xml
     /// <param name="name">Ein <see cref="T:System.Xml.Linq.XName"/>, der den Namen des untergeordneten Elements enthält, das geändert werden soll.</param><param name="value">Der dem untergeordneten Element zuzuweisende Wert. Das untergeordnete Element wird entfernt, wenn der Wert null ist. Andernfalls wird der Wert in seine Zeichenfolgenentsprechung konvertiert und der <see cref="P:System.Xml.Linq.XElement.Value"/>-Eigenschaft des untergeordneten Elements zugewiesen.</param><exception cref="T:System.ArgumentException">Der <paramref name="value"/> ist eine Instanz von <see cref="T:System.Xml.Linq.XObject"/></exception>
     public void SetElementValue(XName name, object value)
     {
-      XElement xelement = this.Element(name);
+      var xelement = Element(name);
       if (value == null)
       {
         if (xelement == null)
           return;
-        this.RemoveNode((XNode)xelement);
+        RemoveNode(xelement);
       }
       else if (xelement != null)
-        xelement.Value = XContainer.GetStringValue(value);
+        xelement.Value = GetStringValue(value);
       else
-        this.AddNode((XNode)new XElement(name, (object)XContainer.GetStringValue(value)));
+        AddNode(new XElement(name, GetStringValue(value)));
     }
 
     /// <summary>
@@ -1195,7 +1122,7 @@ namespace TextMonster.Xml
     {
       if (value == null)
         throw new ArgumentNullException("value");
-      this.Value = XContainer.GetStringValue(value);
+      Value = GetStringValue(value);
     }
 
     /// <summary>
@@ -1211,73 +1138,73 @@ namespace TextMonster.Xml
 
     XmlSchema IXmlSerializable.GetSchema()
     {
-      return (XmlSchema)null;
+      return null;
     }
 
     void IXmlSerializable.ReadXml(XmlReader reader)
     {
       if (reader == null)
         throw new ArgumentNullException("reader");
-      if (this.parent != null || this.annotations != null || (this.content != null || this.lastAttr != null))
+      if (parent != null || annotations != null || (content != null || lastAttr != null))
         throw new InvalidOperationException("InvalidOperation_DeserializeInstance");
       if (reader.MoveToContent() != XmlNodeType.Element)
         throw new InvalidOperationException("InvalidOperation_ExpectedNodeType");
-      this.ReadElementFrom(reader, LoadOptions.None);
+      ReadElementFrom(reader, LoadOptions.None);
     }
 
     void IXmlSerializable.WriteXml(XmlWriter writer)
     {
-      this.WriteTo(writer);
+      WriteTo(writer);
     }
 
     internal override void AddAttribute(XAttribute a)
     {
-      if (this.Attribute(a.Name) != null)
+      if (Attribute(a.Name) != null)
         throw new InvalidOperationException("InvalidOperation_DuplicateAttribute");
       if (a.parent != null)
         a = new XAttribute(a);
-      this.AppendAttribute(a);
+      AppendAttribute(a);
     }
 
     internal override void AddAttributeSkipNotify(XAttribute a)
     {
-      if (this.Attribute(a.Name) != null)
+      if (Attribute(a.Name) != null)
         throw new InvalidOperationException("InvalidOperation_DuplicateAttribute");
       if (a.parent != null)
         a = new XAttribute(a);
-      this.AppendAttributeSkipNotify(a);
+      AppendAttributeSkipNotify(a);
     }
 
     internal void AppendAttribute(XAttribute a)
     {
-      bool flag = this.NotifyChanging((object)a, XObjectChangeEventArgs.Add);
+      bool flag = NotifyChanging(a, XObjectChangeEventArgs.Add);
       if (a.parent != null)
         throw new InvalidOperationException("InvalidOperation_ExternalCode");
-      this.AppendAttributeSkipNotify(a);
+      AppendAttributeSkipNotify(a);
       if (!flag)
         return;
-      this.NotifyChanged((object)a, XObjectChangeEventArgs.Add);
+      NotifyChanged(a, XObjectChangeEventArgs.Add);
     }
 
     internal void AppendAttributeSkipNotify(XAttribute a)
     {
-      a.parent = (XContainer)this;
-      if (this.lastAttr == null)
+      a.parent = this;
+      if (lastAttr == null)
       {
         a.next = a;
       }
       else
       {
-        a.next = this.lastAttr.next;
-        this.lastAttr.next = a;
+        a.next = lastAttr.next;
+        lastAttr.next = a;
       }
-      this.lastAttr = a;
+      lastAttr = a;
     }
 
-    private bool AttributesEqual(XElement e)
+    bool AttributesEqual(XElement e)
     {
-      XAttribute xattribute1 = this.lastAttr;
-      XAttribute xattribute2 = e.lastAttr;
+      var xattribute1 = lastAttr;
+      var xattribute2 = e.lastAttr;
       if (xattribute1 != null && xattribute2 != null)
       {
         do
@@ -1287,7 +1214,7 @@ namespace TextMonster.Xml
           if (xattribute1.name != xattribute2.name || xattribute1.value != xattribute2.value)
             return false;
         }
-        while (xattribute1 != this.lastAttr);
+        while (xattribute1 != lastAttr);
         return xattribute2 == e.lastAttr;
       }
       if (xattribute1 == null)
@@ -1297,37 +1224,37 @@ namespace TextMonster.Xml
 
     internal override XNode CloneNode()
     {
-      return (XNode)new XElement(this);
+      return new XElement(this);
     }
 
     internal override bool DeepEquals(XNode node)
     {
-      XElement e = node as XElement;
-      if (e != null && this.name == e.name && this.ContentsEqual((XContainer)e))
-        return this.AttributesEqual(e);
+      var e = node as XElement;
+      if (e != null && name == e.name && ContentsEqual(e))
+        return AttributesEqual(e);
       return false;
     }
 
-    private IEnumerable<XAttribute> GetAttributes(XName name)
+    IEnumerable<XAttribute> GetAttributes(XName name)
     {
-      XAttribute a = this.lastAttr;
+      var a = lastAttr;
       if (a != null)
       {
         do
         {
           a = a.next;
-          if (name == (XName)null || a.name == name)
+          if (name == null || a.name == name)
             yield return a;
         }
-        while (a.parent == this && a != this.lastAttr);
+        while (a.parent == this && a != lastAttr);
       }
     }
 
-    private string GetNamespaceOfPrefixInScope(string prefix, XElement outOfScope)
+    string GetNamespaceOfPrefixInScope(string prefix, XElement outOfScope)
     {
-      for (XElement xelement = this; xelement != outOfScope; xelement = xelement.parent as XElement)
+      for (var xelement = this; xelement != outOfScope; xelement = xelement.parent as XElement)
       {
-        XAttribute xattribute = xelement.lastAttr;
+        var xattribute = xelement.lastAttr;
         if (xattribute != null)
         {
           do
@@ -1339,13 +1266,13 @@ namespace TextMonster.Xml
           while (xattribute != xelement.lastAttr);
         }
       }
-      return (string)null;
+      return null;
     }
 
     internal override int GetDeepHashCode()
     {
-      int num = this.name.GetHashCode() ^ this.ContentsHashCode();
-      XAttribute xattribute = this.lastAttr;
+      int num = name.GetHashCode() ^ ContentsHashCode();
+      var xattribute = lastAttr;
       if (xattribute != null)
       {
         do
@@ -1353,37 +1280,37 @@ namespace TextMonster.Xml
           xattribute = xattribute.next;
           num ^= xattribute.GetDeepHashCode();
         }
-        while (xattribute != this.lastAttr);
+        while (xattribute != lastAttr);
       }
       return num;
     }
 
-    private void ReadElementFrom(XmlReader r, LoadOptions o)
+    void ReadElementFrom(XmlReader r, LoadOptions o)
     {
       if (r.ReadState != ReadState.Interactive)
         throw new InvalidOperationException("InvalidOperation_ExpectedInteractive");
-      this.name = XNamespace.Get(r.NamespaceURI).GetName(r.LocalName);
+      name = XNamespace.Get(r.NamespaceURI).GetName(r.LocalName);
       if ((o & LoadOptions.SetBaseUri) != LoadOptions.None)
       {
         string baseUri = r.BaseURI;
-        if (baseUri != null && baseUri.Length != 0)
-          this.SetBaseUri(baseUri);
+        if (!string.IsNullOrEmpty(baseUri))
+          SetBaseUri(baseUri);
       }
-      IXmlLineInfo xmlLineInfo = (IXmlLineInfo)null;
+      var xmlLineInfo = (IXmlLineInfo)null;
       if ((o & LoadOptions.SetLineInfo) != LoadOptions.None)
       {
         xmlLineInfo = r as IXmlLineInfo;
         if (xmlLineInfo != null && xmlLineInfo.HasLineInfo())
-          this.SetLineInfo(xmlLineInfo.LineNumber, xmlLineInfo.LinePosition);
+          SetLineInfo(xmlLineInfo.LineNumber, xmlLineInfo.LinePosition);
       }
       if (r.MoveToFirstAttribute())
       {
         do
         {
-          XAttribute a = new XAttribute(XNamespace.Get(r.Prefix.Length == 0 ? string.Empty : r.NamespaceURI).GetName(r.LocalName), (object)r.Value);
+          var a = new XAttribute(XNamespace.Get(r.Prefix.Length == 0 ? string.Empty : r.NamespaceURI).GetName(r.LocalName), r.Value);
           if (xmlLineInfo != null && xmlLineInfo.HasLineInfo())
             a.SetLineInfo(xmlLineInfo.LineNumber, xmlLineInfo.LinePosition);
-          this.AppendAttributeSkipNotify(a);
+          AppendAttributeSkipNotify(a);
         }
         while (r.MoveToNextAttribute());
         r.MoveToElement();
@@ -1391,56 +1318,56 @@ namespace TextMonster.Xml
       if (!r.IsEmptyElement)
       {
         r.Read();
-        this.ReadContentFrom(r, o);
+        ReadContentFrom(r, o);
       }
       r.Read();
     }
 
     internal void RemoveAttribute(XAttribute a)
     {
-      bool flag = this.NotifyChanging((object)a, XObjectChangeEventArgs.Remove);
+      bool flag = NotifyChanging(a, XObjectChangeEventArgs.Remove);
       if (a.parent != this)
         throw new InvalidOperationException("InvalidOperation_ExternalCode");
-      XAttribute xattribute1 = this.lastAttr;
+      var xattribute1 = lastAttr;
       XAttribute xattribute2;
       while ((xattribute2 = xattribute1.next) != a)
         xattribute1 = xattribute2;
       if (xattribute1 == a)
       {
-        this.lastAttr = (XAttribute)null;
+        lastAttr = null;
       }
       else
       {
-        if (this.lastAttr == a)
-          this.lastAttr = xattribute1;
+        if (lastAttr == a)
+          lastAttr = xattribute1;
         xattribute1.next = a.next;
       }
-      a.parent = (XContainer)null;
-      a.next = (XAttribute)null;
+      a.parent = null;
+      a.next = null;
       if (!flag)
         return;
-      this.NotifyChanged((object)a, XObjectChangeEventArgs.Remove);
+      NotifyChanged(a, XObjectChangeEventArgs.Remove);
     }
 
-    private void RemoveAttributesSkipNotify()
+    void RemoveAttributesSkipNotify()
     {
-      if (this.lastAttr == null)
+      if (lastAttr == null)
         return;
-      XAttribute xattribute1 = this.lastAttr;
+      var xattribute1 = lastAttr;
       do
       {
-        XAttribute xattribute2 = xattribute1.next;
-        xattribute1.parent = (XContainer)null;
-        xattribute1.next = (XAttribute)null;
+        var xattribute2 = xattribute1.next;
+        xattribute1.parent = null;
+        xattribute1.next = null;
         xattribute1 = xattribute2;
       }
-      while (xattribute1 != this.lastAttr);
-      this.lastAttr = (XAttribute)null;
+      while (xattribute1 != lastAttr);
+      lastAttr = null;
     }
 
     internal void SetEndElementLineInfo(int lineNumber, int linePosition)
     {
-      this.AddAnnotation((object)new LineInfoEndElementAnnotation(lineNumber, linePosition));
+      AddAnnotation(new LineInfoEndElementAnnotation(lineNumber, linePosition));
     }
 
     internal override void ValidateNode(XNode node, XNode previous)

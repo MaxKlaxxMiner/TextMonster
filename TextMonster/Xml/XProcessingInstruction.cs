@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Xml;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace TextMonster.Xml
 {
@@ -8,8 +10,8 @@ namespace TextMonster.Xml
   /// </summary>
   public class XProcessingInstruction : XNode
   {
-    internal string target;
-    internal string data;
+    string target;
+    string data;
 
     /// <summary>
     /// Ruft den Zeichenfolgenwert der Verarbeitungsanweisung ab oder legt diesen fest.
@@ -23,17 +25,17 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.data;
+        return data;
       }
       set
       {
         if (value == null)
           throw new ArgumentNullException("value");
-        bool flag = this.NotifyChanging((object)this, XObjectChangeEventArgs.Value);
-        this.data = value;
+        bool flag = NotifyChanging(this, XObjectChangeEventArgs.Value);
+        data = value;
         if (!flag)
           return;
-        this.NotifyChanged((object)this, XObjectChangeEventArgs.Value);
+        NotifyChanged(this, XObjectChangeEventArgs.Value);
       }
     }
 
@@ -59,21 +61,21 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.String"/>, der die Zielanwendung für diese Verarbeitungsanweisung enthält.
     /// </returns>
-    /// <exception cref="T:System.ArgumentNullException">Der Zeichenfolgen-<paramref name="value"/> ist null.</exception><exception cref="T:System.ArgumentException">Das <paramref name="target"/> entspricht nicht den Einschränkungen für XML-Namen.</exception>
+    /// <exception cref="T:System.ArgumentNullException">Der Zeichenfolgen-<paramref name="value"/> ist null.</exception><exception cref="T:System.ArgumentException">Das Target entspricht nicht den Einschränkungen für XML-Namen.</exception>
     public string Target
     {
       get
       {
-        return this.target;
+        return target;
       }
       set
       {
-        XProcessingInstruction.ValidateName(value);
-        bool flag = this.NotifyChanging((object)this, XObjectChangeEventArgs.Name);
-        this.target = value;
+        ValidateName(value);
+        bool flag = NotifyChanging(this, XObjectChangeEventArgs.Name);
+        target = value;
         if (!flag)
           return;
-        this.NotifyChanged((object)this, XObjectChangeEventArgs.Name);
+        NotifyChanged(this, XObjectChangeEventArgs.Name);
       }
     }
 
@@ -85,7 +87,7 @@ namespace TextMonster.Xml
     {
       if (data == null)
         throw new ArgumentNullException("data");
-      XProcessingInstruction.ValidateName(target);
+      ValidateName(target);
       this.target = target;
       this.data = data;
     }
@@ -98,14 +100,14 @@ namespace TextMonster.Xml
     {
       if (other == null)
         throw new ArgumentNullException("other");
-      this.target = other.target;
-      this.data = other.data;
+      target = other.target;
+      data = other.data;
     }
 
     internal XProcessingInstruction(XmlReader r)
     {
-      this.target = r.Name;
-      this.data = r.Value;
+      target = r.Name;
+      data = r.Value;
       r.Read();
     }
 
@@ -117,28 +119,28 @@ namespace TextMonster.Xml
     {
       if (writer == null)
         throw new ArgumentNullException("writer");
-      writer.WriteProcessingInstruction(this.target, this.data);
+      writer.WriteProcessingInstruction(target, data);
     }
 
     internal override XNode CloneNode()
     {
-      return (XNode)new XProcessingInstruction(this);
+      return new XProcessingInstruction(this);
     }
 
     internal override bool DeepEquals(XNode node)
     {
-      XProcessingInstruction xprocessingInstruction = node as XProcessingInstruction;
-      if (xprocessingInstruction != null && this.target == xprocessingInstruction.target)
-        return this.data == xprocessingInstruction.data;
+      var xprocessingInstruction = node as XProcessingInstruction;
+      if (xprocessingInstruction != null && target == xprocessingInstruction.target)
+        return data == xprocessingInstruction.data;
       return false;
     }
 
     internal override int GetDeepHashCode()
     {
-      return this.target.GetHashCode() ^ this.data.GetHashCode();
+      return target.GetHashCode() ^ data.GetHashCode();
     }
 
-    private static void ValidateName(string name)
+    static void ValidateName(string name)
     {
       XmlConvert.VerifyNCName(name);
       if (string.Compare(name, "xml", StringComparison.OrdinalIgnoreCase) == 0)

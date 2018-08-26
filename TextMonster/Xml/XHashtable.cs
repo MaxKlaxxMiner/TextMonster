@@ -5,37 +5,36 @@ namespace TextMonster.Xml
 {
   internal sealed class XHashtable<TValue>
   {
-    private XHashtable<TValue>.XHashtableState state;
-    private const int StartingHash = 352654597;
+    XHashtableState state;
 
-    public XHashtable(XHashtable<TValue>.ExtractKeyDelegate extractKey, int capacity)
+    public XHashtable(ExtractKeyDelegate extractKey, int capacity)
     {
-      this.state = new XHashtable<TValue>.XHashtableState(extractKey, capacity);
+      state = new XHashtableState(extractKey, capacity);
     }
 
     public bool TryGetValue(string key, int index, int count, out TValue value)
     {
-      return this.state.TryGetValue(key, index, count, out value);
+      return state.TryGetValue(key, index, count, out value);
     }
 
     public TValue Add(TValue value)
     {
       TValue newValue;
-      while (!this.state.TryAdd(value, out newValue))
+      while (!state.TryAdd(value, out newValue))
       {
-        XHashtable<TValue> xhashtable = this;
+        var xhashtable = this;
         bool lockTaken = false;
         try
         {
-          Monitor.Enter((object)xhashtable, ref lockTaken);
-          XHashtable<TValue>.XHashtableState xhashtableState = this.state.Resize();
+          Monitor.Enter(xhashtable, ref lockTaken);
+          var xhashtableState = state.Resize();
           Thread.MemoryBarrier();
-          this.state = xhashtableState;
+          state = xhashtableState;
         }
         finally
         {
           if (lockTaken)
-            Monitor.Exit((object)xhashtable);
+            Monitor.Exit(xhashtable);
         }
       }
       return newValue;
@@ -43,56 +42,54 @@ namespace TextMonster.Xml
 
     public delegate string ExtractKeyDelegate(TValue value);
 
-    private sealed class XHashtableState
+    sealed class XHashtableState
     {
-      private int[] buckets;
-      private XHashtable<TValue>.XHashtableState.Entry[] entries;
-      private int numEntries;
-      private XHashtable<TValue>.ExtractKeyDelegate extractKey;
-      private const int EndOfList = 0;
-      private const int FullList = -1;
+      readonly int[] buckets;
+      readonly Entry[] entries;
+      int numEntries;
+      readonly ExtractKeyDelegate extractKey;
 
-      public XHashtableState(XHashtable<TValue>.ExtractKeyDelegate extractKey, int capacity)
+      public XHashtableState(ExtractKeyDelegate extractKey, int capacity)
       {
-        this.buckets = new int[capacity];
-        this.entries = new XHashtable<TValue>.XHashtableState.Entry[capacity];
+        buckets = new int[capacity];
+        entries = new Entry[capacity];
         this.extractKey = extractKey;
       }
 
-      public XHashtable<TValue>.XHashtableState Resize()
+      public XHashtableState Resize()
       {
-        if (this.numEntries < this.buckets.Length)
+        if (numEntries < buckets.Length)
           return this;
         int num = 0;
-        for (int index1 = 0; index1 < this.buckets.Length; ++index1)
+        for (int index1 = 0; index1 < buckets.Length; ++index1)
         {
-          int index2 = this.buckets[index1];
+          int index2 = buckets[index1];
           if (index2 == 0)
-            index2 = Interlocked.CompareExchange(ref this.buckets[index1], -1, 0);
-          for (; index2 > 0; index2 = this.entries[index2].Next != 0 ? this.entries[index2].Next : Interlocked.CompareExchange(ref this.entries[index2].Next, -1, 0))
+            index2 = Interlocked.CompareExchange(ref buckets[index1], -1, 0);
+          for (; index2 > 0; index2 = entries[index2].next != 0 ? entries[index2].next : Interlocked.CompareExchange(ref entries[index2].next, -1, 0))
           {
-            if (this.extractKey(this.entries[index2].Value) != null)
+            if (extractKey(entries[index2].value) != null)
               ++num;
           }
         }
         int capacity;
-        if (num < this.buckets.Length / 2)
+        if (num < buckets.Length / 2)
         {
-          capacity = this.buckets.Length;
+          capacity = buckets.Length;
         }
         else
         {
-          capacity = this.buckets.Length * 2;
+          capacity = buckets.Length * 2;
           if (capacity < 0)
             throw new OverflowException();
         }
-        XHashtable<TValue>.XHashtableState xhashtableState = new XHashtable<TValue>.XHashtableState(this.extractKey, capacity);
-        for (int index1 = 0; index1 < this.buckets.Length; ++index1)
+        var xhashtableState = new XHashtableState(extractKey, capacity);
+        for (int index1 = 0; index1 < buckets.Length; ++index1)
         {
-          for (int index2 = this.buckets[index1]; index2 > 0; index2 = this.entries[index2].Next)
+          for (int index2 = buckets[index1]; index2 > 0; index2 = entries[index2].next)
           {
             TValue newValue;
-            xhashtableState.TryAdd(this.entries[index2].Value, out newValue);
+            xhashtableState.TryAdd(entries[index2].value, out newValue);
           }
         }
         return xhashtableState;
@@ -100,11 +97,11 @@ namespace TextMonster.Xml
 
       public bool TryGetValue(string key, int index, int count, out TValue value)
       {
-        int hashCode = XHashtable<TValue>.XHashtableState.ComputeHashCode(key, index, count);
+        int hashCode = ComputeHashCode(key, index, count);
         int entryIndex = 0;
-        if (this.FindEntry(hashCode, key, index, count, ref entryIndex))
+        if (FindEntry(hashCode, key, index, count, ref entryIndex))
         {
-          value = this.entries[entryIndex].Value;
+          value = entries[entryIndex].value;
           return true;
         }
         value = default(TValue);
@@ -114,48 +111,48 @@ namespace TextMonster.Xml
       public bool TryAdd(TValue value, out TValue newValue)
       {
         newValue = value;
-        string key = this.extractKey(value);
+        string key = extractKey(value);
         if (key == null)
           return true;
-        int hashCode = XHashtable<TValue>.XHashtableState.ComputeHashCode(key, 0, key.Length);
-        int index = Interlocked.Increment(ref this.numEntries);
-        if (index < 0 || index >= this.buckets.Length)
+        int hashCode = ComputeHashCode(key, 0, key.Length);
+        int index = Interlocked.Increment(ref numEntries);
+        if (index < 0 || index >= buckets.Length)
           return false;
-        this.entries[index].Value = value;
-        this.entries[index].HashCode = hashCode;
+        entries[index].value = value;
+        entries[index].hashCode = hashCode;
         Thread.MemoryBarrier();
         int entryIndex = 0;
-        while (!this.FindEntry(hashCode, key, 0, key.Length, ref entryIndex))
+        while (!FindEntry(hashCode, key, 0, key.Length, ref entryIndex))
         {
-          entryIndex = entryIndex != 0 ? Interlocked.CompareExchange(ref this.entries[entryIndex].Next, index, 0) : Interlocked.CompareExchange(ref this.buckets[hashCode & this.buckets.Length - 1], index, 0);
+          entryIndex = entryIndex != 0 ? Interlocked.CompareExchange(ref entries[entryIndex].next, index, 0) : Interlocked.CompareExchange(ref buckets[hashCode & buckets.Length - 1], index, 0);
           if (entryIndex <= 0)
             return entryIndex == 0;
         }
-        newValue = this.entries[entryIndex].Value;
+        newValue = entries[entryIndex].value;
         return true;
       }
 
-      private bool FindEntry(int hashCode, string key, int index, int count, ref int entryIndex)
+      bool FindEntry(int hashCode, string key, int index, int count, ref int entryIndex)
       {
         int index1 = entryIndex;
-        int index2 = index1 != 0 ? index1 : this.buckets[hashCode & this.buckets.Length - 1];
+        int index2 = index1 != 0 ? index1 : buckets[hashCode & buckets.Length - 1];
         while (index2 > 0)
         {
-          if (this.entries[index2].HashCode == hashCode)
+          if (entries[index2].hashCode == hashCode)
           {
-            string strB = this.extractKey(this.entries[index2].Value);
+            string strB = extractKey(entries[index2].value);
             if (strB == null)
             {
-              if (this.entries[index2].Next > 0)
+              if (entries[index2].next > 0)
               {
-                this.entries[index2].Value = default(TValue);
-                index2 = this.entries[index2].Next;
+                entries[index2].value = default(TValue);
+                index2 = entries[index2].next;
                 if (index1 == 0)
                 {
-                  this.buckets[hashCode & this.buckets.Length - 1] = index2;
+                  buckets[hashCode & buckets.Length - 1] = index2;
                   continue;
                 }
-                this.entries[index1].Next = index2;
+                entries[index1].next = index2;
                 continue;
               }
             }
@@ -166,28 +163,28 @@ namespace TextMonster.Xml
             }
           }
           index1 = index2;
-          index2 = this.entries[index2].Next;
+          index2 = entries[index2].next;
         }
         entryIndex = index1;
         return false;
       }
 
-      private static int ComputeHashCode(string key, int index, int count)
+      static int ComputeHashCode(string key, int index, int count)
       {
         int num1 = 352654597;
         int num2 = index + count;
         for (int index1 = index; index1 < num2; ++index1)
-          num1 += num1 << 7 ^ (int)key[index1];
+          num1 += num1 << 7 ^ key[index1];
         int num3 = num1 - (num1 >> 17);
         int num4 = num3 - (num3 >> 11);
         return num4 - (num4 >> 5) & int.MaxValue;
       }
 
-      private struct Entry
+      struct Entry
       {
-        public TValue Value;
-        public int HashCode;
-        public int Next;
+        public TValue value;
+        public int hashCode;
+        public int next;
       }
     }
   }

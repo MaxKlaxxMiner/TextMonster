@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Xml;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace TextMonster.Xml
 {
@@ -8,7 +10,7 @@ namespace TextMonster.Xml
   /// </summary>
   public class XComment : XNode
   {
-    internal string value;
+    string value;
 
     /// <summary>
     /// Ruft den Knotentyp für diesen Knoten ab.
@@ -37,17 +39,17 @@ namespace TextMonster.Xml
     {
       get
       {
-        return this.value;
+        return value;
       }
       set
       {
         if (value == null)
           throw new ArgumentNullException("value");
-        bool flag = this.NotifyChanging((object)this, XObjectChangeEventArgs.Value);
+        bool flag = NotifyChanging(this, XObjectChangeEventArgs.Value);
         this.value = value;
         if (!flag)
           return;
-        this.NotifyChanged((object)this, XObjectChangeEventArgs.Value);
+        NotifyChanged(this, XObjectChangeEventArgs.Value);
       }
     }
 
@@ -70,12 +72,12 @@ namespace TextMonster.Xml
     {
       if (other == null)
         throw new ArgumentNullException("other");
-      this.value = other.value;
+      value = other.value;
     }
 
     internal XComment(XmlReader r)
     {
-      this.value = r.Value;
+      value = r.Value;
       r.Read();
     }
 
@@ -87,25 +89,25 @@ namespace TextMonster.Xml
     {
       if (writer == null)
         throw new ArgumentNullException("writer");
-      writer.WriteComment(this.value);
+      writer.WriteComment(value);
     }
 
     internal override XNode CloneNode()
     {
-      return (XNode)new XComment(this);
+      return new XComment(this);
     }
 
     internal override bool DeepEquals(XNode node)
     {
-      XComment xcomment = node as XComment;
+      var xcomment = node as XComment;
       if (xcomment != null)
-        return this.value == xcomment.value;
+        return value == xcomment.value;
       return false;
     }
 
     internal override int GetDeepHashCode()
     {
-      return this.value.GetHashCode();
+      return value.GetHashCode();
     }
   }
 }

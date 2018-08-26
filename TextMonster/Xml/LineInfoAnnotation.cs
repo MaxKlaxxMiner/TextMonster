@@ -3,8 +3,8 @@ namespace TextMonster.Xml
 {
   internal class LineInfoAnnotation
   {
-    internal int lineNumber;
-    internal int linePosition;
+    internal readonly int lineNumber;
+    internal readonly int linePosition;
 
     public LineInfoAnnotation(int lineNumber, int linePosition)
     {
