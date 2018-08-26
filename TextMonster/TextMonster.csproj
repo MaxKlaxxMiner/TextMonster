@@ -45,6 +45,14 @@
     <Compile Include="UnsafeHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Xml\BaseUriAnnotation.cs" />
+    <Compile Include="Xml\NamespaceResolver.cs" />
+    <Compile Include="Xml\StreamingElementWriter.cs" />
+    <Compile Include="Xml\XStreamingElement.cs" />
+    <Compile Include="Xml\XCData.cs" />
+    <Compile Include="Xml\XText.cs" />
+    <Compile Include="Xml\Inserter.cs" />
+    <Compile Include="Xml\XNodeEqualityComparer.cs" />
+    <Compile Include="Xml\XNodeDocumentOrderComparer.cs" />
     <Compile Include="Xml\XObjectChangeAnnotation.cs" />
     <Compile Include="Xml\LineInfoAnnotation.cs" />
     <Compile Include="Xml\NameSerializer.cs" />

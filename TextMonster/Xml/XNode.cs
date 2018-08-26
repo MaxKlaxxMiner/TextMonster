@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace TextMonster.Xml
 {
   /// <summary>
@@ -96,7 +97,7 @@ namespace TextMonster.Xml
     public void AddAfterSelf(object content)
     {
       if (this.parent == null)
-        throw new InvalidOperationException(Res.GetString("InvalidOperation_MissingParent"));
+        throw new InvalidOperationException("InvalidOperation_MissingParent");
       new Inserter(this.parent, this).Add(content);
     }
 
@@ -116,7 +117,7 @@ namespace TextMonster.Xml
     public void AddBeforeSelf(object content)
     {
       if (this.parent == null)
-        throw new InvalidOperationException(Res.GetString("InvalidOperation_MissingParent"));
+        throw new InvalidOperationException("InvalidOperation_MissingParent");
       XNode anchor = (XNode)this.parent.content;
       while (anchor.next != this)
         anchor = anchor.next;
