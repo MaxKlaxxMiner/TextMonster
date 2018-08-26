@@ -135,18 +135,12 @@ namespace TextMonster.Xml
       if (expandedName == null)
         throw new ArgumentNullException("expandedName");
       if (expandedName.Length == 0)
-        throw new ArgumentException(Res.GetString("Argument_InvalidExpandedName", new object[1]
-        {
-          (object) expandedName
-        }));
+        throw new ArgumentException("Argument_InvalidExpandedName");
       if ((int)expandedName[0] != 123)
         return XNamespace.None.GetName(expandedName);
       int num = expandedName.LastIndexOf('}');
       if (num <= 1 || num == expandedName.Length - 1)
-        throw new ArgumentException(Res.GetString("Argument_InvalidExpandedName", new object[1]
-        {
-          (object) expandedName
-        }));
+        throw new ArgumentException("Argument_InvalidExpandedName");
       return XNamespace.Get(expandedName, 1, num - 1).GetName(expandedName, num + 1, expandedName.Length - num - 1);
     }
 
@@ -193,7 +187,6 @@ namespace TextMonster.Xml
       return this == other;
     }
 
-    [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
     void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
     {
       if (info == null)

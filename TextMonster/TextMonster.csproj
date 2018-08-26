@@ -45,6 +45,9 @@
     <Compile Include="UnsafeHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Xml\BaseUriAnnotation.cs" />
+    <Compile Include="Xml\XObjectChangeAnnotation.cs" />
+    <Compile Include="Xml\LineInfoAnnotation.cs" />
+    <Compile Include="Xml\NameSerializer.cs" />
     <Compile Include="Xml\XHashtable.cs" />
     <Compile Include="Xml\XNamespace.cs" />
     <Compile Include="Xml\XName.cs" />

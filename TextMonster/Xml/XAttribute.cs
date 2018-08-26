@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Xml;
 
 namespace TextMonster.Xml
 {
@@ -555,7 +559,7 @@ namespace TextMonster.Xml
     public void Remove()
     {
       if (this.parent == null)
-        throw new InvalidOperationException(Res.GetString("InvalidOperation_MissingParent"));
+        throw new InvalidOperationException("InvalidOperation_MissingParent");
       ((XElement)this.parent).RemoveAttribute(this);
     }
 
@@ -615,24 +619,21 @@ namespace TextMonster.Xml
       if (namespaceName == "http://www.w3.org/2000/xmlns/")
       {
         if (value.Length == 0)
-          throw new ArgumentException(Res.GetString("Argument_NamespaceDeclarationPrefixed", new object[1]
-          {
-            (object) name.LocalName
-          }));
+          throw new ArgumentException("Argument_NamespaceDeclarationPrefixed");
         if (value == "http://www.w3.org/XML/1998/namespace")
         {
           if (name.LocalName != "xml")
-            throw new ArgumentException(Res.GetString("Argument_NamespaceDeclarationXml"));
+            throw new ArgumentException("Argument_NamespaceDeclarationXml");
         }
         else
         {
           if (value == "http://www.w3.org/2000/xmlns/")
-            throw new ArgumentException(Res.GetString("Argument_NamespaceDeclarationXmlns"));
+            throw new ArgumentException("Argument_NamespaceDeclarationXmlns");
           string localName = name.LocalName;
           if (localName == "xml")
-            throw new ArgumentException(Res.GetString("Argument_NamespaceDeclarationXml"));
+            throw new ArgumentException("Argument_NamespaceDeclarationXml");
           if (localName == "xmlns")
-            throw new ArgumentException(Res.GetString("Argument_NamespaceDeclarationXmlns"));
+            throw new ArgumentException("Argument_NamespaceDeclarationXmlns");
         }
       }
       else
@@ -640,9 +641,9 @@ namespace TextMonster.Xml
         if (namespaceName.Length != 0 || !(name.LocalName == "xmlns"))
           return;
         if (value == "http://www.w3.org/XML/1998/namespace")
-          throw new ArgumentException(Res.GetString("Argument_NamespaceDeclarationXml"));
+          throw new ArgumentException("Argument_NamespaceDeclarationXml");
         if (value == "http://www.w3.org/2000/xmlns/")
-          throw new ArgumentException(Res.GetString("Argument_NamespaceDeclarationXmlns"));
+          throw new ArgumentException("Argument_NamespaceDeclarationXmlns");
       }
     }
   }
