@@ -7,7 +7,11 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Linq;
 using TextMonster;
+using TextMonster.Xml;
+
 #endregion
 
 namespace TestTool
@@ -200,11 +204,44 @@ namespace TestTool
     }
     #endregion
 
+    static object ParseXml1(string fileName)
+    {
+      int sum = 0;
+      using (var rdat = File.OpenRead(fileName))
+      {
+        var xel = XElement.Load(rdat);
+        foreach (var x in xel.Elements())
+        {
+          int count = x.Attribute("count").Value.Length;
+          int value = x.Value.Length;
+          sum += count + value;
+        }
+      }
+      return sum;
+    }
+
+    static object ParseXml2(string fileName)
+    {
+      int sum = 0;
+      using (var rdat = File.OpenRead(fileName))
+      {
+        var xel = X_Element.Load(rdat);
+        foreach (var x in xel.Elements())
+        {
+          int count = x.Attribute("count").Value.Length;
+          int value = x.Value.Length;
+          sum += count + value;
+        }
+      }
+      return sum;
+    }
+
     static void SpeedCheckXmlParser()
     {
-      fullFile = File.ReadAllBytes(TestFile.CreateFilePrime(TestFile.FileType.Xml, 100000000));
+      //fullFile = File.ReadAllBytes(TestFile.CreateFilePrime(TestFile.FileType.Xml, 100000000));
 
-      //SpeedCheck("ParseXml() - 
+      //SpeedCheck("ParseXml1() - XElement", ParseXml1);
+      SpeedCheck("ParseXml2() - XElement", ParseXml2);
     }
 
     static void Main(string[] args)
