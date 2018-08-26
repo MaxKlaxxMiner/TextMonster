@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Xml;
 
 namespace TextMonster.Xml
 {
@@ -194,7 +196,7 @@ namespace TextMonster.Xml
           --num;
         }
         if (xnode1 != xnode2)
-          throw new InvalidOperationException(Res.GetString("InvalidOperation_MissingAncestor"));
+          throw new InvalidOperationException("InvalidOperation_MissingAncestor");
         if (num < 0)
         {
           do
@@ -221,7 +223,7 @@ namespace TextMonster.Xml
           n1 = (XNode)n1.parent;
       }
       else if (n1.parent == null)
-        throw new InvalidOperationException(Res.GetString("InvalidOperation_MissingAncestor"));
+        throw new InvalidOperationException("InvalidOperation_MissingAncestor");
       XNode xnode = (XNode)n1.parent.content;
       do
       {

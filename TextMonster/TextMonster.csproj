@@ -45,6 +45,11 @@
     <Compile Include="UnsafeHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Xml\BaseUriAnnotation.cs" />
+    <Compile Include="Xml\ReaderOptions.cs" />
+    <Compile Include="Xml\LineInfoEndElementAnnotation.cs" />
+    <Compile Include="Xml\XComment.cs" />
+    <Compile Include="Xml\XProcessingInstruction.cs" />
+    <Compile Include="Xml\XNodeReader.cs" />
     <Compile Include="Xml\NamespaceResolver.cs" />
     <Compile Include="Xml\StreamingElementWriter.cs" />
     <Compile Include="Xml\XStreamingElement.cs" />
