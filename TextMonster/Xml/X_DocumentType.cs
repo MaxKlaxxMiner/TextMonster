@@ -9,7 +9,8 @@ namespace TextMonster.Xml
   /// Stellt eine XML-Dokumenttypdefinition (DTD) dar.
   /// </summary>
   /// <filterpriority>2</filterpriority>
-  public class XDocumentType : XNode
+  // ReSharper disable once InconsistentNaming
+  public class X_DocumentType : X_Node
   {
     string name;
     string publicId;
@@ -31,11 +32,11 @@ namespace TextMonster.Xml
       }
       set
       {
-        bool flag = NotifyChanging(this, XObjectChangeEventArgs.Value);
+        bool flag = NotifyChanging(this, X_ObjectChangeEventArgs.Value);
         internalSubset = value;
         if (!flag)
           return;
-        NotifyChanged(this, XObjectChangeEventArgs.Value);
+        NotifyChanged(this, X_ObjectChangeEventArgs.Value);
       }
     }
 
@@ -55,11 +56,11 @@ namespace TextMonster.Xml
       set
       {
         value = XmlConvert.VerifyName(value);
-        bool flag = NotifyChanging(this, XObjectChangeEventArgs.Name);
+        bool flag = NotifyChanging(this, X_ObjectChangeEventArgs.Name);
         name = value;
         if (!flag)
           return;
-        NotifyChanged(this, XObjectChangeEventArgs.Name);
+        NotifyChanged(this, X_ObjectChangeEventArgs.Name);
       }
     }
 
@@ -93,11 +94,11 @@ namespace TextMonster.Xml
       }
       set
       {
-        bool flag = NotifyChanging(this, XObjectChangeEventArgs.Value);
+        bool flag = NotifyChanging(this, X_ObjectChangeEventArgs.Value);
         publicId = value;
         if (!flag)
           return;
-        NotifyChanged(this, XObjectChangeEventArgs.Value);
+        NotifyChanged(this, X_ObjectChangeEventArgs.Value);
       }
     }
 
@@ -116,11 +117,11 @@ namespace TextMonster.Xml
       }
       set
       {
-        bool flag = NotifyChanging(this, XObjectChangeEventArgs.Value);
+        bool flag = NotifyChanging(this, X_ObjectChangeEventArgs.Value);
         systemId = value;
         if (!flag)
           return;
-        NotifyChanged(this, XObjectChangeEventArgs.Value);
+        NotifyChanged(this, X_ObjectChangeEventArgs.Value);
       }
     }
 
@@ -128,7 +129,7 @@ namespace TextMonster.Xml
     /// Initialisiert eine Instanz der <see cref="T:System.Xml.Linq.XDocumentType"/>-Klasse.
     /// </summary>
     /// <param name="name">Ein <see cref="T:System.String"/>, der den qualifizierten Namen der DTD enthält. Dieser stimmt mit dem qualifizierten Namen des Stammelements des XML-Dokuments überein.</param><param name="publicId">Ein <see cref="T:System.String"/>, der den öffentlichen Bezeichner einer externen öffentlichen DTD enthält.</param><param name="systemId">Ein <see cref="T:System.String"/>, der den Systembezeichner einer externen privaten DTD enthält.</param><param name="internalSubset">Ein <see cref="T:System.String"/>, der die interne Teilmenge für eine interne DTD enthält.</param>
-    public XDocumentType(string name, string publicId, string systemId, string internalSubset)
+    public X_DocumentType(string name, string publicId, string systemId, string internalSubset)
     {
       this.name = XmlConvert.VerifyName(name);
       this.publicId = publicId;
@@ -140,7 +141,7 @@ namespace TextMonster.Xml
     /// Initialisiert eine Instanz der <see cref="T:System.Xml.Linq.XDocumentType"/>-Klasse mit einem anderen <see cref="T:System.Xml.Linq.XDocumentType"/>-Objekt
     /// </summary>
     /// <param name="other">Ein <see cref="T:System.Xml.Linq.XDocumentType"/>-Objekt, aus dem kopiert werden soll.</param>
-    public XDocumentType(XDocumentType other)
+    public X_DocumentType(X_DocumentType other)
     {
       if (other == null) throw new ArgumentNullException("other");
       name = other.name;
@@ -149,7 +150,7 @@ namespace TextMonster.Xml
       internalSubset = other.internalSubset;
     }
 
-    internal XDocumentType(XmlReader r)
+    internal X_DocumentType(XmlReader r)
     {
       name = r.Name;
       publicId = r.GetAttribute("PUBLIC");
@@ -169,14 +170,14 @@ namespace TextMonster.Xml
       writer.WriteDocType(name, publicId, systemId, internalSubset);
     }
 
-    internal override XNode CloneNode()
+    internal override X_Node CloneNode()
     {
-      return new XDocumentType(this);
+      return new X_DocumentType(this);
     }
 
-    internal override bool DeepEquals(XNode node)
+    internal override bool DeepEquals(X_Node node)
     {
-      var xdocumentType = node as XDocumentType;
+      var xdocumentType = node as X_DocumentType;
       if (xdocumentType != null && name == xdocumentType.name && (publicId == xdocumentType.publicId && systemId == xdocumentType.SystemId))
         return internalSubset == xdocumentType.internalSubset;
       return false;

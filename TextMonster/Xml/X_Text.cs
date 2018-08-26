@@ -8,7 +8,8 @@ namespace TextMonster.Xml
   /// Stellt einen Textknoten dar.
   /// </summary>
   /// <filterpriority>2</filterpriority>
-  public class XText : XNode
+  // ReSharper disable once InconsistentNaming
+  public class X_Text : X_Node
   {
     internal string text;
 
@@ -44,11 +45,11 @@ namespace TextMonster.Xml
       {
         if (value == null)
           throw new ArgumentNullException("value");
-        bool flag = NotifyChanging(this, XObjectChangeEventArgs.Value);
+        bool flag = NotifyChanging(this, X_ObjectChangeEventArgs.Value);
         text = value;
         if (!flag)
           return;
-        NotifyChanged(this, XObjectChangeEventArgs.Value);
+        NotifyChanged(this, X_ObjectChangeEventArgs.Value);
       }
     }
 
@@ -56,7 +57,7 @@ namespace TextMonster.Xml
     /// Initialisiert eine neue Instanz der <see cref="T:System.Xml.Linq.XText"/>-Klasse.
     /// </summary>
     /// <param name="value">Der <see cref="T:System.String"/>, der den Wert des <see cref="T:System.Xml.Linq.XText"/>-Knotens enthält.</param>
-    public XText(string value)
+    public X_Text(string value)
     {
       if (value == null)
         throw new ArgumentNullException("value");
@@ -67,14 +68,14 @@ namespace TextMonster.Xml
     /// Initialisiert eine neue Instanz der <see cref="T:System.Xml.Linq.XText"/>-Klasse mit einem anderen <see cref="T:System.Xml.Linq.XText"/>-Objekt.
     /// </summary>
     /// <param name="other">Der <see cref="T:System.Xml.Linq.XText"/>-Knoten, aus dem kopiert werden soll.</param>
-    public XText(XText other)
+    public X_Text(X_Text other)
     {
       if (other == null)
         throw new ArgumentNullException("other");
       text = other.text;
     }
 
-    internal XText(XmlReader r)
+    internal X_Text(XmlReader r)
     {
       text = r.Value;
       r.Read();
@@ -88,7 +89,7 @@ namespace TextMonster.Xml
     {
       if (writer == null)
         throw new ArgumentNullException("writer");
-      if (parent is XDocument)
+      if (parent is X_Document)
         writer.WriteWhitespace(text);
       else
         writer.WriteString(text);
@@ -99,15 +100,15 @@ namespace TextMonster.Xml
       sb.Append(text);
     }
 
-    internal override XNode CloneNode()
+    internal override X_Node CloneNode()
     {
-      return new XText(this);
+      return new X_Text(this);
     }
 
-    internal override bool DeepEquals(XNode node)
+    internal override bool DeepEquals(X_Node node)
     {
       if (node != null && NodeType == node.NodeType)
-        return text == ((XText)node).text;
+        return text == ((X_Text)node).text;
       return false;
     }
 

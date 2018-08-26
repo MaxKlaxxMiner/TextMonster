@@ -8,15 +8,15 @@ namespace TextMonster.Xml
   internal struct StreamingElementWriter
   {
     readonly XmlWriter writer;
-    XStreamingElement element;
-    readonly List<XAttribute> attributes;
+    X_StreamingElement element;
+    readonly List<X_Attribute> attributes;
     NamespaceResolver resolver;
 
     public StreamingElementWriter(XmlWriter w)
     {
       writer = w;
       element = null;
-      attributes = new List<XAttribute>();
+      attributes = new List<X_Attribute>();
       resolver = new NamespaceResolver();
     }
 
@@ -38,7 +38,7 @@ namespace TextMonster.Xml
       attributes.Clear();
     }
 
-    string GetPrefixOfNamespace(XNamespace ns, bool allowDefaultNamespace)
+    string GetPrefixOfNamespace(X_Namespace ns, bool allowDefaultNamespace)
     {
       string namespaceName = ns.NamespaceName;
       if (namespaceName.Length == 0)
@@ -59,7 +59,7 @@ namespace TextMonster.Xml
       foreach (var xattribute in attributes)
       {
         if (xattribute.IsNamespaceDeclaration)
-          resolver.Add(xattribute.Name.NamespaceName.Length == 0 ? string.Empty : xattribute.Name.LocalName, XNamespace.Get(xattribute.Value));
+          resolver.Add(xattribute.Name.NamespaceName.Length == 0 ? string.Empty : xattribute.Name.LocalName, X_Namespace.Get(xattribute.Value));
       }
     }
 
@@ -67,7 +67,7 @@ namespace TextMonster.Xml
     {
       if (content == null)
         return;
-      var n = content as XNode;
+      var n = content as X_Node;
       if (n != null)
       {
         WriteNode(n);
@@ -81,14 +81,14 @@ namespace TextMonster.Xml
         }
         else
         {
-          var a = content as XAttribute;
+          var a = content as X_Attribute;
           if (a != null)
           {
             WriteAttribute(a);
           }
           else
           {
-            var e = content as XStreamingElement;
+            var e = content as X_StreamingElement;
             if (e != null)
             {
               WriteStreamingElement(e);
@@ -110,7 +110,7 @@ namespace TextMonster.Xml
                     Write(content1);
                 }
                 else
-                  WriteString(XContainer.GetStringValue(content));
+                  WriteString(X_Container.GetStringValue(content));
               }
             }
           }
@@ -118,20 +118,20 @@ namespace TextMonster.Xml
       }
     }
 
-    void WriteAttribute(XAttribute a)
+    void WriteAttribute(X_Attribute a)
     {
       if (element == null)
         throw new InvalidOperationException("InvalidOperation_WriteAttribute");
       attributes.Add(a);
     }
 
-    void WriteNode(XNode n)
+    void WriteNode(X_Node n)
     {
       FlushElement();
       n.WriteTo(writer);
     }
 
-    internal void WriteStreamingElement(XStreamingElement e)
+    internal void WriteStreamingElement(X_StreamingElement e)
     {
       FlushElement();
       element = e;

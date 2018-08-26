@@ -36,7 +36,7 @@ namespace TextMonster.Xml
       scope = scope - 1;
     }
 
-    public void Add(string prefix, XNamespace ns)
+    public void Add(string prefix, X_Namespace ns)
     {
       var namespaceDeclaration = new NamespaceDeclaration
       {
@@ -52,7 +52,7 @@ namespace TextMonster.Xml
       rover = null;
     }
 
-    public void AddFirst(string prefix, XNamespace ns)
+    public void AddFirst(string prefix, X_Namespace ns)
     {
       var namespaceDeclaration = new NamespaceDeclaration
       {
@@ -73,7 +73,7 @@ namespace TextMonster.Xml
       rover = null;
     }
 
-    public string GetPrefixOfNamespace(XNamespace ns, bool allowDefaultNamespace)
+    public string GetPrefixOfNamespace(X_Namespace ns, bool allowDefaultNamespace)
     {
       if (rover != null && rover.ns == ns && (allowDefaultNamespace || rover.prefix.Length > 0))
         return rover.prefix;
@@ -108,7 +108,7 @@ namespace TextMonster.Xml
     sealed class NamespaceDeclaration
     {
       public string prefix;
-      public XNamespace ns;
+      public X_Namespace ns;
       public int scope;
       public NamespaceDeclaration prev;
     }

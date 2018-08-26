@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Xml;
+using System.Xml.Linq;
+
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
 // ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
@@ -14,7 +16,8 @@ namespace TextMonster.Xml
   /// Stellt einen Knoten dar, der weitere Knoten enthalten kann.
   /// </summary>
   /// <filterpriority>2</filterpriority>
-  public abstract class XContainer : XNode
+  // ReSharper disable once InconsistentNaming
+  public abstract class X_Container : X_Node
   {
     internal object content;
 
@@ -26,7 +29,7 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.Linq.XNode"/>, der den ersten untergeordneten Knoten des <see cref="T:System.Xml.Linq.XContainer"/> enthält.
     /// </returns>
     /// <filterpriority>2</filterpriority>
-    public XNode FirstNode
+    public X_Node FirstNode
     {
       get
       {
@@ -45,13 +48,13 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.Linq.XNode"/>, der den letzten untergeordneten Knoten des <see cref="T:System.Xml.Linq.XContainer"/> enthält.
     /// </returns>
     /// <filterpriority>2</filterpriority>
-    public XNode LastNode
+    public X_Node LastNode
     {
       get
       {
         if (content == null)
           return null;
-        var xnode = content as XNode;
+        var xnode = content as X_Node;
         if (xnode != null)
           return xnode;
         string str = content as string;
@@ -59,19 +62,19 @@ namespace TextMonster.Xml
         {
           if (str.Length == 0)
             return null;
-          var xtext = new XText(str) { parent = this };
+          var xtext = new X_Text(str) { parent = this };
           xtext.next = xtext;
           Interlocked.CompareExchange<object>(ref content, xtext, str);
         }
-        return (XNode)content;
+        return (X_Node)content;
       }
     }
 
-    internal XContainer()
+    internal X_Container()
     {
     }
 
-    internal XContainer(XContainer other)
+    internal X_Container(X_Container other)
     {
       if (other == null)
         throw new ArgumentNullException("other");
@@ -81,7 +84,7 @@ namespace TextMonster.Xml
       }
       else
       {
-        var xnode = (XNode)other.content;
+        var xnode = (X_Node)other.content;
         if (xnode == null)
           return;
         do
@@ -107,7 +110,7 @@ namespace TextMonster.Xml
       {
         if (content == null)
           return;
-        var n = content as XNode;
+        var n = content as X_Node;
         if (n != null)
         {
           AddNode(n);
@@ -121,17 +124,17 @@ namespace TextMonster.Xml
           }
           else
           {
-            var a = content as XAttribute;
+            var a = content as X_Attribute;
             if (a != null)
             {
               AddAttribute(a);
             }
             else
             {
-              var other = content as XStreamingElement;
+              var other = content as X_StreamingElement;
               if (other != null)
               {
-                AddNode(new XElement(other));
+                AddNode(new X_Element(other));
               }
               else
               {
@@ -198,7 +201,7 @@ namespace TextMonster.Xml
     {
       return XmlWriter.Create(new XNodeBuilder(this), new XmlWriterSettings
       {
-        ConformanceLevel = this is XDocument ? ConformanceLevel.Document : ConformanceLevel.Fragment
+        ConformanceLevel = this is X_Document ? ConformanceLevel.Document : ConformanceLevel.Fragment
       });
     }
 
@@ -209,7 +212,7 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XNode"/>, das die Nachfolgerknoten des <see cref="T:System.Xml.Linq.XContainer"/> in Dokumentreihenfolge enthält.
     /// </returns>
-    public IEnumerable<XNode> DescendantNodes()
+    public IEnumerable<X_Node> DescendantNodes()
     {
       return GetDescendantNodes(false);
     }
@@ -221,7 +224,7 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XElement"/> mit den Nachfolgerelementen des <see cref="T:System.Xml.Linq.XContainer"/>.
     /// </returns>
-    public IEnumerable<XElement> Descendants()
+    public IEnumerable<X_Element> Descendants()
     {
       return GetDescendants(null, false);
     }
@@ -234,10 +237,10 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XElement"/>, das die Nachfolgerelemente des <see cref="T:System.Xml.Linq.XContainer"/> enthält, die mit dem angegebenen <see cref="T:System.Xml.Linq.XName"/> übereinstimmen.
     /// </returns>
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
-    public IEnumerable<XElement> Descendants(XName name)
+    public IEnumerable<X_Element> Descendants(X_Name name)
     {
       if (!(name != null))
-        return XElement.EmptySequence;
+        return X_Element.EmptySequence;
       return GetDescendants(name, false);
     }
 
@@ -249,15 +252,15 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.Linq.XElement"/>, das mit dem angegebenen <see cref="T:System.Xml.Linq.XName"/> übereinstimmt, oder null.
     /// </returns>
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
-    public XElement Element(XName name)
+    public X_Element Element(X_Name name)
     {
-      var xnode = content as XNode;
+      var xnode = content as X_Node;
       if (xnode != null)
       {
         do
         {
           xnode = xnode.next;
-          var xelement = xnode as XElement;
+          var xelement = xnode as X_Element;
           if (xelement != null && xelement.name == name)
             return xelement;
         }
@@ -273,7 +276,7 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XElement"/>, das die untergeordneten Elemente dieses <see cref="T:System.Xml.Linq.XContainer"/> in Dokumentreihenfolge enthält.
     /// </returns>
-    public IEnumerable<XElement> Elements()
+    public IEnumerable<X_Element> Elements()
     {
       return GetElements(null);
     }
@@ -286,10 +289,10 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XElement"/>, das die untergeordneten Elemente des <see cref="T:System.Xml.Linq.XContainer"/>, die einen übereinstimmenden <see cref="T:System.Xml.Linq.XName"/> aufweisen, in Dokumentreihenfolge enthält.
     /// </returns>
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
-    public IEnumerable<XElement> Elements(XName name)
+    public IEnumerable<X_Element> Elements(X_Name name)
     {
       if (!(name != null))
-        return XElement.EmptySequence;
+        return X_Element.EmptySequence;
       return GetElements(name);
     }
 
@@ -300,7 +303,7 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XNode"/>, das die Inhalte dieses <see cref="T:System.Xml.Linq.XContainer"/> in Dokumentreihenfolge enthält.
     /// </returns>
-    public IEnumerable<XNode> Nodes()
+    public IEnumerable<X_Node> Nodes()
     {
       var n = LastNode;
       if (n != null)
@@ -332,22 +335,22 @@ namespace TextMonster.Xml
           {
             if (str.Length > 0)
               ConvertTextToNode();
-            else if (this is XElement)
+            else if (this is X_Element)
             {
-              NotifyChanging(this, XObjectChangeEventArgs.Value);
+              NotifyChanging(this, X_ObjectChangeEventArgs.Value);
               if (!ReferenceEquals(str, content))
                 throw new InvalidOperationException("InvalidOperation_ExternalCode");
               content = null;
-              NotifyChanged(this, XObjectChangeEventArgs.Value);
+              NotifyChanged(this, X_ObjectChangeEventArgs.Value);
             }
             else
               content = null;
           }
-          var xnode1 = content as XNode;
+          var xnode1 = content as X_Node;
           if (xnode1 != null)
           {
             var xnode2 = xnode1.next;
-            NotifyChanging(xnode2, XObjectChangeEventArgs.Remove);
+            NotifyChanging(xnode2, X_ObjectChangeEventArgs.Remove);
             if (xnode1 != content || xnode2 != xnode1.next)
               throw new InvalidOperationException("InvalidOperation_ExternalCode");
             if (xnode2 != xnode1)
@@ -356,7 +359,7 @@ namespace TextMonster.Xml
               content = null;
             xnode2.parent = null;
             xnode2.next = null;
-            NotifyChanged(xnode2, XObjectChangeEventArgs.Remove);
+            NotifyChanged(xnode2, X_ObjectChangeEventArgs.Remove);
           }
         }
       }
@@ -382,11 +385,11 @@ namespace TextMonster.Xml
       ReplaceNodes((object)content);
     }
 
-    internal virtual void AddAttribute(XAttribute a)
+    internal virtual void AddAttribute(X_Attribute a)
     {
     }
 
-    internal virtual void AddAttributeSkipNotify(XAttribute a)
+    internal virtual void AddAttributeSkipNotify(X_Attribute a)
     {
     }
 
@@ -394,7 +397,7 @@ namespace TextMonster.Xml
     {
       if (content == null)
         return;
-      var n = content as XNode;
+      var n = content as X_Node;
       if (n != null)
       {
         AddNodeSkipNotify(n);
@@ -408,17 +411,17 @@ namespace TextMonster.Xml
         }
         else
         {
-          var a = content as XAttribute;
+          var a = content as X_Attribute;
           if (a != null)
           {
             AddAttributeSkipNotify(a);
           }
           else
           {
-            var other = content as XStreamingElement;
+            var other = content as X_StreamingElement;
             if (other != null)
             {
-              AddNodeSkipNotify(new XElement(other));
+              AddNodeSkipNotify(new X_Element(other));
             }
             else
             {
@@ -445,7 +448,7 @@ namespace TextMonster.Xml
       }
     }
 
-    internal void AddNode(XNode n)
+    internal void AddNode(X_Node n)
     {
       ValidateNode(n, this);
       if (n.parent != null)
@@ -454,7 +457,7 @@ namespace TextMonster.Xml
       }
       else
       {
-        var xnode = (XNode)this;
+        var xnode = (X_Node)this;
         while (xnode.parent != null)
           xnode = xnode.parent;
         if (n == xnode)
@@ -464,7 +467,7 @@ namespace TextMonster.Xml
       AppendNode(n);
     }
 
-    internal void AddNodeSkipNotify(XNode n)
+    internal void AddNodeSkipNotify(X_Node n)
     {
       ValidateNode(n, this);
       if (n.parent != null)
@@ -473,7 +476,7 @@ namespace TextMonster.Xml
       }
       else
       {
-        var xnode = (XNode)this;
+        var xnode = (X_Node)this;
         while (xnode.parent != null)
           xnode = xnode.parent;
         if (n == xnode)
@@ -489,14 +492,14 @@ namespace TextMonster.Xml
       if (content == null)
       {
         if (s.Length > 0)
-          AppendNode(new XText(s));
-        else if (this is XElement)
+          AppendNode(new X_Text(s));
+        else if (this is X_Element)
         {
-          NotifyChanging(this, XObjectChangeEventArgs.Value);
+          NotifyChanging(this, X_ObjectChangeEventArgs.Value);
           if (content != null)
             throw new InvalidOperationException("InvalidOperation_ExternalCode");
           content = s;
-          NotifyChanged(this, XObjectChangeEventArgs.Value);
+          NotifyChanged(this, X_ObjectChangeEventArgs.Value);
         }
         else
           content = s;
@@ -506,11 +509,11 @@ namespace TextMonster.Xml
         if (s.Length <= 0)
           return;
         ConvertTextToNode();
-        var xtext = content as XText;
-        if (xtext != null && !(xtext is XcData))
+        var xtext = content as X_Text;
+        if (xtext != null && !(xtext is X_CData))
           xtext.Value += s;
         else
-          AppendNode(new XText(s));
+          AppendNode(new X_Text(s));
       }
     }
 
@@ -531,27 +534,27 @@ namespace TextMonster.Xml
         }
         else
         {
-          var xtext = content as XText;
-          if (xtext != null && !(xtext is XcData))
+          var xtext = content as X_Text;
+          if (xtext != null && !(xtext is X_CData))
             xtext.text += s;
           else
-            AppendNodeSkipNotify(new XText(s));
+            AppendNodeSkipNotify(new X_Text(s));
         }
       }
     }
 
-    internal void AppendNode(XNode n)
+    internal void AppendNode(X_Node n)
     {
-      bool flag = NotifyChanging(n, XObjectChangeEventArgs.Add);
+      bool flag = NotifyChanging(n, X_ObjectChangeEventArgs.Add);
       if (n.parent != null)
         throw new InvalidOperationException("InvalidOperation_ExternalCode");
       AppendNodeSkipNotify(n);
       if (!flag)
         return;
-      NotifyChanged(n, XObjectChangeEventArgs.Add);
+      NotifyChanged(n, X_ObjectChangeEventArgs.Add);
     }
 
-    internal void AppendNodeSkipNotify(XNode n)
+    internal void AppendNodeSkipNotify(X_Node n)
     {
       n.parent = this;
       if (content == null || content is string)
@@ -560,7 +563,7 @@ namespace TextMonster.Xml
       }
       else
       {
-        var xnode = (XNode)content;
+        var xnode = (X_Node)content;
         n.next = xnode.next;
         xnode.next = n;
       }
@@ -576,7 +579,7 @@ namespace TextMonster.Xml
       }
       else
       {
-        var xnode = (XNode)content;
+        var xnode = (X_Node)content;
         if (xnode == null)
           return;
         do
@@ -595,43 +598,43 @@ namespace TextMonster.Xml
       string str = content as string;
       if (str == null)
       {
-        var xnode = (XNode)content;
+        var xnode = (X_Node)content;
         do
         {
           xnode = xnode.next;
           if (xnode.NodeType != XmlNodeType.Text)
             return null;
-          str += ((XText)xnode).Value;
+          str += ((X_Text)xnode).Value;
         }
         while (xnode != content);
       }
       return str;
     }
 
-    string CollectText(ref XNode n)
+    string CollectText(ref X_Node n)
     {
       string str = "";
       while (n != null && n.NodeType == XmlNodeType.Text)
       {
-        str += ((XText)n).Value;
+        str += ((X_Text)n).Value;
         n = n != content ? n.next : null;
       }
       return str;
     }
 
-    internal bool ContentsEqual(XContainer e)
+    internal bool ContentsEqual(X_Container e)
     {
       if (content == e.content)
         return true;
       string textOnly = GetTextOnly();
       if (textOnly != null)
         return textOnly == e.GetTextOnly();
-      var xnode1 = content as XNode;
-      var xnode2 = e.content as XNode;
+      var xnode1 = content as X_Node;
+      var xnode2 = e.content as X_Node;
       if (xnode1 != null && xnode2 != null)
       {
         var n1 = xnode1.next;
-        for (var n2 = xnode2.next; CollectText(ref n1) == e.CollectText(ref n2); n2 = n2 != e.content ? n2.next : (XNode)null)
+        for (var n2 = xnode2.next; CollectText(ref n1) == e.CollectText(ref n2); n2 = n2 != e.content ? n2.next : (X_Node)null)
         {
           if (n1 == null && n2 == null)
             return true;
@@ -650,7 +653,7 @@ namespace TextMonster.Xml
       if (textOnly != null)
         return textOnly.GetHashCode();
       int num = 0;
-      var n = content as XNode;
+      var n = content as X_Node;
       if (n != null)
       {
         do
@@ -674,7 +677,7 @@ namespace TextMonster.Xml
       string str = content as string;
       if (str == null || str.Length <= 0)
         return;
-      var xtext = new XText(str) { parent = this };
+      var xtext = new X_Text(str) { parent = this };
       xtext.next = xtext;
       content = xtext;
     }
@@ -684,15 +687,15 @@ namespace TextMonster.Xml
       return XmlConvert.ToString(value, XmlDateTimeSerializationMode.RoundtripKind);
     }
 
-    internal IEnumerable<XNode> GetDescendantNodes(bool self)
+    internal IEnumerable<X_Node> GetDescendantNodes(bool self)
     {
       if (self)
         yield return this;
-      var n = (XNode)this;
+      var n = (X_Node)this;
       while (true)
       {
-        var xcontainer = n as XContainer;
-        XNode firstNode;
+        var xcontainer = n as X_Container;
+        X_Node firstNode;
         if (xcontainer != null && (firstNode = xcontainer.FirstNode) != null)
         {
           n = firstNode;
@@ -710,21 +713,21 @@ namespace TextMonster.Xml
       }
     }
 
-    internal IEnumerable<XElement> GetDescendants(XName name, bool self)
+    internal IEnumerable<X_Element> GetDescendants(X_Name name, bool self)
     {
       if (self)
       {
-        var xelement = (XElement)this;
+        var xelement = (X_Element)this;
         if (name == null || xelement.name == name)
           yield return xelement;
       }
-      var n = (XNode)this;
+      var n = (X_Node)this;
       var xcontainer = this;
       while (true)
       {
-        if (xcontainer != null && xcontainer.content is XNode)
+        if (xcontainer != null && xcontainer.content is X_Node)
         {
-          n = ((XNode)xcontainer.content).next;
+          n = ((X_Node)xcontainer.content).next;
         }
         else
         {
@@ -735,7 +738,7 @@ namespace TextMonster.Xml
           else
             break;
         }
-        var e = n as XElement;
+        var e = n as X_Element;
         if (e != null && (name == null || e.name == name))
           yield return e;
         xcontainer = e;
@@ -743,15 +746,15 @@ namespace TextMonster.Xml
       }
     }
 
-    IEnumerable<XElement> GetElements(XName name)
+    IEnumerable<X_Element> GetElements(X_Name name)
     {
-      var n = content as XNode;
+      var n = content as X_Node;
       if (n != null)
       {
         do
         {
           n = n.next;
-          var xelement = n as XElement;
+          var xelement = n as X_Element;
           if (xelement != null && (name == null || xelement.name == name))
             yield return xelement;
         }
@@ -782,7 +785,7 @@ namespace TextMonster.Xml
       }
       else
       {
-        if (value is XObject)
+        if (value is X_Object)
           throw new ArgumentException("Argument_XObjectValue");
         str = value.ToString();
       }
@@ -803,12 +806,12 @@ namespace TextMonster.Xml
         switch (r.NodeType)
         {
           case XmlNodeType.Element:
-          var xelement = new XElement(namespaceCache1.Get(r.NamespaceURI).GetName(r.LocalName));
+          var xelement = new X_Element(namespaceCache1.Get(r.NamespaceURI).GetName(r.LocalName));
           if (r.MoveToFirstAttribute())
           {
             do
             {
-              xelement.AppendAttributeSkipNotify(new XAttribute(namespaceCache2.Get(r.Prefix.Length == 0 ? string.Empty : r.NamespaceURI).GetName(r.LocalName), r.Value));
+              xelement.AppendAttributeSkipNotify(new X_Attribute(namespaceCache2.Get(r.Prefix.Length == 0 ? string.Empty : r.NamespaceURI).GetName(r.LocalName), r.Value));
             }
             while (r.MoveToNextAttribute());
             r.MoveToElement();
@@ -825,7 +828,7 @@ namespace TextMonster.Xml
           xcontainer.AddStringSkipNotify(r.Value);
           goto case XmlNodeType.EndEntity;
           case XmlNodeType.CDATA:
-          xcontainer.AddNodeSkipNotify(new XcData(r.Value));
+          xcontainer.AddNodeSkipNotify(new X_CData(r.Value));
           goto case XmlNodeType.EndEntity;
           case XmlNodeType.EntityReference:
           if (!r.CanResolveEntity)
@@ -833,13 +836,13 @@ namespace TextMonster.Xml
           r.ResolveEntity();
           goto case XmlNodeType.EndEntity;
           case XmlNodeType.ProcessingInstruction:
-          xcontainer.AddNodeSkipNotify(new XProcessingInstruction(r.Name, r.Value));
+          xcontainer.AddNodeSkipNotify(new X_ProcessingInstruction(r.Name, r.Value));
           goto case XmlNodeType.EndEntity;
           case XmlNodeType.Comment:
-          xcontainer.AddNodeSkipNotify(new XComment(r.Value));
+          xcontainer.AddNodeSkipNotify(new X_Comment(r.Value));
           goto case XmlNodeType.EndEntity;
           case XmlNodeType.DocumentType:
-          xcontainer.AddNodeSkipNotify(new XDocumentType(r.LocalName, r.GetAttribute("PUBLIC"), r.GetAttribute("SYSTEM"), r.Value));
+          xcontainer.AddNodeSkipNotify(new X_DocumentType(r.LocalName, r.GetAttribute("PUBLIC"), r.GetAttribute("SYSTEM"), r.Value));
           goto case XmlNodeType.EndEntity;
           case XmlNodeType.EndElement:
           if (xcontainer.content == null)
@@ -868,7 +871,7 @@ namespace TextMonster.Xml
         if (r.ReadState != ReadState.Interactive)
           throw new InvalidOperationException("InvalidOperation_ExpectedInteractive");
         var xcontainer = this;
-        var n = (XNode)null;
+        var n = (X_Node)null;
         var namespaceCache1 = new NamespaceCache();
         var namespaceCache2 = new NamespaceCache();
         string str = (o & LoadOptions.SetBaseUri) != LoadOptions.None ? r.BaseURI : null;
@@ -879,7 +882,7 @@ namespace TextMonster.Xml
           switch (r.NodeType)
           {
             case XmlNodeType.Element:
-            var xelement1 = new XElement(namespaceCache1.Get(r.NamespaceURI).GetName(r.LocalName));
+            var xelement1 = new X_Element(namespaceCache1.Get(r.NamespaceURI).GetName(r.LocalName));
             if (str != null && str != baseUri)
               xelement1.SetBaseUri(baseUri);
             if (xmlLineInfo != null && xmlLineInfo.HasLineInfo())
@@ -888,7 +891,7 @@ namespace TextMonster.Xml
             {
               do
               {
-                var a = new XAttribute(namespaceCache2.Get(r.Prefix.Length == 0 ? string.Empty : r.NamespaceURI).GetName(r.LocalName), r.Value);
+                var a = new X_Attribute(namespaceCache2.Get(r.Prefix.Length == 0 ? string.Empty : r.NamespaceURI).GetName(r.LocalName), r.Value);
                 if (xmlLineInfo != null && xmlLineInfo.HasLineInfo())
                   a.SetLineInfo(xmlLineInfo.LineNumber, xmlLineInfo.LinePosition);
                 xelement1.AppendAttributeSkipNotify(a);
@@ -911,13 +914,13 @@ namespace TextMonster.Xml
             case XmlNodeType.SignificantWhitespace:
             if (str != null && str != baseUri || xmlLineInfo != null && xmlLineInfo.HasLineInfo())
             {
-              n = new XText(r.Value);
+              n = new X_Text(r.Value);
               goto case XmlNodeType.EndEntity;
             }
             xcontainer.AddStringSkipNotify(r.Value);
             goto case XmlNodeType.EndEntity;
             case XmlNodeType.CDATA:
-            n = new XcData(r.Value);
+            n = new X_CData(r.Value);
             goto case XmlNodeType.EndEntity;
             case XmlNodeType.EntityReference:
             if (!r.CanResolveEntity)
@@ -925,18 +928,18 @@ namespace TextMonster.Xml
             r.ResolveEntity();
             goto case XmlNodeType.EndEntity;
             case XmlNodeType.ProcessingInstruction:
-            n = new XProcessingInstruction(r.Name, r.Value);
+            n = new X_ProcessingInstruction(r.Name, r.Value);
             goto case XmlNodeType.EndEntity;
             case XmlNodeType.Comment:
-            n = new XComment(r.Value);
+            n = new X_Comment(r.Value);
             goto case XmlNodeType.EndEntity;
             case XmlNodeType.DocumentType:
-            n = new XDocumentType(r.LocalName, r.GetAttribute("PUBLIC"), r.GetAttribute("SYSTEM"), r.Value);
+            n = new X_DocumentType(r.LocalName, r.GetAttribute("PUBLIC"), r.GetAttribute("SYSTEM"), r.Value);
             goto case XmlNodeType.EndEntity;
             case XmlNodeType.EndElement:
             if (xcontainer.content == null)
               xcontainer.content = string.Empty;
-            var xelement2 = xcontainer as XElement;
+            var xelement2 = xcontainer as X_Element;
             if (xelement2 != null && xmlLineInfo != null && xmlLineInfo.HasLineInfo())
               xelement2.SetEndElementLineInfo(xmlLineInfo.LineNumber, xmlLineInfo.LinePosition);
             if (xcontainer == this)
@@ -964,12 +967,12 @@ namespace TextMonster.Xml
       }
     }
 
-    internal void RemoveNode(XNode n)
+    internal void RemoveNode(X_Node n)
     {
-      bool flag = NotifyChanging(n, XObjectChangeEventArgs.Remove);
+      bool flag = NotifyChanging(n, X_ObjectChangeEventArgs.Remove);
       if (n.parent != this)
         throw new InvalidOperationException("InvalidOperation_ExternalCode");
-      var xnode = (XNode)content;
+      var xnode = (X_Node)content;
       while (xnode.next != n)
         xnode = xnode.next;
       if (xnode == n)
@@ -986,12 +989,12 @@ namespace TextMonster.Xml
       n.next = null;
       if (!flag)
         return;
-      NotifyChanged(n, XObjectChangeEventArgs.Remove);
+      NotifyChanged(n, X_ObjectChangeEventArgs.Remove);
     }
 
     void RemoveNodesSkipNotify()
     {
-      var xnode1 = content as XNode;
+      var xnode1 = content as X_Node;
       if (xnode1 != null)
       {
         do
@@ -1006,7 +1009,7 @@ namespace TextMonster.Xml
       content = null;
     }
 
-    internal virtual void ValidateNode(XNode node, XNode previous)
+    internal virtual void ValidateNode(X_Node node, X_Node previous)
     {
     }
 
@@ -1020,14 +1023,14 @@ namespace TextMonster.Xml
         return;
       if (content is string)
       {
-        if (this is XDocument)
+        if (this is X_Document)
           writer.WriteWhitespace((string)content);
         else
           writer.WriteString((string)content);
       }
       else
       {
-        var xnode = (XNode)content;
+        var xnode = (X_Node)content;
         do
         {
           xnode = xnode.next;

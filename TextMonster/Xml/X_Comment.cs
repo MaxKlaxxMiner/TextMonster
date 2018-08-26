@@ -8,7 +8,8 @@ namespace TextMonster.Xml
   /// <summary>
   /// Stellt einen XML-Kommentar dar.
   /// </summary>
-  public class XComment : XNode
+  // ReSharper disable once InconsistentNaming
+  public class X_Comment : X_Node
   {
     string value;
 
@@ -45,11 +46,11 @@ namespace TextMonster.Xml
       {
         if (value == null)
           throw new ArgumentNullException("value");
-        bool flag = NotifyChanging(this, XObjectChangeEventArgs.Value);
+        bool flag = NotifyChanging(this, X_ObjectChangeEventArgs.Value);
         this.value = value;
         if (!flag)
           return;
-        NotifyChanged(this, XObjectChangeEventArgs.Value);
+        NotifyChanged(this, X_ObjectChangeEventArgs.Value);
       }
     }
 
@@ -57,7 +58,7 @@ namespace TextMonster.Xml
     /// Initialisiert eine neue Instanz der <see cref="T:System.Xml.Linq.XComment"/>-Klasse mit dem angegebenen Zeichenfolgeninhalt.
     /// </summary>
     /// <param name="value">Eine Zeichenfolge, die den Inhalt des neuen <see cref="T:System.Xml.Linq.XComment"/>-Objekts enthält.</param><exception cref="T:System.ArgumentNullException">Der <paramref name="value"/>-Parameter ist null.</exception>
-    public XComment(string value)
+    public X_Comment(string value)
     {
       if (value == null)
         throw new ArgumentNullException("value");
@@ -68,14 +69,14 @@ namespace TextMonster.Xml
     /// Initialisiert eine neue Instanz der <see cref="T:System.Xml.Linq.XComment"/>-Klasse mit einem vorhandenen Kommentarknoten.
     /// </summary>
     /// <param name="other">Der <see cref="T:System.Xml.Linq.XComment"/>-Knoten, aus dem kopiert werden soll.</param><exception cref="T:System.ArgumentNullException">Der <paramref name="other"/>-Parameter ist null.</exception>
-    public XComment(XComment other)
+    public X_Comment(X_Comment other)
     {
       if (other == null)
         throw new ArgumentNullException("other");
       value = other.value;
     }
 
-    internal XComment(XmlReader r)
+    internal X_Comment(XmlReader r)
     {
       value = r.Value;
       r.Read();
@@ -92,14 +93,14 @@ namespace TextMonster.Xml
       writer.WriteComment(value);
     }
 
-    internal override XNode CloneNode()
+    internal override X_Node CloneNode()
     {
-      return new XComment(this);
+      return new X_Comment(this);
     }
 
-    internal override bool DeepEquals(XNode node)
+    internal override bool DeepEquals(X_Node node)
     {
-      var xcomment = node as XComment;
+      var xcomment = node as X_Comment;
       if (xcomment != null)
         return value == xcomment.value;
       return false;

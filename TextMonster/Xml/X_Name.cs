@@ -9,9 +9,10 @@ namespace TextMonster.Xml
   /// Stellt den Namen eines XML-Elements oder -Attributs dar.
   /// </summary>
   [Serializable]
-  public sealed class XName : IEquatable<XName>, ISerializable
+  // ReSharper disable once InconsistentNaming
+  public sealed class X_Name : IEquatable<X_Name>, ISerializable
   {
-    readonly XNamespace ns;
+    readonly X_Namespace ns;
     readonly string localName;
     readonly int hashCode;
 
@@ -37,7 +38,7 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Xml.Linq.XNamespace"/>, der den Namespaceteil des Namens enthält.
     /// </returns>
-    public XNamespace Namespace
+    public X_Namespace Namespace
     {
       get
       {
@@ -60,7 +61,7 @@ namespace TextMonster.Xml
       }
     }
 
-    internal XName(XNamespace ns, string localName)
+    internal X_Name(X_Namespace ns, string localName)
     {
       this.ns = ns;
       this.localName = XmlConvert.VerifyNCName(localName);
@@ -76,7 +77,7 @@ namespace TextMonster.Xml
     /// </returns>
     /// <param name="expandedName">Eine Zeichenfolge, die einen erweiterten XML-Namen im Format {namespace}localname enthält.</param>
     [CLSCompliant(false)]
-    public static implicit operator XName(string expandedName)
+    public static implicit operator X_Name(string expandedName)
     {
       if (expandedName == null)
         return null;
@@ -91,7 +92,7 @@ namespace TextMonster.Xml
     /// true, wenn <paramref name="left"/> und <paramref name="right"/> gleich sind, andernfalls false.
     /// </returns>
     /// <param name="left">Das erste zu vergleichende <see cref="T:System.Xml.Linq.XName"/>.</param><param name="right">Das zweite zu vergleichende <see cref="T:System.Xml.Linq.XName"/>.</param>
-    public static bool operator ==(XName left, XName right)
+    public static bool operator ==(X_Name left, X_Name right)
     {
       return left == right;
     }
@@ -104,7 +105,7 @@ namespace TextMonster.Xml
     /// true, wenn <paramref name="left"/> und <paramref name="right"/> ungleich sind, andernfalls false.
     /// </returns>
     /// <param name="left">Das erste zu vergleichende <see cref="T:System.Xml.Linq.XName"/>.</param><param name="right">Das zweite zu vergleichende <see cref="T:System.Xml.Linq.XName"/>.</param>
-    public static bool operator !=(XName left, XName right)
+    public static bool operator !=(X_Name left, X_Name right)
     {
       return left != right;
     }
@@ -131,18 +132,18 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.Linq.XName"/>-Objekt, das aus dem erweiterten Namen erstellt wurde.
     /// </returns>
     /// <param name="expandedName">Eine <see cref="T:System.String"/>, die einen erweiterten XML-Namen im Format {namespace}localname enthält.</param>
-    public static XName Get(string expandedName)
+    public static X_Name Get(string expandedName)
     {
       if (expandedName == null)
         throw new ArgumentNullException("expandedName");
       if (expandedName.Length == 0)
         throw new ArgumentException("Argument_InvalidExpandedName");
       if (expandedName[0] != 123)
-        return XNamespace.None.GetName(expandedName);
+        return X_Namespace.None.GetName(expandedName);
       int num = expandedName.LastIndexOf('}');
       if (num <= 1 || num == expandedName.Length - 1)
         throw new ArgumentException("Argument_InvalidExpandedName");
-      return XNamespace.Get(expandedName, 1, num - 1).GetName(expandedName, num + 1, expandedName.Length - num - 1);
+      return X_Namespace.Get(expandedName, 1, num - 1).GetName(expandedName, num + 1, expandedName.Length - num - 1);
     }
 
     /// <summary>
@@ -153,9 +154,9 @@ namespace TextMonster.Xml
     /// Ein aus dem angegebenen lokalen Namen und Namespace erstelltes <see cref="T:System.Xml.Linq.XName"/>-Objekt.
     /// </returns>
     /// <param name="localName">Ein lokaler (nicht qualifizierter) Name.</param><param name="namespaceName">Ein XML-Namespace.</param>
-    public static XName Get(string localName, string namespaceName)
+    public static X_Name Get(string localName, string namespaceName)
     {
-      return XNamespace.Get(namespaceName).GetName(localName);
+      return X_Namespace.Get(namespaceName).GetName(localName);
     }
 
     /// <summary>
@@ -183,7 +184,7 @@ namespace TextMonster.Xml
       return hashCode;
     }
 
-    bool IEquatable<XName>.Equals(XName other)
+    bool IEquatable<X_Name>.Equals(X_Name other)
     {
       return this == other;
     }

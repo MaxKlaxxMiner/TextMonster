@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
+using System.Xml.Linq;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable EventNeverSubscribedTo.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -11,9 +13,10 @@ namespace TextMonster.Xml
   /// Stellt einen Knoten oder ein Attribut in einer XML-Struktur dar.
   /// </summary>
   /// <filterpriority>2</filterpriority>
-  public abstract class XObject : IXmlLineInfo
+  // ReSharper disable once InconsistentNaming
+  public abstract class X_Object : IXmlLineInfo
   {
-    internal XContainer parent;
+    internal X_Container parent;
     internal object annotations;
 
     /// <summary>
@@ -31,7 +34,7 @@ namespace TextMonster.Xml
         var xobject = this;
         while (true)
         {
-          for (; xobject == null || xobject.annotations != null; xobject = (XObject)xobject.parent)
+          for (; xobject == null || xobject.annotations != null; xobject = (X_Object)xobject.parent)
           {
             if (xobject == null)
               return string.Empty;
@@ -51,14 +54,14 @@ namespace TextMonster.Xml
     /// <returns>
     /// Das <see cref="T:System.Xml.Linq.XDocument"/> für dieses <see cref="T:System.Xml.Linq.XObject"/>.
     /// </returns>
-    public XDocument Document
+    public X_Document Document
     {
       get
       {
         var xobject = this;
         while (xobject.parent != null)
           xobject = xobject.parent;
-        return xobject as XDocument;
+        return xobject as X_Document;
       }
     }
 
@@ -78,11 +81,11 @@ namespace TextMonster.Xml
     /// <returns>
     /// Das übergeordnete <see cref="T:System.Xml.Linq.XElement"/> dieses <see cref="T:System.Xml.Linq.XObject"/>.
     /// </returns>
-    public XElement Parent
+    public X_Element Parent
     {
       get
       {
-        return parent as XElement;
+        return parent as X_Element;
       }
     }
 
@@ -119,7 +122,7 @@ namespace TextMonster.Xml
     /// <summary>
     /// Wird ausgelöst, wenn dieses <see cref="T:System.Xml.Linq.XObject"/> oder eines seiner untergeordneten Elemente geändert wurde.
     /// </summary>
-    public event EventHandler<XObjectChangeEventArgs> Changed
+    public event EventHandler<X_ObjectChangeEventArgs> Changed
     {
       add
       {
@@ -150,7 +153,7 @@ namespace TextMonster.Xml
     /// <summary>
     /// Wird ausgelöst, wenn dieses <see cref="T:System.Xml.Linq.XObject"/> oder eines seiner untergeordneten Elemente gerade geändert wird.
     /// </summary>
-    public event EventHandler<XObjectChangeEventArgs> Changing
+    public event EventHandler<X_ObjectChangeEventArgs> Changing
     {
       add
       {
@@ -178,7 +181,7 @@ namespace TextMonster.Xml
       }
     }
 
-    internal XObject()
+    internal X_Object()
     {
     }
 
@@ -432,12 +435,12 @@ namespace TextMonster.Xml
       return Annotation<LineInfoAnnotation>() != null;
     }
 
-    internal void NotifyChanged(object sender, XObjectChangeEventArgs e)
+    internal void NotifyChanged(object sender, X_ObjectChangeEventArgs e)
     {
       var xobject = this;
       while (true)
       {
-        for (; xobject == null || xobject.annotations != null; xobject = (XObject)xobject.parent)
+        for (; xobject == null || xobject.annotations != null; xobject = (X_Object)xobject.parent)
         {
           if (xobject == null)
             return;
@@ -452,13 +455,13 @@ namespace TextMonster.Xml
       }
     }
 
-    internal bool NotifyChanging(object sender, XObjectChangeEventArgs e)
+    internal bool NotifyChanging(object sender, X_ObjectChangeEventArgs e)
     {
       bool flag = false;
       var xobject = this;
       while (true)
       {
-        for (; xobject == null || xobject.annotations != null; xobject = (XObject)xobject.parent)
+        for (; xobject == null || xobject.annotations != null; xobject = (X_Object)xobject.parent)
         {
           if (xobject == null)
             return flag;
@@ -489,7 +492,7 @@ namespace TextMonster.Xml
       var xobject = this;
       while (true)
       {
-        for (; xobject == null || xobject.annotations != null; xobject = (XObject)xobject.parent)
+        for (; xobject == null || xobject.annotations != null; xobject = (X_Object)xobject.parent)
         {
           if (xobject == null)
             return true;
@@ -505,7 +508,7 @@ namespace TextMonster.Xml
       var xobject = this;
       while (true)
       {
-        for (; xobject == null || xobject.annotations != null; xobject = (XObject)xobject.parent)
+        for (; xobject == null || xobject.annotations != null; xobject = (X_Object)xobject.parent)
         {
           if (xobject == null)
             return SaveOptions.None;

@@ -2,6 +2,8 @@
 using System.IO;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
+
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
 
@@ -10,7 +12,8 @@ namespace TextMonster.Xml
   /// <summary>
   /// Stellt ein XML-Dokument dar.
   /// </summary>
-  public class XDocument : XContainer
+  // ReSharper disable once InconsistentNaming
+  public class X_Document : X_Container
   {
     /// <summary>
     /// Ruft die XML-Deklaration für das Dokument ab oder legt diese fest.
@@ -19,7 +22,7 @@ namespace TextMonster.Xml
     /// <returns>
     /// Eine <see cref="T:System.Xml.Linq.XDeclaration"/>, die die XML-Deklaration für dieses Dokument enthält.
     /// </returns>
-    public XDeclaration Declaration { get; set; }
+    public X_Declaration Declaration { get; set; }
 
     /// <summary>
     /// Ruft die Dokumenttypdefinition (DTD) für dieses Dokument ab.
@@ -28,11 +31,11 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Xml.Linq.XDocumentType"/>, der die DTD für dieses Dokument enthält.
     /// </returns>
-    public XDocumentType DocumentType
+    public X_DocumentType DocumentType
     {
       get
       {
-        return GetFirstNode<XDocumentType>();
+        return GetFirstNode<X_DocumentType>();
       }
     }
 
@@ -58,18 +61,18 @@ namespace TextMonster.Xml
     /// <returns>
     /// Das Stamm-<see cref="T:System.Xml.Linq.XElement"/> der XML-Struktur.
     /// </returns>
-    public XElement Root
+    public X_Element Root
     {
       get
       {
-        return GetFirstNode<XElement>();
+        return GetFirstNode<X_Element>();
       }
     }
 
     /// <summary>
     /// Initialisiert eine neue Instanz der <see cref="T:System.Xml.Linq.XDocument"/>-Klasse.
     /// </summary>
-    public XDocument()
+    public X_Document()
     {
     }
 
@@ -77,7 +80,7 @@ namespace TextMonster.Xml
     /// Initialisiert eine neue Instanz der <see cref="T:System.Xml.Linq.XDocument"/>-Klasse mit dem angegebenen Inhalt.
     /// </summary>
     /// <param name="content">Eine Parameterliste von Inhaltsobjekten, die diesem Dokument hinzugefügt werden sollen.</param>
-    public XDocument(params object[] content)
+    public X_Document(params object[] content)
       : this()
     {
       AddContentSkipNotify(content);
@@ -87,7 +90,7 @@ namespace TextMonster.Xml
     /// Initialisiert eine neue Instanz der <see cref="T:System.Xml.Linq.XDocument"/>-Klasse mit der angegebenen <see cref="T:System.Xml.Linq.XDeclaration"/> und dem angegebenen Inhalt.
     /// </summary>
     /// <param name="declaration">Eine <see cref="T:System.Xml.Linq.XDeclaration"/> für das Dokument.</param><param name="content">Der Inhalt des Dokuments.</param>
-    public XDocument(XDeclaration declaration, params object[] content)
+    public X_Document(X_Declaration declaration, params object[] content)
       : this(content)
     {
       Declaration = declaration;
@@ -97,12 +100,12 @@ namespace TextMonster.Xml
     /// Initialisiert eine neue Instanz der <see cref="T:System.Xml.Linq.XDocument"/>-Klasse mit einem vorhandenen <see cref="T:System.Xml.Linq.XDocument"/>-Objekt.
     /// </summary>
     /// <param name="other">Das <see cref="T:System.Xml.Linq.XDocument"/>-Objekt, das kopiert wird.</param>
-    public XDocument(XDocument other)
+    public X_Document(X_Document other)
       : base(other)
     {
       if (other.Declaration == null)
         return;
-      Declaration = new XDeclaration(other.Declaration);
+      Declaration = new X_Declaration(other.Declaration);
     }
 
     /// <summary>
@@ -113,7 +116,7 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.Linq.XDocument"/> mit dem Inhalt der angegebenen Datei.
     /// </returns>
     /// <param name="uri">Eine URI-Zeichenfolge, die auf die Datei verweist, die in ein neues <see cref="T:System.Xml.Linq.XDocument"/> geladen werden soll.</param><param name="options">Ein <see cref="T:System.Xml.Linq.LoadOptions"/>, das Leerraumverhalten angibt und festlegt, ob Basis-URI- und Zeileninformationen geladen werden.</param>
-    public static XDocument Load(string uri, LoadOptions options = LoadOptions.None)
+    public static X_Document Load(string uri, LoadOptions options = LoadOptions.None)
     {
       var xmlReaderSettings = GetXmlReaderSettings(options);
       using (var reader = XmlReader.Create(uri, xmlReaderSettings))
@@ -128,7 +131,7 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.Linq.XDocument"/>-Objekt, mit dem die im Stream enthaltenen Daten gelesen werden.
     /// </returns>
     /// <param name="stream">Der Stream, der die XML-Daten enthält.</param><param name="options">Ein <see cref="T:System.Xml.Linq.LoadOptions"/>, das angibt, ob Basis-URI- und Zeileninformationen geladen werden.</param>
-    public static XDocument Load(Stream stream, LoadOptions options = LoadOptions.None)
+    public static X_Document Load(Stream stream, LoadOptions options = LoadOptions.None)
     {
       var xmlReaderSettings = GetXmlReaderSettings(options);
       using (var reader = XmlReader.Create(stream, xmlReaderSettings))
@@ -143,7 +146,7 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.Linq.XDocument"/>, das die XML-Daten enthält, die aus dem angegebenen <see cref="T:System.IO.TextReader"/> gelesen wurden.
     /// </returns>
     /// <param name="textReader">Ein <see cref="T:System.IO.TextReader"/>, der den Inhalt für das <see cref="T:System.Xml.Linq.XDocument"/> enthält.</param><param name="options">Ein <see cref="T:System.Xml.Linq.LoadOptions"/>, das Leerraumverhalten angibt und festlegt, ob Basis-URI- und Zeileninformationen geladen werden.</param>
-    public static XDocument Load(TextReader textReader, LoadOptions options = LoadOptions.None)
+    public static X_Document Load(TextReader textReader, LoadOptions options = LoadOptions.None)
     {
       var xmlReaderSettings = GetXmlReaderSettings(options);
       using (var reader = XmlReader.Create(textReader, xmlReaderSettings))
@@ -158,13 +161,13 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.Linq.XDocument"/>, das die XML-Daten enthält, die aus dem angegebenen <see cref="T:System.Xml.XmlReader"/> gelesen wurden.
     /// </returns>
     /// <param name="reader">Ein <see cref="T:System.Xml.XmlReader"/>, dessen Inhalt des <see cref="T:System.Xml.Linq.XDocument"/> gelesen wird.</param><param name="options">Ein <see cref="T:System.Xml.Linq.LoadOptions"/>, das angibt, ob Basis-URI- und Zeileninformationen geladen werden.</param>
-    public static XDocument Load(XmlReader reader, LoadOptions options = LoadOptions.None)
+    public static X_Document Load(XmlReader reader, LoadOptions options = LoadOptions.None)
     {
       if (reader == null)
         throw new ArgumentNullException("reader");
       if (reader.ReadState == ReadState.Initial)
         reader.Read();
-      var xdocument = new XDocument();
+      var xdocument = new X_Document();
       if ((options & LoadOptions.SetBaseUri) != LoadOptions.None)
       {
         string baseUri = reader.BaseURI;
@@ -178,7 +181,7 @@ namespace TextMonster.Xml
           xdocument.SetLineInfo(xmlLineInfo.LineNumber, xmlLineInfo.LinePosition);
       }
       if (reader.NodeType == XmlNodeType.XmlDeclaration)
-        xdocument.Declaration = new XDeclaration(reader);
+        xdocument.Declaration = new X_Declaration(reader);
       xdocument.ReadContentFrom(reader, options);
       if (!reader.EOF)
         throw new InvalidOperationException("InvalidOperation_ExpectedEndOfFile");
@@ -195,7 +198,7 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.Linq.XDocument"/>, das aus der Zeichenfolge aufgefüllt wird, die XML enthält.
     /// </returns>
     /// <param name="text">Eine Zeichenfolge, die XML enthält.</param><param name="options">Ein <see cref="T:System.Xml.Linq.LoadOptions"/>, das Leerraumverhalten angibt und festlegt, ob Basis-URI- und Zeileninformationen geladen werden.</param>
-    public static XDocument Parse(string text, LoadOptions options = LoadOptions.None)
+    public static X_Document Parse(string text, LoadOptions options = LoadOptions.None)
     {
       using (var stringReader = new StringReader(text))
       {
@@ -318,24 +321,24 @@ namespace TextMonster.Xml
       writer.WriteEndDocument();
     }
 
-    internal override void AddAttribute(XAttribute a)
+    internal override void AddAttribute(X_Attribute a)
     {
       throw new ArgumentException("Argument_AddAttribute");
     }
 
-    internal override void AddAttributeSkipNotify(XAttribute a)
+    internal override void AddAttributeSkipNotify(X_Attribute a)
     {
       throw new ArgumentException("Argument_AddAttribute");
     }
 
-    internal override XNode CloneNode()
+    internal override X_Node CloneNode()
     {
-      return new XDocument(this);
+      return new X_Document(this);
     }
 
-    internal override bool DeepEquals(XNode node)
+    internal override bool DeepEquals(X_Node node)
     {
-      var xdocument = node as XDocument;
+      var xdocument = node as X_Document;
       if (xdocument != null)
         return ContentsEqual(xdocument);
       return false;
@@ -346,9 +349,9 @@ namespace TextMonster.Xml
       return ContentsHashCode();
     }
 
-    T GetFirstNode<T>() where T : XNode
+    T GetFirstNode<T>() where T : X_Node
     {
-      var xnode = content as XNode;
+      var xnode = content as X_Node;
       if (xnode != null)
       {
         do
@@ -381,7 +384,7 @@ namespace TextMonster.Xml
       return true;
     }
 
-    internal override void ValidateNode(XNode node, XNode previous)
+    internal override void ValidateNode(X_Node node, X_Node previous)
     {
       switch (node.NodeType)
       {
@@ -389,7 +392,7 @@ namespace TextMonster.Xml
         ValidateDocument(previous, XmlNodeType.DocumentType, XmlNodeType.None);
         break;
         case XmlNodeType.Text:
-        ValidateString(((XText)node).Value);
+        ValidateString(((X_Text)node).Value);
         break;
         case XmlNodeType.CDATA:
         throw new ArgumentException("Argument_AddNode");
@@ -401,9 +404,9 @@ namespace TextMonster.Xml
       }
     }
 
-    void ValidateDocument(XNode previous, XmlNodeType allowBefore, XmlNodeType allowAfter)
+    void ValidateDocument(X_Node previous, XmlNodeType allowBefore, XmlNodeType allowAfter)
     {
-      var xnode = content as XNode;
+      var xnode = content as X_Node;
       if (xnode == null)
         return;
       if (previous == null)

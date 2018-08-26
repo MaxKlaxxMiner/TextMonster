@@ -7,10 +7,10 @@ namespace TextMonster.Xml
   internal class XNodeBuilder : XmlWriter
   {
     List<object> content;
-    XContainer parent;
-    XName attrName;
+    X_Container parent;
+    X_Name attrName;
     string attrValue;
-    readonly XContainer root;
+    readonly X_Container root;
 
     public override XmlWriterSettings Settings
     {
@@ -31,7 +31,7 @@ namespace TextMonster.Xml
       }
     }
 
-    public XNodeBuilder(XContainer container)
+    public XNodeBuilder(X_Container container)
     {
       root = container;
     }
@@ -57,7 +57,7 @@ namespace TextMonster.Xml
 
     public override void WriteCData(string text)
     {
-      AddNode(new XcData(text));
+      AddNode(new X_CData(text));
     }
 
     public override void WriteCharEntity(char ch)
@@ -72,17 +72,17 @@ namespace TextMonster.Xml
 
     public override void WriteComment(string text)
     {
-      AddNode(new XComment(text));
+      AddNode(new X_Comment(text));
     }
 
     public override void WriteDocType(string name, string pubid, string sysid, string subset)
     {
-      AddNode(new XDocumentType(name, pubid, sysid, subset));
+      AddNode(new X_DocumentType(name, pubid, sysid, subset));
     }
 
     public override void WriteEndAttribute()
     {
-      var xattribute = new XAttribute(attrName, attrValue);
+      var xattribute = new X_Attribute(attrName, attrValue);
       attrName = null;
       attrValue = null;
       if (parent != null)
@@ -129,7 +129,7 @@ namespace TextMonster.Xml
 
     public override void WriteFullEndElement()
     {
-      var xelement = (XElement)parent;
+      var xelement = (X_Element)parent;
       if (xelement.IsEmpty)
         xelement.Add(string.Empty);
       parent = xelement.parent;
@@ -139,7 +139,7 @@ namespace TextMonster.Xml
     {
       if (name == "xml")
         return;
-      AddNode(new XProcessingInstruction(name, text));
+      AddNode(new X_ProcessingInstruction(name, text));
     }
 
     public override void WriteRaw(char[] buffer, int index, int count)
@@ -156,7 +156,7 @@ namespace TextMonster.Xml
     {
       if (prefix == null)
         throw new ArgumentNullException("prefix");
-      attrName = XNamespace.Get(prefix.Length == 0 ? string.Empty : namespaceName).GetName(localName);
+      attrName = X_Namespace.Get(prefix.Length == 0 ? string.Empty : namespaceName).GetName(localName);
       attrValue = string.Empty;
     }
 
@@ -170,7 +170,7 @@ namespace TextMonster.Xml
 
     public override void WriteStartElement(string prefix, string localName, string namespaceName)
     {
-      AddNode(new XElement(XNamespace.Get(namespaceName).GetName(localName)));
+      AddNode(new X_Element(X_Namespace.Get(namespaceName).GetName(localName)));
     }
 
     public override void WriteString(string text)
@@ -204,13 +204,13 @@ namespace TextMonster.Xml
       content.Add(o);
     }
 
-    void AddNode(XNode n)
+    void AddNode(X_Node n)
     {
       if (parent != null)
         parent.Add(n);
       else
         Add(n);
-      var xcontainer = n as XContainer;
+      var xcontainer = n as X_Container;
       if (xcontainer == null)
         return;
       parent = xcontainer;

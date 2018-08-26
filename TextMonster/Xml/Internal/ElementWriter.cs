@@ -13,14 +13,14 @@ namespace TextMonster.Xml
       resolver = new NamespaceResolver();
     }
 
-    public void WriteElement(XElement e)
+    public void WriteElement(X_Element e)
     {
       PushAncestors(e);
       var xelement = e;
-      var xnode = (XNode)e;
+      var xnode = (X_Node)e;
       while (true)
       {
-        e = xnode as XElement;
+        e = xnode as X_Element;
         if (e != null)
         {
           WriteStartElement(e);
@@ -38,7 +38,7 @@ namespace TextMonster.Xml
             }
             else
             {
-              xnode = ((XNode)e.content).next;
+              xnode = ((X_Node)e.content).next;
               continue;
             }
           }
@@ -57,7 +57,7 @@ namespace TextMonster.Xml
       }
     }
 
-    string GetPrefixOfNamespace(XNamespace ns, bool allowDefaultNamespace)
+    string GetPrefixOfNamespace(X_Namespace ns, bool allowDefaultNamespace)
     {
       string namespaceName = ns.NamespaceName;
       if (namespaceName.Length == 0)
@@ -72,13 +72,13 @@ namespace TextMonster.Xml
       return null;
     }
 
-    void PushAncestors(XElement e)
+    void PushAncestors(X_Element e)
     {
     label_0:
-      XAttribute xattribute;
+      X_Attribute xattribute;
       do
       {
-        e = e.parent as XElement;
+        e = e.parent as X_Element;
         if (e != null)
           xattribute = e.lastAttr;
         else
@@ -93,13 +93,13 @@ namespace TextMonster.Xml
       {
         xattribute = xattribute.next;
         if (xattribute.IsNamespaceDeclaration)
-          resolver.AddFirst(xattribute.Name.NamespaceName.Length == 0 ? string.Empty : xattribute.Name.LocalName, XNamespace.Get(xattribute.Value));
+          resolver.AddFirst(xattribute.Name.NamespaceName.Length == 0 ? string.Empty : xattribute.Name.LocalName, X_Namespace.Get(xattribute.Value));
       }
       while (xattribute != e.lastAttr);
       goto label_0;
     }
 
-    void PushElement(XElement e)
+    void PushElement(X_Element e)
     {
       resolver.PushScope();
       var xattribute = e.lastAttr;
@@ -109,7 +109,7 @@ namespace TextMonster.Xml
       {
         xattribute = xattribute.next;
         if (xattribute.IsNamespaceDeclaration)
-          resolver.Add(xattribute.Name.NamespaceName.Length == 0 ? string.Empty : xattribute.Name.LocalName, XNamespace.Get(xattribute.Value));
+          resolver.Add(xattribute.Name.NamespaceName.Length == 0 ? string.Empty : xattribute.Name.LocalName, X_Namespace.Get(xattribute.Value));
       }
       while (xattribute != e.lastAttr);
     }
@@ -126,7 +126,7 @@ namespace TextMonster.Xml
       resolver.PopScope();
     }
 
-    void WriteStartElement(XElement e)
+    void WriteStartElement(X_Element e)
     {
       PushElement(e);
       var namespace1 = e.Name.Namespace;

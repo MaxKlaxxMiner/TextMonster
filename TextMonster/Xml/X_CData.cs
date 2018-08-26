@@ -7,7 +7,8 @@ namespace TextMonster.Xml
   /// <summary>
   /// Stellt einen Textknoten dar, der CDATA enthält.
   /// </summary>
-  public class XcData : XText
+  // ReSharper disable once InconsistentNaming
+  public class X_CData : X_Text
   {
     /// <summary>
     /// Ruft den Knotentyp für diesen Knoten ab.
@@ -28,7 +29,7 @@ namespace TextMonster.Xml
     /// Initialisiert eine neue Instanz der <see cref="T:System.Xml.Linq.XCData"/>-Klasse.
     /// </summary>
     /// <param name="value">Eine Zeichenfolge, die den Wert des <see cref="T:System.Xml.Linq.XCData"/>-Knotens enthält.</param>
-    public XcData(string value)
+    public X_CData(string value)
       : base(value)
     {
     }
@@ -37,12 +38,12 @@ namespace TextMonster.Xml
     /// Initialisiert eine neue Instanz der <see cref="T:System.Xml.Linq.XCData"/>-Klasse.
     /// </summary>
     /// <param name="other">Der <see cref="T:System.Xml.Linq.XCData"/>-Knoten, aus dem kopiert werden soll.</param>
-    public XcData(XcData other)
+    public X_CData(X_CData other)
       : base(other)
     {
     }
 
-    internal XcData(XmlReader r)
+    internal X_CData(XmlReader r)
       : base(r)
     {
     }
@@ -58,9 +59,9 @@ namespace TextMonster.Xml
       writer.WriteCData(text);
     }
 
-    internal override XNode CloneNode()
+    internal override X_Node CloneNode()
     {
-      return new XcData(this);
+      return new X_CData(this);
     }
   }
 }

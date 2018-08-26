@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Xml;
+using System.Xml.Linq;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -11,9 +13,10 @@ namespace TextMonster.Xml
   /// <summary>
   /// Stellt Elemente in einer XML-Struktur dar, die verzögerte Streamingausgabe unterstützt.
   /// </summary>
-  public class XStreamingElement
+  // ReSharper disable once InconsistentNaming
+  public class X_StreamingElement
   {
-    internal XName name;
+    internal X_Name name;
     internal object content;
 
     /// <summary>
@@ -23,7 +26,7 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Xml.Linq.XName"/>, der den Namen dieses Streamingelements enthält.
     /// </returns>
-    public XName Name
+    public X_Name Name
     {
       get
       {
@@ -41,7 +44,7 @@ namespace TextMonster.Xml
     /// Initialisiert eine neue Instanz der <see cref="T:System.Xml.Linq.XElement"/>-Klasse mit dem angegebenen <see cref="T:System.Xml.Linq.XName"/>.
     /// </summary>
     /// <param name="name">Ein <see cref="T:System.Xml.Linq.XName"/>, der den Namen des Elements enthält.</param>
-    public XStreamingElement(XName name)
+    public X_StreamingElement(X_Name name)
     {
       if (name == null)
         throw new ArgumentNullException("name");
@@ -52,7 +55,7 @@ namespace TextMonster.Xml
     /// Initialisiert eine neue Instanz der <see cref="T:System.Xml.Linq.XStreamingElement"/>-Klasse mit dem angegebenen Namen und Inhalt.
     /// </summary>
     /// <param name="name">Ein <see cref="T:System.Xml.Linq.XName"/>, der den Elementnamen enthält.</param><param name="content">Der Inhalt des Elements.</param>
-    public XStreamingElement(XName name, params object[] content)
+    public X_StreamingElement(X_Name name, params object[] content)
       : this(name)
     {
       this.content = content;
@@ -92,7 +95,7 @@ namespace TextMonster.Xml
     /// <param name="fileName">Ein <see cref="T:System.String"/>, der den Namen der Datei enthält.</param><param name="options">Ein <see cref="T:System.Xml.Linq.SaveOptions"/>-Objekt, das das Formatierungsverhalten angibt.</param>
     public void Save(string fileName, SaveOptions options = SaveOptions.None)
     {
-      var xmlWriterSettings = XNode.GetXmlWriterSettings(options);
+      var xmlWriterSettings = X_Node.GetXmlWriterSettings(options);
       using (var writer = XmlWriter.Create(fileName, xmlWriterSettings))
         Save(writer);
     }
@@ -103,7 +106,7 @@ namespace TextMonster.Xml
     /// <param name="stream">Der Stream, in den dieses <see cref="T:System.Xml.Linq.XDocument"/> ausgegeben werden soll.</param><param name="options">Ein <see cref="T:System.Xml.Linq.SaveOptions"/>-Objekt, das das Formatierungsverhalten angibt.</param>
     public void Save(Stream stream, SaveOptions options = SaveOptions.None)
     {
-      var xmlWriterSettings = XNode.GetXmlWriterSettings(options);
+      var xmlWriterSettings = X_Node.GetXmlWriterSettings(options);
       using (var writer = XmlWriter.Create(stream, xmlWriterSettings))
         Save(writer);
     }
@@ -114,7 +117,7 @@ namespace TextMonster.Xml
     /// <param name="textWriter">Der <see cref="T:System.IO.TextWriter"/>, an den das XML ausgegeben werden soll.</param><param name="options">Ein <see cref="T:System.Xml.Linq.SaveOptions"/>, das Formatierungsverhalten angibt.</param>
     public void Save(TextWriter textWriter, SaveOptions options = SaveOptions.None)
     {
-      var xmlWriterSettings = XNode.GetXmlWriterSettings(options);
+      var xmlWriterSettings = X_Node.GetXmlWriterSettings(options);
       using (var writer = XmlWriter.Create(textWriter, xmlWriterSettings))
         Save(writer);
     }

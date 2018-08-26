@@ -6,11 +6,11 @@ namespace TextMonster.Xml
 {
   internal struct Inserter
   {
-    readonly XContainer parent;
-    XNode previous;
+    readonly X_Container parent;
+    X_Node previous;
     string text;
 
-    public Inserter(XContainer parent, XNode anchor)
+    public Inserter(X_Container parent, X_Node anchor)
     {
       this.parent = parent;
       previous = anchor;
@@ -27,14 +27,14 @@ namespace TextMonster.Xml
         if (parent.SkipNotify())
           parent.content = text;
         else if (text.Length > 0)
-          InsertNode(new XText(text));
-        else if (parent is XElement)
+          InsertNode(new X_Text(text));
+        else if (parent is X_Element)
         {
-          parent.NotifyChanging(parent, XObjectChangeEventArgs.Value);
+          parent.NotifyChanging(parent, X_ObjectChangeEventArgs.Value);
           if (parent.content != null)
             throw new InvalidOperationException("InvalidOperation_ExternalCode");
           parent.content = text;
-          parent.NotifyChanged(parent, XObjectChangeEventArgs.Value);
+          parent.NotifyChanged(parent, X_ObjectChangeEventArgs.Value);
         }
         else
           parent.content = text;
@@ -43,14 +43,14 @@ namespace TextMonster.Xml
       {
         if (text.Length <= 0)
           return;
-        if (previous is XText && !(previous is XcData))
+        if (previous is X_Text && !(previous is X_CData))
         {
-          ((XText)previous).Value += text;
+          ((X_Text)previous).Value += text;
         }
         else
         {
           parent.ConvertTextToNode();
-          InsertNode(new XText(text));
+          InsertNode(new X_Text(text));
         }
       }
     }
@@ -59,7 +59,7 @@ namespace TextMonster.Xml
     {
       if (content == null)
         return;
-      var n = content as XNode;
+      var n = content as X_Node;
       if (n != null)
       {
         AddNode(n);
@@ -73,10 +73,10 @@ namespace TextMonster.Xml
         }
         else
         {
-          var other = content as XStreamingElement;
+          var other = content as X_StreamingElement;
           if (other != null)
           {
-            AddNode(new XElement(other));
+            AddNode(new X_Element(other));
           }
           else
           {
@@ -96,9 +96,9 @@ namespace TextMonster.Xml
               }
               else
               {
-                if (content is XAttribute)
+                if (content is X_Attribute)
                   throw new ArgumentException("Argument_AddAttribute");
-                AddString(XContainer.GetStringValue(content));
+                AddString(X_Container.GetStringValue(content));
               }
             }
           }
@@ -106,7 +106,7 @@ namespace TextMonster.Xml
       }
     }
 
-    void AddNode(XNode n)
+    void AddNode(X_Node n)
     {
       parent.ValidateNode(n, previous);
       if (n.parent != null)
@@ -115,7 +115,7 @@ namespace TextMonster.Xml
       }
       else
       {
-        var xnode = (XNode)parent;
+        var xnode = (X_Node)parent;
         while (xnode.parent != null)
           xnode = xnode.parent;
         if (n == xnode)
@@ -126,10 +126,10 @@ namespace TextMonster.Xml
       {
         if (text.Length > 0)
         {
-          if (previous is XText && !(previous is XcData))
-            ((XText)previous).Value += text;
+          if (previous is X_Text && !(previous is X_CData))
+            ((X_Text)previous).Value += text;
           else
-            InsertNode(new XText(text));
+            InsertNode(new X_Text(text));
         }
         text = null;
       }
@@ -142,9 +142,9 @@ namespace TextMonster.Xml
       text = text + s;
     }
 
-    void InsertNode(XNode n)
+    void InsertNode(X_Node n)
     {
-      bool flag = parent.NotifyChanging(n, XObjectChangeEventArgs.Add);
+      bool flag = parent.NotifyChanging(n, X_ObjectChangeEventArgs.Add);
       if (n.parent != null)
         throw new InvalidOperationException("InvalidOperation_ExternalCode");
       n.parent = parent;
@@ -155,7 +155,7 @@ namespace TextMonster.Xml
       }
       else if (previous == null)
       {
-        var xnode = (XNode)parent.content;
+        var xnode = (X_Node)parent.content;
         n.next = xnode.next;
         xnode.next = n;
       }
@@ -169,7 +169,7 @@ namespace TextMonster.Xml
       previous = n;
       if (!flag)
         return;
-      parent.NotifyChanged(n, XObjectChangeEventArgs.Add);
+      parent.NotifyChanged(n, X_ObjectChangeEventArgs.Add);
     }
   }
 }

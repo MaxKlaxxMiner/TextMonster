@@ -6,7 +6,8 @@ namespace TextMonster.Xml
   /// <summary>
   /// Stellt einen XML-Namespace dar. Diese Klasse kann nicht vererbt werden.
   /// </summary>
-  public sealed class XNamespace
+  // ReSharper disable once InconsistentNaming
+  public sealed class X_Namespace
   {
     static XHashtable<WeakReference> namespaces;
     static WeakReference refNone;
@@ -14,7 +15,7 @@ namespace TextMonster.Xml
     static WeakReference refXmlns;
     readonly string namespaceName;
     readonly int hashCode;
-    readonly XHashtable<XName> names;
+    readonly XHashtable<X_Name> names;
 
     /// <summary>
     /// Ruft den URI (Uniform Resource Identifier) dieses Namespaces ab.
@@ -38,7 +39,7 @@ namespace TextMonster.Xml
     /// <returns>
     /// Der <see cref="T:System.Xml.Linq.XNamespace"/>, der keinem Namespace entspricht.
     /// </returns>
-    public static XNamespace None
+    public static X_Namespace None
     {
       get
       {
@@ -53,7 +54,7 @@ namespace TextMonster.Xml
     /// <returns>
     /// Das <see cref="T:System.Xml.Linq.XNamespace"/>, das dem XML-URI (http://www.w3.org/XML/1998/namespace) entspricht.
     /// </returns>
-    public static XNamespace Xml
+    public static X_Namespace Xml
     {
       get
       {
@@ -68,7 +69,7 @@ namespace TextMonster.Xml
     /// <returns>
     /// Der <see cref="T:System.Xml.Linq.XNamespace"/>, der dem xmlns-URI (http://www.w3.org/2000/xmlns/) entspricht.
     /// </returns>
-    public static XNamespace Xmlns
+    public static X_Namespace Xmlns
     {
       get
       {
@@ -76,11 +77,11 @@ namespace TextMonster.Xml
       }
     }
 
-    XNamespace(string namespaceName)
+    X_Namespace(string namespaceName)
     {
       this.namespaceName = namespaceName;
       hashCode = namespaceName.GetHashCode();
-      names = new XHashtable<XName>(ExtractLocalName, 8);
+      names = new XHashtable<X_Name>(ExtractLocalName, 8);
     }
 
     /// <summary>
@@ -92,7 +93,7 @@ namespace TextMonster.Xml
     /// </returns>
     /// <param name="namespaceName">Ein <see cref="T:System.String"/>, der den Namespace-URI enthält.</param>
     [CLSCompliant(false)]
-    public static implicit operator XNamespace(string namespaceName)
+    public static implicit operator X_Namespace(string namespaceName)
     {
       if (namespaceName == null)
         return null;
@@ -107,7 +108,7 @@ namespace TextMonster.Xml
     /// Der neue <see cref="T:System.Xml.Linq.XName"/>, der aus dem Namespace und dem lokalen Namen erstellt wurde.
     /// </returns>
     /// <param name="ns">Ein <see cref="T:System.Xml.Linq.XNamespace"/>, der den Namespace enthält.</param><param name="localName">Ein <see cref="T:System.String"/>, der den lokalen Namen enthält.</param>
-    public static XName operator +(XNamespace ns, string localName)
+    public static X_Name operator +(X_Namespace ns, string localName)
     {
       if (ns == null)
         throw new ArgumentNullException("ns");
@@ -122,7 +123,7 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Boolean"/>, das angibt, ob <paramref name="left"/> und <paramref name="right"/> gleich sind.
     /// </returns>
     /// <param name="left">Das erste zu vergleichende <see cref="T:System.Xml.Linq.XNamespace"/>.</param><param name="right">Das zweite zu vergleichende <see cref="T:System.Xml.Linq.XNamespace"/>.</param>
-    public static bool operator ==(XNamespace left, XNamespace right)
+    public static bool operator ==(X_Namespace left, X_Namespace right)
     {
       return left == right;
     }
@@ -135,7 +136,7 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Boolean"/>, das angibt, ob <paramref name="left"/> und <paramref name="right"/> ungleich sind.
     /// </returns>
     /// <param name="left">Das erste zu vergleichende <see cref="T:System.Xml.Linq.XNamespace"/>.</param><param name="right">Das zweite zu vergleichende <see cref="T:System.Xml.Linq.XNamespace"/>.</param>
-    public static bool operator !=(XNamespace left, XNamespace right)
+    public static bool operator !=(X_Namespace left, X_Namespace right)
     {
       return left != right;
     }
@@ -148,7 +149,7 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.Linq.XName"/>, der aus diesem <see cref="T:System.Xml.Linq.XNamespace"/> und dem angegebenen lokalen Namen erstellt wurde.
     /// </returns>
     /// <param name="localName">Ein <see cref="T:System.String"/>, der einen lokalen Namen enthält.</param>
-    public XName GetName(string localName)
+    public X_Name GetName(string localName)
     {
       if (localName == null)
         throw new ArgumentNullException("localName");
@@ -175,7 +176,7 @@ namespace TextMonster.Xml
     /// Ein aus dem angegebenen URI erstellter <see cref="T:System.Xml.Linq.XNamespace"/>.
     /// </returns>
     /// <param name="namespaceName">Ein <see cref="T:System.String"/>, der einen Namespace-URI enthält.</param>
-    public static XNamespace Get(string namespaceName)
+    public static X_Namespace Get(string namespaceName)
     {
       if (namespaceName == null)
         throw new ArgumentNullException("namespaceName");
@@ -207,21 +208,21 @@ namespace TextMonster.Xml
       return hashCode;
     }
 
-    internal XName GetName(string localName, int index, int count)
+    internal X_Name GetName(string localName, int index, int count)
     {
-      XName xname;
+      X_Name xname;
       if (names.TryGetValue(localName, index, count, out xname))
         return xname;
-      return names.Add(new XName(this, localName.Substring(index, count)));
+      return names.Add(new X_Name(this, localName.Substring(index, count)));
     }
 
-    internal static XNamespace Get(string namespaceName, int index, int count)
+    internal static X_Namespace Get(string namespaceName, int index, int count)
     {
       if (count == 0)
         return None;
       if (namespaces == null)
         Interlocked.CompareExchange(ref namespaces, new XHashtable<WeakReference>(ExtractNamespace, 32), null);
-      XNamespace xnamespace;
+      X_Namespace xnamespace;
       do
       {
         WeakReference weakReference;
@@ -231,40 +232,40 @@ namespace TextMonster.Xml
             return Xml;
           if (count == "http://www.w3.org/2000/xmlns/".Length && string.CompareOrdinal(namespaceName, index, "http://www.w3.org/2000/xmlns/", 0, count) == 0)
             return Xmlns;
-          weakReference = namespaces.Add(new WeakReference(new XNamespace(namespaceName.Substring(index, count))));
+          weakReference = namespaces.Add(new WeakReference(new X_Namespace(namespaceName.Substring(index, count))));
         }
-        xnamespace = weakReference != null ? (XNamespace)weakReference.Target : null;
+        xnamespace = weakReference != null ? (X_Namespace)weakReference.Target : null;
       }
       while (xnamespace == null);
       return xnamespace;
     }
 
-    static string ExtractLocalName(XName n)
+    static string ExtractLocalName(X_Name n)
     {
       return n.LocalName;
     }
 
     static string ExtractNamespace(WeakReference r)
     {
-      XNamespace xnamespace;
-      if (r == null || (xnamespace = (XNamespace)r.Target) == null)
+      X_Namespace xnamespace;
+      if (r == null || (xnamespace = (X_Namespace)r.Target) == null)
         return null;
       return xnamespace.NamespaceName;
     }
 
-    static XNamespace EnsureNamespace(ref WeakReference refNmsp, string namespaceName)
+    static X_Namespace EnsureNamespace(ref WeakReference refNmsp, string namespaceName)
     {
-      XNamespace xnamespace;
+      X_Namespace xnamespace;
       while (true)
       {
         var comparand = refNmsp;
         if (comparand != null)
         {
-          xnamespace = (XNamespace)comparand.Target;
+          xnamespace = (X_Namespace)comparand.Target;
           if (xnamespace != null)
             break;
         }
-        Interlocked.CompareExchange(ref refNmsp, new WeakReference(new XNamespace(namespaceName)), comparand);
+        Interlocked.CompareExchange(ref refNmsp, new WeakReference(new X_Namespace(namespaceName)), comparand);
       }
       return xnamespace;
     }

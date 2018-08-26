@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Xml.Linq;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -8,24 +10,25 @@ namespace TextMonster.Xml
   /// Stellt Daten für das <see cref="E:System.Xml.Linq.XObject.Changing"/>-Ereignis und das <see cref="E:System.Xml.Linq.XObject.Changed"/>-Ereignis bereit.
   /// </summary>
   /// <filterpriority>2</filterpriority>
-  public class XObjectChangeEventArgs : EventArgs
+  // ReSharper disable once InconsistentNaming
+  public class X_ObjectChangeEventArgs : EventArgs
   {
     /// <summary>
     /// Ereignisargument für ein <see cref="F:System.Xml.Linq.XObjectChange.Add"/>-Änderungsereignis.
     /// </summary>
-    public static readonly XObjectChangeEventArgs Add = new XObjectChangeEventArgs(XObjectChange.Add);
+    public static readonly X_ObjectChangeEventArgs Add = new X_ObjectChangeEventArgs(XObjectChange.Add);
     /// <summary>
     /// Ereignisargument für ein <see cref="F:System.Xml.Linq.XObjectChange.Remove"/>-Änderungsereignis.
     /// </summary>
-    public static readonly XObjectChangeEventArgs Remove = new XObjectChangeEventArgs(XObjectChange.Remove);
+    public static readonly X_ObjectChangeEventArgs Remove = new X_ObjectChangeEventArgs(XObjectChange.Remove);
     /// <summary>
     /// Ereignisargument für ein <see cref="F:System.Xml.Linq.XObjectChange.Name"/>-Änderungsereignis.
     /// </summary>
-    public static readonly XObjectChangeEventArgs Name = new XObjectChangeEventArgs(XObjectChange.Name);
+    public static readonly X_ObjectChangeEventArgs Name = new X_ObjectChangeEventArgs(XObjectChange.Name);
     /// <summary>
     /// Ereignisargument für ein <see cref="F:System.Xml.Linq.XObjectChange.Value"/>-Änderungsereignis.
     /// </summary>
-    public static readonly XObjectChangeEventArgs Value = new XObjectChangeEventArgs(XObjectChange.Value);
+    public static readonly X_ObjectChangeEventArgs Value = new X_ObjectChangeEventArgs(XObjectChange.Value);
     readonly XObjectChange objectChange;
 
     /// <summary>
@@ -47,7 +50,7 @@ namespace TextMonster.Xml
     /// Initialisiert eine neue Instanz der <see cref="T:System.Xml.Linq.XObjectChangeEventArgs"/>-Klasse.
     /// </summary>
     /// <param name="objectChange">Ein <see cref="T:System.Xml.Linq.XObjectChange"/>, das die Ereignisargumente für LINQ to XML-Ereignisse enthält.</param>
-    public XObjectChangeEventArgs(XObjectChange objectChange)
+    public X_ObjectChangeEventArgs(XObjectChange objectChange)
     {
       this.objectChange = objectChange;
     }

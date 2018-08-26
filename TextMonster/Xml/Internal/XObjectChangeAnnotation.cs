@@ -4,7 +4,7 @@ namespace TextMonster.Xml
 {
   internal class XObjectChangeAnnotation
   {
-    internal EventHandler<XObjectChangeEventArgs> changing;
-    internal EventHandler<XObjectChangeEventArgs> changed;
+    internal EventHandler<X_ObjectChangeEventArgs> changing;
+    internal EventHandler<X_ObjectChangeEventArgs> changed;
   }
 }
