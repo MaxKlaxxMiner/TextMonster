@@ -1,4 +1,10 @@
-﻿
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading;
+using System.Xml;
+
 namespace TextMonster.Xml
 {
   /// <summary>
@@ -328,7 +334,7 @@ namespace TextMonster.Xml
             {
               this.NotifyChanging((object)this, XObjectChangeEventArgs.Value);
               if (str != this.content)
-                throw new InvalidOperationException(Res.GetString("InvalidOperation_ExternalCode"));
+                throw new InvalidOperationException("InvalidOperation_ExternalCode");
               this.content = (object)null;
               this.NotifyChanged((object)this, XObjectChangeEventArgs.Value);
             }
@@ -341,7 +347,7 @@ namespace TextMonster.Xml
             XNode xnode2 = xnode1.next;
             this.NotifyChanging((object)xnode2, XObjectChangeEventArgs.Remove);
             if (xnode1 != this.content || xnode2 != xnode1.next)
-              throw new InvalidOperationException(Res.GetString("InvalidOperation_ExternalCode"));
+              throw new InvalidOperationException("InvalidOperation_ExternalCode");
             if (xnode2 != xnode1)
               xnode1.next = xnode2.next;
             else
@@ -486,7 +492,7 @@ namespace TextMonster.Xml
         {
           this.NotifyChanging((object)this, XObjectChangeEventArgs.Value);
           if (this.content != null)
-            throw new InvalidOperationException(Res.GetString("InvalidOperation_ExternalCode"));
+            throw new InvalidOperationException("InvalidOperation_ExternalCode");
           this.content = (object)s;
           this.NotifyChanged((object)this, XObjectChangeEventArgs.Value);
         }
@@ -536,7 +542,7 @@ namespace TextMonster.Xml
     {
       bool flag = this.NotifyChanging((object)n, XObjectChangeEventArgs.Add);
       if (n.parent != null)
-        throw new InvalidOperationException(Res.GetString("InvalidOperation_ExternalCode"));
+        throw new InvalidOperationException("InvalidOperation_ExternalCode");
       this.AppendNodeSkipNotify(n);
       if (!flag)
         return;
@@ -776,18 +782,18 @@ namespace TextMonster.Xml
       else
       {
         if (value is XObject)
-          throw new ArgumentException(Res.GetString("Argument_XObjectValue"));
+          throw new ArgumentException("Argument_XObjectValue");
         str = value.ToString();
       }
       if (str == null)
-        throw new ArgumentException(Res.GetString("Argument_ConvertToString"));
+        throw new ArgumentException("Argument_ConvertToString");
       return str;
     }
 
     internal void ReadContentFrom(XmlReader r)
     {
       if (r.ReadState != ReadState.Interactive)
-        throw new InvalidOperationException(Res.GetString("InvalidOperation_ExpectedInteractive"));
+        throw new InvalidOperationException("InvalidOperation_ExpectedInteractive");
       XContainer xcontainer = this;
       NamespaceCache namespaceCache1 = new NamespaceCache();
       NamespaceCache namespaceCache2 = new NamespaceCache();
@@ -824,7 +830,7 @@ namespace TextMonster.Xml
           goto case XmlNodeType.EndEntity;
           case XmlNodeType.EntityReference:
           if (!r.CanResolveEntity)
-            throw new InvalidOperationException(Res.GetString("InvalidOperation_UnresolvedEntityReference"));
+            throw new InvalidOperationException("InvalidOperation_UnresolvedEntityReference");
           r.ResolveEntity();
           goto case XmlNodeType.EndEntity;
           case XmlNodeType.ProcessingInstruction:
@@ -834,7 +840,7 @@ namespace TextMonster.Xml
           xcontainer.AddNodeSkipNotify((XNode)new XComment(r.Value));
           goto case XmlNodeType.EndEntity;
           case XmlNodeType.DocumentType:
-          xcontainer.AddNodeSkipNotify((XNode)new XDocumentType(r.LocalName, r.GetAttribute("PUBLIC"), r.GetAttribute("SYSTEM"), r.Value, r.DtdInfo));
+          xcontainer.AddNodeSkipNotify((XNode)new XDocumentType(r.LocalName, r.GetAttribute("PUBLIC"), r.GetAttribute("SYSTEM"), r.Value, null));
           goto case XmlNodeType.EndEntity;
           case XmlNodeType.EndElement:
           if (xcontainer.content == null)
@@ -846,10 +852,7 @@ namespace TextMonster.Xml
           case XmlNodeType.EndEntity:
           continue;
           default:
-          throw new InvalidOperationException(Res.GetString("InvalidOperation_UnexpectedNodeType", new object[1]
-            {
-              (object) r.NodeType
-            }));
+          throw new InvalidOperationException("InvalidOperation_UnexpectedNodeType");
         }
       }
       while (r.Read());
@@ -864,7 +867,7 @@ namespace TextMonster.Xml
       else
       {
         if (r.ReadState != ReadState.Interactive)
-          throw new InvalidOperationException(Res.GetString("InvalidOperation_ExpectedInteractive"));
+          throw new InvalidOperationException("InvalidOperation_ExpectedInteractive");
         XContainer xcontainer = this;
         XNode n = (XNode)null;
         NamespaceCache namespaceCache1 = new NamespaceCache();
@@ -926,7 +929,7 @@ namespace TextMonster.Xml
             goto case XmlNodeType.EndEntity;
             case XmlNodeType.EntityReference:
             if (!r.CanResolveEntity)
-              throw new InvalidOperationException(Res.GetString("InvalidOperation_UnresolvedEntityReference"));
+              throw new InvalidOperationException("InvalidOperation_UnresolvedEntityReference");
             r.ResolveEntity();
             goto case XmlNodeType.EndEntity;
             case XmlNodeType.ProcessingInstruction:
@@ -936,7 +939,7 @@ namespace TextMonster.Xml
             n = (XNode)new XComment(r.Value);
             goto case XmlNodeType.EndEntity;
             case XmlNodeType.DocumentType:
-            n = (XNode)new XDocumentType(r.LocalName, r.GetAttribute("PUBLIC"), r.GetAttribute("SYSTEM"), r.Value, r.DtdInfo);
+            n = (XNode)new XDocumentType(r.LocalName, r.GetAttribute("PUBLIC"), r.GetAttribute("SYSTEM"), r.Value, null);
             goto case XmlNodeType.EndEntity;
             case XmlNodeType.EndElement:
             if (xcontainer.content == null)
@@ -962,10 +965,7 @@ namespace TextMonster.Xml
             }
             continue;
             default:
-            throw new InvalidOperationException(Res.GetString("InvalidOperation_UnexpectedNodeType", new object[1]
-              {
-                (object) r.NodeType
-              }));
+            throw new InvalidOperationException("InvalidOperation_UnexpectedNodeType");
           }
         }
         while (r.Read());
@@ -976,7 +976,7 @@ namespace TextMonster.Xml
     {
       bool flag = this.NotifyChanging((object)n, XObjectChangeEventArgs.Remove);
       if (n.parent != this)
-        throw new InvalidOperationException(Res.GetString("InvalidOperation_ExternalCode"));
+        throw new InvalidOperationException("InvalidOperation_ExternalCode");
       XNode xnode = (XNode)this.content;
       while (xnode.next != n)
         xnode = xnode.next;

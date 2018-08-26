@@ -292,7 +292,7 @@ namespace TextMonster.Xml
       }
     }
 
-    internal override IDtdInfo DtdInfo
+    internal IDtdInfo DtdInfo
     {
       get
       {

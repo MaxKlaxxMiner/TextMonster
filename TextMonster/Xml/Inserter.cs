@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 
 namespace TextMonster.Xml
 {
@@ -95,7 +96,7 @@ namespace TextMonster.Xml
               else
               {
                 if (content is XAttribute)
-                  throw new ArgumentException(Res.GetString("Argument_AddAttribute"));
+                  throw new ArgumentException("Argument_AddAttribute");
                 this.AddString(XContainer.GetStringValue(content));
               }
             }
@@ -144,7 +145,7 @@ namespace TextMonster.Xml
     {
       bool flag = this.parent.NotifyChanging((object)n, XObjectChangeEventArgs.Add);
       if (n.parent != null)
-        throw new InvalidOperationException(Res.GetString("InvalidOperation_ExternalCode"));
+        throw new InvalidOperationException("InvalidOperation_ExternalCode");
       n.parent = this.parent;
       if (this.parent.content == null || this.parent.content is string)
       {
