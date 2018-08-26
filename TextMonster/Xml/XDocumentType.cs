@@ -13,7 +13,6 @@ namespace TextMonster.Xml
     private string publicId;
     private string systemId;
     private string internalSubset;
-    private IDtdInfo dtdInfo;
 
     /// <summary>
     /// Ruft die interne Teilmenge für die Dokumenttypdefinition (DTD) ab oder legt diese fest.
@@ -123,14 +122,6 @@ namespace TextMonster.Xml
       }
     }
 
-    internal IDtdInfo DtdInfo
-    {
-      get
-      {
-        return this.dtdInfo;
-      }
-    }
-
     /// <summary>
     /// Initialisiert eine Instanz der <see cref="T:System.Xml.Linq.XDocumentType"/>-Klasse.
     /// </summary>
@@ -154,7 +145,6 @@ namespace TextMonster.Xml
       this.publicId = other.publicId;
       this.systemId = other.systemId;
       this.internalSubset = other.internalSubset;
-      this.dtdInfo = other.dtdInfo;
     }
 
     internal XDocumentType(XmlReader r)
@@ -164,12 +154,6 @@ namespace TextMonster.Xml
       this.systemId = r.GetAttribute("SYSTEM");
       this.internalSubset = r.Value;
       r.Read();
-    }
-
-    internal XDocumentType(string name, string publicId, string systemId, string internalSubset, IDtdInfo dtdInfo)
-      : this(name, publicId, systemId, internalSubset)
-    {
-      this.dtdInfo = dtdInfo;
     }
 
     /// <summary>

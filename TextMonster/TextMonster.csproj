@@ -72,11 +72,6 @@
     <Compile Include="Xml\LoadOptions.cs" />
     <Compile Include="Xml\XObjectChange.cs" />
     <Compile Include="Xml\XObjectChangeEventArgs.cs" />
-    <Compile Include="Xml\IDtdEntityInfo.cs" />
-    <Compile Include="Xml\IDtdDefaultAttributeInfo.cs" />
-    <Compile Include="Xml\IDtdAttributeInfo.cs" />
-    <Compile Include="Xml\IDtdAttributeListInfo.cs" />
-    <Compile Include="Xml\IDtdInfo.cs" />
     <Compile Include="Xml\XDocumentType.cs" />
     <Compile Include="Xml\XDeclaration.cs" />
     <Compile Include="Xml\XDocument.cs" />

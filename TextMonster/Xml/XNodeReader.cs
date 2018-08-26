@@ -11,7 +11,6 @@ namespace TextMonster.Xml
     private XNode root;
     private XmlNameTable nameTable;
     private bool omitDuplicateNamespaces;
-    private IDtdInfo dtdInfo;
     private bool dtdInfoInitialized;
 
     public override int AttributeCount
@@ -289,32 +288,6 @@ namespace TextMonster.Xml
           while (xelement != null);
         }
         return XmlSpace.None;
-      }
-    }
-
-    internal IDtdInfo DtdInfo
-    {
-      get
-      {
-        if (this.dtdInfoInitialized)
-          return this.dtdInfo;
-        this.dtdInfoInitialized = true;
-        XDocumentType xdocumentType = this.source as XDocumentType;
-        if (xdocumentType == null)
-        {
-          for (XNode xnode = this.root; xnode != null; xnode = (XNode)xnode.parent)
-          {
-            XDocument xdocument = xnode as XDocument;
-            if (xdocument != null)
-            {
-              xdocumentType = xdocument.DocumentType;
-              break;
-            }
-          }
-        }
-        if (xdocumentType != null)
-          this.dtdInfo = xdocumentType.DtdInfo;
-        return this.dtdInfo;
       }
     }
 

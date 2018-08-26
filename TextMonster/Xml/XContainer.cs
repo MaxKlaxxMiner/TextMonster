@@ -840,7 +840,7 @@ namespace TextMonster.Xml
           xcontainer.AddNodeSkipNotify((XNode)new XComment(r.Value));
           goto case XmlNodeType.EndEntity;
           case XmlNodeType.DocumentType:
-          xcontainer.AddNodeSkipNotify((XNode)new XDocumentType(r.LocalName, r.GetAttribute("PUBLIC"), r.GetAttribute("SYSTEM"), r.Value, null));
+          xcontainer.AddNodeSkipNotify((XNode)new XDocumentType(r.LocalName, r.GetAttribute("PUBLIC"), r.GetAttribute("SYSTEM"), r.Value));
           goto case XmlNodeType.EndEntity;
           case XmlNodeType.EndElement:
           if (xcontainer.content == null)
@@ -939,7 +939,7 @@ namespace TextMonster.Xml
             n = (XNode)new XComment(r.Value);
             goto case XmlNodeType.EndEntity;
             case XmlNodeType.DocumentType:
-            n = (XNode)new XDocumentType(r.LocalName, r.GetAttribute("PUBLIC"), r.GetAttribute("SYSTEM"), r.Value, null);
+            n = (XNode)new XDocumentType(r.LocalName, r.GetAttribute("PUBLIC"), r.GetAttribute("SYSTEM"), r.Value);
             goto case XmlNodeType.EndEntity;
             case XmlNodeType.EndElement:
             if (xcontainer.content == null)
