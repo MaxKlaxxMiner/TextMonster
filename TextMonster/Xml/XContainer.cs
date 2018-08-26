@@ -17,10 +17,8 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.Linq.XNode"/>, der den ersten untergeordneten Knoten des <see cref="T:System.Xml.Linq.XContainer"/> enthält.
     /// </returns>
     /// <filterpriority>2</filterpriority>
-    [__DynamicallyInvokable]
     public XNode FirstNode
     {
-      [__DynamicallyInvokable]
       get
       {
         XNode lastNode = this.LastNode;
@@ -38,10 +36,8 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.Linq.XNode"/>, der den letzten untergeordneten Knoten des <see cref="T:System.Xml.Linq.XContainer"/> enthält.
     /// </returns>
     /// <filterpriority>2</filterpriority>
-    [__DynamicallyInvokable]
     public XNode LastNode
     {
-      [__DynamicallyInvokable]
       get
       {
         if (this.content == null)
@@ -93,7 +89,6 @@ namespace TextMonster.Xml
     /// Fügt den angegebenen Inhalt als untergeordnete Elemente dieses <see cref="T:System.Xml.Linq.XContainer"/> hinzu.
     /// </summary>
     /// <param name="content">Ein Inhaltsobjekt, das einfache Inhalte oder eine Auflistung von Inhaltsobjekten enthält, die hinzugefügt werden sollen.</param>
-    [__DynamicallyInvokable]
     public void Add(object content)
     {
       if (this.SkipNotify())
@@ -160,7 +155,6 @@ namespace TextMonster.Xml
     /// Fügt den angegebenen Inhalt als untergeordnete Elemente dieses <see cref="T:System.Xml.Linq.XContainer"/> hinzu.
     /// </summary>
     /// <param name="content">Eine Parameterliste von Inhaltsobjekten.</param>
-    [__DynamicallyInvokable]
     public void Add(params object[] content)
     {
       this.Add((object)content);
@@ -170,7 +164,6 @@ namespace TextMonster.Xml
     /// Fügt den angegebenen Inhalt als erste untergeordnete Elemente dieses Dokuments oder Elements hinzu.
     /// </summary>
     /// <param name="content">Ein Inhaltsobjekt, das einfache Inhalte oder eine Auflistung von Inhaltsobjekten enthält, die hinzugefügt werden sollen.</param>
-    [__DynamicallyInvokable]
     public void AddFirst(object content)
     {
       new Inserter(this, (XNode)null).Add(content);
@@ -180,7 +173,6 @@ namespace TextMonster.Xml
     /// Fügt den angegebenen Inhalt als erste untergeordnete Elemente dieses Dokuments oder Elements hinzu.
     /// </summary>
     /// <param name="content">Eine Parameterliste von Inhaltsobjekten.</param><exception cref="T:System.InvalidOperationException">Das übergeordnete Element ist null.</exception>
-    [__DynamicallyInvokable]
     public void AddFirst(params object[] content)
     {
       this.AddFirst((object)content);
@@ -194,7 +186,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.XmlWriter"/>, in den Inhalt geschrieben werden kann.
     /// </returns>
     /// <filterpriority>2</filterpriority>
-    [__DynamicallyInvokable]
     public XmlWriter CreateWriter()
     {
       return XmlWriter.Create((XmlWriter)new XNodeBuilder(this), new XmlWriterSettings()
@@ -210,7 +201,6 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XNode"/>, das die Nachfolgerknoten des <see cref="T:System.Xml.Linq.XContainer"/> in Dokumentreihenfolge enthält.
     /// </returns>
-    [__DynamicallyInvokable]
     public IEnumerable<XNode> DescendantNodes()
     {
       return this.GetDescendantNodes(false);
@@ -223,7 +213,6 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XElement"/> mit den Nachfolgerelementen des <see cref="T:System.Xml.Linq.XContainer"/>.
     /// </returns>
-    [__DynamicallyInvokable]
     public IEnumerable<XElement> Descendants()
     {
       return this.GetDescendants((XName)null, false);
@@ -237,7 +226,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XElement"/>, das die Nachfolgerelemente des <see cref="T:System.Xml.Linq.XContainer"/> enthält, die mit dem angegebenen <see cref="T:System.Xml.Linq.XName"/> übereinstimmen.
     /// </returns>
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
-    [__DynamicallyInvokable]
     public IEnumerable<XElement> Descendants(XName name)
     {
       if (!(name != (XName)null))
@@ -253,7 +241,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.Linq.XElement"/>, das mit dem angegebenen <see cref="T:System.Xml.Linq.XName"/> übereinstimmt, oder null.
     /// </returns>
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
-    [__DynamicallyInvokable]
     public XElement Element(XName name)
     {
       XNode xnode = this.content as XNode;
@@ -278,7 +265,6 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XElement"/>, das die untergeordneten Elemente dieses <see cref="T:System.Xml.Linq.XContainer"/> in Dokumentreihenfolge enthält.
     /// </returns>
-    [__DynamicallyInvokable]
     public IEnumerable<XElement> Elements()
     {
       return this.GetElements((XName)null);
@@ -292,7 +278,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XElement"/>, das die untergeordneten Elemente des <see cref="T:System.Xml.Linq.XContainer"/>, die einen übereinstimmenden <see cref="T:System.Xml.Linq.XName"/> aufweisen, in Dokumentreihenfolge enthält.
     /// </returns>
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
-    [__DynamicallyInvokable]
     public IEnumerable<XElement> Elements(XName name)
     {
       if (!(name != (XName)null))
@@ -307,7 +292,6 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XNode"/>, das die Inhalte dieses <see cref="T:System.Xml.Linq.XContainer"/> in Dokumentreihenfolge enthält.
     /// </returns>
-    [__DynamicallyInvokable]
     public IEnumerable<XNode> Nodes()
     {
       XNode n = this.LastNode;
@@ -325,7 +309,6 @@ namespace TextMonster.Xml
     /// <summary>
     /// Entfernt die untergeordneten Knoten aus diesem Dokument oder Element.
     /// </summary>
-    [__DynamicallyInvokable]
     public void RemoveNodes()
     {
       if (this.SkipNotify())
@@ -375,7 +358,6 @@ namespace TextMonster.Xml
     /// Ersetzt die untergeordneten Knoten dieses Dokuments oder Elements durch den angegebenen Inhalt.
     /// </summary>
     /// <param name="content">Ein Inhaltsobjekt, das einfache Inhalte oder eine Auflistung von Inhaltsobjekten enthält, die die untergeordneten Knoten ersetzen.</param>
-    [__DynamicallyInvokable]
     public void ReplaceNodes(object content)
     {
       content = XContainer.GetContentSnapshot(content);
@@ -387,7 +369,6 @@ namespace TextMonster.Xml
     /// Ersetzt die untergeordneten Knoten dieses Dokuments oder Elements durch den angegebenen Inhalt.
     /// </summary>
     /// <param name="content">Eine Parameterliste von Inhaltsobjekten.</param>
-    [__DynamicallyInvokable]
     public void ReplaceNodes(params object[] content)
     {
       this.ReplaceNodes((object)content);

@@ -19,10 +19,8 @@ namespace TextMonster.Xml
     /// Der <see cref="T:System.Xml.Linq.XNode"/>, der den nächsten nebengeordneten Knoten enthält.
     /// </returns>
     /// <filterpriority>2</filterpriority>
-    [__DynamicallyInvokable]
     public XNode NextNode
     {
-      [__DynamicallyInvokable]
       get
       {
         if (this.parent != null && this != this.parent.content)
@@ -39,10 +37,8 @@ namespace TextMonster.Xml
     /// Der <see cref="T:System.Xml.Linq.XNode"/>, der den vorherigen nebengeordneten Knoten enthält.
     /// </returns>
     /// <filterpriority>2</filterpriority>
-    [__DynamicallyInvokable]
     public XNode PreviousNode
     {
-      [__DynamicallyInvokable]
       get
       {
         if (this.parent == null)
@@ -62,10 +58,8 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Xml.Linq.XNodeDocumentOrderComparer"/>, der die relative Position zweier Knoten vergleichen kann.
     /// </returns>
-    [__DynamicallyInvokable]
     public static XNodeDocumentOrderComparer DocumentOrderComparer
     {
-      [__DynamicallyInvokable]
       get
       {
         if (XNode.documentOrderComparer == null)
@@ -81,10 +75,8 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Xml.Linq.XNodeEqualityComparer"/>, der zwei Knoten auf Wertgleichheit vergleichen kann.
     /// </returns>
-    [__DynamicallyInvokable]
     public static XNodeEqualityComparer EqualityComparer
     {
-      [__DynamicallyInvokable]
       get
       {
         if (XNode.equalityComparer == null)
@@ -101,7 +93,6 @@ namespace TextMonster.Xml
     /// Fügt den angegebenen Inhalt unmittelbar hinter diesem Knoten hinzu.
     /// </summary>
     /// <param name="content">Ein Inhaltsobjekt, das einfache Inhalte oder eine Auflistung von Inhaltsobjekten enthält, die hinter diesem Knoten hinzugefügt werden sollen.</param><exception cref="T:System.InvalidOperationException">Das übergeordnete Element ist null.</exception>
-    [__DynamicallyInvokable]
     public void AddAfterSelf(object content)
     {
       if (this.parent == null)
@@ -113,7 +104,6 @@ namespace TextMonster.Xml
     /// Fügt den angegebenen Inhalt unmittelbar hinter diesem Knoten hinzu.
     /// </summary>
     /// <param name="content">Eine Parameterliste von Inhaltsobjekten.</param><exception cref="T:System.InvalidOperationException">Das übergeordnete Element ist null.</exception>
-    [__DynamicallyInvokable]
     public void AddAfterSelf(params object[] content)
     {
       this.AddAfterSelf((object)content);
@@ -123,7 +113,6 @@ namespace TextMonster.Xml
     /// Fügt den angegebenen Inhalt direkt vor diesem Knoten hinzu.
     /// </summary>
     /// <param name="content">Ein Inhaltsobjekt, das einfache Inhalte oder eine Auflistung von Inhaltsobjekten enthält, die vor diesem Knoten hinzugefügt werden sollen.</param><exception cref="T:System.InvalidOperationException">Das übergeordnete Element ist null.</exception>
-    [__DynamicallyInvokable]
     public void AddBeforeSelf(object content)
     {
       if (this.parent == null)
@@ -140,7 +129,6 @@ namespace TextMonster.Xml
     /// Fügt den angegebenen Inhalt direkt vor diesem Knoten hinzu.
     /// </summary>
     /// <param name="content">Eine Parameterliste von Inhaltsobjekten.</param><exception cref="T:System.InvalidOperationException">Das übergeordnete Element ist null.</exception>
-    [__DynamicallyInvokable]
     public void AddBeforeSelf(params object[] content)
     {
       this.AddBeforeSelf((object)content);
@@ -153,7 +141,6 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XElement"/> der übergeordneten Elemente dieses Knotens.
     /// </returns>
-    [__DynamicallyInvokable]
     public IEnumerable<XElement> Ancestors()
     {
       return this.GetAncestors((XName)null, false);
@@ -167,7 +154,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XElement"/> der übergeordneten Elemente dieses Knotens. Nur Elemente, die über einen übereinstimmenden <see cref="T:System.Xml.Linq.XName"/> verfügen, sind in der Auflistung enthalten. Die Knoten in der zurückgegebenen Auflistung sind in der umgekehrten Dokumentreihenfolge angeordnet. Diese Methode verwendet verzögerte Ausführung.
     /// </returns>
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
-    [__DynamicallyInvokable]
     public IEnumerable<XElement> Ancestors(XName name)
     {
       if (!(name != (XName)null))
@@ -183,7 +169,6 @@ namespace TextMonster.Xml
     /// Ein int mit dem Wert 0 (null), wenn die Knoten gleich sind, -1, wenn <paramref name="n1"/> vor <paramref name="n2"/> angeordnet ist, und 1, wenn <paramref name="n1"/> nach <paramref name="n2"/> angeordnet ist.
     /// </returns>
     /// <param name="n1">Der erste zu vergleichende <see cref="T:System.Xml.Linq.XNode"/>.</param><param name="n2">Der zweite zu vergleichende <see cref="T:System.Xml.Linq.XNode"/>.</param><exception cref="T:System.InvalidOperationException">Die beiden Knoten verfügen über kein gemeinsames übergeordnetes Element.</exception>
-    [__DynamicallyInvokable]
     public static int CompareDocumentOrder(XNode n1, XNode n2)
     {
       if (n1 == n2)
@@ -255,7 +240,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.XmlReader"/>, der zum Lesen dieses Knotens und seiner Nachfolgerelemente verwendet werden kann.
     /// </returns>
     /// <filterpriority>2</filterpriority>
-    [__DynamicallyInvokable]
     public XmlReader CreateReader()
     {
       return (XmlReader)new XNodeReader(this, (XmlNameTable)null);
@@ -269,7 +253,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.XmlReader"/>-Objekt.
     /// </returns>
     /// <param name="readerOptions">Ein <see cref="T:System.Xml.Linq.ReaderOptions"/>-Objekt, das angibt, ob doppelte Namespaces ausgelassen werden sollen.</param>
-    [__DynamicallyInvokable]
     public XmlReader CreateReader(ReaderOptions readerOptions)
     {
       return (XmlReader)new XNodeReader(this, (XmlNameTable)null, readerOptions);
@@ -282,7 +265,6 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XNode"/> der nebengeordneten Knoten nach diesem Knoten in Dokumentreihenfolge.
     /// </returns>
-    [__DynamicallyInvokable]
     public IEnumerable<XNode> NodesAfterSelf()
     {
       XNode n = this;
@@ -300,7 +282,6 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XNode"/> der nebengeordneten Knoten vor diesem Knoten in Dokumentreihenfolge.
     /// </returns>
-    [__DynamicallyInvokable]
     public IEnumerable<XNode> NodesBeforeSelf()
     {
       if (this.parent != null)
@@ -326,7 +307,6 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XElement"/> der nebengeordneten Elemente nach diesem Knoten in Dokumentreihenfolge.
     /// </returns>
-    [__DynamicallyInvokable]
     public IEnumerable<XElement> ElementsAfterSelf()
     {
       return this.GetElementsAfterSelf((XName)null);
@@ -340,7 +320,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XElement"/> der nebengeordneten Elemente nach diesem Knoten in Dokumentreihenfolge. Nur Elemente, die über einen übereinstimmenden <see cref="T:System.Xml.Linq.XName"/> verfügen, sind in der Auflistung enthalten.
     /// </returns>
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
-    [__DynamicallyInvokable]
     public IEnumerable<XElement> ElementsAfterSelf(XName name)
     {
       if (!(name != (XName)null))
@@ -355,7 +334,6 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XElement"/> der nebengeordneten Elemente vor diesem Knoten in Dokumentreihenfolge.
     /// </returns>
-    [__DynamicallyInvokable]
     public IEnumerable<XElement> ElementsBeforeSelf()
     {
       return this.GetElementsBeforeSelf((XName)null);
@@ -369,7 +347,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XElement"/> der nebengeordneten Elemente vor diesem Knoten in Dokumentreihenfolge. Nur Elemente, die über einen übereinstimmenden <see cref="T:System.Xml.Linq.XName"/> verfügen, sind in der Auflistung enthalten.
     /// </returns>
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
-    [__DynamicallyInvokable]
     public IEnumerable<XElement> ElementsBeforeSelf(XName name)
     {
       if (!(name != (XName)null))
@@ -385,7 +362,6 @@ namespace TextMonster.Xml
     /// true, wenn dieser Knoten nach dem angegebenen Knoten angezeigt wird, andernfalls false.
     /// </returns>
     /// <param name="node">Der <see cref="T:System.Xml.Linq.XNode"/>, dessen Dokumentreihenfolge verglichen werden soll.</param>
-    [__DynamicallyInvokable]
     public bool IsAfter(XNode node)
     {
       return XNode.CompareDocumentOrder(this, node) > 0;
@@ -399,7 +375,6 @@ namespace TextMonster.Xml
     /// true, wenn dieser Knoten vor dem angegebenen Knoten angezeigt wird, andernfalls false.
     /// </returns>
     /// <param name="node">Der <see cref="T:System.Xml.Linq.XNode"/>, dessen Dokumentreihenfolge verglichen werden soll.</param>
-    [__DynamicallyInvokable]
     public bool IsBefore(XNode node)
     {
       return XNode.CompareDocumentOrder(this, node) < 0;
@@ -413,7 +388,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.Linq.XNode"/>, der den Knoten und dessen Nachfolgerknoten enthält, die vom Reader gelesen wurden. Der Laufzeittyp des Knotens wird vom Knotentyp (<see cref="P:System.Xml.Linq.XObject.NodeType"/>) des ersten im Reader gefundenen Knotens bestimmt.
     /// </returns>
     /// <param name="reader">Ein <see cref="T:System.Xml.XmlReader"/> an dem Knoten, der in diesen <see cref="T:System.Xml.Linq.XNode"/> gelesen werden soll.</param><exception cref="T:System.InvalidOperationException">Der <see cref="T:System.Xml.XmlReader"/> ist an keinem bekannten Knotentyp positioniert.</exception><exception cref="T:System.Xml.XmlException">Der zugrunde liegende <see cref="T:System.Xml.XmlReader"/> löst eine Ausnahme aus.</exception><filterpriority>2</filterpriority>
-    [__DynamicallyInvokable]
     public static XNode ReadFrom(XmlReader reader)
     {
       if (reader == null)
@@ -448,7 +422,6 @@ namespace TextMonster.Xml
     /// Entfernt diesen Knoten aus seinem übergeordneten Element.
     /// </summary>
     /// <exception cref="T:System.InvalidOperationException">Das übergeordnete Element ist null.</exception>
-    [__DynamicallyInvokable]
     public void Remove()
     {
       if (this.parent == null)
@@ -460,7 +433,6 @@ namespace TextMonster.Xml
     /// Ersetzt diesen Knoten durch den angegebenen Inhalt.
     /// </summary>
     /// <param name="content">Inhalt, durch den dieser Knoten ersetzt wird.</param>
-    [__DynamicallyInvokable]
     public void ReplaceWith(object content)
     {
       if (this.parent == null)
@@ -481,7 +453,6 @@ namespace TextMonster.Xml
     /// Ersetzt diesen Knoten durch den angegebenen Inhalt.
     /// </summary>
     /// <param name="content">Eine Parameterliste des neuen Inhalts.</param>
-    [__DynamicallyInvokable]
     public void ReplaceWith(params object[] content)
     {
       this.ReplaceWith((object)content);
@@ -494,7 +465,6 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.String"/>, der das eingezogene XML enthält.
     /// </returns>
-    [__DynamicallyInvokable]
     public override string ToString()
     {
       return this.GetXmlString(this.GetSaveOptionsFromAnnotations());
@@ -508,7 +478,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.String"/> mit dem XML.
     /// </returns>
     /// <param name="options">Ein <see cref="T:System.Xml.Linq.SaveOptions"/>, das Formatierungsverhalten angibt.</param>
-    [__DynamicallyInvokable]
     public string ToString(SaveOptions options)
     {
       return this.GetXmlString(options);
@@ -522,7 +491,6 @@ namespace TextMonster.Xml
     /// true, wenn die Knoten gleich sind, andernfalls false.
     /// </returns>
     /// <param name="n1">Das erste zu vergleichende <see cref="T:System.Xml.Linq.XNode"/>.</param><param name="n2">Das zweite zu vergleichende <see cref="T:System.Xml.Linq.XNode"/>.</param>
-    [__DynamicallyInvokable]
     public static bool DeepEquals(XNode n1, XNode n2)
     {
       if (n1 == n2)
@@ -536,7 +504,6 @@ namespace TextMonster.Xml
     /// Schreibt diesen Knoten in einen <see cref="T:System.Xml.XmlWriter"/>.
     /// </summary>
     /// <param name="writer">Ein <see cref="T:System.Xml.XmlWriter"/>, in den diese Methode schreibt.</param><filterpriority>2</filterpriority>
-    [__DynamicallyInvokable]
     public abstract void WriteTo(XmlWriter writer);
 
     internal virtual void AppendText(StringBuilder sb)

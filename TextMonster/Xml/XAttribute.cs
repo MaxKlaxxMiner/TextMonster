@@ -19,10 +19,8 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XAttribute"/>, das eine leere Auflistung enthält.
     /// </returns>
-    [__DynamicallyInvokable]
     public static IEnumerable<XAttribute> EmptySequence
     {
-      [__DynamicallyInvokable]
       get
       {
         if (XAttribute.emptySequence == null)
@@ -38,10 +36,8 @@ namespace TextMonster.Xml
     /// <returns>
     /// true, wenn dieses Attribut eine Namespacedeklaration ist, andernfalls false.
     /// </returns>
-    [__DynamicallyInvokable]
     public bool IsNamespaceDeclaration
     {
-      [__DynamicallyInvokable]
       get
       {
         string namespaceName = this.name.NamespaceName;
@@ -58,10 +54,8 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Xml.Linq.XName"/>, der den Namen dieses Attributs enthält.
     /// </returns>
-    [__DynamicallyInvokable]
     public XName Name
     {
-      [__DynamicallyInvokable]
       get
       {
         return this.name;
@@ -76,10 +70,8 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.Linq.XAttribute"/>, das das nächste Attribut des übergeordneten Elements enthält.
     /// </returns>
     /// <filterpriority>2</filterpriority>
-    [__DynamicallyInvokable]
     public XAttribute NextAttribute
     {
-      [__DynamicallyInvokable]
       get
       {
         if (this.parent == null || ((XElement)this.parent).lastAttr == this)
@@ -95,10 +87,8 @@ namespace TextMonster.Xml
     /// <returns>
     /// Der Knotentyp. Für <see cref="T:System.Xml.Linq.XAttribute"/>-Objekte ist dieser Wert <see cref="F:System.Xml.XmlNodeType.Attribute"/>.
     /// </returns>
-    [__DynamicallyInvokable]
     public override XmlNodeType NodeType
     {
-      [__DynamicallyInvokable]
       get
       {
         return XmlNodeType.Attribute;
@@ -113,10 +103,8 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.Linq.XAttribute"/>, das das vorherige Attribut des übergeordneten Elements enthält.
     /// </returns>
     /// <filterpriority>2</filterpriority>
-    [__DynamicallyInvokable]
     public XAttribute PreviousAttribute
     {
-      [__DynamicallyInvokable]
       get
       {
         if (this.parent == null)
@@ -138,15 +126,12 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.String"/>, der den Wert dieses Attributs enthält.
     /// </returns>
     /// <exception cref="T:System.ArgumentNullException">Beim Festlegen ist <paramref name="value"/> gleich null.</exception>
-    [__DynamicallyInvokable]
     public string Value
     {
-      [__DynamicallyInvokable]
       get
       {
         return this.value;
       }
-      [__DynamicallyInvokable]
       set
       {
         if (value == null)
@@ -164,7 +149,6 @@ namespace TextMonster.Xml
     /// Initialisiert eine neue Instanz der <see cref="T:System.Xml.Linq.XAttribute"/>-Klasse mit dem angegebenen Namen und Wert.
     /// </summary>
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/> des Attributs.</param><param name="value">Ein <see cref="T:System.Object"/>, das den Wert des Attributs enthält.</param><exception cref="T:System.ArgumentNullException">Der <paramref name="name"/>-Parameter oder der <paramref name="value"/>-Parameter ist null.</exception>
-    [__DynamicallyInvokable]
     public XAttribute(XName name, object value)
     {
       if (name == (XName)null)
@@ -181,7 +165,6 @@ namespace TextMonster.Xml
     /// Initialisiert eine neue Instanz der <see cref="T:System.Xml.Linq.XAttribute"/>-Klasse mit einem anderen <see cref="T:System.Xml.Linq.XAttribute"/>-Objekt.
     /// </summary>
     /// <param name="other">Ein <see cref="T:System.Xml.Linq.XAttribute"/>-Objekt, aus dem kopiert werden soll.</param><exception cref="T:System.ArgumentNullException">Der <paramref name="other"/>-Parameter ist null.</exception>
-    [__DynamicallyInvokable]
     public XAttribute(XAttribute other)
     {
       if (other == null)
@@ -198,8 +181,6 @@ namespace TextMonster.Xml
     /// Eine <see cref="T:System.String"/>, die den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in <see cref="T:System.String"/> umgewandelt werden soll.</param>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static explicit operator string(XAttribute attribute)
     {
       if (attribute == null)
@@ -215,8 +196,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Boolean"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in <see cref="T:System.Boolean"/> umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Attribut enthält keinen gültigen <see cref="T:System.Boolean"/>-Wert.</exception><exception cref="T:System.ArgumentNullException">Der <paramref name="attribute"/>-Parameter ist null.</exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static explicit operator bool(XAttribute attribute)
     {
       if (attribute == null)
@@ -232,8 +211,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.Boolean"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.Boolean"/> umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Attribut enthält keinen gültigen <see cref="T:System.Boolean"/>-Wert.</exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static explicit operator bool?(XAttribute attribute)
     {
       if (attribute == null)
@@ -249,8 +226,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Int32"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in <see cref="T:System.Int32"/> umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Attribut enthält keinen gültigen <see cref="T:System.Int32"/>-Wert.</exception><exception cref="T:System.ArgumentNullException">Der <paramref name="attribute"/>-Parameter ist null.</exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static explicit operator int(XAttribute attribute)
     {
       if (attribute == null)
@@ -266,8 +241,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.Int32"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.Int32"/> umgewandelt werden soll.</param>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static explicit operator int?(XAttribute attribute)
     {
       if (attribute == null)
@@ -283,8 +256,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.UInt32"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in einen <see cref="T:System.UInt32"/>-Wert umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Attribut enthält keinen gültigen <see cref="T:System.UInt32"/>-Wert.</exception><exception cref="T:System.ArgumentNullException">Der <paramref name="attribute"/>-Parameter ist null.</exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static explicit operator uint(XAttribute attribute)
     {
       if (attribute == null)
@@ -300,8 +271,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.UInt32"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.UInt32"/> umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Attribut enthält keinen gültigen <see cref="T:System.UInt32"/>-Wert.</exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static explicit operator uint?(XAttribute attribute)
     {
       if (attribute == null)
@@ -317,8 +286,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Int64"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in <see cref="T:System.Int64"/> umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Attribut enthält keinen gültigen <see cref="T:System.Int64"/>-Wert.</exception><exception cref="T:System.ArgumentNullException">Der <paramref name="attribute"/>-Parameter ist null.</exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static explicit operator long(XAttribute attribute)
     {
       if (attribute == null)
@@ -334,8 +301,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.Int64"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.Int64"/> umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Attribut enthält keinen gültigen <see cref="T:System.Int64"/>-Wert.</exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static explicit operator long?(XAttribute attribute)
     {
       if (attribute == null)
@@ -351,8 +316,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.UInt64"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in <see cref="T:System.UInt64"/> umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Attribut enthält keinen gültigen <see cref="T:System.UInt64"/>-Wert.</exception><exception cref="T:System.ArgumentNullException">Der <paramref name="attribute"/>-Parameter ist null.</exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static explicit operator ulong(XAttribute attribute)
     {
       if (attribute == null)
@@ -368,8 +331,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.UInt64"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.UInt64"/> umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Attribut enthält keinen gültigen <see cref="T:System.UInt64"/>-Wert.</exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static explicit operator ulong?(XAttribute attribute)
     {
       if (attribute == null)
@@ -385,8 +346,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Single"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in <see cref="T:System.Single"/> umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Attribut enthält keinen gültigen <see cref="T:System.Single"/>-Wert.</exception><exception cref="T:System.ArgumentNullException">Der <paramref name="attribute"/>-Parameter ist null.</exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static explicit operator float(XAttribute attribute)
     {
       if (attribute == null)
@@ -402,8 +361,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.Single"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.Single"/> umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Attribut enthält keinen gültigen <see cref="T:System.Single"/>-Wert.</exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static explicit operator float?(XAttribute attribute)
     {
       if (attribute == null)
@@ -419,8 +376,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Double"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in <see cref="T:System.Double"/> umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Attribut enthält keinen gültigen <see cref="T:System.Double"/>-Wert.</exception><exception cref="T:System.ArgumentNullException">Der <paramref name="attribute"/>-Parameter ist null.</exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static explicit operator double(XAttribute attribute)
     {
       if (attribute == null)
@@ -436,8 +391,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.Double"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in einen <see cref="T:System.Nullable`1"/>-Wert vom Typ <see cref="T:System.Double"/> umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Attribut enthält keinen gültigen <see cref="T:System.Double"/>-Wert.</exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static explicit operator double?(XAttribute attribute)
     {
       if (attribute == null)
@@ -453,8 +406,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Decimal"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in einen <see cref="T:System.Decimal"/>-Wert umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Attribut enthält keinen gültigen <see cref="T:System.Decimal"/>-Wert.</exception><exception cref="T:System.ArgumentNullException">Der <paramref name="attribute"/>-Parameter ist null.</exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static explicit operator Decimal(XAttribute attribute)
     {
       if (attribute == null)
@@ -470,8 +421,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.Decimal"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.Decimal"/> umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Attribut enthält keinen gültigen <see cref="T:System.Decimal"/>-Wert.</exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static explicit operator Decimal?(XAttribute attribute)
     {
       if (attribute == null)
@@ -487,8 +436,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.DateTime"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in <see cref="T:System.DateTime"/> umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Attribut enthält keinen gültigen <see cref="T:System.DateTime"/>-Wert.</exception><exception cref="T:System.ArgumentNullException">Der <paramref name="attribute"/>-Parameter ist null.</exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static explicit operator DateTime(XAttribute attribute)
     {
       if (attribute == null)
@@ -504,8 +451,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.DateTime"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.DateTime"/> umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Attribut enthält keinen gültigen <see cref="T:System.DateTime"/>-Wert.</exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static explicit operator DateTime?(XAttribute attribute)
     {
       if (attribute == null)
@@ -521,8 +466,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.DateTimeOffset"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in einen <see cref="T:System.DateTimeOffset"/>-Wert umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Attribut enthält keinen gültigen <see cref="T:System.DateTimeOffset"/>-Wert.</exception><exception cref="T:System.ArgumentNullException">Der <paramref name="attribute"/>-Parameter ist null.</exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static explicit operator DateTimeOffset(XAttribute attribute)
     {
       if (attribute == null)
@@ -538,8 +481,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.DateTimeOffset"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in einen <see cref="T:System.Nullable`1"/>-Wert vom Typ <see cref="T:System.DateTimeOffset"/> umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Attribut enthält keinen gültigen <see cref="T:System.DateTimeOffset"/>-Wert.</exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static explicit operator DateTimeOffset?(XAttribute attribute)
     {
       if (attribute == null)
@@ -555,8 +496,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.TimeSpan"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in <see cref="T:System.TimeSpan"/> umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Attribut enthält keinen gültigen <see cref="T:System.TimeSpan"/>-Wert.</exception><exception cref="T:System.ArgumentNullException">Der <paramref name="attribute"/>-Parameter ist null.</exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static explicit operator TimeSpan(XAttribute attribute)
     {
       if (attribute == null)
@@ -572,8 +511,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.TimeSpan"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.TimeSpan"/> umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Attribut enthält keinen gültigen <see cref="T:System.TimeSpan"/>-Wert.</exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static explicit operator TimeSpan?(XAttribute attribute)
     {
       if (attribute == null)
@@ -589,8 +526,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Guid"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in <see cref="T:System.Guid"/> umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Attribut enthält keinen gültigen <see cref="T:System.Guid"/>-Wert.</exception><exception cref="T:System.ArgumentNullException">Der <paramref name="attribute"/>-Parameter ist null.</exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static explicit operator Guid(XAttribute attribute)
     {
       if (attribute == null)
@@ -606,8 +541,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.Guid"/>, das den Inhalt dieses <see cref="T:System.Xml.Linq.XAttribute"/> enthält.
     /// </returns>
     /// <param name="attribute">Das <see cref="T:System.Xml.Linq.XAttribute"/>, das in ein <see cref="T:System.Nullable`1"/> vom Typ <see cref="T:System.Guid"/> umgewandelt werden soll.</param><exception cref="T:System.FormatException">Das Attribut enthält keinen gültigen <see cref="T:System.Guid"/>-Wert.</exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static explicit operator Guid?(XAttribute attribute)
     {
       if (attribute == null)
@@ -619,7 +552,6 @@ namespace TextMonster.Xml
     /// Entfernt dieses Attribut aus seinem übergeordneten Element.
     /// </summary>
     /// <exception cref="T:System.InvalidOperationException">Das übergeordnete Element ist null.</exception>
-    [__DynamicallyInvokable]
     public void Remove()
     {
       if (this.parent == null)
@@ -631,7 +563,6 @@ namespace TextMonster.Xml
     /// Legt den Wert dieses Attributs fest.
     /// </summary>
     /// <param name="value">Der Wert, der diesem Attribut zugewiesen werden soll.</param><exception cref="T:System.ArgumentNullException">Der <paramref name="value"/>-Parameter ist null.</exception><exception cref="T:System.ArgumentException">Der <paramref name="value"/> ist ein <see cref="T:System.Xml.Linq.XObject"/>.</exception>
-    [__DynamicallyInvokable]
     public void SetValue(object value)
     {
       if (value == null)
@@ -646,7 +577,6 @@ namespace TextMonster.Xml
     /// <returns>
     /// Eine <see cref="T:System.String"/>, die die XML-Textdarstellung eines Attributs und seines Werts enthält.
     /// </returns>
-    [__DynamicallyInvokable]
     public override string ToString()
     {
       using (StringWriter stringWriter = new StringWriter((IFormatProvider)CultureInfo.InvariantCulture))

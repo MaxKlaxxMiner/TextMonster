@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using System.Xml;
 
 namespace TextMonster.Xml
 {
@@ -20,10 +21,8 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.String"/>, der den lokalen (nicht qualifizierten) Teil des Namens enthält.
     /// </returns>
-    [__DynamicallyInvokable]
     public string LocalName
     {
-      [__DynamicallyInvokable]
       get
       {
         return this.localName;
@@ -37,10 +36,8 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Xml.Linq.XNamespace"/>, der den Namespaceteil des Namens enthält.
     /// </returns>
-    [__DynamicallyInvokable]
     public XNamespace Namespace
     {
-      [__DynamicallyInvokable]
       get
       {
         return this.ns;
@@ -54,10 +51,8 @@ namespace TextMonster.Xml
     /// <returns>
     /// Der URI des <see cref="T:System.Xml.Linq.XNamespace"/> für diesen <see cref="T:System.Xml.Linq.XName"/>.
     /// </returns>
-    [__DynamicallyInvokable]
     public string NamespaceName
     {
-      [__DynamicallyInvokable]
       get
       {
         return this.ns.NamespaceName;
@@ -80,7 +75,6 @@ namespace TextMonster.Xml
     /// </returns>
     /// <param name="expandedName">Eine Zeichenfolge, die einen erweiterten XML-Namen im Format {namespace}localname enthält.</param>
     [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static implicit operator XName(string expandedName)
     {
       if (expandedName == null)
@@ -96,7 +90,6 @@ namespace TextMonster.Xml
     /// true, wenn <paramref name="left"/> und <paramref name="right"/> gleich sind, andernfalls false.
     /// </returns>
     /// <param name="left">Das erste zu vergleichende <see cref="T:System.Xml.Linq.XName"/>.</param><param name="right">Das zweite zu vergleichende <see cref="T:System.Xml.Linq.XName"/>.</param>
-    [__DynamicallyInvokable]
     public static bool operator ==(XName left, XName right)
     {
       return left == right;
@@ -110,7 +103,6 @@ namespace TextMonster.Xml
     /// true, wenn <paramref name="left"/> und <paramref name="right"/> ungleich sind, andernfalls false.
     /// </returns>
     /// <param name="left">Das erste zu vergleichende <see cref="T:System.Xml.Linq.XName"/>.</param><param name="right">Das zweite zu vergleichende <see cref="T:System.Xml.Linq.XName"/>.</param>
-    [__DynamicallyInvokable]
     public static bool operator !=(XName left, XName right)
     {
       return left != right;
@@ -123,7 +115,6 @@ namespace TextMonster.Xml
     /// <returns>
     /// Eine <see cref="T:System.String"/>, die den erweiterten XML-Namen im Format {namespace}localname enthält.
     /// </returns>
-    [__DynamicallyInvokable]
     public override string ToString()
     {
       if (this.ns.NamespaceName.Length == 0)
@@ -139,7 +130,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.Linq.XName"/>-Objekt, das aus dem erweiterten Namen erstellt wurde.
     /// </returns>
     /// <param name="expandedName">Eine <see cref="T:System.String"/>, die einen erweiterten XML-Namen im Format {namespace}localname enthält.</param>
-    [__DynamicallyInvokable]
     public static XName Get(string expandedName)
     {
       if (expandedName == null)
@@ -168,7 +158,6 @@ namespace TextMonster.Xml
     /// Ein aus dem angegebenen lokalen Namen und Namespace erstelltes <see cref="T:System.Xml.Linq.XName"/>-Objekt.
     /// </returns>
     /// <param name="localName">Ein lokaler (nicht qualifizierter) Name.</param><param name="namespaceName">Ein XML-Namespace.</param>
-    [__DynamicallyInvokable]
     public static XName Get(string localName, string namespaceName)
     {
       return XNamespace.Get(namespaceName).GetName(localName);
@@ -182,7 +171,6 @@ namespace TextMonster.Xml
     /// true, wenn der angegebene <see cref="T:System.Xml.Linq.XName"/> und der aktuelle <see cref="T:System.Xml.Linq.XName"/> gleich sind, andernfalls false.
     /// </returns>
     /// <param name="obj">Der <see cref="T:System.Xml.Linq.XName"/>, der mit dem aktuellen <see cref="T:System.Xml.Linq.XName"/> verglichen werden soll.</param>
-    [__DynamicallyInvokable]
     public override bool Equals(object obj)
     {
       return this == obj;
@@ -195,13 +183,11 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Int32"/>, das den Hashcode für den <see cref="T:System.Xml.Linq.XName"/> enthält.
     /// </returns>
-    [__DynamicallyInvokable]
     public override int GetHashCode()
     {
       return this.hashCode;
     }
 
-    [__DynamicallyInvokable]
     bool IEquatable<XName>.Equals(XName other)
     {
       return this == other;

@@ -47,7 +47,6 @@ namespace TextMonster.Xml
     /// </returns>
     public XDocument Document
     {
-      [__DynamicallyInvokable]
       get
       {
         XObject xobject = this;
@@ -64,8 +63,7 @@ namespace TextMonster.Xml
     /// <returns>
     /// Der Knotentyp für dieses <see cref="T:System.Xml.Linq.XObject"/>.
     /// </returns>
-    [__DynamicallyInvokable]
-    public abstract XmlNodeType NodeType { [__DynamicallyInvokable] get; }
+    public abstract XmlNodeType NodeType { get; }
 
     /// <summary>
     /// Ruft das übergeordnete <see cref="T:System.Xml.Linq.XElement"/> dieses <see cref="T:System.Xml.Linq.XObject"/> ab.
@@ -74,20 +72,16 @@ namespace TextMonster.Xml
     /// <returns>
     /// Das übergeordnete <see cref="T:System.Xml.Linq.XElement"/> dieses <see cref="T:System.Xml.Linq.XObject"/>.
     /// </returns>
-    [__DynamicallyInvokable]
     public XElement Parent
     {
-      [__DynamicallyInvokable]
       get
       {
         return this.parent as XElement;
       }
     }
 
-    [__DynamicallyInvokable]
     int IXmlLineInfo.LineNumber
     {
-      [__DynamicallyInvokable]
       get
       {
         LineInfoAnnotation lineInfoAnnotation = this.Annotation<LineInfoAnnotation>();
@@ -97,10 +91,8 @@ namespace TextMonster.Xml
       }
     }
 
-    [__DynamicallyInvokable]
     int IXmlLineInfo.LinePosition
     {
-      [__DynamicallyInvokable]
       get
       {
         LineInfoAnnotation lineInfoAnnotation = this.Annotation<LineInfoAnnotation>();
@@ -121,10 +113,8 @@ namespace TextMonster.Xml
     /// <summary>
     /// Wird ausgelöst, wenn dieses <see cref="T:System.Xml.Linq.XObject"/> oder eines seiner untergeordneten Elemente geändert wurde.
     /// </summary>
-    [__DynamicallyInvokable]
     public event EventHandler<XObjectChangeEventArgs> Changed
     {
-      [__DynamicallyInvokable]
       add
       {
         if (value == null)
@@ -137,7 +127,6 @@ namespace TextMonster.Xml
         }
         changeAnnotation.changed += value;
       }
-      [__DynamicallyInvokable]
       remove
       {
         if (value == null)
@@ -155,10 +144,8 @@ namespace TextMonster.Xml
     /// <summary>
     /// Wird ausgelöst, wenn dieses <see cref="T:System.Xml.Linq.XObject"/> oder eines seiner untergeordneten Elemente gerade geändert wird.
     /// </summary>
-    [__DynamicallyInvokable]
     public event EventHandler<XObjectChangeEventArgs> Changing
     {
-      [__DynamicallyInvokable]
       add
       {
         if (value == null)
@@ -171,7 +158,6 @@ namespace TextMonster.Xml
         }
         changeAnnotation.changing += value;
       }
-      [__DynamicallyInvokable]
       remove
       {
         if (value == null)
@@ -194,7 +180,6 @@ namespace TextMonster.Xml
     /// Fügt der Anmerkungsliste dieses <see cref="T:System.Xml.Linq.XObject"/> ein Objekt hinzu.
     /// </summary>
     /// <param name="annotation">Ein <see cref="T:System.Object"/>, das die hinzuzufügende Anmerkung enthält.</param>
-    [__DynamicallyInvokable]
     public void AddAnnotation(object annotation)
     {
       // ISSUE: unable to decompile the method.
@@ -208,7 +193,6 @@ namespace TextMonster.Xml
     /// Das <see cref="T:System.Object"/> mit dem ersten Anmerkungsobjekt, das mit dem angegebenen Typ übereinstimmt, oder null, wenn keine Anmerkung den angegebenen Typ aufweist.
     /// </returns>
     /// <param name="type">Der <see cref="T:System.Type"/> der abzurufenden Anmerkung.</param>
-    [__DynamicallyInvokable]
     public object Annotation(Type type)
     {
       if (type == (Type)null)
@@ -247,7 +231,6 @@ namespace TextMonster.Xml
     /// Das erste Anmerkungsobjekt, das mit dem angegebenen Typ übereinstimmt, oder null, wenn keine Anmerkung den angegebenen Typ aufweist.
     /// </returns>
     /// <typeparam name="T">Der Typ der abzurufenden Anmerkung.</typeparam>
-    [__DynamicallyInvokable]
     public T Annotation<T>() where T : class
     {
       if (this.annotations != null)
@@ -279,7 +262,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Object"/>, das die Anmerkungen enthält, die mit dem angegebenen Typ für dieses <see cref="T:System.Xml.Linq.XObject"/> übereinstimmen.
     /// </returns>
     /// <param name="type">Der <see cref="T:System.Type"/> der abzurufenden Anmerkungen.</param>
-    [__DynamicallyInvokable]
     public IEnumerable<object> Annotations(Type type)
     {
       if (type == (Type)null)
@@ -323,7 +305,6 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/>, das die Anmerkungen für dieses <see cref="T:System.Xml.Linq.XObject"/> enthält.
     /// </returns>
     /// <typeparam name="T">Der Typ der abzurufenden Anmerkungen.</typeparam>
-    [__DynamicallyInvokable]
     public IEnumerable<T> Annotations<T>() where T : class
     {
       if (this.annotations != null)
@@ -358,7 +339,6 @@ namespace TextMonster.Xml
     /// Entfernt die Anmerkungen vom angegebenen Typ aus diesem <see cref="T:System.Xml.Linq.XObject"/>.
     /// </summary>
     /// <param name="type">Der <see cref="T:System.Type"/> der zu entfernenden Anmerkungen.</param>
-    [__DynamicallyInvokable]
     public void RemoveAnnotations(Type type)
     {
       if (type == (Type)null)
@@ -403,7 +383,6 @@ namespace TextMonster.Xml
     /// Entfernt die Anmerkungen vom angegebenen Typ aus diesem <see cref="T:System.Xml.Linq.XObject"/>.
     /// </summary>
     /// <typeparam name="T">Der Typ der zu entfernenden Anmerkungen.</typeparam>
-    [__DynamicallyInvokable]
     public void RemoveAnnotations<T>() where T : class
     {
       if (this.annotations == null)
@@ -442,7 +421,6 @@ namespace TextMonster.Xml
       }
     }
 
-    [__DynamicallyInvokable]
     bool IXmlLineInfo.HasLineInfo()
     {
       return this.Annotation<LineInfoAnnotation>() != null;
