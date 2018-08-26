@@ -200,12 +200,20 @@ namespace TestTool
     }
     #endregion
 
+    static void SpeedCheckXmlParser()
+    {
+      fullFile = File.ReadAllBytes(TestFile.CreateFilePrime(TestFile.FileType.Xml, 100000000));
+
+      //SpeedCheck("ParseXml() - 
+    }
+
     static void Main(string[] args)
     {
       //CreateTestFiles();
 
       //SpeedCheckBinary();
       //SpeedCheckTextLines();
+      SpeedCheckXmlParser();
     }
   }
 }
