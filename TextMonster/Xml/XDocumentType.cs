@@ -163,7 +163,6 @@ namespace TextMonster.Xml
       this.publicId = r.GetAttribute("PUBLIC");
       this.systemId = r.GetAttribute("SYSTEM");
       this.internalSubset = r.Value;
-      this.dtdInfo = r.DtdInfo;
       r.Read();
     }
 

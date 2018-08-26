@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Text;
 using System.Xml;
 
 namespace TextMonster.Xml
@@ -396,7 +399,7 @@ namespace TextMonster.Xml
       if (reader == null)
         throw new ArgumentNullException("reader");
       if (reader.ReadState != ReadState.Interactive)
-        throw new InvalidOperationException(Res.GetString("InvalidOperation_ExpectedInteractive"));
+        throw new InvalidOperationException("InvalidOperation_ExpectedInteractive");
       switch (reader.NodeType)
       {
         case XmlNodeType.Element:
@@ -414,10 +417,7 @@ namespace TextMonster.Xml
         case XmlNodeType.DocumentType:
         return (XNode)new XDocumentType(reader);
         default:
-        throw new InvalidOperationException(Res.GetString("InvalidOperation_UnexpectedNodeType", new object[1]
-          {
-            (object) reader.NodeType
-          }));
+        throw new InvalidOperationException("InvalidOperation_UnexpectedNodeType");
       }
     }
 
@@ -428,7 +428,7 @@ namespace TextMonster.Xml
     public void Remove()
     {
       if (this.parent == null)
-        throw new InvalidOperationException(Res.GetString("InvalidOperation_MissingParent"));
+        throw new InvalidOperationException("InvalidOperation_MissingParent");
       this.parent.RemoveNode(this);
     }
 
@@ -439,7 +439,7 @@ namespace TextMonster.Xml
     public void ReplaceWith(object content)
     {
       if (this.parent == null)
-        throw new InvalidOperationException(Res.GetString("InvalidOperation_MissingParent"));
+        throw new InvalidOperationException("InvalidOperation_MissingParent");
       XContainer parent = this.parent;
       XNode anchor = (XNode)this.parent.content;
       while (anchor.next != this)
@@ -448,7 +448,7 @@ namespace TextMonster.Xml
         anchor = (XNode)null;
       this.parent.RemoveNode(this);
       if (anchor != null && anchor.parent != parent)
-        throw new InvalidOperationException(Res.GetString("InvalidOperation_ExternalCode"));
+        throw new InvalidOperationException("InvalidOperation_ExternalCode");
       new Inserter(parent, anchor).Add(content);
     }
 

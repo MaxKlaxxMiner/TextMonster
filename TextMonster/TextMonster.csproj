@@ -45,6 +45,7 @@
     <Compile Include="UnsafeHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Xml\BaseUriAnnotation.cs" />
+    <Compile Include="Xml\ElementWriter.cs" />
     <Compile Include="Xml\NamespaceCache.cs" />
     <Compile Include="Xml\XNodeBuilder.cs" />
     <Compile Include="Xml\ReaderOptions.cs" />

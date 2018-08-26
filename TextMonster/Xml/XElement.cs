@@ -1,4 +1,12 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Text;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
+
 namespace TextMonster.Xml
 {
   /// <summary>
@@ -784,10 +792,7 @@ namespace TextMonster.Xml
       if (prefix == null)
         throw new ArgumentNullException("prefix");
       if (prefix.Length == 0)
-        throw new ArgumentException(Res.GetString("Argument_InvalidPrefix", new object[1]
-        {
-          (object) prefix
-        }));
+        throw new ArgumentException("Argument_InvalidPrefix");
       if (prefix == "xmlns")
         return XNamespace.Xmlns;
       string namespaceOfPrefixInScope = this.GetNamespaceOfPrefixInScope(prefix, (XElement)null);
@@ -955,11 +960,11 @@ namespace TextMonster.Xml
       if (reader == null)
         throw new ArgumentNullException("reader");
       if (reader.MoveToContent() != XmlNodeType.Element)
-        throw new InvalidOperationException(Res.GetString("InvalidOperation_ExpectedNodeType", (object)XmlNodeType.Element, (object)reader.NodeType));
+        throw new InvalidOperationException("InvalidOperation_ExpectedNodeType");
       XElement xelement = new XElement(reader, options);
       int num = (int)reader.MoveToContent();
       if (!reader.EOF)
-        throw new InvalidOperationException(Res.GetString("InvalidOperation_ExpectedEndOfFile"));
+        throw new InvalidOperationException("InvalidOperation_ExpectedEndOfFile");
       return xelement;
     }
 
@@ -1019,7 +1024,7 @@ namespace TextMonster.Xml
           XAttribute xattribute = this.lastAttr.next;
           this.NotifyChanging((object)xattribute, XObjectChangeEventArgs.Remove);
           if (this.lastAttr == null || xattribute != this.lastAttr.next)
-            throw new InvalidOperationException(Res.GetString("InvalidOperation_ExternalCode"));
+            throw new InvalidOperationException("InvalidOperation_ExternalCode");
           if (xattribute != this.lastAttr)
             this.lastAttr.next = xattribute.next;
           else
@@ -1214,9 +1219,9 @@ namespace TextMonster.Xml
       if (reader == null)
         throw new ArgumentNullException("reader");
       if (this.parent != null || this.annotations != null || (this.content != null || this.lastAttr != null))
-        throw new InvalidOperationException(Res.GetString("InvalidOperation_DeserializeInstance"));
+        throw new InvalidOperationException("InvalidOperation_DeserializeInstance");
       if (reader.MoveToContent() != XmlNodeType.Element)
-        throw new InvalidOperationException(Res.GetString("InvalidOperation_ExpectedNodeType", (object)XmlNodeType.Element, (object)reader.NodeType));
+        throw new InvalidOperationException("InvalidOperation_ExpectedNodeType");
       this.ReadElementFrom(reader, LoadOptions.None);
     }
 
@@ -1228,7 +1233,7 @@ namespace TextMonster.Xml
     internal override void AddAttribute(XAttribute a)
     {
       if (this.Attribute(a.Name) != null)
-        throw new InvalidOperationException(Res.GetString("InvalidOperation_DuplicateAttribute"));
+        throw new InvalidOperationException("InvalidOperation_DuplicateAttribute");
       if (a.parent != null)
         a = new XAttribute(a);
       this.AppendAttribute(a);
@@ -1237,7 +1242,7 @@ namespace TextMonster.Xml
     internal override void AddAttributeSkipNotify(XAttribute a)
     {
       if (this.Attribute(a.Name) != null)
-        throw new InvalidOperationException(Res.GetString("InvalidOperation_DuplicateAttribute"));
+        throw new InvalidOperationException("InvalidOperation_DuplicateAttribute");
       if (a.parent != null)
         a = new XAttribute(a);
       this.AppendAttributeSkipNotify(a);
@@ -1247,7 +1252,7 @@ namespace TextMonster.Xml
     {
       bool flag = this.NotifyChanging((object)a, XObjectChangeEventArgs.Add);
       if (a.parent != null)
-        throw new InvalidOperationException(Res.GetString("InvalidOperation_ExternalCode"));
+        throw new InvalidOperationException("InvalidOperation_ExternalCode");
       this.AppendAttributeSkipNotify(a);
       if (!flag)
         return;
@@ -1356,7 +1361,7 @@ namespace TextMonster.Xml
     private void ReadElementFrom(XmlReader r, LoadOptions o)
     {
       if (r.ReadState != ReadState.Interactive)
-        throw new InvalidOperationException(Res.GetString("InvalidOperation_ExpectedInteractive"));
+        throw new InvalidOperationException("InvalidOperation_ExpectedInteractive");
       this.name = XNamespace.Get(r.NamespaceURI).GetName(r.LocalName);
       if ((o & LoadOptions.SetBaseUri) != LoadOptions.None)
       {
@@ -1395,7 +1400,7 @@ namespace TextMonster.Xml
     {
       bool flag = this.NotifyChanging((object)a, XObjectChangeEventArgs.Remove);
       if (a.parent != this)
-        throw new InvalidOperationException(Res.GetString("InvalidOperation_ExternalCode"));
+        throw new InvalidOperationException("InvalidOperation_ExternalCode");
       XAttribute xattribute1 = this.lastAttr;
       XAttribute xattribute2;
       while ((xattribute2 = xattribute1.next) != a)
@@ -1441,15 +1446,9 @@ namespace TextMonster.Xml
     internal override void ValidateNode(XNode node, XNode previous)
     {
       if (node is XDocument)
-        throw new ArgumentException(Res.GetString("Argument_AddNode", new object[1]
-        {
-          (object) XmlNodeType.Document
-        }));
+        throw new ArgumentException("Argument_AddNode");
       if (node is XDocumentType)
-        throw new ArgumentException(Res.GetString("Argument_AddNode", new object[1]
-        {
-          (object) XmlNodeType.DocumentType
-        }));
+        throw new ArgumentException("Argument_AddNode");
     }
   }
 }

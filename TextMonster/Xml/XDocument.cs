@@ -243,9 +243,9 @@ namespace TextMonster.Xml
         xdocument.Declaration = new XDeclaration(reader);
       xdocument.ReadContentFrom(reader, options);
       if (!reader.EOF)
-        throw new InvalidOperationException(Res.GetString("InvalidOperation_ExpectedEndOfFile"));
+        throw new InvalidOperationException("InvalidOperation_ExpectedEndOfFile");
       if (xdocument.Root == null)
-        throw new InvalidOperationException(Res.GetString("InvalidOperation_MissingRoot"));
+        throw new InvalidOperationException("InvalidOperation_MissingRoot");
       return xdocument;
     }
 
@@ -395,12 +395,12 @@ namespace TextMonster.Xml
 
     internal override void AddAttribute(XAttribute a)
     {
-      throw new ArgumentException(Res.GetString("Argument_AddAttribute"));
+      throw new ArgumentException("Argument_AddAttribute");
     }
 
     internal override void AddAttributeSkipNotify(XAttribute a)
     {
-      throw new ArgumentException(Res.GetString("Argument_AddAttribute"));
+      throw new ArgumentException("Argument_AddAttribute");
     }
 
     internal override XNode CloneNode()
@@ -467,15 +467,9 @@ namespace TextMonster.Xml
         this.ValidateString(((XText)node).Value);
         break;
         case XmlNodeType.CDATA:
-        throw new ArgumentException(Res.GetString("Argument_AddNode", new object[1]
-          {
-            (object) XmlNodeType.CDATA
-          }));
+        throw new ArgumentException("Argument_AddNode");
         case XmlNodeType.Document:
-        throw new ArgumentException(Res.GetString("Argument_AddNode", new object[1]
-          {
-            (object) XmlNodeType.Document
-          }));
+        throw new ArgumentException("Argument_AddNode");
         case XmlNodeType.DocumentType:
         this.ValidateDocument(previous, XmlNodeType.None, XmlNodeType.Element);
         break;
@@ -498,7 +492,7 @@ namespace TextMonster.Xml
           case XmlNodeType.Element:
           case XmlNodeType.DocumentType:
           if (nodeType != allowBefore)
-            throw new InvalidOperationException(Res.GetString("InvalidOperation_DocumentStructure"));
+            throw new InvalidOperationException("InvalidOperation_DocumentStructure");
           allowBefore = XmlNodeType.None;
           break;
         }
@@ -511,7 +505,7 @@ namespace TextMonster.Xml
     internal override void ValidateString(string s)
     {
       if (!XDocument.IsWhitespace(s))
-        throw new ArgumentException(Res.GetString("Argument_AddNonWhitespace"));
+        throw new ArgumentException("Argument_AddNonWhitespace");
     }
   }
 }
