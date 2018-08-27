@@ -383,57 +383,5 @@ namespace TextMonster.Xml
       }
       return true;
     }
-
-    internal override void ValidateNode(X_Node node, X_Node previous)
-    {
-      switch (node.NodeType)
-      {
-        case XmlNodeType.Element:
-        ValidateDocument(previous, XmlNodeType.DocumentType, XmlNodeType.None);
-        break;
-        case XmlNodeType.Text:
-        ValidateString(((X_Text)node).Value);
-        break;
-        case XmlNodeType.CDATA:
-        throw new ArgumentException("Argument_AddNode");
-        case XmlNodeType.Document:
-        throw new ArgumentException("Argument_AddNode");
-        case XmlNodeType.DocumentType:
-        ValidateDocument(previous, XmlNodeType.None, XmlNodeType.Element);
-        break;
-      }
-    }
-
-    void ValidateDocument(X_Node previous, XmlNodeType allowBefore, XmlNodeType allowAfter)
-    {
-      var xnode = content as X_Node;
-      if (xnode == null)
-        return;
-      if (previous == null)
-        allowBefore = allowAfter;
-      do
-      {
-        xnode = xnode.next;
-        var nodeType = xnode.NodeType;
-        switch (nodeType)
-        {
-          case XmlNodeType.Element:
-          case XmlNodeType.DocumentType:
-          if (nodeType != allowBefore)
-            throw new InvalidOperationException("InvalidOperation_DocumentStructure");
-          allowBefore = XmlNodeType.None;
-          break;
-        }
-        if (xnode == previous)
-          allowBefore = allowAfter;
-      }
-      while (xnode != content);
-    }
-
-    internal override void ValidateString(string s)
-    {
-      if (!IsWhitespace(s))
-        throw new ArgumentException("Argument_AddNonWhitespace");
-    }
   }
 }

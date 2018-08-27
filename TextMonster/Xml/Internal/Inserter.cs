@@ -108,7 +108,6 @@ namespace TextMonster.Xml
 
     void AddNode(X_Node n)
     {
-      parent.ValidateNode(n, previous);
       if (n.parent != null)
       {
         n = n.CloneNode();
@@ -138,7 +137,6 @@ namespace TextMonster.Xml
 
     void AddString(string s)
     {
-      parent.ValidateString(s);
       text = text + s;
     }
 

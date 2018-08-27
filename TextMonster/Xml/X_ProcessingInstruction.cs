@@ -71,7 +71,6 @@ namespace TextMonster.Xml
       }
       set
       {
-        ValidateName(value);
         bool flag = NotifyChanging(this, X_ObjectChangeEventArgs.Name);
         target = value;
         if (!flag)
@@ -88,7 +87,6 @@ namespace TextMonster.Xml
     {
       if (data == null)
         throw new ArgumentNullException("data");
-      ValidateName(target);
       this.target = target;
       this.data = data;
     }
@@ -139,13 +137,6 @@ namespace TextMonster.Xml
     internal override int GetDeepHashCode()
     {
       return target.GetHashCode() ^ data.GetHashCode();
-    }
-
-    static void ValidateName(string name)
-    {
-      XmlConvert.VerifyNCName(name);
-      if (string.Compare(name, "xml", StringComparison.OrdinalIgnoreCase) == 0)
-        throw new ArgumentException("Argument_InvalidPIName");
     }
   }
 }

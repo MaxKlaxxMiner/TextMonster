@@ -450,7 +450,6 @@ namespace TextMonster.Xml
 
     internal void AddNode(X_Node n)
     {
-      ValidateNode(n, this);
       if (n.parent != null)
       {
         n = n.CloneNode();
@@ -469,7 +468,6 @@ namespace TextMonster.Xml
 
     internal void AddNodeSkipNotify(X_Node n)
     {
-      ValidateNode(n, this);
       if (n.parent != null)
       {
         n = n.CloneNode();
@@ -488,7 +486,6 @@ namespace TextMonster.Xml
 
     internal void AddString(string s)
     {
-      ValidateString(s);
       if (content == null)
       {
         if (s.Length > 0)
@@ -519,7 +516,6 @@ namespace TextMonster.Xml
 
     internal void AddStringSkipNotify(string s)
     {
-      ValidateString(s);
       if (content == null)
       {
         content = s;
@@ -1003,14 +999,6 @@ namespace TextMonster.Xml
         while (xnode1 != content);
       }
       content = null;
-    }
-
-    internal virtual void ValidateNode(X_Node node, X_Node previous)
-    {
-    }
-
-    internal virtual void ValidateString(string s)
-    {
     }
 
     internal void WriteContentTo(XmlWriter writer)

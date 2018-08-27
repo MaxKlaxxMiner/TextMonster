@@ -1265,13 +1265,5 @@ namespace TextMonster.Xml
     {
       AddAnnotation(new LineInfoEndElementAnnotation(lineNumber, linePosition));
     }
-
-    internal override void ValidateNode(X_Node node, X_Node previous)
-    {
-      if (node is X_Document)
-        throw new ArgumentException("Argument_AddNode");
-      if (node is X_DocumentType)
-        throw new ArgumentException("Argument_AddNode");
-    }
   }
 }
