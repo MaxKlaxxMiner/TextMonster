@@ -52,7 +52,6 @@
     <Compile Include="Xml2\X_Node.cs" />
     <Compile Include="Xml2\X_Object.cs" />
     <Compile Include="Xml2\X_Text.cs" />
-    <Compile Include="Xml\Internal\BaseUriAnnotation.cs" />
     <Compile Include="Xml\Internal\ElementWriter.cs" />
     <Compile Include="Xml\Internal\XNodeBuilder.cs" />
     <Compile Include="Xml\X_Comment.cs" />

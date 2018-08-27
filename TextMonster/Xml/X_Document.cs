@@ -103,8 +103,7 @@ namespace TextMonster.Xml
     public X_Document(X_Document other)
       : base(other)
     {
-      if (other.Declaration == null)
-        return;
+      if (other.Declaration == null) return;
       Declaration = new X_Declaration(other.Declaration);
     }
 
@@ -115,12 +114,10 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Xml.Linq.XDocument"/> mit dem Inhalt der angegebenen Datei.
     /// </returns>
-    /// <param name="uri">Eine URI-Zeichenfolge, die auf die Datei verweist, die in ein neues <see cref="T:System.Xml.Linq.XDocument"/> geladen werden soll.</param><param name="options">Ein <see cref="T:System.Xml.Linq.LoadOptions"/>, das Leerraumverhalten angibt und festlegt, ob Basis-URI- und Zeileninformationen geladen werden.</param>
-    public static X_Document Load(string uri, LoadOptions options = LoadOptions.None)
+    /// <param name="uri">Eine URI-Zeichenfolge, die auf die Datei verweist, die in ein neues <see cref="T:System.Xml.Linq.XDocument"/> geladen werden soll.</param>
+    public static X_Document Load(string uri)
     {
-      var xmlReaderSettings = GetXmlReaderSettings(options);
-      using (var reader = XmlReader.Create(uri, xmlReaderSettings))
-        return Load(reader, options);
+      using (var reader = XmlReader.Create(uri, DefaultXmlReaderSettings)) return Load(reader);
     }
 
     /// <summary>
@@ -130,12 +127,10 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Xml.Linq.XDocument"/>-Objekt, mit dem die im Stream enthaltenen Daten gelesen werden.
     /// </returns>
-    /// <param name="stream">Der Stream, der die XML-Daten enthält.</param><param name="options">Ein <see cref="T:System.Xml.Linq.LoadOptions"/>, das angibt, ob Basis-URI- und Zeileninformationen geladen werden.</param>
-    public static X_Document Load(Stream stream, LoadOptions options = LoadOptions.None)
+    /// <param name="stream">Der Stream, der die XML-Daten enthält.</param>
+    public static X_Document Load(Stream stream)
     {
-      var xmlReaderSettings = GetXmlReaderSettings(options);
-      using (var reader = XmlReader.Create(stream, xmlReaderSettings))
-        return Load(reader, options);
+      using (var reader = XmlReader.Create(stream, DefaultXmlReaderSettings)) return Load(reader);
     }
 
     /// <summary>
@@ -145,12 +140,10 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Xml.Linq.XDocument"/>, das die XML-Daten enthält, die aus dem angegebenen <see cref="T:System.IO.TextReader"/> gelesen wurden.
     /// </returns>
-    /// <param name="textReader">Ein <see cref="T:System.IO.TextReader"/>, der den Inhalt für das <see cref="T:System.Xml.Linq.XDocument"/> enthält.</param><param name="options">Ein <see cref="T:System.Xml.Linq.LoadOptions"/>, das Leerraumverhalten angibt und festlegt, ob Basis-URI- und Zeileninformationen geladen werden.</param>
-    public static X_Document Load(TextReader textReader, LoadOptions options = LoadOptions.None)
+    /// <param name="textReader">Ein <see cref="T:System.IO.TextReader"/>, der den Inhalt für das <see cref="T:System.Xml.Linq.XDocument"/> enthält.</param>
+    public static X_Document Load(TextReader textReader)
     {
-      var xmlReaderSettings = GetXmlReaderSettings(options);
-      using (var reader = XmlReader.Create(textReader, xmlReaderSettings))
-        return Load(reader, options);
+      using (var reader = XmlReader.Create(textReader, DefaultXmlReaderSettings)) return Load(reader);
     }
 
     /// <summary>
@@ -160,23 +153,17 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Xml.Linq.XDocument"/>, das die XML-Daten enthält, die aus dem angegebenen <see cref="T:System.Xml.XmlReader"/> gelesen wurden.
     /// </returns>
-    /// <param name="reader">Ein <see cref="T:System.Xml.XmlReader"/>, dessen Inhalt des <see cref="T:System.Xml.Linq.XDocument"/> gelesen wird.</param><param name="options">Ein <see cref="T:System.Xml.Linq.LoadOptions"/>, das angibt, ob Basis-URI- und Zeileninformationen geladen werden.</param>
-    public static X_Document Load(XmlReader reader, LoadOptions options = LoadOptions.None)
+    /// <param name="reader">Ein <see cref="T:System.Xml.XmlReader"/>, dessen Inhalt des <see cref="T:System.Xml.Linq.XDocument"/> gelesen wird.</param>
+    public static X_Document Load(XmlReader reader)
     {
       if (reader == null)
         throw new ArgumentNullException("reader");
       if (reader.ReadState == ReadState.Initial)
         reader.Read();
       var xdocument = new X_Document();
-      if ((options & LoadOptions.SetBaseUri) != LoadOptions.None)
-      {
-        string baseUri = reader.BaseURI;
-        if (!string.IsNullOrEmpty(baseUri))
-          xdocument.SetBaseUri(baseUri);
-      }
       if (reader.NodeType == XmlNodeType.XmlDeclaration)
         xdocument.Declaration = new X_Declaration(reader);
-      xdocument.ReadContentFrom(reader, options);
+      xdocument.ReadContentFrom(reader);
       if (!reader.EOF)
         throw new InvalidOperationException("InvalidOperation_ExpectedEndOfFile");
       if (xdocument.Root == null)
@@ -191,14 +178,12 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Xml.Linq.XDocument"/>, das aus der Zeichenfolge aufgefüllt wird, die XML enthält.
     /// </returns>
-    /// <param name="text">Eine Zeichenfolge, die XML enthält.</param><param name="options">Ein <see cref="T:System.Xml.Linq.LoadOptions"/>, das Leerraumverhalten angibt und festlegt, ob Basis-URI- und Zeileninformationen geladen werden.</param>
-    public static X_Document Parse(string text, LoadOptions options = LoadOptions.None)
+    /// <param name="text">Eine Zeichenfolge, die XML enthält.</param>
+    public static X_Document Parse(string text)
     {
       using (var stringReader = new StringReader(text))
       {
-        var xmlReaderSettings = GetXmlReaderSettings(options);
-        using (var reader = XmlReader.Create(stringReader, xmlReaderSettings))
-          return Load(reader, options);
+        using (var reader = XmlReader.Create(stringReader, DefaultXmlReaderSettings)) return Load(reader);
       }
     }
 

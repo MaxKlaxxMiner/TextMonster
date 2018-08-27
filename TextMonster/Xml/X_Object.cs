@@ -20,34 +20,6 @@ namespace TextMonster.Xml
     internal object annotations;
 
     /// <summary>
-    /// Ruft den Basis-URI für dieses <see cref="T:System.Xml.Linq.XObject"/> ab.
-    /// </summary>
-    /// 
-    /// <returns>
-    /// Ein <see cref="T:System.String"/>, der den Basis-URI für dieses <see cref="T:System.Xml.Linq.XObject"/> enthält.
-    /// </returns>
-    /// <filterpriority>2</filterpriority>
-    public string BaseUri
-    {
-      get
-      {
-        var xobject = this;
-        while (true)
-        {
-          for (; xobject == null || xobject.annotations != null; xobject = (X_Object)xobject.parent)
-          {
-            if (xobject == null)
-              return string.Empty;
-            var baseUriAnnotation = xobject.Annotation<BaseUriAnnotation>();
-            if (baseUriAnnotation != null)
-              return baseUriAnnotation.baseUri;
-          }
-          xobject = xobject.parent;
-        }
-      }
-    }
-
-    /// <summary>
     /// Ruft das <see cref="T:System.Xml.Linq.XDocument"/> für dieses <see cref="T:System.Xml.Linq.XObject"/> ab.
     /// </summary>
     /// 
@@ -86,14 +58,6 @@ namespace TextMonster.Xml
       get
       {
         return parent as X_Element;
-      }
-    }
-
-    internal bool HasBaseUri
-    {
-      get
-      {
-        return Annotation<BaseUriAnnotation>() != null;
       }
     }
 
@@ -448,11 +412,6 @@ namespace TextMonster.Xml
         }
         xobject = xobject.parent;
       }
-    }
-
-    internal void SetBaseUri(string baseUri)
-    {
-      AddAnnotation(new BaseUriAnnotation(baseUri));
     }
 
     internal bool SkipNotify()

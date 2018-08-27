@@ -531,16 +531,13 @@ namespace TextMonster.Xml
 
     internal abstract int GetDeepHashCode();
 
-    internal static XmlReaderSettings GetXmlReaderSettings(LoadOptions o)
+    protected static readonly XmlReaderSettings DefaultXmlReaderSettings = new XmlReaderSettings
     {
-      var xmlReaderSettings = new XmlReaderSettings();
-      if ((o & LoadOptions.PreserveWhitespace) == LoadOptions.None)
-        xmlReaderSettings.IgnoreWhitespace = true;
-      xmlReaderSettings.DtdProcessing = DtdProcessing.Parse;
-      xmlReaderSettings.MaxCharactersFromEntities = 10000000L;
-      xmlReaderSettings.XmlResolver = null;
-      return xmlReaderSettings;
-    }
+      IgnoreWhitespace = true,
+      DtdProcessing = DtdProcessing.Ignore,
+      MaxCharactersFromEntities = 10000000L,
+      XmlResolver = null
+    };
 
     internal static XmlWriterSettings GetXmlWriterSettings(SaveOptions o)
     {

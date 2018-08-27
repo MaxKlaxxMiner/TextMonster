@@ -260,9 +260,9 @@ namespace TextMonster.Xml
     {
     }
 
-    internal X_Element(XmlReader r, LoadOptions o = LoadOptions.None)
+    internal X_Element(XmlReader r)
     {
-      ReadElementFrom(r, o);
+      ReadElementFrom(r);
     }
 
     /// <summary>
@@ -662,7 +662,7 @@ namespace TextMonster.Xml
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
     public IEnumerable<X_Element> AncestorsAndSelf(string name)
     {
-      if (!(name != null))
+      if (name == null)
         return EmptySequence;
       return GetAncestors(name, true);
     }
@@ -713,8 +713,7 @@ namespace TextMonster.Xml
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
     public IEnumerable<X_Attribute> Attributes(string name)
     {
-      if (!(name != null))
-        return X_Attribute.EmptySequence;
+      if (name == null) return X_Attribute.EmptySequence;
       return GetAttributes(name);
     }
 
@@ -752,8 +751,7 @@ namespace TextMonster.Xml
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
     public IEnumerable<X_Element> DescendantsAndSelf(string name)
     {
-      if (!(name != null))
-        return EmptySequence;
+      if (name == null) return EmptySequence;
       return GetDescendants(name, true);
     }
 
@@ -764,12 +762,10 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Xml.Linq.XElement"/> mit dem Inhalt der angegebenen Datei.
     /// </returns>
-    /// <param name="uri">Eine URI-Zeichenfolge, die auf die Datei verweist, die in ein <see cref="T:System.Xml.Linq.XElement"/> geladen werden soll.</param><param name="options">Ein <see cref="T:System.Xml.Linq.LoadOptions"/>, das Leerraumverhalten angibt und festlegt, ob Basis-URI- und Zeileninformationen geladen werden.</param>
-    public static X_Element Load(string uri, LoadOptions options = LoadOptions.None)
+    /// <param name="uri">Eine URI-Zeichenfolge, die auf die Datei verweist, die in ein <see cref="T:System.Xml.Linq.XElement"/> geladen werden soll.</param>
+    public static X_Element Load(string uri)
     {
-      var xmlReaderSettings = GetXmlReaderSettings(options);
-      using (var reader = XmlReader.Create(uri, xmlReaderSettings))
-        return Load(reader, options);
+      using (var reader = XmlReader.Create(uri, DefaultXmlReaderSettings)) return Load(reader);
     }
 
     /// <summary>
@@ -779,12 +775,10 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Xml.Linq.XElement"/>-Objekt, mit dem die im Stream enthaltenen Daten gelesen werden.
     /// </returns>
-    /// <param name="stream">Der Stream, der die XML-Daten enthält.</param><param name="options">Ein <see cref="T:System.Xml.Linq.LoadOptions"/>-Objekt, das angibt, ob Basis-URI- und Zeileninformationen geladen werden.</param>
-    public static X_Element Load(Stream stream, LoadOptions options = LoadOptions.None)
+    /// <param name="stream">Der Stream, der die XML-Daten enthält.</param>
+    public static X_Element Load(Stream stream)
     {
-      var xmlReaderSettings = GetXmlReaderSettings(options);
-      using (var reader = XmlReader.Create(stream, xmlReaderSettings))
-        return Load(reader, options);
+      using (var reader = XmlReader.Create(stream, DefaultXmlReaderSettings)) return Load(reader);
     }
 
     /// <summary>
@@ -794,12 +788,10 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Xml.Linq.XElement"/> mit dem XML, das aus dem angegebenen <see cref="T:System.IO.TextReader"/> gelesen wurde.
     /// </returns>
-    /// <param name="textReader">Ein <see cref="T:System.IO.TextReader"/>, dessen <see cref="T:System.Xml.Linq.XElement"/>-Inhalt gelesen wird.</param><param name="options">Ein <see cref="T:System.Xml.Linq.LoadOptions"/>, das Leerraumverhalten angibt und festlegt, ob Basis-URI- und Zeileninformationen geladen werden.</param>
-    public static X_Element Load(TextReader textReader, LoadOptions options = LoadOptions.None)
+    /// <param name="textReader">Ein <see cref="T:System.IO.TextReader"/>, dessen <see cref="T:System.Xml.Linq.XElement"/>-Inhalt gelesen wird.</param>
+    public static X_Element Load(TextReader textReader)
     {
-      var xmlReaderSettings = GetXmlReaderSettings(options);
-      using (var reader = XmlReader.Create(textReader, xmlReaderSettings))
-        return Load(reader, options);
+      using (var reader = XmlReader.Create(textReader, DefaultXmlReaderSettings)) return Load(reader);
     }
 
     /// <summary>
@@ -809,14 +801,14 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Xml.Linq.XElement"/>, das die XML-Daten enthält, die aus dem angegebenen <see cref="T:System.Xml.XmlReader"/> gelesen wurden.
     /// </returns>
-    /// <param name="reader">Ein <see cref="T:System.Xml.XmlReader"/>, der zum Ermitteln des Inhalts von <see cref="T:System.Xml.Linq.XElement"/> gelesen wird.</param><param name="options">Ein <see cref="T:System.Xml.Linq.LoadOptions"/>, das Leerraumverhalten angibt und festlegt, ob Basis-URI- und Zeileninformationen geladen werden.</param>
-    public static X_Element Load(XmlReader reader, LoadOptions options = LoadOptions.None)
+    /// <param name="reader">Ein <see cref="T:System.Xml.XmlReader"/>, der zum Ermitteln des Inhalts von <see cref="T:System.Xml.Linq.XElement"/> gelesen wird.</param>
+    public static X_Element Load(XmlReader reader)
     {
       if (reader == null)
         throw new ArgumentNullException("reader");
       if (reader.MoveToContent() != XmlNodeType.Element)
         throw new InvalidOperationException("InvalidOperation_ExpectedNodeType");
-      var xelement = new X_Element(reader, options);
+      var xelement = new X_Element(reader);
       reader.MoveToContent();
       if (!reader.EOF)
         throw new InvalidOperationException("InvalidOperation_ExpectedEndOfFile");
@@ -830,14 +822,12 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Xml.Linq.XElement"/>, das aus der Zeichenfolge aufgefüllt wird, die XML enthält.
     /// </returns>
-    /// <param name="text">Ein <see cref="T:System.String"/>, der XML enthält.</param><param name="options">Ein <see cref="T:System.Xml.Linq.LoadOptions"/>, das Leerraumverhalten angibt und festlegt, ob Basis-URI- und Zeileninformationen geladen werden.</param>
-    public static X_Element Parse(string text, LoadOptions options = LoadOptions.None)
+    /// <param name="text">Ein <see cref="T:System.String"/>, der XML enthält.</param>
+    public static X_Element Parse(string text)
     {
       using (var stringReader = new StringReader(text))
       {
-        var xmlReaderSettings = GetXmlReaderSettings(options);
-        using (var reader = XmlReader.Create(stringReader, xmlReaderSettings))
-          return Load(reader, options);
+        using (var reader = XmlReader.Create(stringReader, DefaultXmlReaderSettings)) return Load(reader);
       }
     }
 
@@ -1064,7 +1054,7 @@ namespace TextMonster.Xml
         throw new InvalidOperationException("InvalidOperation_DeserializeInstance");
       if (reader.MoveToContent() != XmlNodeType.Element)
         throw new InvalidOperationException("InvalidOperation_ExpectedNodeType");
-      ReadElementFrom(reader, LoadOptions.None);
+      ReadElementFrom(reader);
     }
 
     void IXmlSerializable.WriteXml(XmlWriter writer)
@@ -1181,17 +1171,11 @@ namespace TextMonster.Xml
       return num;
     }
 
-    void ReadElementFrom(XmlReader r, LoadOptions o)
+    void ReadElementFrom(XmlReader r)
     {
       if (r.ReadState != ReadState.Interactive)
         throw new InvalidOperationException("InvalidOperation_ExpectedInteractive");
       name = r.LocalName;
-      if ((o & LoadOptions.SetBaseUri) != LoadOptions.None)
-      {
-        string baseUri = r.BaseURI;
-        if (!string.IsNullOrEmpty(baseUri))
-          SetBaseUri(baseUri);
-      }
       if (r.MoveToFirstAttribute())
       {
         do
@@ -1205,7 +1189,7 @@ namespace TextMonster.Xml
       if (!r.IsEmptyElement)
       {
         r.Read();
-        ReadContentFrom(r, o);
+        ReadContentFrom(r);
       }
       r.Read();
     }
