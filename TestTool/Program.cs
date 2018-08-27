@@ -240,8 +240,13 @@ namespace TestTool
     {
       //fullFile = File.ReadAllBytes(TestFile.CreateFilePrime(TestFile.FileType.Xml, 100000000));
 
-      //SpeedCheck("ParseXml1() - XElement", ParseXml1);
+      SpeedCheck("ParseXml1() - XElement", ParseXml1);
       SpeedCheck("ParseXml2() - XElement", ParseXml2);
+      for (int r = 0; r < 3; r++)
+      {
+        SpeedCheck("ParseXml1() - XElement", ParseXml1);
+        SpeedCheck("ParseXml2() - XElement", ParseXml2);
+      }
     }
 
     static void Main(string[] args)
