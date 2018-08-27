@@ -237,9 +237,9 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XElement"/>, das die Nachfolgerelemente des <see cref="T:System.Xml.Linq.XContainer"/> enthält, die mit dem angegebenen <see cref="T:System.Xml.Linq.XName"/> übereinstimmen.
     /// </returns>
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
-    public IEnumerable<X_Element> Descendants(X_Name name)
+    public IEnumerable<X_Element> Descendants(string name)
     {
-      if (!(name != null))
+      if (name == null)
         return X_Element.EmptySequence;
       return GetDescendants(name, false);
     }
@@ -252,7 +252,7 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.Linq.XElement"/>, das mit dem angegebenen <see cref="T:System.Xml.Linq.XName"/> übereinstimmt, oder null.
     /// </returns>
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
-    public X_Element Element(X_Name name)
+    public X_Element Element(string name)
     {
       var xnode = content as X_Node;
       if (xnode != null)
@@ -289,9 +289,9 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XElement"/>, das die untergeordneten Elemente des <see cref="T:System.Xml.Linq.XContainer"/>, die einen übereinstimmenden <see cref="T:System.Xml.Linq.XName"/> aufweisen, in Dokumentreihenfolge enthält.
     /// </returns>
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
-    public IEnumerable<X_Element> Elements(X_Name name)
+    public IEnumerable<X_Element> Elements(string name)
     {
-      if (!(name != null))
+      if (name == null)
         return X_Element.EmptySequence;
       return GetElements(name);
     }
@@ -713,7 +713,7 @@ namespace TextMonster.Xml
       }
     }
 
-    internal IEnumerable<X_Element> GetDescendants(X_Name name, bool self)
+    internal IEnumerable<X_Element> GetDescendants(string name, bool self)
     {
       if (self)
       {
@@ -746,7 +746,7 @@ namespace TextMonster.Xml
       }
     }
 
-    IEnumerable<X_Element> GetElements(X_Name name)
+    IEnumerable<X_Element> GetElements(string name)
     {
       var n = content as X_Node;
       if (n != null)
@@ -799,19 +799,17 @@ namespace TextMonster.Xml
       if (r.ReadState != ReadState.Interactive)
         throw new InvalidOperationException("InvalidOperation_ExpectedInteractive");
       var xcontainer = this;
-      var namespaceCache1 = new NamespaceCache();
-      var namespaceCache2 = new NamespaceCache();
       do
       {
         switch (r.NodeType)
         {
           case XmlNodeType.Element:
-          var xelement = new X_Element(namespaceCache1.Get(r.NamespaceURI).GetName(r.LocalName));
+          var xelement = new X_Element(r.LocalName);
           if (r.MoveToFirstAttribute())
           {
             do
             {
-              xelement.AppendAttributeSkipNotify(new X_Attribute(namespaceCache2.Get(r.Prefix.Length == 0 ? string.Empty : r.NamespaceURI).GetName(r.LocalName), r.Value));
+              xelement.AppendAttributeSkipNotify(new X_Attribute(r.LocalName, r.Value));
             }
             while (r.MoveToNextAttribute());
             r.MoveToElement();
@@ -872,8 +870,6 @@ namespace TextMonster.Xml
           throw new InvalidOperationException("InvalidOperation_ExpectedInteractive");
         var xcontainer = this;
         var n = (X_Node)null;
-        var namespaceCache1 = new NamespaceCache();
-        var namespaceCache2 = new NamespaceCache();
         string str = (o & LoadOptions.SetBaseUri) != LoadOptions.None ? r.BaseURI : null;
         var xmlLineInfo = (o & LoadOptions.SetLineInfo) != LoadOptions.None ? r as IXmlLineInfo : null;
         do
@@ -882,7 +878,7 @@ namespace TextMonster.Xml
           switch (r.NodeType)
           {
             case XmlNodeType.Element:
-            var xelement1 = new X_Element(namespaceCache1.Get(r.NamespaceURI).GetName(r.LocalName));
+            var xelement1 = new X_Element(r.LocalName);
             if (str != null && str != baseUri)
               xelement1.SetBaseUri(baseUri);
             if (xmlLineInfo != null && xmlLineInfo.HasLineInfo())
@@ -891,7 +887,7 @@ namespace TextMonster.Xml
             {
               do
               {
-                var a = new X_Attribute(namespaceCache2.Get(r.Prefix.Length == 0 ? string.Empty : r.NamespaceURI).GetName(r.LocalName), r.Value);
+                var a = new X_Attribute(r.LocalName, r.Value);
                 if (xmlLineInfo != null && xmlLineInfo.HasLineInfo())
                   a.SetLineInfo(xmlLineInfo.LineNumber, xmlLineInfo.LinePosition);
                 xelement1.AppendAttributeSkipNotify(a);

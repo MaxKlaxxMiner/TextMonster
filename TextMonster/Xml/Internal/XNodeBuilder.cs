@@ -8,7 +8,7 @@ namespace TextMonster.Xml
   {
     List<object> content;
     X_Container parent;
-    X_Name attrName;
+    string attrName;
     string attrValue;
     readonly X_Container root;
 
@@ -156,7 +156,7 @@ namespace TextMonster.Xml
     {
       if (prefix == null)
         throw new ArgumentNullException("prefix");
-      attrName = X_Namespace.Get(prefix.Length == 0 ? string.Empty : namespaceName).GetName(localName);
+      attrName = localName;
       attrValue = string.Empty;
     }
 
@@ -170,7 +170,7 @@ namespace TextMonster.Xml
 
     public override void WriteStartElement(string prefix, string localName, string namespaceName)
     {
-      AddNode(new X_Element(X_Namespace.Get(namespaceName).GetName(localName)));
+      AddNode(new X_Element(localName));
     }
 
     public override void WriteString(string text)

@@ -10,57 +10,25 @@ namespace TextMonster.Xml
     readonly XmlWriter writer;
     X_StreamingElement element;
     readonly List<X_Attribute> attributes;
-    NamespaceResolver resolver;
 
     public StreamingElementWriter(XmlWriter w)
     {
       writer = w;
       element = null;
       attributes = new List<X_Attribute>();
-      resolver = new NamespaceResolver();
     }
 
     void FlushElement()
     {
       if (element == null)
         return;
-      PushElement();
-      var namespace1 = element.Name.Namespace;
-      writer.WriteStartElement(GetPrefixOfNamespace(namespace1, true), element.Name.LocalName, namespace1.NamespaceName);
+      writer.WriteStartElement(string.Empty, element.Name, string.Empty);
       foreach (var xattribute in attributes)
       {
-        var namespace2 = xattribute.Name.Namespace;
-        string localName = xattribute.Name.LocalName;
-        string namespaceName = namespace2.NamespaceName;
-        writer.WriteAttributeString(GetPrefixOfNamespace(namespace2, false), localName, namespaceName.Length != 0 || localName != "xmlns" ? namespaceName : "http://www.w3.org/2000/xmlns/", xattribute.Value);
+        writer.WriteAttributeString(string.Empty, xattribute.Name, string.Empty, xattribute.Value);
       }
       element = null;
       attributes.Clear();
-    }
-
-    string GetPrefixOfNamespace(X_Namespace ns, bool allowDefaultNamespace)
-    {
-      string namespaceName = ns.NamespaceName;
-      if (namespaceName.Length == 0)
-        return string.Empty;
-      string prefixOfNamespace = resolver.GetPrefixOfNamespace(ns, allowDefaultNamespace);
-      if (prefixOfNamespace != null)
-        return prefixOfNamespace;
-      if (namespaceName == "http://www.w3.org/XML/1998/namespace")
-        return "xml";
-      if (namespaceName == "http://www.w3.org/2000/xmlns/")
-        return "xmlns";
-      return null;
-    }
-
-    void PushElement()
-    {
-      resolver.PushScope();
-      foreach (var xattribute in attributes)
-      {
-        if (xattribute.IsNamespaceDeclaration)
-          resolver.Add(xattribute.Name.NamespaceName.Length == 0 ? string.Empty : xattribute.Name.LocalName, X_Namespace.Get(xattribute.Value));
-      }
     }
 
     void Write(object content)
@@ -142,7 +110,6 @@ namespace TextMonster.Xml
         writer.WriteFullEndElement();
       else
         writer.WriteEndElement();
-      resolver.PopScope();
     }
 
     void WriteString(string s)

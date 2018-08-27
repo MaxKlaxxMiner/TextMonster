@@ -19,7 +19,7 @@ namespace TextMonster.Xml
   public class X_Element : X_Container, IXmlSerializable
   {
     static IEnumerable<X_Element> emptySequence;
-    internal X_Name name;
+    internal string name;
     internal X_Attribute lastAttr;
 
     /// <summary>
@@ -132,7 +132,7 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Xml.Linq.XName"/>, der den Namen dieses Elements enthält.
     /// </returns>
-    public X_Name Name
+    public string Name
     {
       get
       {
@@ -198,7 +198,7 @@ namespace TextMonster.Xml
     /// Initialisiert eine neue Instanz der <see cref="T:System.Xml.Linq.XElement"/>-Klasse mit dem angegebenen Namen.
     /// </summary>
     /// <param name="name">Ein <see cref="T:System.Xml.Linq.XName"/>, der den Namen des Elements enthält.</param>
-    public X_Element(X_Name name)
+    public X_Element(string name)
     {
       if (name == null)
         throw new ArgumentNullException("name");
@@ -209,7 +209,7 @@ namespace TextMonster.Xml
     /// Initialisiert eine neue Instanz der <see cref="T:System.Xml.Linq.XElement"/>-Klasse mit dem angegebenen Namen und Inhalt.
     /// </summary>
     /// <param name="name">Ein <see cref="T:System.Xml.Linq.XName"/>, der den Elementnamen enthält.</param><param name="content">Der Inhalt des Elements.</param>
-    public X_Element(X_Name name, object content)
+    public X_Element(string name, object content)
       : this(name)
     {
       AddContentSkipNotify(content);
@@ -219,7 +219,7 @@ namespace TextMonster.Xml
     /// Initialisiert eine neue Instanz der <see cref="T:System.Xml.Linq.XElement"/>-Klasse mit dem angegebenen Namen und Inhalt.
     /// </summary>
     /// <param name="name">Ein <see cref="T:System.Xml.Linq.XName"/>, der den Elementnamen enthält.</param><param name="content">Der ursprüngliche Inhalt des Elements.</param>
-    public X_Element(X_Name name, params object[] content)
+    public X_Element(string name, params object[] content)
       : this(name, (object)content)
     {
     }
@@ -660,7 +660,7 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XElement"/> mit diesem Element und den übergeordneten Elementen dieses Elements. Nur Elemente, die über einen übereinstimmenden <see cref="T:System.Xml.Linq.XName"/> verfügen, sind in der Auflistung enthalten.
     /// </returns>
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
-    public IEnumerable<X_Element> AncestorsAndSelf(X_Name name)
+    public IEnumerable<X_Element> AncestorsAndSelf(string name)
     {
       if (!(name != null))
         return EmptySequence;
@@ -675,7 +675,7 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Xml.Linq.XAttribute"/>, das über den angegebenen <see cref="T:System.Xml.Linq.XName"/> verfügt. null, wenn kein Attribut mit dem angegebenen Namen vorhanden ist.
     /// </returns>
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/> des abzurufenden <see cref="T:System.Xml.Linq.XAttribute"/>.</param>
-    public X_Attribute Attribute(X_Name name)
+    public X_Attribute Attribute(string name)
     {
       var xattribute = lastAttr;
       if (xattribute != null)
@@ -711,7 +711,7 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XAttribute"/>, das die Attribute dieses Elements enthält. Nur Elemente, die über einen übereinstimmenden <see cref="T:System.Xml.Linq.XName"/> verfügen, sind in der Auflistung enthalten.
     /// </returns>
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
-    public IEnumerable<X_Attribute> Attributes(X_Name name)
+    public IEnumerable<X_Attribute> Attributes(string name)
     {
       if (!(name != null))
         return X_Attribute.EmptySequence;
@@ -750,98 +750,11 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XElement"/> mit diesem Element und allen Nachfolgerelementen dieses Elements in Dokumentreihenfolge. Nur Elemente, die über einen übereinstimmenden <see cref="T:System.Xml.Linq.XName"/> verfügen, sind in der Auflistung enthalten.
     /// </returns>
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
-    public IEnumerable<X_Element> DescendantsAndSelf(X_Name name)
+    public IEnumerable<X_Element> DescendantsAndSelf(string name)
     {
       if (!(name != null))
         return EmptySequence;
       return GetDescendants(name, true);
-    }
-
-    /// <summary>
-    /// Ruft den Standard-<see cref="T:System.Xml.Linq.XNamespace"/> dieses <see cref="T:System.Xml.Linq.XElement"/> ab.
-    /// </summary>
-    /// 
-    /// <returns>
-    /// Ein <see cref="T:System.Xml.Linq.XNamespace"/>, der den Standardnamespace dieses <see cref="T:System.Xml.Linq.XElement"/> enthält.
-    /// </returns>
-    /// <filterpriority>2</filterpriority>
-    public X_Namespace GetDefaultNamespace()
-    {
-      string namespaceOfPrefixInScope = GetNamespaceOfPrefixInScope("xmlns", null);
-      if (namespaceOfPrefixInScope == null)
-        return X_Namespace.None;
-      return X_Namespace.Get(namespaceOfPrefixInScope);
-    }
-
-    /// <summary>
-    /// Ruft den Namespace ab, der einem bestimmten Präfix für dieses <see cref="T:System.Xml.Linq.XElement"/> zugeordnet ist.
-    /// </summary>
-    /// 
-    /// <returns>
-    /// Ein <see cref="T:System.Xml.Linq.XNamespace"/> für den Namespace, der dem Präfix für dieses <see cref="T:System.Xml.Linq.XElement"/> zugeordnet ist.
-    /// </returns>
-    /// <param name="prefix">Eine Zeichenfolge, die das zu suchende Namespacepräfix enthält.</param><filterpriority>2</filterpriority>
-    public X_Namespace GetNamespaceOfPrefix(string prefix)
-    {
-      if (prefix == null)
-        throw new ArgumentNullException("prefix");
-      if (prefix.Length == 0)
-        throw new ArgumentException("Argument_InvalidPrefix");
-      if (prefix == "xmlns")
-        return X_Namespace.Xmlns;
-      string namespaceOfPrefixInScope = GetNamespaceOfPrefixInScope(prefix, null);
-      if (namespaceOfPrefixInScope != null)
-        return X_Namespace.Get(namespaceOfPrefixInScope);
-      if (prefix == "xml")
-        return X_Namespace.Xml;
-      return null;
-    }
-
-    /// <summary>
-    /// Ruft das Präfix ab, das einem Namespace für dieses <see cref="T:System.Xml.Linq.XElement"/> zugeordnet ist.
-    /// </summary>
-    /// 
-    /// <returns>
-    /// Ein <see cref="T:System.String"/>, der das Namespacepräfix enthält.
-    /// </returns>
-    /// <param name="ns">Ein <see cref="T:System.Xml.Linq.XNamespace"/>, der gesucht werden soll.</param><filterpriority>2</filterpriority>
-    public string GetPrefixOfNamespace(X_Namespace ns)
-    {
-      if (ns == null)
-        throw new ArgumentNullException("ns");
-      string namespaceName = ns.NamespaceName;
-      bool flag1 = false;
-      var outOfScope = this;
-      do
-      {
-        var xattribute = outOfScope.lastAttr;
-        if (xattribute != null)
-        {
-          bool flag2 = false;
-          do
-          {
-            xattribute = xattribute.next;
-            if (xattribute.IsNamespaceDeclaration)
-            {
-              if (xattribute.Value == namespaceName && xattribute.Name.NamespaceName.Length != 0 && (!flag1 || GetNamespaceOfPrefixInScope(xattribute.Name.LocalName, outOfScope) == null))
-                return xattribute.Name.LocalName;
-              flag2 = true;
-            }
-          }
-          while (xattribute != outOfScope.lastAttr);
-          flag1 |= flag2;
-        }
-        outOfScope = outOfScope.parent as X_Element;
-      }
-      while (outOfScope != null);
-      if (namespaceName == "http://www.w3.org/XML/1998/namespace")
-      {
-        if (!flag1 || GetNamespaceOfPrefixInScope("xml", null) == null)
-          return "xml";
-      }
-      else if (namespaceName == "http://www.w3.org/2000/xmlns/")
-        return "xmlns";
-      return null;
     }
 
     /// <summary>
@@ -1082,7 +995,7 @@ namespace TextMonster.Xml
     /// Legt den Wert eines Attributs fest, fügt ein Attribut hinzu oder entfernt ein Attribut.
     /// </summary>
     /// <param name="name">Ein <see cref="T:System.Xml.Linq.XName"/>, der den Namen des zu ändernden Attributs enthält.</param><param name="value">Der Wert, der dem Attribut zugewiesen werden soll. Das Attribut wird entfernt, wenn der Wert null ist. Andernfalls wird der Wert in seine Zeichenfolgenentsprechung konvertiert und der <see cref="P:System.Xml.Linq.XAttribute.Value"/>-Eigenschaft des Attributs zugewiesen.</param><exception cref="T:System.ArgumentException">Der <paramref name="value"/> ist eine Instanz von <see cref="T:System.Xml.Linq.XObject"/></exception>
-    public void SetAttributeValue(X_Name name, object value)
+    public void SetAttributeValue(string name, object value)
     {
       var a = Attribute(name);
       if (value == null)
@@ -1101,7 +1014,7 @@ namespace TextMonster.Xml
     /// Legt den Wert eines untergeordneten Elements fest, fügt ein untergeordnetes Element hinzu oder entfernt ein untergeordnetes Element.
     /// </summary>
     /// <param name="name">Ein <see cref="T:System.Xml.Linq.XName"/>, der den Namen des untergeordneten Elements enthält, das geändert werden soll.</param><param name="value">Der dem untergeordneten Element zuzuweisende Wert. Das untergeordnete Element wird entfernt, wenn der Wert null ist. Andernfalls wird der Wert in seine Zeichenfolgenentsprechung konvertiert und der <see cref="P:System.Xml.Linq.XElement.Value"/>-Eigenschaft des untergeordneten Elements zugewiesen.</param><exception cref="T:System.ArgumentException">Der <paramref name="value"/> ist eine Instanz von <see cref="T:System.Xml.Linq.XObject"/></exception>
-    public void SetElementValue(X_Name name, object value)
+    public void SetElementValue(string name, object value)
     {
       var xelement = Element(name);
       if (value == null)
@@ -1237,7 +1150,7 @@ namespace TextMonster.Xml
       return false;
     }
 
-    IEnumerable<X_Attribute> GetAttributes(X_Name name)
+    IEnumerable<X_Attribute> GetAttributes(string name)
     {
       var a = lastAttr;
       if (a != null)
@@ -1250,25 +1163,6 @@ namespace TextMonster.Xml
         }
         while (a.parent == this && a != lastAttr);
       }
-    }
-
-    string GetNamespaceOfPrefixInScope(string prefix, X_Element outOfScope)
-    {
-      for (var xelement = this; xelement != outOfScope; xelement = xelement.parent as X_Element)
-      {
-        var xattribute = xelement.lastAttr;
-        if (xattribute != null)
-        {
-          do
-          {
-            xattribute = xattribute.next;
-            if (xattribute.IsNamespaceDeclaration && xattribute.Name.LocalName == prefix)
-              return xattribute.Value;
-          }
-          while (xattribute != xelement.lastAttr);
-        }
-      }
-      return null;
     }
 
     internal override int GetDeepHashCode()
@@ -1291,7 +1185,7 @@ namespace TextMonster.Xml
     {
       if (r.ReadState != ReadState.Interactive)
         throw new InvalidOperationException("InvalidOperation_ExpectedInteractive");
-      name = X_Namespace.Get(r.NamespaceURI).GetName(r.LocalName);
+      name = r.LocalName;
       if ((o & LoadOptions.SetBaseUri) != LoadOptions.None)
       {
         string baseUri = r.BaseURI;
@@ -1309,7 +1203,7 @@ namespace TextMonster.Xml
       {
         do
         {
-          var a = new X_Attribute(X_Namespace.Get(r.Prefix.Length == 0 ? string.Empty : r.NamespaceURI).GetName(r.LocalName), r.Value);
+          var a = new X_Attribute(r.LocalName, r.Value);
           if (xmlLineInfo != null && xmlLineInfo.HasLineInfo())
             a.SetLineInfo(xmlLineInfo.LineNumber, xmlLineInfo.LinePosition);
           AppendAttributeSkipNotify(a);

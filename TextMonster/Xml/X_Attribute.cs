@@ -15,7 +15,7 @@ namespace TextMonster.Xml
   {
     static IEnumerable<X_Attribute> emptySequence;
     internal X_Attribute next;
-    internal readonly X_Name name;
+    internal readonly string name;
     internal string value;
 
     /// <summary>
@@ -41,10 +41,7 @@ namespace TextMonster.Xml
     {
       get
       {
-        string namespaceName = name.NamespaceName;
-        if (namespaceName.Length == 0)
-          return name.LocalName == "xmlns";
-        return namespaceName == "http://www.w3.org/2000/xmlns/";
+        return false;
       }
     }
 
@@ -55,7 +52,7 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Xml.Linq.XName"/>, der den Namen dieses Attributs enthält.
     /// </returns>
-    public X_Name Name
+    public string Name
     {
       get
       {
@@ -137,7 +134,6 @@ namespace TextMonster.Xml
       {
         if (value == null)
           throw new ArgumentNullException("value");
-        ValidateAttribute(name, value);
         bool flag = NotifyChanging(this, X_ObjectChangeEventArgs.Value);
         this.value = value;
         if (!flag)
@@ -150,14 +146,13 @@ namespace TextMonster.Xml
     /// Initialisiert eine neue Instanz der <see cref="T:System.Xml.Linq.XAttribute"/>-Klasse mit dem angegebenen Namen und Wert.
     /// </summary>
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/> des Attributs.</param><param name="value">Ein <see cref="T:System.Object"/>, das den Wert des Attributs enthält.</param><exception cref="T:System.ArgumentNullException">Der <paramref name="name"/>-Parameter oder der <paramref name="value"/>-Parameter ist null.</exception>
-    public X_Attribute(X_Name name, object value)
+    public X_Attribute(string name, object value)
     {
       if (name == null)
         throw new ArgumentNullException("name");
       if (value == null)
         throw new ArgumentNullException("value");
       string stringValue = X_Container.GetStringValue(value);
-      ValidateAttribute(name, stringValue);
       this.name = name;
       this.value = stringValue;
     }
@@ -586,7 +581,7 @@ namespace TextMonster.Xml
         {
           ConformanceLevel = ConformanceLevel.Fragment
         }))
-          xmlWriter.WriteAttributeString(GetPrefixOfNamespace(name.Namespace), name.LocalName, name.NamespaceName, value);
+          xmlWriter.WriteAttributeString(string.Empty, name, string.Empty, value);
         return stringWriter.ToString().Trim();
       }
     }
@@ -594,54 +589,6 @@ namespace TextMonster.Xml
     internal int GetDeepHashCode()
     {
       return name.GetHashCode() ^ value.GetHashCode();
-    }
-
-    internal string GetPrefixOfNamespace(X_Namespace ns)
-    {
-      string namespaceName = ns.NamespaceName;
-      if (namespaceName.Length == 0)
-        return string.Empty;
-      if (parent != null)
-        return ((X_Element)parent).GetPrefixOfNamespace(ns);
-      if (namespaceName == "http://www.w3.org/XML/1998/namespace")
-        return "xml";
-      if (namespaceName == "http://www.w3.org/2000/xmlns/")
-        return "xmlns";
-      return null;
-    }
-
-    static void ValidateAttribute(X_Name name, string value)
-    {
-      string namespaceName = name.NamespaceName;
-      if (namespaceName == "http://www.w3.org/2000/xmlns/")
-      {
-        if (value.Length == 0)
-          throw new ArgumentException("Argument_NamespaceDeclarationPrefixed");
-        if (value == "http://www.w3.org/XML/1998/namespace")
-        {
-          if (name.LocalName != "xml")
-            throw new ArgumentException("Argument_NamespaceDeclarationXml");
-        }
-        else
-        {
-          if (value == "http://www.w3.org/2000/xmlns/")
-            throw new ArgumentException("Argument_NamespaceDeclarationXmlns");
-          string localName = name.LocalName;
-          if (localName == "xml")
-            throw new ArgumentException("Argument_NamespaceDeclarationXml");
-          if (localName == "xmlns")
-            throw new ArgumentException("Argument_NamespaceDeclarationXmlns");
-        }
-      }
-      else
-      {
-        if (namespaceName.Length != 0 || name.LocalName != "xmlns")
-          return;
-        if (value == "http://www.w3.org/XML/1998/namespace")
-          throw new ArgumentException("Argument_NamespaceDeclarationXml");
-        if (value == "http://www.w3.org/2000/xmlns/")
-          throw new ArgumentException("Argument_NamespaceDeclarationXmlns");
-      }
     }
   }
 }

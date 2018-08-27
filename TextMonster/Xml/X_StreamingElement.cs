@@ -16,7 +16,7 @@ namespace TextMonster.Xml
   // ReSharper disable once InconsistentNaming
   public class X_StreamingElement
   {
-    internal X_Name name;
+    internal string name;
     internal object content;
 
     /// <summary>
@@ -26,7 +26,7 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.Xml.Linq.XName"/>, der den Namen dieses Streamingelements enthält.
     /// </returns>
-    public X_Name Name
+    public string Name
     {
       get
       {
@@ -44,7 +44,7 @@ namespace TextMonster.Xml
     /// Initialisiert eine neue Instanz der <see cref="T:System.Xml.Linq.XElement"/>-Klasse mit dem angegebenen <see cref="T:System.Xml.Linq.XName"/>.
     /// </summary>
     /// <param name="name">Ein <see cref="T:System.Xml.Linq.XName"/>, der den Namen des Elements enthält.</param>
-    public X_StreamingElement(X_Name name)
+    public X_StreamingElement(string name)
     {
       if (name == null)
         throw new ArgumentNullException("name");
@@ -55,7 +55,7 @@ namespace TextMonster.Xml
     /// Initialisiert eine neue Instanz der <see cref="T:System.Xml.Linq.XStreamingElement"/>-Klasse mit dem angegebenen Namen und Inhalt.
     /// </summary>
     /// <param name="name">Ein <see cref="T:System.Xml.Linq.XName"/>, der den Elementnamen enthält.</param><param name="content">Der Inhalt des Elements.</param>
-    public X_StreamingElement(X_Name name, params object[] content)
+    public X_StreamingElement(string name, params object[] content)
       : this(name)
     {
       this.content = content;

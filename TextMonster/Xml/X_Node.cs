@@ -155,9 +155,9 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XElement"/> der übergeordneten Elemente dieses Knotens. Nur Elemente, die über einen übereinstimmenden <see cref="T:System.Xml.Linq.XName"/> verfügen, sind in der Auflistung enthalten. Die Knoten in der zurückgegebenen Auflistung sind in der umgekehrten Dokumentreihenfolge angeordnet. Diese Methode verwendet verzögerte Ausführung.
     /// </returns>
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
-    public IEnumerable<X_Element> Ancestors(X_Name name)
+    public IEnumerable<X_Element> Ancestors(string name)
     {
-      if (!(name != null))
+      if (name == null)
         return X_Element.EmptySequence;
       return GetAncestors(name, false);
     }
@@ -234,32 +234,6 @@ namespace TextMonster.Xml
     }
 
     /// <summary>
-    /// Erstellt einen <see cref="T:System.Xml.XmlReader"/> für diesen Knoten.
-    /// </summary>
-    /// 
-    /// <returns>
-    /// Ein <see cref="T:System.Xml.XmlReader"/>, der zum Lesen dieses Knotens und seiner Nachfolgerelemente verwendet werden kann.
-    /// </returns>
-    /// <filterpriority>2</filterpriority>
-    public XmlReader CreateReader()
-    {
-      return new XNodeReader(this, null);
-    }
-
-    /// <summary>
-    /// Erstellt einen <see cref="T:System.Xml.XmlReader"/> mit den im <paramref name="readerOptions"/>-Parameter angegebenen Optionen.
-    /// </summary>
-    /// 
-    /// <returns>
-    /// Ein <see cref="T:System.Xml.XmlReader"/>-Objekt.
-    /// </returns>
-    /// <param name="readerOptions">Ein <see cref="T:System.Xml.Linq.ReaderOptions"/>-Objekt, das angibt, ob doppelte Namespaces ausgelassen werden sollen.</param>
-    public XmlReader CreateReader(ReaderOptions readerOptions)
-    {
-      return new XNodeReader(this, null, readerOptions);
-    }
-
-    /// <summary>
     /// Gibt eine Auflistung der nebengeordneten Knoten nach diesem Knoten in Dokumentreihenfolge zurück.
     /// </summary>
     /// 
@@ -321,9 +295,9 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XElement"/> der nebengeordneten Elemente nach diesem Knoten in Dokumentreihenfolge. Nur Elemente, die über einen übereinstimmenden <see cref="T:System.Xml.Linq.XName"/> verfügen, sind in der Auflistung enthalten.
     /// </returns>
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
-    public IEnumerable<X_Element> ElementsAfterSelf(X_Name name)
+    public IEnumerable<X_Element> ElementsAfterSelf(string name)
     {
-      if (!(name != null))
+      if (name == null)
         return X_Element.EmptySequence;
       return GetElementsAfterSelf(name);
     }
@@ -348,9 +322,9 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.Collections.Generic.IEnumerable`1"/> vom Typ <see cref="T:System.Xml.Linq.XElement"/> der nebengeordneten Elemente vor diesem Knoten in Dokumentreihenfolge. Nur Elemente, die über einen übereinstimmenden <see cref="T:System.Xml.Linq.XName"/> verfügen, sind in der Auflistung enthalten.
     /// </returns>
     /// <param name="name">Der <see cref="T:System.Xml.Linq.XName"/>, mit dem eine Übereinstimmung gefunden werden soll.</param>
-    public IEnumerable<X_Element> ElementsBeforeSelf(X_Name name)
+    public IEnumerable<X_Element> ElementsBeforeSelf(string name)
     {
-      if (!(name != null))
+      if (name == null)
         return X_Element.EmptySequence;
       return GetElementsBeforeSelf(name);
     }
@@ -512,7 +486,7 @@ namespace TextMonster.Xml
 
     internal abstract bool DeepEquals(X_Node node);
 
-    internal IEnumerable<X_Element> GetAncestors(X_Name name, bool self)
+    internal IEnumerable<X_Element> GetAncestors(string name, bool self)
     {
       for (var e = (self ? this : (X_Node)parent) as X_Element; e != null; e = e.parent as X_Element)
       {
@@ -521,7 +495,7 @@ namespace TextMonster.Xml
       }
     }
 
-    IEnumerable<X_Element> GetElementsAfterSelf(X_Name name)
+    IEnumerable<X_Element> GetElementsAfterSelf(string name)
     {
       var n = this;
       while (n.parent != null && n != n.parent.content)
@@ -533,7 +507,7 @@ namespace TextMonster.Xml
       }
     }
 
-    IEnumerable<X_Element> GetElementsBeforeSelf(X_Name name)
+    IEnumerable<X_Element> GetElementsBeforeSelf(string name)
     {
       if (parent != null)
       {

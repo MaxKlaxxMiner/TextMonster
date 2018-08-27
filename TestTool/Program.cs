@@ -206,10 +206,11 @@ namespace TestTool
 
     static object ParseXml1(string fileName)
     {
+      XElement xel;
       int sum = 0;
       using (var rdat = File.OpenRead(fileName))
       {
-        var xel = XElement.Load(rdat);
+        xel = XElement.Load(rdat);
         foreach (var x in xel.Elements())
         {
           int count = x.Attribute("count").Value.Length;
@@ -217,15 +218,16 @@ namespace TestTool
           sum += count + value;
         }
       }
-      return sum;
+      return xel;
     }
 
     static object ParseXml2(string fileName)
     {
+      X_Element xel;
       int sum = 0;
       using (var rdat = File.OpenRead(fileName))
       {
-        var xel = X_Element.Load(rdat);
+        xel = X_Element.Load(rdat);
         foreach (var x in xel.Elements())
         {
           int count = x.Attribute("count").Value.Length;
@@ -233,18 +235,18 @@ namespace TestTool
           sum += count + value;
         }
       }
-      return sum;
+      return xel;
     }
 
     static void SpeedCheckXmlParser()
     {
       //fullFile = File.ReadAllBytes(TestFile.CreateFilePrime(TestFile.FileType.Xml, 100000000));
 
-      SpeedCheck("ParseXml1() - XElement", ParseXml1);
+      //SpeedCheck("ParseXml1() - XElement", ParseXml1);
       SpeedCheck("ParseXml2() - XElement", ParseXml2);
       for (int r = 0; r < 3; r++)
       {
-        SpeedCheck("ParseXml1() - XElement", ParseXml1);
+        //SpeedCheck("ParseXml1() - XElement", ParseXml1);
         SpeedCheck("ParseXml2() - XElement", ParseXml2);
       }
     }

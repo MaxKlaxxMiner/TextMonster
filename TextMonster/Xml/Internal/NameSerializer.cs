@@ -17,7 +17,7 @@ namespace TextMonster.Xml
 
     object IObjectReference.GetRealObject(StreamingContext context)
     {
-      return X_Name.Get(expandedName);
+      return expandedName;
     }
 
     void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
