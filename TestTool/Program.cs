@@ -11,7 +11,7 @@ using System.Xml;
 using System.Xml.Linq;
 using TextMonster;
 using TextMonster.Xml;
-
+//using ngMax.Xml;
 #endregion
 
 namespace TestTool
@@ -230,7 +230,7 @@ namespace TestTool
         xel = X_Element.Load(rdat);
         foreach (var x in xel.Elements())
         {
-          int count = x.Attribute("count").Value.Length;
+          int count = x.GetAttribut("count").Length;
           int value = x.Value.Length;
           sum += count + value;
         }
@@ -242,8 +242,8 @@ namespace TestTool
     {
       //fullFile = File.ReadAllBytes(TestFile.CreateFilePrime(TestFile.FileType.Xml, 100000000));
 
-      SpeedCheck("ParseXml1() - XElement", ParseXml1);
-      SpeedCheck("ParseXml2() - XElement", ParseXml2);
+      //SpeedCheck("ParseXml1() - XElement", ParseXml1);
+      //SpeedCheck("ParseXml2() - XElement", ParseXml2);
       for (int r = 0; r < 3; r++)
       {
         SpeedCheck("ParseXml1() - XElement", ParseXml1);

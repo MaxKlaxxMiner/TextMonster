@@ -1265,5 +1265,20 @@ namespace TextMonster.Xml
     {
       AddAnnotation(new LineInfoEndElementAnnotation(lineNumber, linePosition));
     }
+
+    /// <summary>
+    /// gibt den Inhalt eines Attributes zurück
+    /// </summary>
+    /// <param name="attributName">Name des Attributes</param>
+    /// <param name="alternate">Alternativer Wert, falls das Attribut nicht gefunden wurde</param>
+    /// <returns>gefundener Wert oder "alternate"</returns>
+    public string GetAttribut(string attributName, string alternate = null)
+    {
+      for (var attr = lastAttr; attr != null; attr = attr.next)
+      {
+        if (attr.name == attributName) return attr.value;
+      }
+      return alternate;
+    }
   }
 }
