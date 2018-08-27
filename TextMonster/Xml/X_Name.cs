@@ -94,7 +94,7 @@ namespace TextMonster.Xml
     /// <param name="left">Das erste zu vergleichende <see cref="T:System.Xml.Linq.XName"/>.</param><param name="right">Das zweite zu vergleichende <see cref="T:System.Xml.Linq.XName"/>.</param>
     public static bool operator ==(X_Name left, X_Name right)
     {
-      return left == right;
+      return ReferenceEquals(left, right);
     }
 
     /// <summary>
@@ -107,7 +107,7 @@ namespace TextMonster.Xml
     /// <param name="left">Das erste zu vergleichende <see cref="T:System.Xml.Linq.XName"/>.</param><param name="right">Das zweite zu vergleichende <see cref="T:System.Xml.Linq.XName"/>.</param>
     public static bool operator !=(X_Name left, X_Name right)
     {
-      return left != right;
+      return !ReferenceEquals(left, right);
     }
 
     /// <summary>
