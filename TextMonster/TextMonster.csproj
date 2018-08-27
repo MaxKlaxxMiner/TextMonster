@@ -46,6 +46,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Xml\Internal\ElementWriter.cs" />
     <Compile Include="Xml\Internal\XNodeBuilder.cs" />
+    <Compile Include="Xml\Xml_Reader\Xml_IncrementalReadDecoder.cs" />
+    <Compile Include="Xml\Xml_Reader\Xml_BinHexDecoder.cs" />
     <Compile Include="Xml\Xml_Reader\Xml_CharType.cs" />
     <Compile Include="Xml\Xml_Reader\Xml_Convert.cs" />
     <Compile Include="Xml\Xml_Reader\Xml_ValueConverter.cs" />

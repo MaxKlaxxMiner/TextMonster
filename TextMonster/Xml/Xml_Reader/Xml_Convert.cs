@@ -1,4 +1,10 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿using System;
+using System.Collections;
+using System.Globalization;
+using System.Text;
+using System.Text.RegularExpressions;
+
+namespace TextMonster.Xml.Xml_Reader
 {
   /// <summary>
   /// Codiert und decodiert XML-Namen und stellt Methoden für das Konvertieren zwischen Typen der Common Language Runtime und XSD-Typen (XML Schema Definition) bereit.Bei der Konvertierung von Datentypen sind die zurückgegebenen Werte vom Gebietsschema unabhängig.
@@ -43,7 +49,6 @@
     /// Gibt den Namen zurück, wobei ungültige Zeichen durch eine Escapezeichenfolge ersetzt wurden.
     /// </returns>
     /// <param name="name">Ein zu übersetzender Name. </param>
-    [__DynamicallyInvokable]
     public static string EncodeName(string name)
     {
       return Xml_Convert.EncodeName(name, true, false);
@@ -57,7 +62,6 @@
     /// Der codierte Name.
     /// </returns>
     /// <param name="name">Der zu codierende Name. </param>
-    [__DynamicallyInvokable]
     public static string EncodeNmToken(string name)
     {
       return Xml_Convert.EncodeName(name, false, false);
@@ -71,7 +75,6 @@
     /// Der codierte Name.
     /// </returns>
     /// <param name="name">Der zu codierende Name. </param>
-    [__DynamicallyInvokable]
     public static string EncodeLocalName(string name)
     {
       return Xml_Convert.EncodeName(name, true, true);
@@ -85,7 +88,6 @@
     /// Der decodierte Name.
     /// </returns>
     /// <param name="name">Der umzuwandelnde Name. </param>
-    [__DynamicallyInvokable]
     public static string DecodeName(string name)
     {
       if (name == null || name.Length == 0)
@@ -239,7 +241,7 @@
     {
       if (s == null)
         throw new ArgumentNullException("s");
-      return BinHexDecoder.Decode(s.ToCharArray(), allowOddCount);
+      return Xml_BinHexDecoder.Decode(s.ToCharArray(), allowOddCount);
     }
 
     internal static string ToBinHexString(byte[] inArray)
@@ -257,7 +259,6 @@
     /// Der Name, wenn dieser ein gültiger XML-Name ist.
     /// </returns>
     /// <param name="name">Der zu überprüfende Name. </param><exception cref="T:System.Xml.XmlException"><paramref name="name"/> ist kein gültiger XML-Name. </exception><exception cref="T:System.ArgumentNullException"><paramref name="name"/> ist null oder String.Empty. </exception>
-    [__DynamicallyInvokable]
     public static string VerifyName(string name)
     {
       if (name == null)
@@ -304,7 +305,6 @@
     /// Der Name, wenn dieser ein gültiger NCName ist.
     /// </returns>
     /// <param name="name">Der zu überprüfende Name. </param><exception cref="T:System.ArgumentNullException"><paramref name="name"/> ist null oder String.Empty. </exception><exception cref="T:System.Xml.XmlException"><paramref name="name"/> ist kein gültiger nicht-Doppelpunkt-Name. </exception>
-    [__DynamicallyInvokable]
     public static string VerifyNCName(string name)
     {
       return Xml_Convert.VerifyNCName(name, ExceptionType.XmlException);
@@ -374,7 +374,6 @@
     /// Das Namenstoken, wenn es sich um ein gültiges NMTOKEN handelt.
     /// </returns>
     /// <param name="name">Die Zeichenfolge, die überprüft werden soll.</param><exception cref="T:System.Xml.XmlException">Die Zeichenfolge ist kein gültiger Namenstoken.</exception><exception cref="T:System.ArgumentNullException"><paramref name="name"/> ist null.</exception>
-    [__DynamicallyInvokable]
     public static string VerifyNMTOKEN(string name)
     {
       return Xml_Convert.VerifyNMTOKEN(name, ExceptionType.XmlException);
@@ -424,7 +423,6 @@
     /// Gibt die übergebene Zeichenfolge zurück, wenn alle Zeichen und Ersatzzeichenpaare im Zeichenfolgenargument gültige XML-Zeichen sind, andernfalls wird eine XmlException mit Informationen zum ersten ungültigen Zeichen ausgelöst.
     /// </returns>
     /// <param name="content">Der <see cref="T:System.String"/> mit den zu überprüfenden Zeichen.</param>
-    [__DynamicallyInvokable]
     public static string VerifyXmlChars(string content)
     {
       if (content == null)
@@ -441,7 +439,6 @@
     /// Gibt die übergebene Zeichenfolge zurück, wenn alle Zeichen im Argument gültige Zeichen für eine öffentliche ID sind.
     /// </returns>
     /// <param name="publicId"><see cref="T:System.String"/>, der die zu überprüfende ID enthält.</param>
-    [__DynamicallyInvokable]
     public static string VerifyPublicId(string publicId)
     {
       if (publicId == null)
@@ -460,7 +457,6 @@
     /// Gibt die übergebene Zeichenfolgeninstanz zurück, wenn alle Zeichen im Zeichenfolgenargument gültige Leerraumzeichen sind, andernfalls null.
     /// </returns>
     /// <param name="content">Der zu überprüfende <see cref="T:System.String"/>.</param>
-    [__DynamicallyInvokable]
     public static string VerifyWhitespace(string content)
     {
       if (content == null)
@@ -559,7 +555,6 @@
     /// Eine Zeichenfolgendarstellung von Boolean, d. h. „true“ oder „false“.
     /// </returns>
     /// <param name="value">Der zu konvertierende Wert. </param>
-    [__DynamicallyInvokable]
     public static string ToString(bool value)
     {
       return !value ? "false" : "true";
@@ -573,7 +568,6 @@
     /// Eine Zeichenfolgendarstellung des Char.
     /// </returns>
     /// <param name="value">Der zu konvertierende Wert. </param>
-    [__DynamicallyInvokable]
     public static string ToString(char value)
     {
       return value.ToString((IFormatProvider)null);
@@ -587,7 +581,6 @@
     /// Eine Zeichenfolgendarstellung des Decimal.
     /// </returns>
     /// <param name="value">Der zu konvertierende Wert. </param>
-    [__DynamicallyInvokable]
     public static string ToString(Decimal value)
     {
       return value.ToString((string)null, (IFormatProvider)NumberFormatInfo.InvariantInfo);
@@ -601,8 +594,6 @@
     /// Eine Zeichenfolgendarstellung des SByte.
     /// </returns>
     /// <param name="value">Der zu konvertierende Wert. </param>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static string ToString(sbyte value)
     {
       return value.ToString((string)null, (IFormatProvider)NumberFormatInfo.InvariantInfo);
@@ -616,7 +607,6 @@
     /// Eine Zeichenfolgendarstellung des Int16.
     /// </returns>
     /// <param name="value">Der zu konvertierende Wert. </param>
-    [__DynamicallyInvokable]
     public static string ToString(short value)
     {
       return value.ToString((string)null, (IFormatProvider)NumberFormatInfo.InvariantInfo);
@@ -630,7 +620,6 @@
     /// Eine Zeichenfolgendarstellung des Int32.
     /// </returns>
     /// <param name="value">Der zu konvertierende Wert. </param>
-    [__DynamicallyInvokable]
     public static string ToString(int value)
     {
       return value.ToString((string)null, (IFormatProvider)NumberFormatInfo.InvariantInfo);
@@ -644,7 +633,6 @@
     /// Eine Zeichenfolgendarstellung des Int64.
     /// </returns>
     /// <param name="value">Der zu konvertierende Wert. </param>
-    [__DynamicallyInvokable]
     public static string ToString(long value)
     {
       return value.ToString((string)null, (IFormatProvider)NumberFormatInfo.InvariantInfo);
@@ -658,7 +646,6 @@
     /// Eine Zeichenfolgendarstellung des Byte.
     /// </returns>
     /// <param name="value">Der zu konvertierende Wert. </param>
-    [__DynamicallyInvokable]
     public static string ToString(byte value)
     {
       return value.ToString((string)null, (IFormatProvider)NumberFormatInfo.InvariantInfo);
@@ -672,8 +659,6 @@
     /// Eine Zeichenfolgendarstellung des UInt16.
     /// </returns>
     /// <param name="value">Der zu konvertierende Wert. </param>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static string ToString(ushort value)
     {
       return value.ToString((string)null, (IFormatProvider)NumberFormatInfo.InvariantInfo);
@@ -687,8 +672,6 @@
     /// Eine Zeichenfolgendarstellung des UInt32.
     /// </returns>
     /// <param name="value">Der zu konvertierende Wert. </param>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static string ToString(uint value)
     {
       return value.ToString((string)null, (IFormatProvider)NumberFormatInfo.InvariantInfo);
@@ -702,8 +685,6 @@
     /// Eine Zeichenfolgendarstellung des UInt64.
     /// </returns>
     /// <param name="value">Der zu konvertierende Wert. </param>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static string ToString(ulong value)
     {
       return value.ToString((string)null, (IFormatProvider)NumberFormatInfo.InvariantInfo);
@@ -717,7 +698,6 @@
     /// Eine Zeichenfolgendarstellung des Single.
     /// </returns>
     /// <param name="value">Der zu konvertierende Wert. </param>
-    [__DynamicallyInvokable]
     public static string ToString(float value)
     {
       if (float.IsNegativeInfinity(value))
@@ -737,7 +717,6 @@
     /// Eine Zeichenfolgendarstellung des Double.
     /// </returns>
     /// <param name="value">Der zu konvertierende Wert. </param>
-    [__DynamicallyInvokable]
     public static string ToString(double value)
     {
       if (double.IsNegativeInfinity(value))
@@ -757,7 +736,6 @@
     /// Eine Zeichenfolgendarstellung des TimeSpan.
     /// </returns>
     /// <param name="value">Der zu konvertierende Wert. </param>
-    [__DynamicallyInvokable]
     public static string ToString(TimeSpan value)
     {
       return new XsdDuration(value).ToString();
@@ -798,7 +776,6 @@
     /// Ein <see cref="T:System.String"/>-Äquivalent von <see cref="T:System.DateTime"/>.
     /// </returns>
     /// <param name="value">Der zu konvertierende <see cref="T:System.DateTime"/>-Wert.</param><param name="dateTimeOption">Einer der <see cref="T:System.Xml.XmlDateTimeSerializationMode"/>-Werte, die angeben, wie der <see cref="T:System.DateTime"/>-Wert behandelt wird.</param><exception cref="T:System.ArgumentException">Der <paramref name="dateTimeOption"/> -Wert ist ungültig.</exception><exception cref="T:System.ArgumentNullException">Die <paramref name="value"/> oder <paramref name="dateTimeOption"/> Wert ist null.</exception>
-    [__DynamicallyInvokable]
     public static string ToString(DateTime value, XmlDateTimeSerializationMode dateTimeOption)
     {
       switch (dateTimeOption)
@@ -827,7 +804,6 @@
     /// Eine <see cref="T:System.String"/>-Darstellung des angegebenen <see cref="T:System.DateTimeOffset"/>.
     /// </returns>
     /// <param name="value">Der zu konvertierende <see cref="T:System.DateTimeOffset"/>.</param>
-    [__DynamicallyInvokable]
     public static string ToString(DateTimeOffset value)
     {
       return new XsdDateTime(value).ToString();
@@ -841,7 +817,6 @@
     /// Eine <see cref="T:System.String"/>-Darstellung im angegebenen Format des bereitgestellten <see cref="T:System.DateTimeOffset"/>.
     /// </returns>
     /// <param name="value">Der zu konvertierende <see cref="T:System.DateTimeOffset"/>.</param><param name="format">Das Format, in das <paramref name="s"/> konvertiert wird.Der Formatparameter kann eine beliebige Teilmenge der W3C-Empfehlung für den XML-DateTime-Typ sein.(Weitere Informationen finden Sie unter „http://www.w3.org/TR/xmlschema-2/#dateTime“.)</param>
-    [__DynamicallyInvokable]
     public static string ToString(DateTimeOffset value, string format)
     {
       return value.ToString(format, (IFormatProvider)DateTimeFormatInfo.InvariantInfo);
@@ -855,7 +830,6 @@
     /// Eine Zeichenfolgendarstellung des Guid.
     /// </returns>
     /// <param name="value">Der zu konvertierende Wert. </param>
-    [__DynamicallyInvokable]
     public static string ToString(Guid value)
     {
       return value.ToString();
@@ -869,7 +843,6 @@
     /// Ein Boolean-Wert, d. h. true oder false.
     /// </returns>
     /// <param name="s">Die zu konvertierende Zeichenfolge. </param><exception cref="T:System.ArgumentNullException"><paramref name="s"/> ist null. </exception><exception cref="T:System.FormatException"><paramref name="s"/> keine dar eine Boolean Wert. </exception>
-    [__DynamicallyInvokable]
     public static bool ToBoolean(string s)
     {
       s = Xml_Convert.TrimString(s);
@@ -905,7 +878,6 @@
     /// Ein Char, das für das einzelne Zeichen steht.
     /// </returns>
     /// <param name="s">Die Zeichenfolge, die ein einzelnes zu konvertierendes Zeichen enthält. </param><exception cref="T:System.ArgumentNullException">Der Wert des <paramref name="s"/>-Parameters ist null. </exception><exception cref="T:System.FormatException">Die <paramref name="s"/> Parameter enthält mehr als ein Zeichen. </exception>
-    [__DynamicallyInvokable]
     public static char ToChar(string s)
     {
       if (s == null)
@@ -930,7 +902,6 @@
     /// Ein Decimal-Äquivalent der Zeichenfolge.
     /// </returns>
     /// <param name="s">Die zu konvertierende Zeichenfolge. </param><exception cref="T:System.ArgumentNullException"><paramref name="s"/> ist null. </exception><exception cref="T:System.FormatException"><paramref name="s"/> ist nicht im richtigen Format. </exception><exception cref="T:System.OverflowException"><paramref name="s"/> Stellt eine Zahl kleiner als <see cref="F:System.Decimal.MinValue"/> oder größer als <see cref="F:System.Decimal.MaxValue"/>. </exception>
-    [__DynamicallyInvokable]
     public static Decimal ToDecimal(string s)
     {
       return Decimal.Parse(s, NumberStyles.Integer | NumberStyles.AllowDecimalPoint, (IFormatProvider)NumberFormatInfo.InvariantInfo);
@@ -963,8 +934,6 @@
     /// Ein SByte-Äquivalent der Zeichenfolge.
     /// </returns>
     /// <param name="s">Die zu konvertierende Zeichenfolge. </param><exception cref="T:System.ArgumentNullException"><paramref name="s"/> ist null. </exception><exception cref="T:System.FormatException"><paramref name="s"/> ist nicht im richtigen Format. </exception><exception cref="T:System.OverflowException"><paramref name="s"/> Stellt eine Zahl kleiner als <see cref="F:System.SByte.MinValue"/> oder größer als <see cref="F:System.SByte.MaxValue"/>. </exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static sbyte ToSByte(string s)
     {
       return sbyte.Parse(s, NumberStyles.Integer, (IFormatProvider)NumberFormatInfo.InvariantInfo);
@@ -985,7 +954,6 @@
     /// Ein Int16-Äquivalent der Zeichenfolge.
     /// </returns>
     /// <param name="s">Die zu konvertierende Zeichenfolge. </param><exception cref="T:System.ArgumentNullException"><paramref name="s"/> ist null. </exception><exception cref="T:System.FormatException"><paramref name="s"/> ist nicht im richtigen Format. </exception><exception cref="T:System.OverflowException"><paramref name="s"/> Stellt eine Zahl kleiner als <see cref="F:System.Int16.MinValue"/> oder größer als <see cref="F:System.Int16.MaxValue"/>. </exception>
-    [__DynamicallyInvokable]
     public static short ToInt16(string s)
     {
       return short.Parse(s, NumberStyles.Integer, (IFormatProvider)NumberFormatInfo.InvariantInfo);
@@ -1006,7 +974,6 @@
     /// Ein Int32-Äquivalent der Zeichenfolge.
     /// </returns>
     /// <param name="s">Die zu konvertierende Zeichenfolge. </param><exception cref="T:System.ArgumentNullException"><paramref name="s"/> ist null. </exception><exception cref="T:System.FormatException"><paramref name="s"/> ist nicht im richtigen Format. </exception><exception cref="T:System.OverflowException"><paramref name="s"/> Stellt eine Zahl kleiner als <see cref="F:System.Int32.MinValue"/> oder größer als <see cref="F:System.Int32.MaxValue"/>. </exception>
-    [__DynamicallyInvokable]
     public static int ToInt32(string s)
     {
       return int.Parse(s, NumberStyles.Integer, (IFormatProvider)NumberFormatInfo.InvariantInfo);
@@ -1027,7 +994,6 @@
     /// Ein Int64-Äquivalent der Zeichenfolge.
     /// </returns>
     /// <param name="s">Die zu konvertierende Zeichenfolge. </param><exception cref="T:System.ArgumentNullException"><paramref name="s"/> ist null. </exception><exception cref="T:System.FormatException"><paramref name="s"/> ist nicht im richtigen Format. </exception><exception cref="T:System.OverflowException"><paramref name="s"/> Stellt eine Zahl kleiner als <see cref="F:System.Int64.MinValue"/> oder größer als <see cref="F:System.Int64.MaxValue"/>. </exception>
-    [__DynamicallyInvokable]
     public static long ToInt64(string s)
     {
       return long.Parse(s, NumberStyles.Integer, (IFormatProvider)NumberFormatInfo.InvariantInfo);
@@ -1048,7 +1014,6 @@
     /// Ein Byte-Äquivalent der Zeichenfolge.
     /// </returns>
     /// <param name="s">Die zu konvertierende Zeichenfolge. </param><exception cref="T:System.ArgumentNullException"><paramref name="s"/> ist null. </exception><exception cref="T:System.FormatException"><paramref name="s"/> ist nicht im richtigen Format. </exception><exception cref="T:System.OverflowException"><paramref name="s"/> Stellt eine Zahl kleiner als <see cref="F:System.Byte.MinValue"/> oder größer als <see cref="F:System.Byte.MaxValue"/>. </exception>
-    [__DynamicallyInvokable]
     public static byte ToByte(string s)
     {
       return byte.Parse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, (IFormatProvider)NumberFormatInfo.InvariantInfo);
@@ -1069,8 +1034,6 @@
     /// Ein UInt16-Äquivalent der Zeichenfolge.
     /// </returns>
     /// <param name="s">Die zu konvertierende Zeichenfolge. </param><exception cref="T:System.ArgumentNullException"><paramref name="s"/> ist null. </exception><exception cref="T:System.FormatException"><paramref name="s"/> ist nicht im richtigen Format. </exception><exception cref="T:System.OverflowException"><paramref name="s"/> Stellt eine Zahl kleiner als <see cref="F:System.UInt16.MinValue"/> oder größer als <see cref="F:System.UInt16.MaxValue"/>. </exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static ushort ToUInt16(string s)
     {
       return ushort.Parse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, (IFormatProvider)NumberFormatInfo.InvariantInfo);
@@ -1091,8 +1054,6 @@
     /// Ein UInt32-Äquivalent der Zeichenfolge.
     /// </returns>
     /// <param name="s">Die zu konvertierende Zeichenfolge. </param><exception cref="T:System.ArgumentNullException"><paramref name="s"/> ist null. </exception><exception cref="T:System.FormatException"><paramref name="s"/> ist nicht im richtigen Format. </exception><exception cref="T:System.OverflowException"><paramref name="s"/> Stellt eine Zahl kleiner als <see cref="F:System.UInt32.MinValue"/> oder größer als <see cref="F:System.UInt32.MaxValue"/>. </exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static uint ToUInt32(string s)
     {
       return uint.Parse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, (IFormatProvider)NumberFormatInfo.InvariantInfo);
@@ -1113,8 +1074,6 @@
     /// Ein UInt64-Äquivalent der Zeichenfolge.
     /// </returns>
     /// <param name="s">Die zu konvertierende Zeichenfolge. </param><exception cref="T:System.ArgumentNullException"><paramref name="s"/> ist null. </exception><exception cref="T:System.FormatException"><paramref name="s"/> ist nicht im richtigen Format. </exception><exception cref="T:System.OverflowException"><paramref name="s"/> Stellt eine Zahl kleiner als <see cref="F:System.UInt64.MinValue"/> oder größer als <see cref="F:System.UInt64.MaxValue"/>. </exception>
-    [CLSCompliant(false)]
-    [__DynamicallyInvokable]
     public static ulong ToUInt64(string s)
     {
       return ulong.Parse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, (IFormatProvider)NumberFormatInfo.InvariantInfo);
@@ -1135,7 +1094,6 @@
     /// Ein Single-Äquivalent der Zeichenfolge.
     /// </returns>
     /// <param name="s">Die zu konvertierende Zeichenfolge. </param><exception cref="T:System.ArgumentNullException"><paramref name="s"/> ist null. </exception><exception cref="T:System.FormatException"><paramref name="s"/> ist nicht im richtigen Format. </exception><exception cref="T:System.OverflowException"><paramref name="s"/> Stellt eine Zahl kleiner als <see cref="F:System.Single.MinValue"/> oder größer als <see cref="F:System.Single.MaxValue"/>. </exception>
-    [__DynamicallyInvokable]
     public static float ToSingle(string s)
     {
       s = Xml_Convert.TrimString(s);
@@ -1177,7 +1135,6 @@
     /// Ein Double-Äquivalent der Zeichenfolge.
     /// </returns>
     /// <param name="s">Die zu konvertierende Zeichenfolge. </param><exception cref="T:System.ArgumentNullException"><paramref name="s"/> ist null. </exception><exception cref="T:System.FormatException"><paramref name="s"/> ist nicht im richtigen Format. </exception><exception cref="T:System.OverflowException"><paramref name="s"/> Stellt eine Zahl kleiner als <see cref="F:System.Double.MinValue"/> oder größer als <see cref="F:System.Double.MaxValue"/>. </exception>
-    [__DynamicallyInvokable]
     public static double ToDouble(string s)
     {
       s = Xml_Convert.TrimString(s);
@@ -1270,7 +1227,6 @@
     /// Ein TimeSpan-Äquivalent der Zeichenfolge.
     /// </returns>
     /// <param name="s">Die zu konvertierende Zeichenfolge.Das Zeichenfolgenformat muss dem W3C-XML-Schema Teil 2 entsprechen: Empfehlung für Datentypen für Dauer.</param><exception cref="T:System.FormatException"><paramref name="s"/> befindet sich nicht im richtigen Format zum Darstellen einer TimeSpan Wert. </exception>
-    [__DynamicallyInvokable]
     public static TimeSpan ToTimeSpan(string s)
     {
       XsdDuration xsdDuration;
@@ -1376,7 +1332,6 @@
     /// Ein <see cref="T:System.DateTime"/>-Äquivalent von <see cref="T:System.String"/>.
     /// </returns>
     /// <param name="s">Der zu konvertierende <see cref="T:System.String"/>-Wert.</param><param name="dateTimeOption">Einer der <see cref="T:System.Xml.XmlDateTimeSerializationMode"/>-Werte, die angeben, ob das Datum in die Ortszeit konvertiert oder als UTC-Zeit (Coordinated Universal Time) beibehalten werden soll, falls es sich um ein UTC-Datum handelt.</param><exception cref="T:System.NullReferenceException"><paramref name="s"/> ist null.</exception><exception cref="T:System.ArgumentNullException">Der <paramref name="dateTimeOption"/> Wert ist null.</exception><exception cref="T:System.FormatException"><paramref name="s"/> ist eine leere Zeichenfolge oder ist nicht in einem gültigen Format.</exception>
-    [__DynamicallyInvokable]
     public static DateTime ToDateTime(string s, XmlDateTimeSerializationMode dateTimeOption)
     {
       DateTime dateTime = (DateTime)new XsdDateTime(s, XsdDateTimeFlags.AllXsd);
@@ -1406,7 +1361,6 @@
     /// Das <see cref="T:System.DateTimeOffset"/>-Äquivalent der angegebenen Zeichenfolge.
     /// </returns>
     /// <param name="s">Die zu konvertierende Zeichenfolge.Hinweis   Die Zeichenfolge muss einer Teilmenge der W3C-Empfehlung für den XML-dateTime-Typ entsprechen.Weitere Informationen finden Sie unter „http://www.w3.org/TR/xmlschema-2/#dateTime“.</param><exception cref="T:System.ArgumentNullException"><paramref name="s"/> ist null. </exception><exception cref="T:System.ArgumentOutOfRangeException">Das an diese Methode übergebene Argument liegt außerhalb des Bereichs der zulässigen Werte.Weitere Informationen zu zulässigen Werten finden Sie unter <see cref="T:System.DateTimeOffset"/>.</exception><exception cref="T:System.FormatException">Das an diese Methode übergebene Argument entspricht nicht auf eine Teilmenge der W3C-Empfehlungen für den XML-DateTime-Typ.Weitere Informationen finden Sie unter http://www.w3.org/TR/xmlschema-2/#dateTime.</exception>
-    [__DynamicallyInvokable]
     public static DateTimeOffset ToDateTimeOffset(string s)
     {
       if (s == null)
@@ -1422,7 +1376,6 @@
     /// Das <see cref="T:System.DateTimeOffset"/>-Äquivalent der angegebenen Zeichenfolge.
     /// </returns>
     /// <param name="s">Die zu konvertierende Zeichenfolge.</param><param name="format">Das Format, aus dem <paramref name="s"/> konvertiert wird.Der Formatparameter kann eine beliebige Teilmenge der W3C-Empfehlung für den XML-DateTime-Typ sein.(Weitere Informationen finden Sie unter „http://www.w3.org/TR/xmlschema-2/#dateTime“.) Die Gültigkeit der Zeichenfolge <paramref name="s"/> wird anhand dieses Formats überprüft.</param><exception cref="T:System.ArgumentNullException"><paramref name="s"/> ist null. </exception><exception cref="T:System.FormatException"><paramref name="s"/> oder <paramref name="format"/> ist eine leere Zeichenfolge oder ist nicht im angegebenen Format.</exception>
-    [__DynamicallyInvokable]
     public static DateTimeOffset ToDateTimeOffset(string s, string format)
     {
       if (s == null)
@@ -1438,7 +1391,6 @@
     /// Das <see cref="T:System.DateTimeOffset"/>-Äquivalent der angegebenen Zeichenfolge.
     /// </returns>
     /// <param name="s">Die zu konvertierende Zeichenfolge.</param><param name="formats">Ein Array von Formaten, aus denen <paramref name="s"/> konvertiert werden kann.Jedes Format in <paramref name="formats"/> kann eine beliebige Teilmenge der W3C-Empfehlung für den XML-DateTime-Typ sein.(Weitere Informationen finden Sie unter „http://www.w3.org/TR/xmlschema-2/#dateTime“.) Die Gültigkeit der Zeichenfolge <paramref name="s"/> wird im Vergleich mit einem dieser Formate überprüft.</param>
-    [__DynamicallyInvokable]
     public static DateTimeOffset ToDateTimeOffset(string s, string[] formats)
     {
       if (s == null)
@@ -1454,7 +1406,6 @@
     /// Ein Guid-Äquivalent der Zeichenfolge.
     /// </returns>
     /// <param name="s">Die zu konvertierende Zeichenfolge. </param>
-    [__DynamicallyInvokable]
     public static Guid ToGuid(string s)
     {
       return new Guid(s);
