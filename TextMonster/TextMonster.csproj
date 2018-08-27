@@ -46,6 +46,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Xml\Internal\ElementWriter.cs" />
     <Compile Include="Xml\Internal\XNodeBuilder.cs" />
+    <Compile Include="Xml\Xml_Reader\Xml_Reader.cs" />
     <Compile Include="Xml\X_Comment.cs" />
     <Compile Include="Xml\X_ProcessingInstruction.cs" />
     <Compile Include="Xml\Internal\StreamingElementWriter.cs" />
