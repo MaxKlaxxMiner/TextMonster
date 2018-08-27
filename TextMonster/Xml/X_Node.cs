@@ -271,7 +271,6 @@ namespace TextMonster.Xml
             break;
         }
         while (parent != null && parent == n.parent);
-        n = null;
       }
     }
 
@@ -407,18 +406,14 @@ namespace TextMonster.Xml
     /// <param name="content">Inhalt, durch den dieser Knoten ersetzt wird.</param>
     public void ReplaceWith(object content)
     {
-      if (this.parent == null)
-        throw new InvalidOperationException("InvalidOperation_MissingParent");
-      var parent = this.parent;
-      var anchor = (X_Node)this.parent.content;
-      while (anchor.next != this)
-        anchor = anchor.next;
-      if (anchor == this.parent.content)
-        anchor = null;
-      this.parent.RemoveNode(this);
-      if (anchor != null && anchor.parent != parent)
-        throw new InvalidOperationException("InvalidOperation_ExternalCode");
-      new Inserter(parent, anchor).Add(content);
+      if (parent == null) throw new InvalidOperationException("InvalidOperation_MissingParent");
+      var par = parent;
+      var anchor = (X_Node)parent.content;
+      while (anchor.next != this) anchor = anchor.next;
+      if (anchor == parent.content) anchor = null;
+      parent.RemoveNode(this);
+      if (anchor != null && anchor.parent != par) throw new InvalidOperationException("InvalidOperation_ExternalCode");
+      new Inserter(par, anchor).Add(content);
     }
 
     /// <summary>
@@ -439,7 +434,7 @@ namespace TextMonster.Xml
     /// </returns>
     public override string ToString()
     {
-      return GetXmlString(GetSaveOptionsFromAnnotations());
+      return GetXmlString(SaveOptions.None);
     }
 
     /// <summary>
@@ -525,7 +520,6 @@ namespace TextMonster.Xml
             break;
         }
         while (parent != null && parent == n.parent);
-        n = null;
       }
     }
 

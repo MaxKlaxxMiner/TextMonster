@@ -132,13 +132,8 @@ namespace TextMonster.Xml
       }
       set
       {
-        if (value == null)
-          throw new ArgumentNullException("value");
-        bool flag = NotifyChanging(this, X_ObjectChangeEventArgs.Value);
+        if (value == null) throw new ArgumentNullException("value");
         this.value = value;
-        if (!flag)
-          return;
-        NotifyChanged(this, X_ObjectChangeEventArgs.Value);
       }
     }
 

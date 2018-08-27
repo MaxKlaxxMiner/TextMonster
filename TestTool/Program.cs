@@ -11,7 +11,6 @@ using System.Xml;
 using System.Xml.Linq;
 using TextMonster;
 using TextMonster.Xml;
-//using ngMax.Xml;
 #endregion
 
 namespace TestTool

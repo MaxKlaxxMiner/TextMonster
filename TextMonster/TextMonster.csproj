@@ -44,14 +44,6 @@
     <Compile Include="UnsafeReader.cs" />
     <Compile Include="UnsafeHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Xml2\X_Attribute.cs" />
-    <Compile Include="Xml2\X_CData.cs" />
-    <Compile Include="Xml2\X_Comment.cs" />
-    <Compile Include="Xml2\X_Container.cs" />
-    <Compile Include="Xml2\X_Element.cs" />
-    <Compile Include="Xml2\X_Node.cs" />
-    <Compile Include="Xml2\X_Object.cs" />
-    <Compile Include="Xml2\X_Text.cs" />
     <Compile Include="Xml\Internal\ElementWriter.cs" />
     <Compile Include="Xml\Internal\XNodeBuilder.cs" />
     <Compile Include="Xml\X_Comment.cs" />
@@ -63,10 +55,8 @@
     <Compile Include="Xml\Internal\Inserter.cs" />
     <Compile Include="Xml\X_NodeEqualityComparer.cs" />
     <Compile Include="Xml\X_NodeDocumentOrderComparer.cs" />
-    <Compile Include="Xml\Internal\XObjectChangeAnnotation.cs" />
     <Compile Include="Xml\Internal\NameSerializer.cs" />
     <Compile Include="Xml\X_Attribute.cs" />
-    <Compile Include="Xml\X_ObjectChangeEventArgs.cs" />
     <Compile Include="Xml\X_DocumentType.cs" />
     <Compile Include="Xml\X_Declaration.cs" />
     <Compile Include="Xml\X_Document.cs" />

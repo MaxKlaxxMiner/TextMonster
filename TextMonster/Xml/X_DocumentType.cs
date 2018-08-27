@@ -13,9 +13,6 @@ namespace TextMonster.Xml
   public class X_DocumentType : X_Node
   {
     string name;
-    string publicId;
-    string systemId;
-    string internalSubset;
 
     /// <summary>
     /// Ruft die interne Teilmenge für die Dokumenttypdefinition (DTD) ab oder legt diese fest.
@@ -24,21 +21,7 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.String"/>, der die interne Teilmenge für diese Dokumenttypdefinition (DTD) enthält.
     /// </returns>
-    public string InternalSubset
-    {
-      get
-      {
-        return internalSubset;
-      }
-      set
-      {
-        bool flag = NotifyChanging(this, X_ObjectChangeEventArgs.Value);
-        internalSubset = value;
-        if (!flag)
-          return;
-        NotifyChanged(this, X_ObjectChangeEventArgs.Value);
-      }
-    }
+    public string InternalSubset { get; set; }
 
     /// <summary>
     /// Ruft den Namen für die Dokumenttypdefinition (DTD) ab oder legt diesen fest.
@@ -56,11 +39,7 @@ namespace TextMonster.Xml
       set
       {
         value = XmlConvert.VerifyName(value);
-        bool flag = NotifyChanging(this, X_ObjectChangeEventArgs.Name);
         name = value;
-        if (!flag)
-          return;
-        NotifyChanged(this, X_ObjectChangeEventArgs.Name);
       }
     }
 
@@ -86,21 +65,7 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.String"/>, der den öffentlichen Bezeichner für diese Dokumenttypdefinition (DTD) enthält.
     /// </returns>
-    public string PublicId
-    {
-      get
-      {
-        return publicId;
-      }
-      set
-      {
-        bool flag = NotifyChanging(this, X_ObjectChangeEventArgs.Value);
-        publicId = value;
-        if (!flag)
-          return;
-        NotifyChanged(this, X_ObjectChangeEventArgs.Value);
-      }
-    }
+    public string PublicId { get; set; }
 
     /// <summary>
     /// Ruft den Systembezeichner für die Dokumenttypdefinition (DTD) ab oder legt diesen fest.
@@ -109,21 +74,7 @@ namespace TextMonster.Xml
     /// <returns>
     /// Ein <see cref="T:System.String"/>, der den Systembezeichner für diese Dokumenttypdefinition (DTD) enthält.
     /// </returns>
-    public string SystemId
-    {
-      get
-      {
-        return systemId;
-      }
-      set
-      {
-        bool flag = NotifyChanging(this, X_ObjectChangeEventArgs.Value);
-        systemId = value;
-        if (!flag)
-          return;
-        NotifyChanged(this, X_ObjectChangeEventArgs.Value);
-      }
-    }
+    public string SystemId { get; set; }
 
     /// <summary>
     /// Initialisiert eine Instanz der <see cref="T:System.Xml.Linq.XDocumentType"/>-Klasse.
@@ -132,9 +83,9 @@ namespace TextMonster.Xml
     public X_DocumentType(string name, string publicId, string systemId, string internalSubset)
     {
       this.name = XmlConvert.VerifyName(name);
-      this.publicId = publicId;
-      this.systemId = systemId;
-      this.internalSubset = internalSubset;
+      PublicId = publicId;
+      SystemId = systemId;
+      InternalSubset = internalSubset;
     }
 
     /// <summary>
@@ -145,17 +96,17 @@ namespace TextMonster.Xml
     {
       if (other == null) throw new ArgumentNullException("other");
       name = other.name;
-      publicId = other.publicId;
-      systemId = other.systemId;
-      internalSubset = other.internalSubset;
+      PublicId = other.PublicId;
+      SystemId = other.SystemId;
+      InternalSubset = other.InternalSubset;
     }
 
     internal X_DocumentType(XmlReader r)
     {
       name = r.Name;
-      publicId = r.GetAttribute("PUBLIC");
-      systemId = r.GetAttribute("SYSTEM");
-      internalSubset = r.Value;
+      PublicId = r.GetAttribute("PUBLIC");
+      SystemId = r.GetAttribute("SYSTEM");
+      InternalSubset = r.Value;
       r.Read();
     }
 
@@ -167,7 +118,7 @@ namespace TextMonster.Xml
     {
       if (writer == null)
         throw new ArgumentNullException("writer");
-      writer.WriteDocType(name, publicId, systemId, internalSubset);
+      writer.WriteDocType(name, PublicId, SystemId, InternalSubset);
     }
 
     internal override X_Node CloneNode()
@@ -178,14 +129,14 @@ namespace TextMonster.Xml
     internal override bool DeepEquals(X_Node node)
     {
       var xdocumentType = node as X_DocumentType;
-      if (xdocumentType != null && name == xdocumentType.name && (publicId == xdocumentType.publicId && systemId == xdocumentType.SystemId))
-        return internalSubset == xdocumentType.internalSubset;
+      if (xdocumentType != null && name == xdocumentType.name && (PublicId == xdocumentType.PublicId && SystemId == xdocumentType.SystemId))
+        return InternalSubset == xdocumentType.InternalSubset;
       return false;
     }
 
     internal override int GetDeepHashCode()
     {
-      return name.GetHashCode() ^ (publicId != null ? publicId.GetHashCode() : 0) ^ (systemId != null ? systemId.GetHashCode() : 0) ^ (internalSubset != null ? internalSubset.GetHashCode() : 0);
+      return name.GetHashCode() ^ (PublicId != null ? PublicId.GetHashCode() : 0) ^ (SystemId != null ? SystemId.GetHashCode() : 0) ^ (InternalSubset != null ? InternalSubset.GetHashCode() : 0);
     }
   }
 }

@@ -188,19 +188,10 @@ namespace TextMonster.Xml
     }
 
     /// <summary>
-    /// Serialisieren Sie dieses <see cref="T:System.Xml.Linq.XDocument"/> in eine Datei, und überschreiben Sie dabei eine vorhandene Datei, sofern vorhanden.
-    /// </summary>
-    /// <param name="fileName">Eine Zeichenfolge, die den Namen der Datei enthält.</param>
-    public void Save(string fileName)
-    {
-      Save(fileName, GetSaveOptionsFromAnnotations());
-    }
-
-    /// <summary>
     /// Serialisiert dieses <see cref="T:System.Xml.Linq.XDocument"/> in eine Datei, wobei optional die Formatierung deaktiviert wird.
     /// </summary>
     /// <param name="fileName">Eine Zeichenfolge, die den Namen der Datei enthält.</param><param name="options">Ein <see cref="T:System.Xml.Linq.SaveOptions"/>, das Formatierungsverhalten angibt.</param>
-    public void Save(string fileName, SaveOptions options)
+    public void Save(string fileName, SaveOptions options = SaveOptions.DisableFormatting)
     {
       var xmlWriterSettings = GetXmlWriterSettings(options);
       if (Declaration != null)
@@ -216,24 +207,14 @@ namespace TextMonster.Xml
           }
         }
       }
-      using (var writer = XmlWriter.Create(fileName, xmlWriterSettings))
-        Save(writer);
-    }
-
-    /// <summary>
-    /// Gibt dieses <see cref="T:System.Xml.Linq.XDocument"/> an den angegebenen <see cref="T:System.IO.Stream"/> aus.
-    /// </summary>
-    /// <param name="stream">Der Stream, in den dieses <see cref="T:System.Xml.Linq.XDocument"/> ausgegeben werden soll.</param>
-    public void Save(Stream stream)
-    {
-      Save(stream, GetSaveOptionsFromAnnotations());
+      using (var writer = XmlWriter.Create(fileName, xmlWriterSettings)) Save(writer);
     }
 
     /// <summary>
     /// Gibt dieses <see cref="T:System.Xml.Linq.XDocument"/> zum angegebenen <see cref="T:System.IO.Stream"/> aus und gibt Formatierungsverhalten optional an.
     /// </summary>
     /// <param name="stream">Der Stream, in den dieses <see cref="T:System.Xml.Linq.XDocument"/> ausgegeben werden soll.</param><param name="options">Ein <see cref="T:System.Xml.Linq.SaveOptions"/>, das Formatierungsverhalten angibt.</param>
-    public void Save(Stream stream, SaveOptions options)
+    public void Save(Stream stream, SaveOptions options = SaveOptions.DisableFormatting)
     {
       var xmlWriterSettings = GetXmlWriterSettings(options);
       if (Declaration != null)
@@ -249,28 +230,17 @@ namespace TextMonster.Xml
           }
         }
       }
-      using (var writer = XmlWriter.Create(stream, xmlWriterSettings))
-        Save(writer);
-    }
-
-    /// <summary>
-    /// Serialisiert dieses <see cref="T:System.Xml.Linq.XDocument"/> in einen <see cref="T:System.IO.TextWriter"/>.
-    /// </summary>
-    /// <param name="textWriter">Ein <see cref="T:System.IO.TextWriter"/>, in den das <see cref="T:System.Xml.Linq.XDocument"/> geschrieben wird.</param>
-    public void Save(TextWriter textWriter)
-    {
-      Save(textWriter, GetSaveOptionsFromAnnotations());
+      using (var writer = XmlWriter.Create(stream, xmlWriterSettings)) Save(writer);
     }
 
     /// <summary>
     /// Serialisiert dieses <see cref="T:System.Xml.Linq.XDocument"/> in einen <see cref="T:System.IO.TextWriter"/>, wobei optional die Formatierung deaktiviert wird.
     /// </summary>
     /// <param name="textWriter">Der <see cref="T:System.IO.TextWriter"/>, an den das XML ausgegeben werden soll.</param><param name="options">Ein <see cref="T:System.Xml.Linq.SaveOptions"/>, das Formatierungsverhalten angibt.</param>
-    public void Save(TextWriter textWriter, SaveOptions options)
+    public void Save(TextWriter textWriter, SaveOptions options = SaveOptions.DisableFormatting)
     {
       var xmlWriterSettings = GetXmlWriterSettings(options);
-      using (var writer = XmlWriter.Create(textWriter, xmlWriterSettings))
-        Save(writer);
+      using (var writer = XmlWriter.Create(textWriter, xmlWriterSettings)) Save(writer);
     }
 
     /// <summary>

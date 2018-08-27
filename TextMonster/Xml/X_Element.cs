@@ -140,13 +140,8 @@ namespace TextMonster.Xml
       }
       set
       {
-        if (value == null)
-          throw new ArgumentNullException("value");
-        bool flag = NotifyChanging(this, X_ObjectChangeEventArgs.Name);
+        if (value == null) throw new ArgumentNullException("value");
         name = value;
-        if (!flag)
-          return;
-        NotifyChanged(this, X_ObjectChangeEventArgs.Name);
       }
     }
 
@@ -845,27 +840,7 @@ namespace TextMonster.Xml
     /// </summary>
     public void RemoveAttributes()
     {
-      if (SkipNotify())
-      {
-        RemoveAttributesSkipNotify();
-      }
-      else
-      {
-        while (lastAttr != null)
-        {
-          var xattribute = lastAttr.next;
-          NotifyChanging(xattribute, X_ObjectChangeEventArgs.Remove);
-          if (lastAttr == null || xattribute != lastAttr.next)
-            throw new InvalidOperationException("InvalidOperation_ExternalCode");
-          if (xattribute != lastAttr)
-            lastAttr.next = xattribute.next;
-          else
-            lastAttr = null;
-          xattribute.parent = null;
-          xattribute.next = null;
-          NotifyChanged(xattribute, X_ObjectChangeEventArgs.Remove);
-        }
-      }
+      RemoveAttributesSkipNotify();
     }
 
     /// <summary>
@@ -909,63 +884,33 @@ namespace TextMonster.Xml
     }
 
     /// <summary>
-    /// Serialisiert dieses Element in eine Datei.
-    /// </summary>
-    /// <param name="fileName">Ein <see cref="T:System.String"/>, der den Namen der Datei enthält.</param>
-    public void Save(string fileName)
-    {
-      Save(fileName, GetSaveOptionsFromAnnotations());
-    }
-
-    /// <summary>
     /// Serialisiert dieses Element in eine Datei, wobei optional die Formatierung deaktiviert wird.
     /// </summary>
     /// <param name="fileName">Ein <see cref="T:System.String"/>, der den Namen der Datei enthält.</param><param name="options">Ein <see cref="T:System.Xml.Linq.SaveOptions"/>, das Formatierungsverhalten angibt.</param>
-    public void Save(string fileName, SaveOptions options)
+    public void Save(string fileName, SaveOptions options = SaveOptions.DisableFormatting)
     {
       var xmlWriterSettings = GetXmlWriterSettings(options);
-      using (var writer = XmlWriter.Create(fileName, xmlWriterSettings))
-        Save(writer);
-    }
-
-    /// <summary>
-    /// Gibt diesen <see cref="T:System.Xml.Linq.XElement"/> an den angegebenen <see cref="T:System.IO.Stream"/> aus.
-    /// </summary>
-    /// <param name="stream">Der Stream, in den dieses <see cref="T:System.Xml.Linq.XElement"/> ausgegeben werden soll.</param>
-    public void Save(Stream stream)
-    {
-      Save(stream, GetSaveOptionsFromAnnotations());
+      using (var writer = XmlWriter.Create(fileName, xmlWriterSettings)) Save(writer);
     }
 
     /// <summary>
     /// Gibt dieses <see cref="T:System.Xml.Linq.XElement"/> zum angegebenen <see cref="T:System.IO.Stream"/> aus und gibt Formatierungsverhalten optional an.
     /// </summary>
     /// <param name="stream">Der Stream, in den dieses <see cref="T:System.Xml.Linq.XElement"/> ausgegeben werden soll.</param><param name="options">Ein <see cref="T:System.Xml.Linq.SaveOptions"/>-Objekt, das das Formatierungsverhalten angibt.</param>
-    public void Save(Stream stream, SaveOptions options)
+    public void Save(Stream stream, SaveOptions options = SaveOptions.DisableFormatting)
     {
       var xmlWriterSettings = GetXmlWriterSettings(options);
-      using (var writer = XmlWriter.Create(stream, xmlWriterSettings))
-        Save(writer);
-    }
-
-    /// <summary>
-    /// Serialisiert dieses Element in einem <see cref="T:System.IO.TextWriter"/>.
-    /// </summary>
-    /// <param name="textWriter">Ein <see cref="T:System.IO.TextWriter"/>, in den das <see cref="T:System.Xml.Linq.XElement"/> geschrieben wird.</param>
-    public void Save(TextWriter textWriter)
-    {
-      Save(textWriter, GetSaveOptionsFromAnnotations());
+      using (var writer = XmlWriter.Create(stream, xmlWriterSettings)) Save(writer);
     }
 
     /// <summary>
     /// Serialisiert dieses Element in einen <see cref="T:System.IO.TextWriter"/>, wobei optional die Formatierung deaktiviert wird.
     /// </summary>
     /// <param name="textWriter">Der <see cref="T:System.IO.TextWriter"/>, an den das XML ausgegeben werden soll.</param><param name="options">Ein <see cref="T:System.Xml.Linq.SaveOptions"/>, das Formatierungsverhalten angibt.</param>
-    public void Save(TextWriter textWriter, SaveOptions options)
+    public void Save(TextWriter textWriter, SaveOptions options = SaveOptions.DisableFormatting)
     {
       var xmlWriterSettings = GetXmlWriterSettings(options);
-      using (var writer = XmlWriter.Create(textWriter, xmlWriterSettings))
-        Save(writer);
+      using (var writer = XmlWriter.Create(textWriter, xmlWriterSettings)) Save(writer);
     }
 
     /// <summary>
@@ -974,8 +919,7 @@ namespace TextMonster.Xml
     /// <param name="writer">Ein <see cref="T:System.Xml.XmlWriter"/>, in den das <see cref="T:System.Xml.Linq.XElement"/> geschrieben wird.</param>
     public void Save(XmlWriter writer)
     {
-      if (writer == null)
-        throw new ArgumentNullException("writer");
+      if (writer == null) throw new ArgumentNullException("writer");
       writer.WriteStartDocument();
       WriteTo(writer);
       writer.WriteEndDocument();
@@ -1048,12 +992,9 @@ namespace TextMonster.Xml
 
     void IXmlSerializable.ReadXml(XmlReader reader)
     {
-      if (reader == null)
-        throw new ArgumentNullException("reader");
-      if (parent != null || annotations != null || (content != null || lastAttr != null))
-        throw new InvalidOperationException("InvalidOperation_DeserializeInstance");
-      if (reader.MoveToContent() != XmlNodeType.Element)
-        throw new InvalidOperationException("InvalidOperation_ExpectedNodeType");
+      if (reader == null) throw new ArgumentNullException("reader");
+      if (parent != null || content != null || lastAttr != null) throw new InvalidOperationException("InvalidOperation_DeserializeInstance");
+      if (reader.MoveToContent() != XmlNodeType.Element) throw new InvalidOperationException("InvalidOperation_ExpectedNodeType");
       ReadElementFrom(reader);
     }
 
@@ -1082,13 +1023,8 @@ namespace TextMonster.Xml
 
     internal void AppendAttribute(X_Attribute a)
     {
-      bool flag = NotifyChanging(a, X_ObjectChangeEventArgs.Add);
-      if (a.parent != null)
-        throw new InvalidOperationException("InvalidOperation_ExternalCode");
+      if (a.parent != null) throw new InvalidOperationException("InvalidOperation_ExternalCode");
       AppendAttributeSkipNotify(a);
-      if (!flag)
-        return;
-      NotifyChanged(a, X_ObjectChangeEventArgs.Add);
     }
 
     internal void AppendAttributeSkipNotify(X_Attribute a)
@@ -1196,7 +1132,6 @@ namespace TextMonster.Xml
 
     internal void RemoveAttribute(X_Attribute a)
     {
-      bool flag = NotifyChanging(a, X_ObjectChangeEventArgs.Remove);
       if (a.parent != this)
         throw new InvalidOperationException("InvalidOperation_ExternalCode");
       var xattribute1 = lastAttr;
@@ -1215,9 +1150,6 @@ namespace TextMonster.Xml
       }
       a.parent = null;
       a.next = null;
-      if (!flag)
-        return;
-      NotifyChanged(a, X_ObjectChangeEventArgs.Remove);
     }
 
     void RemoveAttributesSkipNotify()

@@ -11,7 +11,6 @@ namespace TextMonster.Xml
   // ReSharper disable once InconsistentNaming
   public class X_ProcessingInstruction : X_Node
   {
-    string target;
     string data;
 
     /// <summary>
@@ -30,13 +29,8 @@ namespace TextMonster.Xml
       }
       set
       {
-        if (value == null)
-          throw new ArgumentNullException("value");
-        bool flag = NotifyChanging(this, X_ObjectChangeEventArgs.Value);
+        if (value == null) throw new ArgumentNullException("value");
         data = value;
-        if (!flag)
-          return;
-        NotifyChanged(this, X_ObjectChangeEventArgs.Value);
       }
     }
 
@@ -63,21 +57,7 @@ namespace TextMonster.Xml
     /// Ein <see cref="T:System.String"/>, der die Zielanwendung für diese Verarbeitungsanweisung enthält.
     /// </returns>
     /// <exception cref="T:System.ArgumentNullException">Der Zeichenfolgen-<paramref name="value"/> ist null.</exception><exception cref="T:System.ArgumentException">Das Target entspricht nicht den Einschränkungen für XML-Namen.</exception>
-    public string Target
-    {
-      get
-      {
-        return target;
-      }
-      set
-      {
-        bool flag = NotifyChanging(this, X_ObjectChangeEventArgs.Name);
-        target = value;
-        if (!flag)
-          return;
-        NotifyChanged(this, X_ObjectChangeEventArgs.Name);
-      }
-    }
+    public string Target { get; set; }
 
     /// <summary>
     /// Initialisiert eine neue Instanz der <see cref="T:System.Xml.Linq.XProcessingInstruction"/>-Klasse.
@@ -87,7 +67,7 @@ namespace TextMonster.Xml
     {
       if (data == null)
         throw new ArgumentNullException("data");
-      this.target = target;
+      Target = target;
       this.data = data;
     }
 
@@ -99,13 +79,13 @@ namespace TextMonster.Xml
     {
       if (other == null)
         throw new ArgumentNullException("other");
-      target = other.target;
+      Target = other.Target;
       data = other.data;
     }
 
     internal X_ProcessingInstruction(XmlReader r)
     {
-      target = r.Name;
+      Target = r.Name;
       data = r.Value;
       r.Read();
     }
@@ -118,7 +98,7 @@ namespace TextMonster.Xml
     {
       if (writer == null)
         throw new ArgumentNullException("writer");
-      writer.WriteProcessingInstruction(target, data);
+      writer.WriteProcessingInstruction(Target, data);
     }
 
     internal override X_Node CloneNode()
@@ -129,14 +109,14 @@ namespace TextMonster.Xml
     internal override bool DeepEquals(X_Node node)
     {
       var xprocessingInstruction = node as X_ProcessingInstruction;
-      if (xprocessingInstruction != null && target == xprocessingInstruction.target)
+      if (xprocessingInstruction != null && Target == xprocessingInstruction.Target)
         return data == xprocessingInstruction.data;
       return false;
     }
 
     internal override int GetDeepHashCode()
     {
-      return target.GetHashCode() ^ data.GetHashCode();
+      return Target.GetHashCode() ^ data.GetHashCode();
     }
   }
 }

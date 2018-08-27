@@ -24,20 +24,7 @@ namespace TextMonster.Xml
         return;
       if (parent.content == null)
       {
-        if (parent.SkipNotify())
-          parent.content = text;
-        else if (text.Length > 0)
-          InsertNode(new X_Text(text));
-        else if (parent is X_Element)
-        {
-          parent.NotifyChanging(parent, X_ObjectChangeEventArgs.Value);
-          if (parent.content != null)
-            throw new InvalidOperationException("InvalidOperation_ExternalCode");
-          parent.content = text;
-          parent.NotifyChanged(parent, X_ObjectChangeEventArgs.Value);
-        }
-        else
-          parent.content = text;
+        parent.content = text;
       }
       else
       {
@@ -142,9 +129,7 @@ namespace TextMonster.Xml
 
     void InsertNode(X_Node n)
     {
-      bool flag = parent.NotifyChanging(n, X_ObjectChangeEventArgs.Add);
-      if (n.parent != null)
-        throw new InvalidOperationException("InvalidOperation_ExternalCode");
+      if (n.parent != null) throw new InvalidOperationException("InvalidOperation_ExternalCode");
       n.parent = parent;
       if (parent.content == null || parent.content is string)
       {
@@ -165,9 +150,6 @@ namespace TextMonster.Xml
           parent.content = n;
       }
       previous = n;
-      if (!flag)
-        return;
-      parent.NotifyChanged(n, X_ObjectChangeEventArgs.Add);
     }
   }
 }

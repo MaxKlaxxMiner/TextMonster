@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Xml;
-using System.Xml.Linq;
-
+// ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
 // ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
@@ -102,64 +101,7 @@ namespace TextMonster.Xml
     /// <param name="content">Ein Inhaltsobjekt, das einfache Inhalte oder eine Auflistung von Inhaltsobjekten enthält, die hinzugefügt werden sollen.</param>
     public void Add(object content)
     {
-      if (SkipNotify())
-      {
-        AddContentSkipNotify(content);
-      }
-      else
-      {
-        if (content == null)
-          return;
-        var n = content as X_Node;
-        if (n != null)
-        {
-          AddNode(n);
-        }
-        else
-        {
-          string s = content as string;
-          if (s != null)
-          {
-            AddString(s);
-          }
-          else
-          {
-            var a = content as X_Attribute;
-            if (a != null)
-            {
-              AddAttribute(a);
-            }
-            else
-            {
-              var other = content as X_StreamingElement;
-              if (other != null)
-              {
-                AddNode(new X_Element(other));
-              }
-              else
-              {
-                var objArray = content as object[];
-                if (objArray != null)
-                {
-                  foreach (var content1 in objArray)
-                    Add(content1);
-                }
-                else
-                {
-                  var enumerable = content as IEnumerable;
-                  if (enumerable != null)
-                  {
-                    foreach (var content1 in enumerable)
-                      Add(content1);
-                  }
-                  else
-                    AddString(GetStringValue(content));
-                }
-              }
-            }
-          }
-        }
-      }
+      AddContentSkipNotify(content);
     }
 
     /// <summary>
@@ -322,47 +264,19 @@ namespace TextMonster.Xml
     /// </summary>
     public void RemoveNodes()
     {
-      if (SkipNotify())
+      var xnode1 = content as X_Node;
+      if (xnode1 != null)
       {
-        RemoveNodesSkipNotify();
-      }
-      else
-      {
-        while (content != null)
+        do
         {
-          string str = content as string;
-          if (str != null)
-          {
-            if (str.Length > 0)
-              ConvertTextToNode();
-            else if (this is X_Element)
-            {
-              NotifyChanging(this, X_ObjectChangeEventArgs.Value);
-              if (!ReferenceEquals(str, content))
-                throw new InvalidOperationException("InvalidOperation_ExternalCode");
-              content = null;
-              NotifyChanged(this, X_ObjectChangeEventArgs.Value);
-            }
-            else
-              content = null;
-          }
-          var xnode1 = content as X_Node;
-          if (xnode1 != null)
-          {
-            var xnode2 = xnode1.next;
-            NotifyChanging(xnode2, X_ObjectChangeEventArgs.Remove);
-            if (xnode1 != content || xnode2 != xnode1.next)
-              throw new InvalidOperationException("InvalidOperation_ExternalCode");
-            if (xnode2 != xnode1)
-              xnode1.next = xnode2.next;
-            else
-              content = null;
-            xnode2.parent = null;
-            xnode2.next = null;
-            NotifyChanged(xnode2, X_ObjectChangeEventArgs.Remove);
-          }
+          var xnode2 = xnode1.next;
+          xnode1.parent = null;
+          xnode1.next = null;
+          xnode1 = xnode2;
         }
+        while (xnode1 != content);
       }
+      content = null;
     }
 
     /// <summary>
@@ -492,14 +406,10 @@ namespace TextMonster.Xml
           AppendNode(new X_Text(s));
         else if (this is X_Element)
         {
-          NotifyChanging(this, X_ObjectChangeEventArgs.Value);
-          if (content != null)
-            throw new InvalidOperationException("InvalidOperation_ExternalCode");
+          if (content != null) throw new InvalidOperationException("InvalidOperation_ExternalCode");
           content = s;
-          NotifyChanged(this, X_ObjectChangeEventArgs.Value);
         }
-        else
-          content = s;
+        else content = s;
       }
       else
       {
@@ -541,13 +451,19 @@ namespace TextMonster.Xml
 
     internal void AppendNode(X_Node n)
     {
-      bool flag = NotifyChanging(n, X_ObjectChangeEventArgs.Add);
-      if (n.parent != null)
-        throw new InvalidOperationException("InvalidOperation_ExternalCode");
-      AppendNodeSkipNotify(n);
-      if (!flag)
-        return;
-      NotifyChanged(n, X_ObjectChangeEventArgs.Add);
+      if (n.parent != null) throw new InvalidOperationException("InvalidOperation_ExternalCode");
+      n.parent = this;
+      if (content == null || content is string)
+      {
+        n.next = n;
+      }
+      else
+      {
+        var xnode = (X_Node)content;
+        n.next = xnode.next;
+        xnode.next = n;
+      }
+      content = n;
     }
 
     internal void AppendNodeSkipNotify(X_Node n)
@@ -735,10 +651,8 @@ namespace TextMonster.Xml
             break;
         }
         var e = n as X_Element;
-        if (e != null && (name == null || e.name == name))
-          yield return e;
+        if (e != null && (name == null || e.name == name)) yield return e;
         xcontainer = e;
-        e = null;
       }
     }
 
@@ -856,9 +770,7 @@ namespace TextMonster.Xml
 
     internal void RemoveNode(X_Node n)
     {
-      bool flag = NotifyChanging(n, X_ObjectChangeEventArgs.Remove);
-      if (n.parent != this)
-        throw new InvalidOperationException("InvalidOperation_ExternalCode");
+      if (n.parent != this) throw new InvalidOperationException("InvalidOperation_ExternalCode");
       var xnode = (X_Node)content;
       while (xnode.next != n)
         xnode = xnode.next;
@@ -874,26 +786,6 @@ namespace TextMonster.Xml
       }
       n.parent = null;
       n.next = null;
-      if (!flag)
-        return;
-      NotifyChanged(n, X_ObjectChangeEventArgs.Remove);
-    }
-
-    void RemoveNodesSkipNotify()
-    {
-      var xnode1 = content as X_Node;
-      if (xnode1 != null)
-      {
-        do
-        {
-          var xnode2 = xnode1.next;
-          xnode1.parent = null;
-          xnode1.next = null;
-          xnode1 = xnode2;
-        }
-        while (xnode1 != content);
-      }
-      content = null;
     }
 
     internal void WriteContentTo(XmlWriter writer)

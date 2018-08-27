@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Xml;
+// ReSharper disable MemberCanBeProtected.Global
 
 namespace TextMonster.Xml
 {
@@ -43,13 +44,8 @@ namespace TextMonster.Xml
       }
       set
       {
-        if (value == null)
-          throw new ArgumentNullException("value");
-        bool flag = NotifyChanging(this, X_ObjectChangeEventArgs.Value);
+        if (value == null) throw new ArgumentNullException("value");
         text = value;
-        if (!flag)
-          return;
-        NotifyChanged(this, X_ObjectChangeEventArgs.Value);
       }
     }
 
