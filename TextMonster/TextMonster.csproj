@@ -63,9 +63,6 @@
     <Compile Include="Xml\Internal\XObjectChangeAnnotation.cs" />
     <Compile Include="Xml\Internal\LineInfoAnnotation.cs" />
     <Compile Include="Xml\Internal\NameSerializer.cs" />
-    <Compile Include="Xml\Internal\XHashtable.cs" />
-    <Compile Include="Xml\X_Namespace.cs" />
-    <Compile Include="Xml\X_Name.cs" />
     <Compile Include="Xml\X_Attribute.cs" />
     <Compile Include="Xml\X_ObjectChangeEventArgs.cs" />
     <Compile Include="Xml\X_DocumentType.cs" />
