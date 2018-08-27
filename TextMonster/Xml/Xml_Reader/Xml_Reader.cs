@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml;
+using System.Xml.Schema;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -414,14 +415,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal virtual IDtdInfo DtdInfo
-    {
-      get
-      {
-        return (IDtdInfo)null;
-      }
-    }
-
     private object debuggerDisplayProxy
     {
       get
@@ -470,7 +463,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
       catch (FormatException ex)
       {
-        throw new XmlException("Xml_ReadContentAsFormatException", "Boolean", (Exception)ex, this as IXmlLineInfo);
+        throw new XmlException("Xml_ReadContentAsFormatException");
       }
     }
 
@@ -492,7 +485,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
       catch (FormatException ex)
       {
-        throw new XmlException("Xml_ReadContentAsFormatException", "DateTime", (Exception)ex, this as IXmlLineInfo);
+        throw new XmlException("Xml_ReadContentAsFormatException");
       }
     }
 
@@ -514,7 +507,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
       catch (FormatException ex)
       {
-        throw new XmlException("Xml_ReadContentAsFormatException", "DateTimeOffset", (Exception)ex, this as IXmlLineInfo);
+        throw new XmlException("Xml_ReadContentAsFormatException");
       }
     }
 
@@ -536,7 +529,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
       catch (FormatException ex)
       {
-        throw new XmlException("Xml_ReadContentAsFormatException", "Double", (Exception)ex, this as IXmlLineInfo);
+        throw new XmlException("Xml_ReadContentAsFormatException");
       }
     }
 
@@ -558,7 +551,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
       catch (FormatException ex)
       {
-        throw new XmlException("Xml_ReadContentAsFormatException", "Float", (Exception)ex, this as IXmlLineInfo);
+        throw new XmlException("Xml_ReadContentAsFormatException");
       }
     }
 
@@ -580,7 +573,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
       catch (FormatException ex)
       {
-        throw new XmlException("Xml_ReadContentAsFormatException", "Decimal", (Exception)ex, this as IXmlLineInfo);
+        throw new XmlException("Xml_ReadContentAsFormatException");
       }
     }
 
@@ -602,7 +595,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
       catch (FormatException ex)
       {
-        throw new XmlException("Xml_ReadContentAsFormatException", "Int", (Exception)ex, this as IXmlLineInfo);
+        throw new XmlException("Xml_ReadContentAsFormatException");
       }
     }
 
@@ -624,7 +617,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
       catch (FormatException ex)
       {
-        throw new XmlException("Xml_ReadContentAsFormatException", "Long", (Exception)ex, this as IXmlLineInfo);
+        throw new XmlException("Xml_ReadContentAsFormatException");
       }
     }
 
@@ -660,7 +653,7 @@ namespace TextMonster.Xml.Xml_Reader
         return (object)str;
       try
       {
-        return XmlUntypedConverter.Untyped.ChangeType(str, returnType, namespaceResolver == null ? this as IXmlNamespaceResolver : namespaceResolver);
+        return Xml_UntypedConverter.Untyped.ChangeType(str, returnType, namespaceResolver == null ? this as IXmlNamespaceResolver : namespaceResolver);
       }
       catch (FormatException ex)
       {
@@ -968,7 +961,7 @@ namespace TextMonster.Xml.Xml_Reader
         return obj;
       }
       if (!(returnType == typeof(string)))
-        return XmlUntypedConverter.Untyped.ChangeType(string.Empty, returnType, namespaceResolver);
+        return Xml_UntypedConverter.Untyped.ChangeType(string.Empty, returnType, namespaceResolver);
       return (object)string.Empty;
     }
 
@@ -2331,7 +2324,7 @@ namespace TextMonster.Xml.Xml_Reader
       {
         try
         {
-          obj = XmlUntypedConverter.Untyped.ChangeType(str, returnType, namespaceResolver == null ? this as IXmlNamespaceResolver : namespaceResolver);
+          obj = Xml_UntypedConverter.Untyped.ChangeType(str, returnType, namespaceResolver == null ? this as IXmlNamespaceResolver : namespaceResolver);
         }
         catch (FormatException ex)
         {
@@ -2407,7 +2400,7 @@ namespace TextMonster.Xml.Xml_Reader
         obj = value;
       }
       else
-        obj = returnType == typeof(string) ? (object)string.Empty : XmlUntypedConverter.Untyped.ChangeType(string.Empty, returnType, namespaceResolver);
+        obj = returnType == typeof(string) ? (object)string.Empty : Xml_UntypedConverter.Untyped.ChangeType(string.Empty, returnType, namespaceResolver);
       return obj;
     }
 
