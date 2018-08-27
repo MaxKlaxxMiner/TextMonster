@@ -41,8 +41,7 @@ namespace TextMonster.Xml.Xml_Reader
     /// Einer der Enumerationswerte, die den Typ des aktuellen Knotens angeben.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
-    public abstract XmlNodeType NodeType { [__DynamicallyInvokable] get; }
+    public abstract XmlNodeType NodeType { get; }
 
     /// <summary>
     /// Ruft beim Überschreiben in einer abgeleiteten Klasse den gekennzeichneten Namen des aktuellen Knotens ab.
@@ -52,10 +51,8 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der gekennzeichnete Name des aktuellen Knotens.Der Name für das &lt;bk:book&gt;-Element lautet z. B. bk:book.Der zurückgegebene Name hängt vom <see cref="P:System.Xml.XmlReader.NodeType"/> des Knotens ab.Die folgenden Knotentypen geben die jeweils aufgeführten Werte zurück.Alle anderen Knotentypen geben eine leere Zeichenfolge zurück.Knotentyp Name AttributeDer Name des Attributs. DocumentTypeDer Name des Dokumenttyps. ElementDer Tagname. EntityReferenceDer Name der Entität, auf die verwiesen wird. ProcessingInstructionDas Ziel der Verarbeitungsanweisung. XmlDeclarationDas xml-Zeichenfolgenliteral.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual string Name
     {
-      [__DynamicallyInvokable]
       get
       {
         if (this.Prefix.Length == 0)
@@ -72,8 +69,7 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Name des aktuellen Knotens ohne das Präfix.Der LocalName für das &lt;bk:book&gt;-Element lautet z. B. book.Bei unbenannten Knotentypen wie Text, Comment usw. gibt diese Eigenschaft String.Empty zurück.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
-    public abstract string LocalName { [__DynamicallyInvokable] get; }
+    public abstract string LocalName { get; }
 
     /// <summary>
     /// Ruft beim Überschreiben in einer abgeleiteten Klasse den Namespace-URI (entsprechend der Definition in der Namespacespezifikation des W3C) des Knotens ab, auf dem der Reader positioniert ist.
@@ -83,8 +79,7 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Namespace-URI des aktuellen Knotens, andernfalls eine leere Zeichenfolge.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
-    public abstract string NamespaceURI { [__DynamicallyInvokable] get; }
+    public abstract string NamespaceURI { get; }
 
     /// <summary>
     /// Ruft beim Überschreiben in einer abgeleiteten Klasse das dem aktuellen Knoten zugeordnete Namespacepräfix ab.
@@ -94,8 +89,7 @@ namespace TextMonster.Xml.Xml_Reader
     /// Das dem aktuellen Knoten zugeordnete Namespacepräfix.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
-    public abstract string Prefix { [__DynamicallyInvokable] get; }
+    public abstract string Prefix { get; }
 
     /// <summary>
     /// Ruft beim Überschreiben in einer abgeleiteten Klasse einen Wert ab, der angibt, ob der aktuelle Knoten einen <see cref="P:System.Xml.XmlReader.Value"/> aufweisen kann.
@@ -105,10 +99,8 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn der Knoten, auf dem der Reader derzeit positioniert ist, einen Value aufweisen darf, andernfalls false.Wenn false, weist der Knoten den Wert String.Empty auf.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual bool HasValue
     {
-      [__DynamicallyInvokable]
       get
       {
         return Xml_Reader.HasValueInternal(this.NodeType);
@@ -123,8 +115,7 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der zurückgegebene Wert hängt vom <see cref="P:System.Xml.XmlReader.NodeType"/> des Knotens ab.In der folgenden Tabelle sind Knotentypen aufgeführt, die einen zurückzugebenden Wert haben.Alle anderen Knotentypen geben String.Empty zurück.Knotentyp Wert AttributeDer Wert des Attributs. CDATADer Inhalt des CDATA-Abschnitts. CommentDer Inhalt des Kommentars. DocumentTypeDie interne Teilmenge. ProcessingInstructionDer gesamte Inhalt mit Ausnahme des Ziels. SignificantWhitespaceDer Leerraum zwischen Markups bei einem Modell für gemischten Inhalt. TextDer Inhalt des Textknotens. WhitespaceDer Leerraum zwischen Markups. XmlDeclarationDer Inhalt der Deklaration.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
-    public abstract string Value { [__DynamicallyInvokable] get; }
+    public abstract string Value { get; }
 
     /// <summary>
     /// Ruft beim Überschreiben in einer abgeleiteten Klasse die Tiefe des aktuellen Knotens im XML-Dokument ab.
@@ -134,8 +125,7 @@ namespace TextMonster.Xml.Xml_Reader
     /// Die Tiefe des aktuellen Knotens im XML-Dokument.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
-    public abstract int Depth { [__DynamicallyInvokable] get; }
+    public abstract int Depth { get; }
 
     /// <summary>
     /// Ruft beim Überschreiben in einer abgeleiteten Klasse den Basis-URI des aktuellen Knotens ab.
@@ -145,8 +135,7 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Basis-URI des aktuellen Knotens.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
-    public abstract string BaseURI { [__DynamicallyInvokable] get; }
+    public abstract string BaseURI { get; }
 
     /// <summary>
     /// Ruft beim Überschreiben in einer abgeleiteten Klasse einen Wert ab, der angibt, ob der aktuelle Knoten ein leeres Element ist (z. B. &lt;MyElement/&gt;).
@@ -156,8 +145,7 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn der aktuelle Knoten ein Element ist (<see cref="P:System.Xml.XmlReader.NodeType"/> ist gleich XmlNodeType.Element), das mit /&gt; endet, andernfalls false.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
-    public abstract bool IsEmptyElement { [__DynamicallyInvokable] get; }
+    public abstract bool IsEmptyElement { get; }
 
     /// <summary>
     /// Ruft beim Überschreiben in einer abgeleiteten Klasse einen Wert ab, der angibt, ob der aktuelle Knoten ein Attribut ist, das aus dem in der DTD oder dem Schema definierten Standardwert generiert wurde.
@@ -167,10 +155,8 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn der aktuelle Knoten ein Attribut ist, dessen Wert aus dem in der DTD oder dem Schema definierten Standardwert generiert wurde. false, wenn der Attributwert explizit festgelegt wurde.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual bool IsDefault
     {
-      [__DynamicallyInvokable]
       get
       {
         return false;
@@ -201,10 +187,8 @@ namespace TextMonster.Xml.Xml_Reader
     /// Einer der <see cref="T:System.Xml.XmlSpace"/>-Werte.Wenn kein xml:space-Bereich vorhanden ist, wird für diese Eigenschaft standardmäßig XmlSpace.None festgelegt.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual XmlSpace XmlSpace
     {
-      [__DynamicallyInvokable]
       get
       {
         return XmlSpace.None;
@@ -219,10 +203,8 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der aktuelle xml:lang-Bereich.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual string XmlLang
     {
-      [__DynamicallyInvokable]
       get
       {
         return string.Empty;
@@ -253,10 +235,8 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der CLR-Typ, der dem typisierten Wert des Knotens entspricht.Die Standardeinstellung ist System.String.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual Type ValueType
     {
-      [__DynamicallyInvokable]
       get
       {
         return typeof(string);
@@ -271,8 +251,7 @@ namespace TextMonster.Xml.Xml_Reader
     /// Die Anzahl der Attribute im aktuellen Knoten.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
-    public abstract int AttributeCount { [__DynamicallyInvokable] get; }
+    public abstract int AttributeCount { get; }
 
     /// <summary>
     /// Ruft beim Überschreiben in einer abgeleiteten Klasse den Wert des Attributs mit dem angegebenen Index ab.
@@ -282,10 +261,8 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Wert des angegebenen Attributs.
     /// </returns>
     /// <param name="i">Der Index des Attributs.</param><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual string this[int i]
     {
-      [__DynamicallyInvokable]
       get
       {
         return this.GetAttribute(i);
@@ -300,10 +277,8 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Wert des angegebenen Attributs.Wenn das Attribut nicht gefunden wurde, wird null zurückgegeben.
     /// </returns>
     /// <param name="name">Der qualifizierte Name des Attributs.</param><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual string this[string name]
     {
-      [__DynamicallyInvokable]
       get
       {
         return this.GetAttribute(name);
@@ -318,10 +293,8 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Wert des angegebenen Attributs.Wenn das Attribut nicht gefunden wurde, wird null zurückgegeben.
     /// </returns>
     /// <param name="name">Der lokale Name des Attributs.</param><param name="namespaceURI">Der Namespace-URI dieses Attributs.</param><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual string this[string name, string namespaceURI]
     {
-      [__DynamicallyInvokable]
       get
       {
         return this.GetAttribute(name, namespaceURI);
@@ -336,8 +309,7 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn der Reader am Ende des Streams positioniert ist, andernfalls false.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
-    public abstract bool EOF { [__DynamicallyInvokable] get; }
+    public abstract bool EOF { get; }
 
     /// <summary>
     /// Ruft beim Überschreiben in einer abgeleiteten Klasse den Zustand des Readers ab.
@@ -347,8 +319,7 @@ namespace TextMonster.Xml.Xml_Reader
     /// Einer der Enumerationswerte, der den Status des Readers angibt.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
-    public abstract ReadState ReadState { [__DynamicallyInvokable] get; }
+    public abstract ReadState ReadState { get; }
 
     /// <summary>
     /// Ruft beim Überschreiben in einer abgeleiteten Klasse die <see cref="T:System.Xml.XmlNameTable"/> ab, die dieser Implementierung zugeordnet ist.
@@ -358,8 +329,7 @@ namespace TextMonster.Xml.Xml_Reader
     /// Die XmlNameTable, die das Abrufen der atomisierten Version einer Zeichenfolge innerhalb des Knotens erlaubt.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
-    public abstract XmlNameTable NameTable { [__DynamicallyInvokable] get; }
+    public abstract XmlNameTable NameTable { get; }
 
     /// <summary>
     /// Ruft einen Wert ab, der angibt, ob dieser Reader Entitäten analysieren und auflösen kann.
@@ -369,10 +339,8 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn der Reader Entitäten analysieren und auflösen kann, andernfalls false.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual bool CanResolveEntity
     {
-      [__DynamicallyInvokable]
       get
       {
         return false;
@@ -387,10 +355,8 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn die Methoden für das Lesen von Inhalt im Binärformat implementiert werden, andernfalls false.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual bool CanReadBinaryContent
     {
-      [__DynamicallyInvokable]
       get
       {
         return false;
@@ -405,10 +371,8 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn der <see cref="T:System.Xml.XmlReader"/> die <see cref="M:System.Xml.XmlReader.ReadValueChunk(System.Char[],System.Int32,System.Int32)"/>-Methode implementiert, andernfalls false.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual bool CanReadValueChunk
     {
-      [__DynamicallyInvokable]
       get
       {
         return false;
@@ -423,10 +387,8 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn der aktuelle Knoten über Attribute verfügt, andernfalls false.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual bool HasAttributes
     {
-      [__DynamicallyInvokable]
       get
       {
         return this.AttributeCount > 0;
@@ -471,7 +433,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// <summary>
     /// Initialisiert eine neue Instanz derXmlReader-Klasse.
     /// </summary>
-    [__DynamicallyInvokable]
     protected Xml_Reader()
     {
     }
@@ -484,7 +445,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Textinhalt als geeignetstes CLR-Objekt (Common Language Runtime).
     /// </returns>
     /// <exception cref="T:System.InvalidCastException">Die versuchte Typumwandlung ist ungültig.</exception><exception cref="T:System.FormatException">Das Zeichenfolgenformat ist nicht gültig.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual object ReadContentAsObject()
     {
       if (!this.CanReadContentAs())
@@ -500,7 +460,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Textinhalt als <see cref="T:System.Boolean"/>-Objekt.
     /// </returns>
     /// <exception cref="T:System.InvalidCastException">Die versuchte Typumwandlung ist ungültig.</exception><exception cref="T:System.FormatException">Das Zeichenfolgenformat ist nicht gültig.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual bool ReadContentAsBoolean()
     {
       if (!this.CanReadContentAs())
@@ -545,7 +504,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Textinhalt als <see cref="T:System.DateTimeOffset"/>-Objekt.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual DateTimeOffset ReadContentAsDateTimeOffset()
     {
       if (!this.CanReadContentAs())
@@ -568,7 +526,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Textinhalt als Gleitkommazahl mit doppelter Genauigkeit.
     /// </returns>
     /// <exception cref="T:System.InvalidCastException">Die versuchte Typumwandlung ist ungültig.</exception><exception cref="T:System.FormatException">Das Zeichenfolgenformat ist nicht gültig.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual double ReadContentAsDouble()
     {
       if (!this.CanReadContentAs())
@@ -591,7 +548,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Textinhalt an der aktuellen Position als Gleitkommazahl mit einfacher Genauigkeit.
     /// </returns>
     /// <exception cref="T:System.InvalidCastException">Die versuchte Typumwandlung ist ungültig.</exception><exception cref="T:System.FormatException">Das Zeichenfolgenformat ist nicht gültig.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual float ReadContentAsFloat()
     {
       if (!this.CanReadContentAs())
@@ -614,7 +570,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Textinhalt an der aktuellen Position als <see cref="T:System.Decimal"/>-Objekt.
     /// </returns>
     /// <exception cref="T:System.InvalidCastException">Die versuchte Typumwandlung ist ungültig.</exception><exception cref="T:System.FormatException">Das Zeichenfolgenformat ist nicht gültig.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual Decimal ReadContentAsDecimal()
     {
       if (!this.CanReadContentAs())
@@ -637,7 +592,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Textinhalt als 32-Bit-Ganzzahl mit Vorzeichen.
     /// </returns>
     /// <exception cref="T:System.InvalidCastException">Die versuchte Typumwandlung ist ungültig.</exception><exception cref="T:System.FormatException">Das Zeichenfolgenformat ist nicht gültig.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual int ReadContentAsInt()
     {
       if (!this.CanReadContentAs())
@@ -660,7 +614,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Textinhalt als 64-Bit-Ganzzahl mit Vorzeichen.
     /// </returns>
     /// <exception cref="T:System.InvalidCastException">Die versuchte Typumwandlung ist ungültig.</exception><exception cref="T:System.FormatException">Das Zeichenfolgenformat ist nicht gültig.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual long ReadContentAsLong()
     {
       if (!this.CanReadContentAs())
@@ -683,7 +636,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Textinhalt als <see cref="T:System.String"/>-Objekt.
     /// </returns>
     /// <exception cref="T:System.InvalidCastException">Die versuchte Typumwandlung ist ungültig.</exception><exception cref="T:System.FormatException">Das Zeichenfolgenformat ist nicht gültig.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual string ReadContentAsString()
     {
       if (!this.CanReadContentAs())
@@ -699,7 +651,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der verkettete Textinhalt oder Attributwert, der in den angeforderten Typ konvertiert wurde.
     /// </returns>
     /// <param name="returnType">Der Typ des zurückzugebenden Werts.Hinweis   Seit der Veröffentlichung von .NET Framework 3.5 kann der Wert des <paramref name="returnType"/>-Parameters nun auch auf den <see cref="T:System.DateTimeOffset"/>-Typ festgelegt werden.</param><param name="namespaceResolver">Ein <see cref="T:System.Xml.IXmlNamespaceResolver"/>-Objekt, das für die Auflösung von Präfixen von Namespaces verwendet wird, die im Zusammenhang mit der Typkonvertierung stehen.Dieses kann zum Beispiel beim Konvertieren eines <see cref="T:System.Xml.XmlQualifiedName"/>-Objekts in eine xs:string verwendet werden.Dieser Wert kann null sein.</param><exception cref="T:System.FormatException">Der Inhalt weist nicht das richtige Format für den Zieltyp auf.</exception><exception cref="T:System.InvalidCastException">Die versuchte Typumwandlung ist ungültig.</exception><exception cref="T:System.ArgumentNullException">Der <paramref name="returnType"/>-Wert ist null.</exception><exception cref="T:System.InvalidOperationException">Der aktuelle Knoten ist kein unterstützter Knotentyp.Weitere Informationen finden Sie in der nachfolgenden Tabelle.</exception><exception cref="T:System.OverflowException">Lesen von Decimal.MaxValue.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual object ReadContentAs(Type returnType, IXmlNamespaceResolver namespaceResolver)
     {
       if (!this.CanReadContentAs())
@@ -729,7 +680,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Ein geschachteltes CLR-Objekt (Common Language Runtime) des geeignetsten Typs.Die <see cref="P:System.Xml.XmlReader.ValueType"/>-Eigenschaft bestimmt den geeigneten CLR-Typ.Wenn der Inhalt als Listentyp typisiert ist, gibt diese Methode ein Array der geschachtelten Objekte des geeigneten Typs zurück.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Der <see cref="T:System.Xml.XmlReader"/> wird nicht auf einem Element positioniert.</exception><exception cref="T:System.Xml.XmlException">Das aktuelle Element enthält untergeordnete Elemente.- oder - Der Elementinhalt kann nicht in den angeforderten Typ konvertiert werden.</exception><exception cref="T:System.ArgumentNullException">Die Methode wird mit null-Argumenten aufgerufen.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual object ReadElementContentAsObject()
     {
       if (!this.SetupReadElementContentAsXxx("ReadElementContentAsObject"))
@@ -747,7 +697,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Ein geschachteltes CLR-Objekt (Common Language Runtime) des geeignetsten Typs.Die <see cref="P:System.Xml.XmlReader.ValueType"/>-Eigenschaft bestimmt den geeigneten CLR-Typ.Wenn der Inhalt als Listentyp typisiert ist, gibt diese Methode ein Array der geschachtelten Objekte des geeigneten Typs zurück.
     /// </returns>
     /// <param name="localName">Der lokale Name des Elements.</param><param name="namespaceURI">Der Namespace-URI des Elements.</param><exception cref="T:System.InvalidOperationException">Der <see cref="T:System.Xml.XmlReader"/> wird nicht auf einem Element positioniert.</exception><exception cref="T:System.Xml.XmlException">Das aktuelle Element enthält untergeordnete Elemente.- oder - Der Elementinhalt kann nicht in den angeforderten Typ konvertiert werden.</exception><exception cref="T:System.ArgumentNullException">Die Methode wird mit null-Argumenten aufgerufen.</exception><exception cref="T:System.ArgumentException">Der angegebene lokale Name und der Namespace-URI stimmen nicht mit dem Element überein, das gerade gelesen wird.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual object ReadElementContentAsObject(string localName, string namespaceURI)
     {
       this.CheckElement(localName, namespaceURI);
@@ -762,7 +711,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Elementinhalt als <see cref="T:System.Boolean"/>-Objekt.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Der <see cref="T:System.Xml.XmlReader"/> wird nicht auf einem Element positioniert.</exception><exception cref="T:System.Xml.XmlException">Das aktuelle Element enthält untergeordnete Elemente.- oder - Der Elementinhalt kann nicht in ein <see cref="T:System.Boolean"/>-Objekt konvertiert werden.</exception><exception cref="T:System.ArgumentNullException">Die Methode wird mit null-Argumenten aufgerufen.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual bool ReadElementContentAsBoolean()
     {
       if (!this.SetupReadElementContentAsXxx("ReadElementContentAsBoolean"))
@@ -780,7 +728,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Elementinhalt als <see cref="T:System.Boolean"/>-Objekt.
     /// </returns>
     /// <param name="localName">Der lokale Name des Elements.</param><param name="namespaceURI">Der Namespace-URI des Elements.</param><exception cref="T:System.InvalidOperationException">Der <see cref="T:System.Xml.XmlReader"/> wird nicht auf einem Element positioniert.</exception><exception cref="T:System.Xml.XmlException">Das aktuelle Element enthält untergeordnete Elemente.- oder - Der Elementinhalt kann nicht in den angeforderten Typ konvertiert werden.</exception><exception cref="T:System.ArgumentNullException">Die Methode wird mit null-Argumenten aufgerufen.</exception><exception cref="T:System.ArgumentException">Der angegebene lokale Name und der Namespace-URI stimmen nicht mit dem Element überein, das gerade gelesen wird.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual bool ReadElementContentAsBoolean(string localName, string namespaceURI)
     {
       this.CheckElement(localName, namespaceURI);
@@ -826,7 +773,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Elementinhalt als Gleitkommazahl mit doppelter Genauigkeit.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Der <see cref="T:System.Xml.XmlReader"/> wird nicht auf einem Element positioniert.</exception><exception cref="T:System.Xml.XmlException">Das aktuelle Element enthält untergeordnete Elemente.- oder - Der Elementinhalt kann nicht in eine Gleitkommazahl mit doppelter Genauigkeit konvertiert werden.</exception><exception cref="T:System.ArgumentNullException">Die Methode wird mit null-Argumenten aufgerufen.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual double ReadElementContentAsDouble()
     {
       if (!this.SetupReadElementContentAsXxx("ReadElementContentAsDouble"))
@@ -844,7 +790,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Elementinhalt als Gleitkommazahl mit doppelter Genauigkeit.
     /// </returns>
     /// <param name="localName">Der lokale Name des Elements.</param><param name="namespaceURI">Der Namespace-URI des Elements.</param><exception cref="T:System.InvalidOperationException">Der <see cref="T:System.Xml.XmlReader"/> wird nicht auf einem Element positioniert.</exception><exception cref="T:System.Xml.XmlException">Das aktuelle Element enthält untergeordnete Elemente.- oder - Der Elementinhalt kann nicht in den angeforderten Typ konvertiert werden.</exception><exception cref="T:System.ArgumentNullException">Die Methode wird mit null-Argumenten aufgerufen.</exception><exception cref="T:System.ArgumentException">Der angegebene lokale Name und der Namespace-URI stimmen nicht mit dem Element überein, das gerade gelesen wird.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual double ReadElementContentAsDouble(string localName, string namespaceURI)
     {
       this.CheckElement(localName, namespaceURI);
@@ -859,7 +804,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Elementinhalt als Gleitkommazahl mit einfacher Genauigkeit.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Der <see cref="T:System.Xml.XmlReader"/> wird nicht auf einem Element positioniert.</exception><exception cref="T:System.Xml.XmlException">Das aktuelle Element enthält untergeordnete Elemente.- oder - Der Elementinhalt kann nicht in eine Gleitkommazahl mit einfacher Genauigkeit konvertiert werden.</exception><exception cref="T:System.ArgumentNullException">Die Methode wird mit null-Argumenten aufgerufen.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual float ReadElementContentAsFloat()
     {
       if (!this.SetupReadElementContentAsXxx("ReadElementContentAsFloat"))
@@ -877,7 +821,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Elementinhalt als Gleitkommazahl mit einfacher Genauigkeit.
     /// </returns>
     /// <param name="localName">Der lokale Name des Elements.</param><param name="namespaceURI">Der Namespace-URI des Elements.</param><exception cref="T:System.InvalidOperationException">Der <see cref="T:System.Xml.XmlReader"/> wird nicht auf einem Element positioniert.</exception><exception cref="T:System.Xml.XmlException">Das aktuelle Element enthält untergeordnete Elemente.- oder - Der Elementinhalt kann nicht in eine Gleitkommazahl mit einfacher Genauigkeit konvertiert werden.</exception><exception cref="T:System.ArgumentNullException">Die Methode wird mit null-Argumenten aufgerufen.</exception><exception cref="T:System.ArgumentException">Der angegebene lokale Name und der Namespace-URI stimmen nicht mit dem Element überein, das gerade gelesen wird.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual float ReadElementContentAsFloat(string localName, string namespaceURI)
     {
       this.CheckElement(localName, namespaceURI);
@@ -892,7 +835,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Elementinhalt als <see cref="T:System.Decimal"/>-Objekt.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Der <see cref="T:System.Xml.XmlReader"/> wird nicht auf einem Element positioniert.</exception><exception cref="T:System.Xml.XmlException">Das aktuelle Element enthält untergeordnete Elemente.- oder - Der Elementinhalt kann nicht in <see cref="T:System.Decimal"/> konvertiert werden.</exception><exception cref="T:System.ArgumentNullException">Die Methode wird mit null-Argumenten aufgerufen.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual Decimal ReadElementContentAsDecimal()
     {
       if (!this.SetupReadElementContentAsXxx("ReadElementContentAsDecimal"))
@@ -910,7 +852,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Elementinhalt als <see cref="T:System.Decimal"/>-Objekt.
     /// </returns>
     /// <param name="localName">Der lokale Name des Elements.</param><param name="namespaceURI">Der Namespace-URI des Elements.</param><exception cref="T:System.InvalidOperationException">Der <see cref="T:System.Xml.XmlReader"/> wird nicht auf einem Element positioniert.</exception><exception cref="T:System.Xml.XmlException">Das aktuelle Element enthält untergeordnete Elemente.- oder - Der Elementinhalt kann nicht in <see cref="T:System.Decimal"/> konvertiert werden.</exception><exception cref="T:System.ArgumentNullException">Die Methode wird mit null-Argumenten aufgerufen.</exception><exception cref="T:System.ArgumentException">Der angegebene lokale Name und der Namespace-URI stimmen nicht mit dem Element überein, das gerade gelesen wird.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual Decimal ReadElementContentAsDecimal(string localName, string namespaceURI)
     {
       this.CheckElement(localName, namespaceURI);
@@ -925,7 +866,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Elementinhalt als 32-Bit-Ganzzahl mit Vorzeichen.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Der <see cref="T:System.Xml.XmlReader"/> wird nicht auf einem Element positioniert.</exception><exception cref="T:System.Xml.XmlException">Das aktuelle Element enthält untergeordnete Elemente.- oder - Der Elementinhalt kann nicht in eine 32-Bit-Ganzzahl mit Vorzeichen konvertiert werden.</exception><exception cref="T:System.ArgumentNullException">Die Methode wird mit null-Argumenten aufgerufen.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual int ReadElementContentAsInt()
     {
       if (!this.SetupReadElementContentAsXxx("ReadElementContentAsInt"))
@@ -943,7 +883,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Elementinhalt als 32-Bit-Ganzzahl mit Vorzeichen.
     /// </returns>
     /// <param name="localName">Der lokale Name des Elements.</param><param name="namespaceURI">Der Namespace-URI des Elements.</param><exception cref="T:System.InvalidOperationException">Der <see cref="T:System.Xml.XmlReader"/> wird nicht auf einem Element positioniert.</exception><exception cref="T:System.Xml.XmlException">Das aktuelle Element enthält untergeordnete Elemente.- oder - Der Elementinhalt kann nicht in eine 32-Bit-Ganzzahl mit Vorzeichen konvertiert werden.</exception><exception cref="T:System.ArgumentNullException">Die Methode wird mit null-Argumenten aufgerufen.</exception><exception cref="T:System.ArgumentException">Der angegebene lokale Name und der Namespace-URI stimmen nicht mit dem Element überein, das gerade gelesen wird.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual int ReadElementContentAsInt(string localName, string namespaceURI)
     {
       this.CheckElement(localName, namespaceURI);
@@ -958,7 +897,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Elementinhalt als 64-Bit-Ganzzahl mit Vorzeichen.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Der <see cref="T:System.Xml.XmlReader"/> wird nicht auf einem Element positioniert.</exception><exception cref="T:System.Xml.XmlException">Das aktuelle Element enthält untergeordnete Elemente.- oder - Der Elementinhalt kann nicht in eine 64-Bit-Ganzzahl mit Vorzeichen konvertiert werden.</exception><exception cref="T:System.ArgumentNullException">Die Methode wird mit null-Argumenten aufgerufen.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual long ReadElementContentAsLong()
     {
       if (!this.SetupReadElementContentAsXxx("ReadElementContentAsLong"))
@@ -976,7 +914,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Elementinhalt als 64-Bit-Ganzzahl mit Vorzeichen.
     /// </returns>
     /// <param name="localName">Der lokale Name des Elements.</param><param name="namespaceURI">Der Namespace-URI des Elements.</param><exception cref="T:System.InvalidOperationException">Der <see cref="T:System.Xml.XmlReader"/> wird nicht auf einem Element positioniert.</exception><exception cref="T:System.Xml.XmlException">Das aktuelle Element enthält untergeordnete Elemente.- oder - Der Elementinhalt kann nicht in eine 64-Bit-Ganzzahl mit Vorzeichen konvertiert werden.</exception><exception cref="T:System.ArgumentNullException">Die Methode wird mit null-Argumenten aufgerufen.</exception><exception cref="T:System.ArgumentException">Der angegebene lokale Name und der Namespace-URI stimmen nicht mit dem Element überein, das gerade gelesen wird.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual long ReadElementContentAsLong(string localName, string namespaceURI)
     {
       this.CheckElement(localName, namespaceURI);
@@ -991,7 +928,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Elementinhalt als <see cref="T:System.String"/>-Objekt.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Der <see cref="T:System.Xml.XmlReader"/> wird nicht auf einem Element positioniert.</exception><exception cref="T:System.Xml.XmlException">Das aktuelle Element enthält untergeordnete Elemente.- oder - Der Elementinhalt kann nicht in ein <see cref="T:System.String"/>-Objekt konvertiert werden.</exception><exception cref="T:System.ArgumentNullException">Die Methode wird mit null-Argumenten aufgerufen.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual string ReadElementContentAsString()
     {
       if (!this.SetupReadElementContentAsXxx("ReadElementContentAsString"))
@@ -1009,7 +945,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Elementinhalt als <see cref="T:System.String"/>-Objekt.
     /// </returns>
     /// <param name="localName">Der lokale Name des Elements.</param><param name="namespaceURI">Der Namespace-URI des Elements.</param><exception cref="T:System.InvalidOperationException">Der <see cref="T:System.Xml.XmlReader"/> wird nicht auf einem Element positioniert.</exception><exception cref="T:System.Xml.XmlException">Das aktuelle Element enthält untergeordnete Elemente.- oder - Der Elementinhalt kann nicht in ein <see cref="T:System.String"/>-Objekt konvertiert werden.</exception><exception cref="T:System.ArgumentNullException">Die Methode wird mit null-Argumenten aufgerufen.</exception><exception cref="T:System.ArgumentException">Der angegebene lokale Name und der Namespace-URI stimmen nicht mit dem Element überein, das gerade gelesen wird.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual string ReadElementContentAsString(string localName, string namespaceURI)
     {
       this.CheckElement(localName, namespaceURI);
@@ -1024,7 +959,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der in das angeforderte typisierte Objekt konvertierte Elementinhalt.
     /// </returns>
     /// <param name="returnType">Der Typ des zurückzugebenden Werts.Hinweis   Seit der Veröffentlichung von .NET Framework 3.5 kann der Wert des <paramref name="returnType"/>-Parameters nun auch auf den <see cref="T:System.DateTimeOffset"/>-Typ festgelegt werden.</param><param name="namespaceResolver">Ein <see cref="T:System.Xml.IXmlNamespaceResolver"/>-Objekt, das für die Auflösung von Präfixen von Namespaces verwendet wird, die im Zusammenhang mit der Typkonvertierung stehen.</param><exception cref="T:System.InvalidOperationException">Der <see cref="T:System.Xml.XmlReader"/> wird nicht auf einem Element positioniert.</exception><exception cref="T:System.Xml.XmlException">Das aktuelle Element enthält untergeordnete Elemente.- oder - Der Elementinhalt kann nicht in den angeforderten Typ konvertiert werden.</exception><exception cref="T:System.ArgumentNullException">Die Methode wird mit null-Argumenten aufgerufen.</exception><exception cref="T:System.OverflowException">Lesen von Decimal.MaxValue.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual object ReadElementContentAs(Type returnType, IXmlNamespaceResolver namespaceResolver)
     {
       if (this.SetupReadElementContentAsXxx("ReadElementContentAs"))
@@ -1046,7 +980,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der in das angeforderte typisierte Objekt konvertierte Elementinhalt.
     /// </returns>
     /// <param name="returnType">Der Typ des zurückzugebenden Werts.Hinweis   Seit der Veröffentlichung von .NET Framework 3.5 kann der Wert des <paramref name="returnType"/>-Parameters nun auch auf den <see cref="T:System.DateTimeOffset"/>-Typ festgelegt werden.</param><param name="namespaceResolver">Ein <see cref="T:System.Xml.IXmlNamespaceResolver"/>-Objekt, das für die Auflösung von Präfixen von Namespaces verwendet wird, die im Zusammenhang mit der Typkonvertierung stehen.</param><param name="localName">Der lokale Name des Elements.</param><param name="namespaceURI">Der Namespace-URI des Elements.</param><exception cref="T:System.InvalidOperationException">Der <see cref="T:System.Xml.XmlReader"/> wird nicht auf einem Element positioniert.</exception><exception cref="T:System.Xml.XmlException">Das aktuelle Element enthält untergeordnete Elemente.- oder - Der Elementinhalt kann nicht in den angeforderten Typ konvertiert werden.</exception><exception cref="T:System.ArgumentNullException">Die Methode wird mit null-Argumenten aufgerufen.</exception><exception cref="T:System.ArgumentException">Der angegebene lokale Name und der Namespace-URI stimmen nicht mit dem Element überein, das gerade gelesen wird.</exception><exception cref="T:System.OverflowException">Lesen von Decimal.MaxValue.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual object ReadElementContentAs(Type returnType, IXmlNamespaceResolver namespaceResolver, string localName, string namespaceURI)
     {
       this.CheckElement(localName, namespaceURI);
@@ -1061,7 +994,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Wert des angegebenen Attributs.Wenn das Attribut nicht gefunden wird oder Wert String.Empty ist, wird null zurückgegeben.
     /// </returns>
     /// <param name="name">Der qualifizierte Name des Attributs.</param><exception cref="T:System.ArgumentNullException"><paramref name="name"/> ist null.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public abstract string GetAttribute(string name);
 
     /// <summary>
@@ -1072,7 +1004,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Wert des angegebenen Attributs.Wenn das Attribut nicht gefunden wird oder Wert String.Empty ist, wird null zurückgegeben.Diese Methode verschiebt den Reader nicht.
     /// </returns>
     /// <param name="name">Der lokale Name des Attributs.</param><param name="namespaceURI">Der Namespace-URI dieses Attributs.</param><exception cref="T:System.ArgumentNullException"><paramref name="name"/> ist null.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public abstract string GetAttribute(string name, string namespaceURI);
 
     /// <summary>
@@ -1083,7 +1014,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Wert des angegebenen Attributs.Diese Methode verschiebt den Reader nicht.
     /// </returns>
     /// <param name="i">Der Index des Attributs.Der Index ist nullbasiert.(Das erste Attribut hat den Index 0.)</param><exception cref="T:System.ArgumentOutOfRangeException"><paramref name="i"/> liegt außerhalb des Bereichs.Es darf nicht negativ sein und muss kleiner als die Größe der Attributauflistung sein.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public abstract string GetAttribute(int i);
 
     /// <summary>
@@ -1094,7 +1024,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn das Attribut gefunden wurde, andernfalls false.Bei einem Wert von false ändert sich die Position des Readers nicht.
     /// </returns>
     /// <param name="name">Der qualifizierte Name des Attributs.</param><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.ArgumentException">Der Parameter ist eine leere Zeichenfolge.</exception>
-    [__DynamicallyInvokable]
     public abstract bool MoveToAttribute(string name);
 
     /// <summary>
@@ -1105,14 +1034,12 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn das Attribut gefunden wurde, andernfalls false.Bei einem Wert von false ändert sich die Position des Readers nicht.
     /// </returns>
     /// <param name="name">Der lokale Name des Attributs.</param><param name="ns">Der Namespace-URI dieses Attributs.</param><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.ArgumentNullException">Beide Parameter-Werte sind null.</exception>
-    [__DynamicallyInvokable]
     public abstract bool MoveToAttribute(string name, string ns);
 
     /// <summary>
     /// Wechselt beim Überschreiben in einer abgeleiteten Klasse zum Attribut mit dem angegebenen Index.
     /// </summary>
     /// <param name="i">Der Index des Attributs.</param><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.ArgumentOutOfRangeException">Der Parameter hat einen negativen Wert.</exception>
-    [__DynamicallyInvokable]
     public virtual void MoveToAttribute(int i)
     {
       if (i < 0 || i >= this.AttributeCount)
@@ -1131,7 +1058,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn ein Attribut vorhanden ist (der Reader wechselt zum ersten Attribut), andernfalls false (die Position des Readers bleibt unverändert).
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public abstract bool MoveToFirstAttribute();
 
     /// <summary>
@@ -1142,7 +1068,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn ein nächstes Attribut vorhanden ist; false, wenn keine weiteren Attribute vorhanden sind.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public abstract bool MoveToNextAttribute();
 
     /// <summary>
@@ -1153,7 +1078,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn der Reader auf einem Attribut positioniert ist (der Reader wechselt zu dem Element, das das Attribut besitzt); false, wenn der Reader nicht auf einem Attribut positioniert ist (die Position des Readers bleibt unverändert).
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public abstract bool MoveToElement();
 
     /// <summary>
@@ -1164,7 +1088,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn zurückzugebende Knoten vorhanden sind.false, wenn der Reader beim ersten Aufruf nicht auf einem Attributknoten positioniert ist oder alle Attributwerte gelesen wurden.Ein leeres Attribut, z. B. misc="", gibt true mit einem einzelnen Knoten mit dem Wert String.Empty zurück.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public abstract bool ReadAttributeValue();
 
     /// <summary>
@@ -1175,7 +1098,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn der nächste Knoten erfolgreich gelesen wurde, andernfalls, false.
     /// </returns>
     /// <exception cref="T:System.Xml.XmlException">Beim Analysieren der XML-Daten ist ein Fehler aufgetreten.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public abstract bool Read();
 
     /// <summary>
@@ -1190,7 +1112,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Überspringt die untergeordneten Elemente des aktuellen Knotens.
     /// </summary>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual void Skip()
     {
       if (this.ReadState != ReadState.Interactive)
@@ -1206,14 +1127,12 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Namespace-URI, dem das Präfix zugeordnet ist, oder null, wenn kein entsprechendes Präfix gefunden wird.
     /// </returns>
     /// <param name="prefix">Das Präfix, dessen Namespace-URI aufgelöst werden soll.Um eine Übereinstimmung mit dem Standardnamespace zu erhalten, übergeben Sie eine leere Zeichenfolge.</param><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public abstract string LookupNamespace(string prefix);
 
     /// <summary>
     /// Löst beim Überschreiben in einer abgeleiteten Klasse den Entitätsverweis für EntityReference-Knoten auf.
     /// </summary>
     /// <exception cref="T:System.InvalidOperationException">Der Reader ist nicht auf einem EntityReference-Knoten positioniert. Diese Implementierung des Readers kann Entitäten nicht auflösen (<see cref="P:System.Xml.XmlReader.CanResolveEntity"/> gibt false zurück).</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public abstract void ResolveEntity();
 
     /// <summary>
@@ -1224,7 +1143,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Die Anzahl der in den Puffer geschriebenen Bytes.
     /// </returns>
     /// <param name="buffer">Der Puffer, in den der resultierende Text kopiert werden soll.Dieser Wert darf nicht null sein.</param><param name="index">Der Offset im Puffer, an dem mit dem Kopieren des Ergebnisses begonnen werden soll.</param><param name="count">Die maximale Anzahl von Bytes, die in den Puffer kopiert werden sollen.Diese Methode gibt die tatsächliche Anzahl von kopierten Bytes zurück.</param><exception cref="T:System.ArgumentNullException">Der <paramref name="buffer"/>-Wert ist null.</exception><exception cref="T:System.InvalidOperationException"><see cref="M:System.Xml.XmlReader.ReadContentAsBase64(System.Byte[],System.Int32,System.Int32)"/> wird auf dem aktuellen Knoten nicht unterstützt.</exception><exception cref="T:System.ArgumentOutOfRangeException">Der Index im Puffer oder Index + Anzahl übersteigen die Größe des zugeordneten Puffers.</exception><exception cref="T:System.NotSupportedException">Die <see cref="T:System.Xml.XmlReader"/>-Implementierung unterstützt diese Methode nicht.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual int ReadContentAsBase64(byte[] buffer, int index, int count)
     {
       throw new NotSupportedException(Res.GetString("Xml_ReadBinaryContentNotSupported", new object[1]
@@ -1241,7 +1159,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Die Anzahl der in den Puffer geschriebenen Bytes.
     /// </returns>
     /// <param name="buffer">Der Puffer, in den der resultierende Text kopiert werden soll.Dieser Wert darf nicht null sein.</param><param name="index">Der Offset im Puffer, an dem mit dem Kopieren des Ergebnisses begonnen werden soll.</param><param name="count">Die maximale Anzahl von Bytes, die in den Puffer kopiert werden sollen.Diese Methode gibt die tatsächliche Anzahl von kopierten Bytes zurück.</param><exception cref="T:System.ArgumentNullException">Der <paramref name="buffer"/>-Wert ist null.</exception><exception cref="T:System.InvalidOperationException">Der aktuelle Knoten ist kein Elementknoten.</exception><exception cref="T:System.ArgumentOutOfRangeException">Der Index im Puffer oder Index + Anzahl übersteigen die Größe des zugeordneten Puffers.</exception><exception cref="T:System.NotSupportedException">Die <see cref="T:System.Xml.XmlReader"/>-Implementierung unterstützt diese Methode nicht.</exception><exception cref="T:System.Xml.XmlException">Das Element enthält gemischten Inhalt.</exception><exception cref="T:System.FormatException">Der Inhalt kann nicht in den angeforderten Typ konvertiert werden.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual int ReadElementContentAsBase64(byte[] buffer, int index, int count)
     {
       throw new NotSupportedException(Res.GetString("Xml_ReadBinaryContentNotSupported", new object[1]
@@ -1258,7 +1175,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Die Anzahl der in den Puffer geschriebenen Bytes.
     /// </returns>
     /// <param name="buffer">Der Puffer, in den der resultierende Text kopiert werden soll.Dieser Wert darf nicht null sein.</param><param name="index">Der Offset im Puffer, an dem mit dem Kopieren des Ergebnisses begonnen werden soll.</param><param name="count">Die maximale Anzahl von Bytes, die in den Puffer kopiert werden sollen.Diese Methode gibt die tatsächliche Anzahl von kopierten Bytes zurück.</param><exception cref="T:System.ArgumentNullException">Der <paramref name="buffer"/>-Wert ist null.</exception><exception cref="T:System.InvalidOperationException"><see cref="M:System.Xml.XmlReader.ReadContentAsBinHex(System.Byte[],System.Int32,System.Int32)"/> wird auf dem aktuellen Knoten nicht unterstützt.</exception><exception cref="T:System.ArgumentOutOfRangeException">Der Index im Puffer oder Index + Anzahl übersteigen die Größe des zugeordneten Puffers.</exception><exception cref="T:System.NotSupportedException">Die <see cref="T:System.Xml.XmlReader"/>-Implementierung unterstützt diese Methode nicht.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual int ReadContentAsBinHex(byte[] buffer, int index, int count)
     {
       throw new NotSupportedException(Res.GetString("Xml_ReadBinaryContentNotSupported", new object[1]
@@ -1275,7 +1191,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Die Anzahl der in den Puffer geschriebenen Bytes.
     /// </returns>
     /// <param name="buffer">Der Puffer, in den der resultierende Text kopiert werden soll.Dieser Wert darf nicht null sein.</param><param name="index">Der Offset im Puffer, an dem mit dem Kopieren des Ergebnisses begonnen werden soll.</param><param name="count">Die maximale Anzahl von Bytes, die in den Puffer kopiert werden sollen.Diese Methode gibt die tatsächliche Anzahl von kopierten Bytes zurück.</param><exception cref="T:System.ArgumentNullException">Der <paramref name="buffer"/>-Wert ist null.</exception><exception cref="T:System.InvalidOperationException">Der aktuelle Knoten ist kein Elementknoten.</exception><exception cref="T:System.ArgumentOutOfRangeException">Der Index im Puffer oder Index + Anzahl übersteigen die Größe des zugeordneten Puffers.</exception><exception cref="T:System.NotSupportedException">Die <see cref="T:System.Xml.XmlReader"/>-Implementierung unterstützt diese Methode nicht.</exception><exception cref="T:System.Xml.XmlException">Das Element enthält gemischten Inhalt.</exception><exception cref="T:System.FormatException">Der Inhalt kann nicht in den angeforderten Typ konvertiert werden.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual int ReadElementContentAsBinHex(byte[] buffer, int index, int count)
     {
       throw new NotSupportedException(Res.GetString("Xml_ReadBinaryContentNotSupported", new object[1]
@@ -1292,7 +1207,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Die Anzahl der in den Puffer gelesenen Zeichen.Der Wert 0 (null) wird zurückgegeben, wenn kein weiterer Textinhalt vorhanden ist.
     /// </returns>
     /// <param name="buffer">Das Array von Zeichen, das als Puffer dient, in den der Textinhalt geschrieben wird.Dieser Wert darf nicht null sein.</param><param name="index">Der Offset im Puffer, ab dem der <see cref="T:System.Xml.XmlReader"/> die Ergebnisse kopieren kann.</param><param name="count">Die maximale Anzahl von Zeichen, die in den Puffer kopiert werden sollen.Diese Methode gibt die tatsächliche Anzahl der kopierten Zeichen zurück.</param><exception cref="T:System.InvalidOperationException">Der aktuelle Knoten verfügt über keinen Wert (<see cref="P:System.Xml.XmlReader.HasValue"/> ist false).</exception><exception cref="T:System.ArgumentNullException">Der <paramref name="buffer"/>-Wert ist null.</exception><exception cref="T:System.ArgumentOutOfRangeException">Der Index im Puffer oder Index + Anzahl übersteigen die Größe des zugeordneten Puffers.</exception><exception cref="T:System.NotSupportedException">Die <see cref="T:System.Xml.XmlReader"/>-Implementierung unterstützt diese Methode nicht.</exception><exception cref="T:System.Xml.XmlException">Die XML-Daten sind nicht wohlgeformt.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual int ReadValueChunk(char[] buffer, int index, int count)
     {
       throw new NotSupportedException(Res.GetString("Xml_ReadValueChunkNotSupported"));
@@ -1339,7 +1253,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der <see cref="P:System.Xml.XmlReader.NodeType"/> des von der Methode gefundenen aktuellen Knotens oder XmlNodeType.None, wenn der Reader das Ende des Eingabestreams erreicht hat.
     /// </returns>
     /// <exception cref="T:System.Xml.XmlException">Im Eingabestream wurde unzulässiger XML-Code gefunden.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual XmlNodeType MoveToContent()
     {
       do
@@ -1368,7 +1281,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Überprüft, ob der aktuelle Knoten ein Element ist, und rückt den Reader zum nächsten Knoten vor.
     /// </summary>
     /// <exception cref="T:System.Xml.XmlException">Im Eingabestream wurde unzulässiger XML-Code gefunden.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual void ReadStartElement()
     {
       if (this.MoveToContent() != XmlNodeType.Element)
@@ -1380,7 +1292,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Überprüft, ob der aktuelle Inhaltsknoten ein Element mit dem angegebenen <see cref="P:System.Xml.XmlReader.Name"/> ist, und verschiebt den Reader auf den nächsten Knoten.
     /// </summary>
     /// <param name="name">Der qualifizierte Name des Elements.</param><exception cref="T:System.Xml.XmlException">Im Eingabestream wurde unzulässiger XML-Code gefunden. - oder -  Der <see cref="P:System.Xml.XmlReader.Name"/> des Elements entspricht nicht dem angegebenen <paramref name="name"/>.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual void ReadStartElement(string name)
     {
       if (this.MoveToContent() != XmlNodeType.Element)
@@ -1394,7 +1305,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Überprüft, ob der aktuelle Inhaltsknoten ein Element mit dem angegebenen <see cref="P:System.Xml.XmlReader.LocalName"/> und dem angegebenen <see cref="P:System.Xml.XmlReader.NamespaceURI"/> ist, und verschiebt den Reader auf den nächsten Knoten.
     /// </summary>
     /// <param name="localname">Der lokale Name des Elements.</param><param name="ns">Der Namespace-URI des Elements.</param><exception cref="T:System.Xml.XmlException">Im Eingabestream wurde unzulässiger XML-Code gefunden.- oder - Die Eigenschaften <see cref="P:System.Xml.XmlReader.LocalName"/> und <see cref="P:System.Xml.XmlReader.NamespaceURI"/> des gefundenen Elements stimmen nicht mit den angegebenen Argumenten überein.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual void ReadStartElement(string localname, string ns)
     {
       if (this.MoveToContent() != XmlNodeType.Element)
@@ -1504,7 +1414,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Überprüft, ob der aktuelle Inhaltsknoten ein Endtag ist, und verschiebt den Reader auf den nächsten Knoten.
     /// </summary>
     /// <exception cref="T:System.Xml.XmlException">Der aktuelle Knoten ist kein Endtag, oder im Eingabestream wurde unzulässiger XML-Code gefunden.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual void ReadEndElement()
     {
       if (this.MoveToContent() != XmlNodeType.EndElement)
@@ -1520,7 +1429,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn <see cref="M:System.Xml.XmlReader.MoveToContent"/> ein Starttag oder ein leeres Elementtag findet. false, wenn ein anderer Knotentyp als XmlNodeType.Element gefunden wurde.
     /// </returns>
     /// <exception cref="T:System.Xml.XmlException">Im Eingabestream wurde unzulässiger XML-Code gefunden.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual bool IsStartElement()
     {
       return this.MoveToContent() == XmlNodeType.Element;
@@ -1534,7 +1442,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn der resultierende Knoten ein Element ist und die Name-Eigenschaft mit der angegebenen Zeichenfolge übereinstimmt.false, wenn ein anderer Knotentyp als XmlNodeType.Element gefunden wurde oder die Name-Elementeigenschaft nicht mit der angegebenen Zeichenfolge übereinstimmt.
     /// </returns>
     /// <param name="name">Die mit der Name-Eigenschaft des gefundenen Elements verglichene Zeichenfolge.</param><exception cref="T:System.Xml.XmlException">Im Eingabestream wurde unzulässiger XML-Code gefunden.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual bool IsStartElement(string name)
     {
       if (this.MoveToContent() == XmlNodeType.Element)
@@ -1550,7 +1457,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn der resultlierende Knoten ein Element ist.false, wenn ein anderer Knotentyp als XmlNodeType.Element gefunden wurde oder die LocalName-Eigenschaft und die NamespaceURI-Eigenschaft des Elements nicht mit den angegebenen Zeichenfolgen übereinstimmen.
     /// </returns>
     /// <param name="localname">Die mit der LocalName-Eigenschaft des gefundenen Elements zu vergleichende Zeichenfolge.</param><param name="ns">Die mit der NamespaceURI-Eigenschaft des gefundenen Elements zu vergleichende Zeichenfolge.</param><exception cref="T:System.Xml.XmlException">Im Eingabestream wurde unzulässiger XML-Code gefunden.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual bool IsStartElement(string localname, string ns)
     {
       if (this.MoveToContent() == XmlNodeType.Element && this.LocalName == localname)
@@ -1566,7 +1472,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn ein übereinstimmendes Element gefunden wird, andernfalls false, und der <see cref="T:System.Xml.XmlReader"/> in einem Dateiendezustand.
     /// </returns>
     /// <param name="name">Der qualifizierte Name des Elements.</param><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.ArgumentException">Der Parameter ist eine leere Zeichenfolge.</exception>
-    [__DynamicallyInvokable]
     public virtual bool ReadToFollowing(string name)
     {
       if (name == null || name.Length == 0)
@@ -1588,7 +1493,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn ein übereinstimmendes Element gefunden wird, andernfalls false, und der <see cref="T:System.Xml.XmlReader"/> in einem Dateiendezustand.
     /// </returns>
     /// <param name="localName">Der lokale Name des Elements.</param><param name="namespaceURI">Der Namespace-URI des Elements.</param><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.ArgumentNullException">Beide Parameter-Werte sind null.</exception>
-    [__DynamicallyInvokable]
     public virtual bool ReadToFollowing(string localName, string namespaceURI)
     {
       if (localName == null || localName.Length == 0)
@@ -1613,7 +1517,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn ein übereinstimmendes Nachfolgerelement gefunden wurde, andernfalls false.Wenn kein übereinstimmendes untergeordnetes Element gefunden wurde, wird der <see cref="T:System.Xml.XmlReader"/> auf dem Endtag (<see cref="P:System.Xml.XmlReader.NodeType"/> ist XmlNodeType.EndElement) des Elements positioniert.Wenn der <see cref="T:System.Xml.XmlReader"/> beim Aufruf von <see cref="M:System.Xml.XmlReader.ReadToDescendant(System.String)"/> nicht in einem Element positioniert wird, gibt diese Methode false zurück, und die Position des <see cref="T:System.Xml.XmlReader"/> wird nicht geändert.
     /// </returns>
     /// <param name="name">Der qualifizierte Name des Elements, zu dem Sie wechseln möchten.</param><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.ArgumentException">Der Parameter ist eine leere Zeichenfolge.</exception>
-    [__DynamicallyInvokable]
     public virtual bool ReadToDescendant(string name)
     {
       if (name == null || name.Length == 0)
@@ -1644,7 +1547,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn ein übereinstimmendes Nachfolgerelement gefunden wurde, andernfalls false.Wenn kein übereinstimmendes untergeordnetes Element gefunden wurde, wird der <see cref="T:System.Xml.XmlReader"/> auf dem Endtag (<see cref="P:System.Xml.XmlReader.NodeType"/> ist XmlNodeType.EndElement) des Elements positioniert.Wenn der <see cref="T:System.Xml.XmlReader"/> beim Aufruf von <see cref="M:System.Xml.XmlReader.ReadToDescendant(System.String,System.String)"/> nicht in einem Element positioniert wird, gibt diese Methode false zurück, und die Position des <see cref="T:System.Xml.XmlReader"/> wird nicht geändert.
     /// </returns>
     /// <param name="localName">Der lokale Name des Elements, zu dem Sie wechseln möchten.</param><param name="namespaceURI">Der Namespace-URI des Elements, zu dem Sie wechseln möchten.</param><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.ArgumentNullException">Beide Parameter-Werte sind null.</exception>
-    [__DynamicallyInvokable]
     public virtual bool ReadToDescendant(string localName, string namespaceURI)
     {
       if (localName == null || localName.Length == 0)
@@ -1678,7 +1580,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn ein übereinstimmendes nebengeordnetes Element gefunden wurde, andernfalls false.Wenn kein übereinstimmendes nebengeordnetes Element gefunden wurde, wird der XmlReader auf dem Endtag (<see cref="P:System.Xml.XmlReader.NodeType"/> ist XmlNodeType.EndElement) des übergeordneten Elements positioniert.
     /// </returns>
     /// <param name="name">Der qualifizierte Name des nebengeordneten Elements, zu dem Sie wechseln möchten.</param><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.ArgumentException">Der Parameter ist eine leere Zeichenfolge.</exception>
-    [__DynamicallyInvokable]
     public virtual bool ReadToNextSibling(string name)
     {
       if (name == null || name.Length == 0)
@@ -1703,7 +1604,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn ein übereinstimmendes nebengeordnetes Element gefunden wurde, andernfalls false.Wenn kein übereinstimmendes nebengeordnetes Element gefunden wurde, wird der XmlReader auf dem Endtag (<see cref="P:System.Xml.XmlReader.NodeType"/> ist XmlNodeType.EndElement) des übergeordneten Elements positioniert.
     /// </returns>
     /// <param name="localName">Der lokale Name des nebengeordneten Elements, zu dem Sie wechseln möchten.</param><param name="namespaceURI">Der Namespace-URI des nebengeordneten Elements, zu dem Sie wechseln möchten.</param><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.ArgumentNullException">Beide Parameter-Werte sind null.</exception>
-    [__DynamicallyInvokable]
     public virtual bool ReadToNextSibling(string localName, string namespaceURI)
     {
       if (localName == null || localName.Length == 0)
@@ -1731,7 +1631,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn der Name gültig ist, andernfalls false.
     /// </returns>
     /// <param name="str">Der Name, dessen Gültigkeit validiert werden soll.</param><exception cref="T:System.ArgumentNullException">Der <paramref name="str"/>-Wert ist null.</exception>
-    [__DynamicallyInvokable]
     public static bool IsName(string str)
     {
       if (str == null)
@@ -1747,7 +1646,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn es sich um ein gültiges Namenstoken handelt, andernfalls false.
     /// </returns>
     /// <param name="str">Das zu validierende Namenstoken.</param><exception cref="T:System.ArgumentNullException">Der <paramref name="str"/>-Wert ist null.</exception>
-    [__DynamicallyInvokable]
     public static bool IsNameToken(string str)
     {
       if (str == null)
@@ -1763,7 +1661,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der gesamte XML-Inhalt (einschließlich Markup) im aktuellen Knoten.Wenn der aktuelle Knoten keine untergeordneten Elemente besitzt, wird eine leere Zeichenfolge zurückgegeben.Wenn der aktuelle Knoten weder ein Element noch ein Attribut ist, wird eine leere Zeichenfolge zurückgegeben.
     /// </returns>
     /// <exception cref="T:System.Xml.XmlException">Das XML war nicht wohlgeformt, oder bei der XML-Analyse ist ein Fehler aufgetreten.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual string ReadInnerXml()
     {
       if (this.ReadState != ReadState.Interactive)
@@ -1865,7 +1762,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Wenn der Reader auf einem Elementknoten oder einem Attributknoten positioniert ist, gibt diese Methode den gesamten XML-Inhalt (einschließlich Markup) des aktuellen Knotens sowie aller untergeordneten Elemente zurück. Andernfalls wird eine leere Zeichenfolge zurückgegeben.
     /// </returns>
     /// <exception cref="T:System.Xml.XmlException">Das XML war nicht wohlgeformt, oder bei der XML-Analyse ist ein Fehler aufgetreten.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual string ReadOuterXml()
     {
       if (this.ReadState != ReadState.Interactive)
@@ -1926,7 +1822,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Eine neue auf <see cref="F:System.Xml.ReadState.Initial"/> festgelegte XML-Reader-Instanz.Durch den Aufruf der <see cref="M:System.Xml.XmlReader.Read"/>-Methode wird der neue Reader auf dem Knoten positioniert, der vor dem Aufruf der <see cref="M:System.Xml.XmlReader.ReadSubtree"/>-Methode aktuell war.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Der XML-Reader ist nicht auf einem Element positioniert, wenn diese Methode aufgerufen wird.</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public virtual Xml_Reader ReadSubtree()
     {
       if (this.NodeType != XmlNodeType.Element)
@@ -1938,7 +1833,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Gibt alle von der aktuellen Instanz der <see cref="T:System.Xml.XmlReader"/>-Klasse verwendeten Ressourcen frei.
     /// </summary>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     public void Dispose()
     {
       this.Dispose(true);
@@ -1948,7 +1842,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Gibt die von <see cref="T:System.Xml.XmlReader"/> verwendeten nicht verwalteten Ressourcen und optional die verwalteten Ressourcen frei.
     /// </summary>
     /// <param name="disposing">true, um sowohl verwaltete als auch nicht verwaltete Ressourcen freizugeben, false, um ausschließlich nicht verwaltete Ressourcen freizugeben.</param><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception>
-    [__DynamicallyInvokable]
     protected virtual void Dispose(bool disposing)
     {
       if (!disposing || this.ReadState == ReadState.Closed)
@@ -2168,7 +2061,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Ein Objekt, mit dem die im Stream enthaltenen XML-Daten gelesen werden.
     /// </returns>
     /// <param name="inputUri">Der URI der Datei, die die XML-Daten enthält.Mit der <see cref="T:System.Xml.XmlUrlResolver"/>-Klasse wird der Pfad in eine kanonische Datendarstellung konvertiert.</param><exception cref="T:System.ArgumentNullException">Der <paramref name="inputUri"/>-Wert ist null.</exception><exception cref="T:System.Security.SecurityException">Der <see cref="T:System.Xml.XmlReader"/> verfügt nicht über ausreichende Berechtigungen für den Zugriff auf den Speicherort der XML-Daten.</exception><exception cref="T:System.IO.FileNotFoundException">Die durch den URI angegebene Datei ist nicht vorhanden.</exception><exception cref="T:System.UriFormatException">Unter .NET for Windows Store apps oder in der Portable Klassenbibliothek verwenden Sie stattdessen die Basisklassenausnahme <see cref="T:System.FormatException"/>.Das URI-Format ist nicht korrekt.</exception>
-    [__DynamicallyInvokable]
     public static Xml_Reader Create(string inputUri)
     {
       return Xml_Reader.Create(inputUri, (XmlReaderSettings)null, (XmlParserContext)null);
@@ -2182,7 +2074,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Ein Objekt, mit dem die im Stream enthaltenen XML-Daten gelesen werden.
     /// </returns>
     /// <param name="inputUri">Der URI der Datei, die die XML-Daten enthält.Das <see cref="T:System.Xml.XmlResolver"/>-Objekt für das <see cref="T:System.Xml.XmlReaderSettings"/>-Objekt wird zum Konvertieren des Pfads in eine kanonische Datendarstellung verwendet.Wenn <see cref="P:System.Xml.XmlReaderSettings.XmlResolver"/>null ist, wird ein neues <see cref="T:System.Xml.XmlUrlResolver"/>-Objekt verwendet.</param><param name="settings">Die Einstellungen für die neue <see cref="T:System.Xml.XmlReader"/>-Instanz.Dieser Wert kann null sein.</param><exception cref="T:System.ArgumentNullException">Der <paramref name="inputUri"/>-Wert ist null.</exception><exception cref="T:System.IO.FileNotFoundException">Die durch den URI angegebene Datei kann nicht gefunden werden.</exception><exception cref="T:System.UriFormatException">Unter .NET for Windows Store apps oder in der Portable Klassenbibliothek verwenden Sie stattdessen die Basisklassenausnahme <see cref="T:System.FormatException"/>.Das URI-Format ist nicht korrekt.</exception>
-    [__DynamicallyInvokable]
     public static Xml_Reader Create(string inputUri, XmlReaderSettings settings)
     {
       return Xml_Reader.Create(inputUri, settings, (XmlParserContext)null);
@@ -2211,7 +2102,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Ein Objekt, mit dem die im Stream enthaltenen XML-Daten gelesen werden.
     /// </returns>
     /// <param name="input">Der Stream, der die XML-Daten enthält.Der <see cref="T:System.Xml.XmlReader"/> überprüft die ersten Bytes des Streams und durchsucht sie nach einer Bytereihenfolgemarkierung oder einem anderen Codierungszeichen.Nachdem die Codierung bestimmt wurde, wird sie zum weiteren Lesen des Streams verwendet, und die Eingabe wird weiterhin als Stream von (Unicode-)Zeichen analysiert.</param><exception cref="T:System.ArgumentNullException">Der <paramref name="input"/>-Wert ist null.</exception><exception cref="T:System.Security.SecurityException">Der <see cref="T:System.Xml.XmlReader"/> verfügt nicht über ausreichende Berechtigungen für den Zugriff auf den Speicherort der XML-Daten.</exception>
-    [__DynamicallyInvokable]
     public static Xml_Reader Create(Stream input)
     {
       return Xml_Reader.Create(input, (XmlReaderSettings)null, string.Empty);
@@ -2225,7 +2115,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Ein Objekt, mit dem die im Stream enthaltenen XML-Daten gelesen werden.
     /// </returns>
     /// <param name="input">Der Stream, der die XML-Daten enthält.Der <see cref="T:System.Xml.XmlReader"/> überprüft die ersten Bytes des Streams und durchsucht sie nach einer Bytereihenfolgemarkierung oder einem anderen Codierungszeichen.Nachdem die Codierung bestimmt wurde, wird sie zum weiteren Lesen des Streams verwendet, und die Eingabe wird weiterhin als Stream von (Unicode-)Zeichen analysiert.</param><param name="settings">Die Einstellungen für die neue <see cref="T:System.Xml.XmlReader"/>-Instanz.Dieser Wert kann null sein.</param><exception cref="T:System.ArgumentNullException">Der <paramref name="input"/>-Wert ist null.</exception>
-    [__DynamicallyInvokable]
     public static Xml_Reader Create(Stream input, XmlReaderSettings settings)
     {
       return Xml_Reader.Create(input, settings, string.Empty);
@@ -2254,7 +2143,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Ein Objekt, mit dem die im Stream enthaltenen XML-Daten gelesen werden.
     /// </returns>
     /// <param name="input">Der Stream, der die XML-Daten enthält. Der <see cref="T:System.Xml.XmlReader"/> überprüft die ersten Bytes des Streams und durchsucht sie nach einer Bytereihenfolgemarkierung oder einem anderen Codierungszeichen.Nachdem die Codierung bestimmt wurde, wird sie zum weiteren Lesen des Streams verwendet, und die Eingabe wird weiterhin als Stream von (Unicode-)Zeichen analysiert.</param><param name="settings">Die Einstellungen für die neue <see cref="T:System.Xml.XmlReader"/>-Instanz.Dieser Wert kann null sein.</param><param name="inputContext">Die Kontextinformationen, die zum Analysieren des XML-Fragments erforderlich sind.Die Kontextinformationen können die zu verwendende <see cref="T:System.Xml.XmlNameTable"/>, die Codierung, den Namespacebereich, den aktuellen xml:lang-Bereich, den aktuellen xml:space-Bereich, den Basis-URI und die Dokumenttypdefinition enthalten.Dieser Wert kann null sein.</param><exception cref="T:System.ArgumentNullException">Der <paramref name="input"/>-Wert ist null.</exception>
-    [__DynamicallyInvokable]
     public static Xml_Reader Create(Stream input, XmlReaderSettings settings, XmlParserContext inputContext)
     {
       if (settings == null)
@@ -2270,7 +2158,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Ein Objekt, mit dem die im Stream enthaltenen XML-Daten gelesen werden.
     /// </returns>
     /// <param name="input">Der Text-Reader, aus dem die XML-Daten gelesen werden sollen.Ein Text-Reader gibt einen Stream von Unicode-Zeichen zurück, sodass die in der XML-Deklaration angegebene Codierung nicht vom XML-Reader zum Decodieren des Datenstreams verwendet wird.</param><exception cref="T:System.ArgumentNullException">Der <paramref name="input"/>-Wert ist null.</exception>
-    [__DynamicallyInvokable]
     public static Xml_Reader Create(TextReader input)
     {
       return Xml_Reader.Create(input, (XmlReaderSettings)null, string.Empty);
@@ -2284,7 +2171,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Ein Objekt, mit dem die im Stream enthaltenen XML-Daten gelesen werden.
     /// </returns>
     /// <param name="input">Der Text-Reader, aus dem die XML-Daten gelesen werden sollen.Ein Text-Reader gibt einen Stream von Unicode-Zeichen zurück, sodass die in der XML-Deklaration angegebene Codierung nicht vom XML-Reader zum Decodieren des Datenstreams verwendet wird.</param><param name="settings">Die Einstellungen für den neuen <see cref="T:System.Xml.XmlReader"/>.Dieser Wert kann null sein.</param><exception cref="T:System.ArgumentNullException">Der <paramref name="input"/>-Wert ist null.</exception>
-    [__DynamicallyInvokable]
     public static Xml_Reader Create(TextReader input, XmlReaderSettings settings)
     {
       return Xml_Reader.Create(input, settings, string.Empty);
@@ -2313,7 +2199,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Ein Objekt, mit dem die im Stream enthaltenen XML-Daten gelesen werden.
     /// </returns>
     /// <param name="input">Der Text-Reader, aus dem die XML-Daten gelesen werden sollen.Ein Text-Reader gibt einen Stream von Unicode-Zeichen zurück, sodass die in der XML-Deklaration angegebene Codierung nicht vom XML-Reader zum Decodieren des Datenstreams verwendet wird.</param><param name="settings">Die Einstellungen für die neue <see cref="T:System.Xml.XmlReader"/>-Instanz.Dieser Wert kann null sein.</param><param name="inputContext">Die Kontextinformationen, die zum Analysieren des XML-Fragments erforderlich sind.Die Kontextinformationen können die zu verwendende <see cref="T:System.Xml.XmlNameTable"/>, die Codierung, den Namespacebereich, den aktuellen xml:lang-Bereich, den aktuellen xml:space-Bereich, den Basis-URI und die Dokumenttypdefinition enthalten.Dieser Wert kann null sein.</param><exception cref="T:System.ArgumentNullException">Der <paramref name="input"/>-Wert ist null.</exception><exception cref="T:System.ArgumentException">Die <see cref="P:System.Xml.XmlReaderSettings.NameTable"/> und die <see cref="P:System.Xml.XmlParserContext.NameTable"/>-Eigenschaften enthalten Werte.(Nur eine dieser NameTable-Eigenschaften kann festgelegt und verwendet werden).</exception>
-    [__DynamicallyInvokable]
     public static Xml_Reader Create(TextReader input, XmlReaderSettings settings, XmlParserContext inputContext)
     {
       if (settings == null)
@@ -2329,7 +2214,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Ein Objekt, das das angegebene <see cref="T:System.Xml.XmlReader"/>-Objekt umschließt.
     /// </returns>
     /// <param name="reader">Das Objekt, dass Sie als zugrunde liegenden XML-Reader verwenden möchten.</param><param name="settings">Die Einstellungen für die neue <see cref="T:System.Xml.XmlReader"/>-Instanz.Der Konformitätsgrad des <see cref="T:System.Xml.XmlReaderSettings"/>-Objekts muss mit dem Konformitätsgrad des zugrunde liegenden Readers übereinstimmen oder auf <see cref="F:System.Xml.ConformanceLevel.Auto"/> festgelegt werden.</param><exception cref="T:System.ArgumentNullException">Der <paramref name="reader"/>-Wert ist null.</exception><exception cref="T:System.InvalidOperationException">Wenn das <see cref="T:System.Xml.XmlReaderSettings"/>-Objekt einen Konformitätsgrad angibt, der nicht mit dem Konformitätsgrad des zugrunde liegenden Readers übereinstimmt.- oder - Der zugrunde liegende <see cref="T:System.Xml.XmlReader"/> befindet sich in einem <see cref="F:System.Xml.ReadState.Error"/>-Zustand oder einem <see cref="F:System.Xml.ReadState.Closed"/>-Zustand.</exception>
-    [__DynamicallyInvokable]
     public static Xml_Reader Create(Xml_Reader reader, XmlReaderSettings settings)
     {
       if (settings == null)
@@ -2390,7 +2274,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Wert des aktuellen Knotens.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/> asynchrone Methode wurde aufgerufen, ohne das <see cref="P:System.Xml.XmlReaderSettings.Async"/>-Flag auf true festzulegen.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Nachricht ausgelöst "Legen Sie XmlReaderSettings.Async auf True fest, wenn Sie die Async-Methoden verwenden möchten."</exception>
-    [__DynamicallyInvokable]
     public virtual Task<string> GetValueAsync()
     {
       throw new NotImplementedException();
@@ -2404,7 +2287,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Textinhalt als geeignetstes CLR-Objekt (Common Language Runtime).
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/> asynchrone Methode wurde aufgerufen, ohne das <see cref="P:System.Xml.XmlReaderSettings.Async"/>-Flag auf true festzulegen.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Nachricht ausgelöst "Legen Sie XmlReaderSettings.Async auf True fest, wenn Sie die Async-Methoden verwenden möchten."</exception>
-    [__DynamicallyInvokable]
     public virtual async Task<object> ReadContentAsObjectAsync()
     {
       if (!this.CanReadContentAs())
@@ -2420,7 +2302,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Textinhalt als <see cref="T:System.String"/>-Objekt.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/> asynchrone Methode wurde aufgerufen, ohne das <see cref="P:System.Xml.XmlReaderSettings.Async"/>-Flag auf true festzulegen.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Nachricht ausgelöst "Legen Sie XmlReaderSettings.Async auf True fest, wenn Sie die Async-Methoden verwenden möchten."</exception>
-    [__DynamicallyInvokable]
     public virtual Task<string> ReadContentAsStringAsync()
     {
       if (!this.CanReadContentAs())
@@ -2436,7 +2317,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der verkettete Textinhalt oder Attributwert, der in den angeforderten Typ konvertiert wurde.
     /// </returns>
     /// <param name="returnType">Der Typ des zurückzugebenden Werts.</param><param name="namespaceResolver">Ein <see cref="T:System.Xml.IXmlNamespaceResolver"/>-Objekt, das für die Auflösung von Präfixen von Namespaces verwendet wird, die im Zusammenhang mit der Typkonvertierung stehen.</param><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/> asynchrone Methode wurde aufgerufen, ohne das <see cref="P:System.Xml.XmlReaderSettings.Async"/>-Flag auf true festzulegen.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Nachricht ausgelöst "Legen Sie XmlReaderSettings.Async auf True fest, wenn Sie die Async-Methoden verwenden möchten."</exception>
-    [__DynamicallyInvokable]
     public virtual async Task<object> ReadContentAsAsync(Type returnType, IXmlNamespaceResolver namespaceResolver)
     {
       if (!this.CanReadContentAs())
@@ -2473,7 +2353,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Ein geschachteltes CLR-Objekt (Common Language Runtime) des geeignetsten Typs.Die <see cref="P:System.Xml.XmlReader.ValueType"/>-Eigenschaft bestimmt den geeigneten CLR-Typ.Wenn der Inhalt als Listentyp typisiert ist, gibt diese Methode ein Array der geschachtelten Objekte des geeigneten Typs zurück.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/> asynchrone Methode wurde aufgerufen, ohne das <see cref="P:System.Xml.XmlReaderSettings.Async"/>-Flag auf true festzulegen.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Nachricht ausgelöst "Legen Sie XmlReaderSettings.Async auf True fest, wenn Sie die Async-Methoden verwenden möchten."</exception>
-    [__DynamicallyInvokable]
     public virtual async Task<object> ReadElementContentAsObjectAsync()
     {
       object obj;
@@ -2496,7 +2375,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der Elementinhalt als <see cref="T:System.String"/>-Objekt.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/> asynchrone Methode wurde aufgerufen, ohne das <see cref="P:System.Xml.XmlReaderSettings.Async"/>-Flag auf true festzulegen.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Nachricht ausgelöst "Legen Sie XmlReaderSettings.Async auf True fest, wenn Sie die Async-Methoden verwenden möchten."</exception>
-    [__DynamicallyInvokable]
     public virtual async Task<string> ReadElementContentAsStringAsync()
     {
       string str;
@@ -2519,7 +2397,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der in das angeforderte typisierte Objekt konvertierte Elementinhalt.
     /// </returns>
     /// <param name="returnType">Der Typ des zurückzugebenden Werts.</param><param name="namespaceResolver">Ein <see cref="T:System.Xml.IXmlNamespaceResolver"/>-Objekt, das für die Auflösung von Präfixen von Namespaces verwendet wird, die im Zusammenhang mit der Typkonvertierung stehen.</param><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/> asynchrone Methode wurde aufgerufen, ohne das <see cref="P:System.Xml.XmlReaderSettings.Async"/>-Flag auf true festzulegen.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Nachricht ausgelöst "Legen Sie XmlReaderSettings.Async auf True fest, wenn Sie die Async-Methoden verwenden möchten."</exception>
-    [__DynamicallyInvokable]
     public virtual async Task<object> ReadElementContentAsAsync(Type returnType, IXmlNamespaceResolver namespaceResolver)
     {
       object obj;
@@ -2542,7 +2419,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// true, wenn der nächste Knoten erfolgreich gelesen wurde, false, wenn keine weiteren zu lesenden Knoten vorhanden sind.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/> asynchrone Methode wurde aufgerufen, ohne das <see cref="P:System.Xml.XmlReaderSettings.Async"/>-Flag auf true festzulegen.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Nachricht ausgelöst "Legen Sie XmlReaderSettings.Async auf True fest, wenn Sie die Async-Methoden verwenden möchten."</exception>
-    [__DynamicallyInvokable]
     public virtual Task<bool> ReadAsync()
     {
       throw new NotImplementedException();
@@ -2556,7 +2432,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der aktuelle Knoten.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/> asynchrone Methode wurde aufgerufen, ohne das <see cref="P:System.Xml.XmlReaderSettings.Async"/>-Flag auf true festzulegen.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Nachricht ausgelöst "Legen Sie XmlReaderSettings.Async auf True fest, wenn Sie die Async-Methoden verwenden möchten."</exception>
-    [__DynamicallyInvokable]
     public virtual Task SkipAsync()
     {
       if (this.ReadState != ReadState.Interactive)
@@ -2572,7 +2447,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Die Anzahl der in den Puffer geschriebenen Bytes.
     /// </returns>
     /// <param name="buffer">Der Puffer, in den der resultierende Text kopiert werden soll.Dieser Wert darf nicht null sein.</param><param name="index">Der Offset im Puffer, an dem mit dem Kopieren des Ergebnisses begonnen werden soll.</param><param name="count">Die maximale Anzahl von Bytes, die in den Puffer kopiert werden sollen.Diese Methode gibt die tatsächliche Anzahl von kopierten Bytes zurück.</param><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/> asynchrone Methode wurde aufgerufen, ohne das <see cref="P:System.Xml.XmlReaderSettings.Async"/>-Flag auf true festzulegen.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Nachricht ausgelöst "Legen Sie XmlReaderSettings.Async auf True fest, wenn Sie die Async-Methoden verwenden möchten."</exception>
-    [__DynamicallyInvokable]
     public virtual Task<int> ReadContentAsBase64Async(byte[] buffer, int index, int count)
     {
       throw new NotSupportedException(Res.GetString("Xml_ReadBinaryContentNotSupported", new object[1]
@@ -2589,7 +2463,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Die Anzahl der in den Puffer geschriebenen Bytes.
     /// </returns>
     /// <param name="buffer">Der Puffer, in den der resultierende Text kopiert werden soll.Dieser Wert darf nicht null sein.</param><param name="index">Der Offset im Puffer, an dem mit dem Kopieren des Ergebnisses begonnen werden soll.</param><param name="count">Die maximale Anzahl von Bytes, die in den Puffer kopiert werden sollen.Diese Methode gibt die tatsächliche Anzahl von kopierten Bytes zurück.</param><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/> asynchrone Methode wurde aufgerufen, ohne das <see cref="P:System.Xml.XmlReaderSettings.Async"/>-Flag auf true festzulegen.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Nachricht ausgelöst "Legen Sie XmlReaderSettings.Async auf True fest, wenn Sie die Async-Methoden verwenden möchten."</exception>
-    [__DynamicallyInvokable]
     public virtual Task<int> ReadElementContentAsBase64Async(byte[] buffer, int index, int count)
     {
       throw new NotSupportedException(Res.GetString("Xml_ReadBinaryContentNotSupported", new object[1]
@@ -2606,7 +2479,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Die Anzahl der in den Puffer geschriebenen Bytes.
     /// </returns>
     /// <param name="buffer">Der Puffer, in den der resultierende Text kopiert werden soll.Dieser Wert darf nicht null sein.</param><param name="index">Der Offset im Puffer, an dem mit dem Kopieren des Ergebnisses begonnen werden soll.</param><param name="count">Die maximale Anzahl von Bytes, die in den Puffer kopiert werden sollen.Diese Methode gibt die tatsächliche Anzahl von kopierten Bytes zurück.</param><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/> asynchrone Methode wurde aufgerufen, ohne das <see cref="P:System.Xml.XmlReaderSettings.Async"/>-Flag auf true festzulegen.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Nachricht ausgelöst "Legen Sie XmlReaderSettings.Async auf True fest, wenn Sie die Async-Methoden verwenden möchten."</exception>
-    [__DynamicallyInvokable]
     public virtual Task<int> ReadContentAsBinHexAsync(byte[] buffer, int index, int count)
     {
       throw new NotSupportedException(Res.GetString("Xml_ReadBinaryContentNotSupported", new object[1]
@@ -2623,7 +2495,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Die Anzahl der in den Puffer geschriebenen Bytes.
     /// </returns>
     /// <param name="buffer">Der Puffer, in den der resultierende Text kopiert werden soll.Dieser Wert darf nicht null sein.</param><param name="index">Der Offset im Puffer, an dem mit dem Kopieren des Ergebnisses begonnen werden soll.</param><param name="count">Die maximale Anzahl von Bytes, die in den Puffer kopiert werden sollen.Diese Methode gibt die tatsächliche Anzahl von kopierten Bytes zurück.</param><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/> asynchrone Methode wurde aufgerufen, ohne das <see cref="P:System.Xml.XmlReaderSettings.Async"/>-Flag auf true festzulegen.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Nachricht ausgelöst "Legen Sie XmlReaderSettings.Async auf True fest, wenn Sie die Async-Methoden verwenden möchten."</exception>
-    [__DynamicallyInvokable]
     public virtual Task<int> ReadElementContentAsBinHexAsync(byte[] buffer, int index, int count)
     {
       throw new NotSupportedException(Res.GetString("Xml_ReadBinaryContentNotSupported", new object[1]
@@ -2640,7 +2511,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Die Anzahl der in den Puffer gelesenen Zeichen.Der Wert 0 (null) wird zurückgegeben, wenn kein weiterer Textinhalt vorhanden ist.
     /// </returns>
     /// <param name="buffer">Das Array von Zeichen, das als Puffer dient, in den der Textinhalt geschrieben wird.Dieser Wert darf nicht null sein.</param><param name="index">Der Offset im Puffer, ab dem der <see cref="T:System.Xml.XmlReader"/> die Ergebnisse kopieren kann.</param><param name="count">Die maximale Anzahl von Zeichen, die in den Puffer kopiert werden sollen.Diese Methode gibt die tatsächliche Anzahl der kopierten Zeichen zurück.</param><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/> asynchrone Methode wurde aufgerufen, ohne das <see cref="P:System.Xml.XmlReaderSettings.Async"/>-Flag auf true festzulegen.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Nachricht ausgelöst "Legen Sie XmlReaderSettings.Async auf True fest, wenn Sie die Async-Methoden verwenden möchten."</exception>
-    [__DynamicallyInvokable]
     public virtual Task<int> ReadValueChunkAsync(char[] buffer, int index, int count)
     {
       throw new NotSupportedException(Res.GetString("Xml_ReadValueChunkNotSupported"));
@@ -2654,7 +2524,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der <see cref="P:System.Xml.XmlReader.NodeType"/> des von der Methode gefundenen aktuellen Knotens oder XmlNodeType.None, wenn der Reader das Ende des Eingabestreams erreicht hat.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/> asynchrone Methode wurde aufgerufen, ohne das <see cref="P:System.Xml.XmlReaderSettings.Async"/>-Flag auf true festzulegen.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Nachricht ausgelöst "Legen Sie XmlReaderSettings.Async auf True fest, wenn Sie die Async-Methoden verwenden möchten."</exception>
-    [__DynamicallyInvokable]
     public virtual async Task<XmlNodeType> MoveToContentAsync()
     {
       XmlNodeType nodeType;
@@ -2691,7 +2560,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Der gesamte XML-Inhalt (einschließlich Markup) im aktuellen Knoten.Wenn der aktuelle Knoten keine untergeordneten Elemente besitzt, wird eine leere Zeichenfolge zurückgegeben.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/> asynchrone Methode wurde aufgerufen, ohne das <see cref="P:System.Xml.XmlReaderSettings.Async"/>-Flag auf true festzulegen.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Nachricht ausgelöst "Legen Sie XmlReaderSettings.Async auf True fest, wenn Sie die Async-Methoden verwenden möchten."</exception>
-    [__DynamicallyInvokable]
     public virtual async Task<string> ReadInnerXmlAsync()
     {
       string str;
@@ -2814,7 +2682,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// Wenn der Reader auf einem Elementknoten oder einem Attributknoten positioniert ist, gibt diese Methode den gesamten XML-Inhalt (einschließlich Markup) des aktuellen Knotens sowie aller untergeordneten Elemente zurück. Andernfalls wird eine leere Zeichenfolge zurückgegeben.
     /// </returns>
     /// <exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/>-Methode wurde aufgerufen, bevor ein vorheriger asynchroner Vorgang abgeschlossen wurde.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Meldung ausgelöst "ein asynchroner Vorgang wird bereits ausgeführt."</exception><exception cref="T:System.InvalidOperationException">Eine <see cref="T:System.Xml.XmlReader"/> asynchrone Methode wurde aufgerufen, ohne das <see cref="P:System.Xml.XmlReaderSettings.Async"/>-Flag auf true festzulegen.In diesem Fall wird <see cref="T:System.InvalidOperationException"/> mit der Nachricht ausgelöst "Legen Sie XmlReaderSettings.Async auf True fest, wenn Sie die Async-Methoden verwenden möchten."</exception>
-    [__DynamicallyInvokable]
     public virtual async Task<string> ReadOuterXmlAsync()
     {
       string str;
