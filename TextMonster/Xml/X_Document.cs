@@ -174,12 +174,6 @@ namespace TextMonster.Xml
         if (!string.IsNullOrEmpty(baseUri))
           xdocument.SetBaseUri(baseUri);
       }
-      if ((options & LoadOptions.SetLineInfo) != LoadOptions.None)
-      {
-        var xmlLineInfo = reader as IXmlLineInfo;
-        if (xmlLineInfo != null && xmlLineInfo.HasLineInfo())
-          xdocument.SetLineInfo(xmlLineInfo.LineNumber, xmlLineInfo.LinePosition);
-      }
       if (reader.NodeType == XmlNodeType.XmlDeclaration)
         xdocument.Declaration = new X_Declaration(reader);
       xdocument.ReadContentFrom(reader, options);

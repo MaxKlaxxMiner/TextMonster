@@ -1192,20 +1192,11 @@ namespace TextMonster.Xml
         if (!string.IsNullOrEmpty(baseUri))
           SetBaseUri(baseUri);
       }
-      var xmlLineInfo = (IXmlLineInfo)null;
-      if ((o & LoadOptions.SetLineInfo) != LoadOptions.None)
-      {
-        xmlLineInfo = r as IXmlLineInfo;
-        if (xmlLineInfo != null && xmlLineInfo.HasLineInfo())
-          SetLineInfo(xmlLineInfo.LineNumber, xmlLineInfo.LinePosition);
-      }
       if (r.MoveToFirstAttribute())
       {
         do
         {
           var a = new X_Attribute(r.LocalName, r.Value);
-          if (xmlLineInfo != null && xmlLineInfo.HasLineInfo())
-            a.SetLineInfo(xmlLineInfo.LineNumber, xmlLineInfo.LinePosition);
           AppendAttributeSkipNotify(a);
         }
         while (r.MoveToNextAttribute());
@@ -1259,11 +1250,6 @@ namespace TextMonster.Xml
       }
       while (xattribute1 != lastAttr);
       lastAttr = null;
-    }
-
-    internal void SetEndElementLineInfo(int lineNumber, int linePosition)
-    {
-      AddAnnotation(new LineInfoEndElementAnnotation(lineNumber, linePosition));
     }
 
     /// <summary>

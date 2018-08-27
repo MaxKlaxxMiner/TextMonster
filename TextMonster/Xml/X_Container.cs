@@ -856,7 +856,7 @@ namespace TextMonster.Xml
 
     internal void ReadContentFrom(XmlReader r, LoadOptions o)
     {
-      if ((o & (LoadOptions.SetBaseUri | LoadOptions.SetLineInfo)) == LoadOptions.None)
+      if ((o & LoadOptions.SetBaseUri) == LoadOptions.None)
       {
         ReadContentFrom(r);
       }
@@ -867,7 +867,6 @@ namespace TextMonster.Xml
         var xcontainer = this;
         var n = (X_Node)null;
         string str = (o & LoadOptions.SetBaseUri) != LoadOptions.None ? r.BaseURI : null;
-        var xmlLineInfo = (o & LoadOptions.SetLineInfo) != LoadOptions.None ? r as IXmlLineInfo : null;
         do
         {
           string baseUri = r.BaseURI;
@@ -877,15 +876,11 @@ namespace TextMonster.Xml
             var xelement1 = new X_Element(r.LocalName);
             if (str != null && str != baseUri)
               xelement1.SetBaseUri(baseUri);
-            if (xmlLineInfo != null && xmlLineInfo.HasLineInfo())
-              xelement1.SetLineInfo(xmlLineInfo.LineNumber, xmlLineInfo.LinePosition);
             if (r.MoveToFirstAttribute())
             {
               do
               {
                 var a = new X_Attribute(r.LocalName, r.Value);
-                if (xmlLineInfo != null && xmlLineInfo.HasLineInfo())
-                  a.SetLineInfo(xmlLineInfo.LineNumber, xmlLineInfo.LinePosition);
                 xelement1.AppendAttributeSkipNotify(a);
               }
               while (r.MoveToNextAttribute());
@@ -904,7 +899,7 @@ namespace TextMonster.Xml
             case XmlNodeType.Text:
             case XmlNodeType.Whitespace:
             case XmlNodeType.SignificantWhitespace:
-            if (str != null && str != baseUri || xmlLineInfo != null && xmlLineInfo.HasLineInfo())
+            if (str != null && str != baseUri)
             {
               n = new X_Text(r.Value);
               goto case XmlNodeType.EndEntity;
@@ -932,8 +927,6 @@ namespace TextMonster.Xml
             if (xcontainer.content == null)
               xcontainer.content = string.Empty;
             var xelement2 = xcontainer as X_Element;
-            if (xelement2 != null && xmlLineInfo != null && xmlLineInfo.HasLineInfo())
-              xelement2.SetEndElementLineInfo(xmlLineInfo.LineNumber, xmlLineInfo.LinePosition);
             if (xcontainer == this)
               return;
             if (str != null && xcontainer.HasBaseUri)
@@ -945,8 +938,6 @@ namespace TextMonster.Xml
             {
               if (str != null && str != baseUri)
                 n.SetBaseUri(baseUri);
-              if (xmlLineInfo != null && xmlLineInfo.HasLineInfo())
-                n.SetLineInfo(xmlLineInfo.LineNumber, xmlLineInfo.LinePosition);
               xcontainer.AddNodeSkipNotify(n);
               n = null;
             }

@@ -496,7 +496,6 @@ namespace ngMax.Xml
       if (r.ReadState != ReadState.Interactive)
         throw new InvalidOperationException("InvalidOperation_ExpectedInteractive");
       name = r.LocalName;
-      var xmlLineInfo = (IXmlLineInfo)null;
       if (r.MoveToFirstAttribute())
       {
         do

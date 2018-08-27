@@ -14,7 +14,7 @@ namespace TextMonster.Xml
   /// </summary>
   /// <filterpriority>2</filterpriority>
   // ReSharper disable once InconsistentNaming
-  public abstract class X_Object : IXmlLineInfo
+  public abstract class X_Object
   {
     internal X_Container parent;
     internal object annotations;
@@ -86,28 +86,6 @@ namespace TextMonster.Xml
       get
       {
         return parent as X_Element;
-      }
-    }
-
-    int IXmlLineInfo.LineNumber
-    {
-      get
-      {
-        var lineInfoAnnotation = Annotation<LineInfoAnnotation>();
-        if (lineInfoAnnotation != null)
-          return lineInfoAnnotation.lineNumber;
-        return 0;
-      }
-    }
-
-    int IXmlLineInfo.LinePosition
-    {
-      get
-      {
-        var lineInfoAnnotation = Annotation<LineInfoAnnotation>();
-        if (lineInfoAnnotation != null)
-          return lineInfoAnnotation.linePosition;
-        return 0;
       }
     }
 
@@ -430,11 +408,6 @@ namespace TextMonster.Xml
       }
     }
 
-    bool IXmlLineInfo.HasLineInfo()
-    {
-      return Annotation<LineInfoAnnotation>() != null;
-    }
-
     internal void NotifyChanged(object sender, X_ObjectChangeEventArgs e)
     {
       var xobject = this;
@@ -480,11 +453,6 @@ namespace TextMonster.Xml
     internal void SetBaseUri(string baseUri)
     {
       AddAnnotation(new BaseUriAnnotation(baseUri));
-    }
-
-    internal void SetLineInfo(int lineNumber, int linePosition)
-    {
-      AddAnnotation(new LineInfoAnnotation(lineNumber, linePosition));
     }
 
     internal bool SkipNotify()
