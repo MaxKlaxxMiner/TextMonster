@@ -459,7 +459,7 @@ namespace TextMonster.Xml.Xml_Reader
         throw this.CreateReadContentAsException("ReadContentAsBoolean");
       try
       {
-        return XmlConvert.ToBoolean(this.InternalReadContentAsString());
+        return Xml_Convert.ToBoolean(this.InternalReadContentAsString());
       }
       catch (FormatException ex)
       {
@@ -481,7 +481,7 @@ namespace TextMonster.Xml.Xml_Reader
         throw this.CreateReadContentAsException("ReadContentAsDateTime");
       try
       {
-        return XmlConvert.ToDateTime(this.InternalReadContentAsString(), XmlDateTimeSerializationMode.RoundtripKind);
+        return Xml_Convert.ToDateTime(this.InternalReadContentAsString(), XmlDateTimeSerializationMode.RoundtripKind);
       }
       catch (FormatException ex)
       {
@@ -503,7 +503,7 @@ namespace TextMonster.Xml.Xml_Reader
         throw this.CreateReadContentAsException("ReadContentAsDateTimeOffset");
       try
       {
-        return XmlConvert.ToDateTimeOffset(this.InternalReadContentAsString());
+        return Xml_Convert.ToDateTimeOffset(this.InternalReadContentAsString());
       }
       catch (FormatException ex)
       {
@@ -525,7 +525,7 @@ namespace TextMonster.Xml.Xml_Reader
         throw this.CreateReadContentAsException("ReadContentAsDouble");
       try
       {
-        return XmlConvert.ToDouble(this.InternalReadContentAsString());
+        return Xml_Convert.ToDouble(this.InternalReadContentAsString());
       }
       catch (FormatException ex)
       {
@@ -547,7 +547,7 @@ namespace TextMonster.Xml.Xml_Reader
         throw this.CreateReadContentAsException("ReadContentAsFloat");
       try
       {
-        return XmlConvert.ToSingle(this.InternalReadContentAsString());
+        return Xml_Convert.ToSingle(this.InternalReadContentAsString());
       }
       catch (FormatException ex)
       {
@@ -569,7 +569,7 @@ namespace TextMonster.Xml.Xml_Reader
         throw this.CreateReadContentAsException("ReadContentAsDecimal");
       try
       {
-        return XmlConvert.ToDecimal(this.InternalReadContentAsString());
+        return Xml_Convert.ToDecimal(this.InternalReadContentAsString());
       }
       catch (FormatException ex)
       {
@@ -591,7 +591,7 @@ namespace TextMonster.Xml.Xml_Reader
         throw this.CreateReadContentAsException("ReadContentAsInt");
       try
       {
-        return XmlConvert.ToInt32(this.InternalReadContentAsString());
+        return Xml_Convert.ToInt32(this.InternalReadContentAsString());
       }
       catch (FormatException ex)
       {
@@ -613,7 +613,7 @@ namespace TextMonster.Xml.Xml_Reader
         throw this.CreateReadContentAsException("ReadContentAsLong");
       try
       {
-        return XmlConvert.ToInt64(this.InternalReadContentAsString());
+        return Xml_Convert.ToInt64(this.InternalReadContentAsString());
       }
       catch (FormatException ex)
       {
@@ -707,7 +707,7 @@ namespace TextMonster.Xml.Xml_Reader
     public virtual bool ReadElementContentAsBoolean()
     {
       if (!this.SetupReadElementContentAsXxx("ReadElementContentAsBoolean"))
-        return XmlConvert.ToBoolean(string.Empty);
+        return Xml_Convert.ToBoolean(string.Empty);
       int num = this.ReadContentAsBoolean() ? 1 : 0;
       this.FinishReadElementContentAsXxx();
       return num != 0;
@@ -738,7 +738,7 @@ namespace TextMonster.Xml.Xml_Reader
     public virtual DateTime ReadElementContentAsDateTime()
     {
       if (!this.SetupReadElementContentAsXxx("ReadElementContentAsDateTime"))
-        return XmlConvert.ToDateTime(string.Empty, XmlDateTimeSerializationMode.RoundtripKind);
+        return Xml_Convert.ToDateTime(string.Empty, XmlDateTimeSerializationMode.RoundtripKind);
       DateTime dateTime = this.ReadContentAsDateTime();
       this.FinishReadElementContentAsXxx();
       return dateTime;
@@ -769,7 +769,7 @@ namespace TextMonster.Xml.Xml_Reader
     public virtual double ReadElementContentAsDouble()
     {
       if (!this.SetupReadElementContentAsXxx("ReadElementContentAsDouble"))
-        return XmlConvert.ToDouble(string.Empty);
+        return Xml_Convert.ToDouble(string.Empty);
       double num = this.ReadContentAsDouble();
       this.FinishReadElementContentAsXxx();
       return num;
@@ -800,7 +800,7 @@ namespace TextMonster.Xml.Xml_Reader
     public virtual float ReadElementContentAsFloat()
     {
       if (!this.SetupReadElementContentAsXxx("ReadElementContentAsFloat"))
-        return XmlConvert.ToSingle(string.Empty);
+        return Xml_Convert.ToSingle(string.Empty);
       double num = (double)this.ReadContentAsFloat();
       this.FinishReadElementContentAsXxx();
       return (float)num;
@@ -831,7 +831,7 @@ namespace TextMonster.Xml.Xml_Reader
     public virtual Decimal ReadElementContentAsDecimal()
     {
       if (!this.SetupReadElementContentAsXxx("ReadElementContentAsDecimal"))
-        return XmlConvert.ToDecimal(string.Empty);
+        return Xml_Convert.ToDecimal(string.Empty);
       Decimal num = this.ReadContentAsDecimal();
       this.FinishReadElementContentAsXxx();
       return num;
@@ -862,7 +862,7 @@ namespace TextMonster.Xml.Xml_Reader
     public virtual int ReadElementContentAsInt()
     {
       if (!this.SetupReadElementContentAsXxx("ReadElementContentAsInt"))
-        return XmlConvert.ToInt32(string.Empty);
+        return Xml_Convert.ToInt32(string.Empty);
       int num = this.ReadContentAsInt();
       this.FinishReadElementContentAsXxx();
       return num;
@@ -893,7 +893,7 @@ namespace TextMonster.Xml.Xml_Reader
     public virtual long ReadElementContentAsLong()
     {
       if (!this.SetupReadElementContentAsXxx("ReadElementContentAsLong"))
-        return XmlConvert.ToInt64(string.Empty);
+        return Xml_Convert.ToInt64(string.Empty);
       long num = this.ReadContentAsLong();
       this.FinishReadElementContentAsXxx();
       return num;
@@ -1468,7 +1468,7 @@ namespace TextMonster.Xml.Xml_Reader
     public virtual bool ReadToFollowing(string name)
     {
       if (name == null || name.Length == 0)
-        throw XmlConvert.CreateInvalidNameArgumentException(name, "name");
+        throw Xml_Convert.CreateInvalidNameArgumentException(name, "name");
       name = this.NameTable.Add(name);
       while (this.Read())
       {
@@ -1489,7 +1489,7 @@ namespace TextMonster.Xml.Xml_Reader
     public virtual bool ReadToFollowing(string localName, string namespaceURI)
     {
       if (localName == null || localName.Length == 0)
-        throw XmlConvert.CreateInvalidNameArgumentException(localName, "localName");
+        throw Xml_Convert.CreateInvalidNameArgumentException(localName, "localName");
       if (namespaceURI == null)
         throw new ArgumentNullException("namespaceURI");
       localName = this.NameTable.Add(localName);
@@ -1513,7 +1513,7 @@ namespace TextMonster.Xml.Xml_Reader
     public virtual bool ReadToDescendant(string name)
     {
       if (name == null || name.Length == 0)
-        throw XmlConvert.CreateInvalidNameArgumentException(name, "name");
+        throw Xml_Convert.CreateInvalidNameArgumentException(name, "name");
       int depth = this.Depth;
       if (this.NodeType != XmlNodeType.Element)
       {
@@ -1543,7 +1543,7 @@ namespace TextMonster.Xml.Xml_Reader
     public virtual bool ReadToDescendant(string localName, string namespaceURI)
     {
       if (localName == null || localName.Length == 0)
-        throw XmlConvert.CreateInvalidNameArgumentException(localName, "localName");
+        throw Xml_Convert.CreateInvalidNameArgumentException(localName, "localName");
       if (namespaceURI == null)
         throw new ArgumentNullException("namespaceURI");
       int depth = this.Depth;
@@ -1576,7 +1576,7 @@ namespace TextMonster.Xml.Xml_Reader
     public virtual bool ReadToNextSibling(string name)
     {
       if (name == null || name.Length == 0)
-        throw XmlConvert.CreateInvalidNameArgumentException(name, "name");
+        throw Xml_Convert.CreateInvalidNameArgumentException(name, "name");
       name = this.NameTable.Add(name);
       while (this.SkipSubtree())
       {
@@ -1600,7 +1600,7 @@ namespace TextMonster.Xml.Xml_Reader
     public virtual bool ReadToNextSibling(string localName, string namespaceURI)
     {
       if (localName == null || localName.Length == 0)
-        throw XmlConvert.CreateInvalidNameArgumentException(localName, "localName");
+        throw Xml_Convert.CreateInvalidNameArgumentException(localName, "localName");
       if (namespaceURI == null)
         throw new ArgumentNullException("namespaceURI");
       localName = this.NameTable.Add(localName);
@@ -1874,7 +1874,7 @@ namespace TextMonster.Xml.Xml_Reader
     internal void CheckElement(string localName, string namespaceURI)
     {
       if (localName == null || localName.Length == 0)
-        throw XmlConvert.CreateInvalidNameArgumentException(localName, "localName");
+        throw Xml_Convert.CreateInvalidNameArgumentException(localName, "localName");
       if (namespaceURI == null)
         throw new ArgumentNullException("namespaceURI");
       if (this.NodeType != XmlNodeType.Element)
@@ -2855,7 +2855,7 @@ namespace TextMonster.Xml.Xml_Reader
           break;
           case XmlNodeType.Attribute:
           case XmlNodeType.ProcessingInstruction:
-          str = str + ", Name=\"" + this.reader.Name + "\", Value=\"" + XmlConvert.EscapeValueForDebuggerDisplay(this.reader.Value) + "\"";
+          str = str + ", Name=\"" + this.reader.Name + "\", Value=\"" + Xml_Convert.EscapeValueForDebuggerDisplay(this.reader.Value) + "\"";
           break;
           case XmlNodeType.Text:
           case XmlNodeType.CDATA:
@@ -2863,10 +2863,10 @@ namespace TextMonster.Xml.Xml_Reader
           case XmlNodeType.Whitespace:
           case XmlNodeType.SignificantWhitespace:
           case XmlNodeType.XmlDeclaration:
-          str = str + ", Value=\"" + XmlConvert.EscapeValueForDebuggerDisplay(this.reader.Value) + "\"";
+          str = str + ", Value=\"" + Xml_Convert.EscapeValueForDebuggerDisplay(this.reader.Value) + "\"";
           break;
           case XmlNodeType.DocumentType:
-          str = str + ", Name=\"" + this.reader.Name + "'" + ", SYSTEM=\"" + this.reader.GetAttribute("SYSTEM") + "\"" + ", PUBLIC=\"" + this.reader.GetAttribute("PUBLIC") + "\"" + ", Value=\"" + XmlConvert.EscapeValueForDebuggerDisplay(this.reader.Value) + "\"";
+          str = str + ", Name=\"" + this.reader.Name + "'" + ", SYSTEM=\"" + this.reader.GetAttribute("SYSTEM") + "\"" + ", PUBLIC=\"" + this.reader.GetAttribute("PUBLIC") + "\"" + ", Value=\"" + Xml_Convert.EscapeValueForDebuggerDisplay(this.reader.Value) + "\"";
           break;
         }
         return str;
