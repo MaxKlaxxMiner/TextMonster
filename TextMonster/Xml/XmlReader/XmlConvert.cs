@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections;
+using System.Globalization;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace TextMonster.Xml.XmlReader
 {
@@ -15,9 +19,7 @@ namespace TextMonster.Xml.XmlReader
     //
     static XmlCharType xmlCharType = XmlCharType.Instance;
 
-#if !SILVERLIGHT
     internal static char[] crt = new char[] { '\n', '\r', '\t' };
-#endif
 
     /// <include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.EncodeName"]/*' />
     /// <devdoc>
@@ -353,7 +355,6 @@ namespace TextMonster.Xml.XmlReader
     }
 
 
-#if !SILVERLIGHT
     internal static Exception TryVerifyName(string name)
     {
       if (name == null || name.Length == 0)
@@ -373,14 +374,9 @@ namespace TextMonster.Xml.XmlReader
     {
       return VerifyQName(name, ExceptionType.XmlException);
     }
-#endif
 
-#if SILVERLIGHT
-        internal static string VerifyQName(string name, ExceptionType exceptionType) {
-#else
     internal static unsafe string VerifyQName(string name, ExceptionType exceptionType)
     {
-#endif
       if (name == null || name.Length == 0)
       {
         throw new ArgumentNullException("name");
@@ -428,7 +424,6 @@ namespace TextMonster.Xml.XmlReader
       return name;
     }
 
-#if !SILVERLIGHT
     internal static Exception TryVerifyNCName(string name)
     {
       int len = ValidateNames.ParseNCName(name);
@@ -470,7 +465,6 @@ namespace TextMonster.Xml.XmlReader
       }
       return null;
     }
-#endif
 
     /// <include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.VerifyNMTOKEN"]/*' />
     /// <devdoc>
@@ -502,7 +496,6 @@ namespace TextMonster.Xml.XmlReader
       return name;
     }
 
-#if !SILVERLIGHT
     internal static Exception TryVerifyNMTOKEN(string name)
     {
       if (name == null || name.Length == 0)
@@ -535,7 +528,6 @@ namespace TextMonster.Xml.XmlReader
       }
       return null;
     }
-#endif
 
     // Verification method for XML characters as defined in XML spec production [2] Char.
     // Throws XmlException if invalid character is found, otherwise returns the input string.
@@ -597,44 +589,20 @@ namespace TextMonster.Xml.XmlReader
     //                              combined with the production [4] NameStartChar of XML 1.0 spec
     public static unsafe bool IsStartNCNameChar(char ch)
     {
-#if SILVERLIGHT
-            return xmlCharType.IsStartNCNameSingleChar(ch);
-#else
       return (xmlCharType.charProperties[ch] & XmlCharType.fNCStartNameSC) != 0;
-#endif
     }
-
-#if XML10_FIFTH_EDITION
-        public static bool IsStartNCNameSurrogatePair(char lowChar, char highChar) {
-            return xmlCharType.IsNCNameSurrogateChar(lowChar, highChar);
-        }
-#endif
 
     // Name character types - as defined in Namespaces XML 1.0 spec (second edition) production [6] NCNameStartChar
     //                        combined with the production [4] NameChar of XML 1.0 spec
     public static unsafe bool IsNCNameChar(char ch)
     {
-#if SILVERLIGHT
-            return xmlCharType.IsNCNameSingleChar(ch);
-#else
       return (xmlCharType.charProperties[ch] & XmlCharType.fNCNameSC) != 0;
-#endif
     }
-
-#if XML10_FIFTH_EDITION
-        public static bool IsNCNameSurrogatePair(char lowChar, char highChar) {
-            return xmlCharType.IsNCNameSurrogateChar(lowChar, highChar);
-        }
-#endif
 
     // Valid XML character – as defined in XML 1.0 spec (fifth edition) production [2] Char
     public static unsafe bool IsXmlChar(char ch)
     {
-#if SILVERLIGHT
-            return xmlCharType.IsCharData(ch);
-#else
       return (xmlCharType.charProperties[ch] & XmlCharType.fCharData) != 0;
-#endif
     }
 
     public static bool IsXmlSurrogatePair(char lowChar, char highChar)
@@ -651,11 +619,7 @@ namespace TextMonster.Xml.XmlReader
     // Valid Xml white space – as defined in XML 1.0 spec (fifth edition) production [3] S
     public static unsafe bool IsWhitespaceChar(char ch)
     {
-#if SILVERLIGHT
-            return xmlCharType.IsWhiteSpace(ch);
-#else
       return (xmlCharType.charProperties[ch] & XmlCharType.fWhitespace) != 0;
-#endif
     }
 
     // Value convertors:
@@ -827,7 +791,6 @@ namespace TextMonster.Xml.XmlReader
       return new XsdDuration(value).ToString();
     }
 
-#if !SILVERLIGHT
     ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToString12"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
@@ -846,7 +809,6 @@ namespace TextMonster.Xml.XmlReader
     {
       return value.ToString(format, DateTimeFormatInfo.InvariantInfo);
     }
-#endif
     ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToString14"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
@@ -909,7 +871,6 @@ namespace TextMonster.Xml.XmlReader
       throw new FormatException(Res.GetString(Res.XmlConvert_BadFormat, s, "Boolean"));
     }
 
-#if !SILVERLIGHT
     internal static Exception TryToBoolean(string s, out Boolean result)
     {
       s = TrimString(s);
@@ -926,7 +887,6 @@ namespace TextMonster.Xml.XmlReader
       result = false;
       return new FormatException(Res.GetString(Res.XmlConvert_BadFormat, s, "Boolean"));
     }
-#endif
 
     ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToChar"]/*' />
     /// <devdoc>
@@ -945,7 +905,6 @@ namespace TextMonster.Xml.XmlReader
       return s[0];
     }
 
-#if !SILVERLIGHT
     internal static Exception TryToChar(string s, out Char result)
     {
       if (!Char.TryParse(s, out result))
@@ -954,7 +913,6 @@ namespace TextMonster.Xml.XmlReader
       }
       return null;
     }
-#endif
 
     ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToDecimal"]/*' />
     /// <devdoc>
@@ -965,7 +923,6 @@ namespace TextMonster.Xml.XmlReader
       return Decimal.Parse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo);
     }
 
-#if !SILVERLIGHT
     internal static Exception TryToDecimal(string s, out Decimal result)
     {
       if (!Decimal.TryParse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
@@ -988,7 +945,6 @@ namespace TextMonster.Xml.XmlReader
       }
       return null;
     }
-#endif
     ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToSByte"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
@@ -999,7 +955,6 @@ namespace TextMonster.Xml.XmlReader
       return SByte.Parse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo);
     }
 
-#if !SILVERLIGHT
     internal static Exception TryToSByte(string s, out SByte result)
     {
       if (!SByte.TryParse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
@@ -1008,7 +963,6 @@ namespace TextMonster.Xml.XmlReader
       }
       return null;
     }
-#endif
 
     ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToInt16"]/*' />
     /// <devdoc>
@@ -1019,7 +973,6 @@ namespace TextMonster.Xml.XmlReader
       return Int16.Parse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo);
     }
 
-#if !SILVERLIGHT
     internal static Exception TryToInt16(string s, out Int16 result)
     {
       if (!Int16.TryParse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
@@ -1028,7 +981,6 @@ namespace TextMonster.Xml.XmlReader
       }
       return null;
     }
-#endif
 
     ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToInt32"]/*' />
     /// <devdoc>
@@ -1039,7 +991,6 @@ namespace TextMonster.Xml.XmlReader
       return Int32.Parse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo);
     }
 
-#if !SILVERLIGHT
     internal static Exception TryToInt32(string s, out Int32 result)
     {
       if (!Int32.TryParse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
@@ -1048,7 +999,6 @@ namespace TextMonster.Xml.XmlReader
       }
       return null;
     }
-#endif
 
     ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToInt64"]/*' />
     /// <devdoc>
@@ -1059,7 +1009,6 @@ namespace TextMonster.Xml.XmlReader
       return Int64.Parse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo);
     }
 
-#if !SILVERLIGHT
     internal static Exception TryToInt64(string s, out Int64 result)
     {
       if (!Int64.TryParse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
@@ -1069,7 +1018,6 @@ namespace TextMonster.Xml.XmlReader
       return null;
     }
 
-#endif
     ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToByte"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
@@ -1079,7 +1027,6 @@ namespace TextMonster.Xml.XmlReader
       return Byte.Parse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo);
     }
 
-#if !SILVERLIGHT
     internal static Exception TryToByte(string s, out Byte result)
     {
       if (!Byte.TryParse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
@@ -1088,7 +1035,6 @@ namespace TextMonster.Xml.XmlReader
       }
       return null;
     }
-#endif
 
     ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToUInt16"]/*' />
     /// <devdoc>
@@ -1100,7 +1046,6 @@ namespace TextMonster.Xml.XmlReader
       return UInt16.Parse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo);
     }
 
-#if !SILVERLIGHT
     internal static Exception TryToUInt16(string s, out UInt16 result)
     {
       if (!UInt16.TryParse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
@@ -1109,7 +1054,6 @@ namespace TextMonster.Xml.XmlReader
       }
       return null;
     }
-#endif
 
     ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToUInt32"]/*' />
     /// <devdoc>
@@ -1122,7 +1066,6 @@ namespace TextMonster.Xml.XmlReader
     }
 
 
-#if !SILVERLIGHT
     internal static Exception TryToUInt32(string s, out UInt32 result)
     {
       if (!UInt32.TryParse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
@@ -1131,7 +1074,6 @@ namespace TextMonster.Xml.XmlReader
       }
       return null;
     }
-#endif
 
     ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToUInt64"]/*' />
     /// <devdoc>
@@ -1143,7 +1085,6 @@ namespace TextMonster.Xml.XmlReader
       return UInt64.Parse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo);
     }
 
-#if !SILVERLIGHT
     internal static Exception TryToUInt64(string s, out UInt64 result)
     {
       if (!UInt64.TryParse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
@@ -1152,7 +1093,6 @@ namespace TextMonster.Xml.XmlReader
       }
       return null;
     }
-#endif
 
     ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToSingle"]/*' />
     /// <devdoc>
@@ -1171,7 +1111,6 @@ namespace TextMonster.Xml.XmlReader
       return f;
     }
 
-#if !SILVERLIGHT
     internal static Exception TryToSingle(string s, out Single result)
     {
       s = TrimString(s);
@@ -1195,7 +1134,6 @@ namespace TextMonster.Xml.XmlReader
       }
       return null;
     }
-#endif
 
     ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToDouble"]/*' />
     /// <devdoc>
@@ -1214,7 +1152,6 @@ namespace TextMonster.Xml.XmlReader
       return dVal;
     }
 
-#if !SILVERLIGHT
     internal static Exception TryToDouble(string s, out double result)
     {
       s = TrimString(s);
@@ -1238,9 +1175,7 @@ namespace TextMonster.Xml.XmlReader
       }
       return null;
     }
-#endif
 
-#if !SILVERLIGHT
     internal static Double ToXPathDouble(Object o)
     {
       string str = o as string;
@@ -1305,7 +1240,6 @@ namespace TextMonster.Xml.XmlReader
       double temp = Math.Round(value);
       return (value - temp == 0.5) ? temp + 1 : temp;
     }
-#endif
 
     ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToTimeSpan"]/*' />
     /// <devdoc>
@@ -1331,7 +1265,6 @@ namespace TextMonster.Xml.XmlReader
       return timeSpan;
     }
 
-#if !SILVERLIGHT
     internal static Exception TryToTimeSpan(string s, out TimeSpan result)
     {
       XsdDuration duration;
@@ -1348,9 +1281,7 @@ namespace TextMonster.Xml.XmlReader
         return duration.TryToTimeSpan(out result);
       }
     }
-#endif
 
-#if !SILVERLIGHT
     // use AllDateTimeFormats property to access the formats
     static volatile string[] s_allDateTimeFormats;
 
@@ -1410,7 +1341,6 @@ namespace TextMonster.Xml.XmlReader
     {
       return ToDateTime(s, AllDateTimeFormats);
     }
-#endif
 
     ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToDateTime1"]/*' />
     /// <devdoc>
@@ -1500,7 +1430,6 @@ namespace TextMonster.Xml.XmlReader
       return new Guid(s);
     }
 
-#if !SILVERLIGHT
     internal static Exception TryToGuid(string s, out Guid result)
     {
       Exception exception = null;
@@ -1521,7 +1450,6 @@ namespace TextMonster.Xml.XmlReader
       }
       return exception;
     }
-#endif
 
     private static DateTime SwitchToLocalTime(DateTime value)
     {
@@ -1573,7 +1501,6 @@ namespace TextMonster.Xml.XmlReader
       return uri;
     }
 
-#if !SILVERLIGHT
     internal static Exception TryToUri(string s, out Uri result)
     {
       result = null;
@@ -1592,7 +1519,6 @@ namespace TextMonster.Xml.XmlReader
       }
       return null;
     }
-#endif
 
     // Compares the given character interval and string and returns true if the characters are identical
     internal static bool StrEqual(char[] chars, int strPos1, int strLen1, string str2)
@@ -1652,9 +1578,6 @@ namespace TextMonster.Xml.XmlReader
       return false;
     }
 
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY
-        [System.Security.SecuritySafeCritical]
-#endif
     private static unsafe long DoubleToInt64Bits(double value)
     {
       // NOTE: BitConverter.DoubleToInt64Bits is missing in Silverlight
@@ -1666,12 +1589,8 @@ namespace TextMonster.Xml.XmlReader
       VerifyCharData(data, exceptionType, exceptionType);
     }
 
-#if SILVERLIGHT
-        internal static void VerifyCharData( string data, ExceptionType invCharExceptionType, ExceptionType invSurrogateExceptionType ) {
-#else
     internal static unsafe void VerifyCharData(string data, ExceptionType invCharExceptionType, ExceptionType invSurrogateExceptionType)
     {
-#endif
       if (data == null || data.Length == 0)
       {
         return;
@@ -1681,12 +1600,8 @@ namespace TextMonster.Xml.XmlReader
       int len = data.Length;
       for (; ; )
       {
-#if SILVERLIGHT
-                while (i < len && xmlCharType.IsCharData(data[i])) {
-#else
         while (i < len && (xmlCharType.charProperties[data[i]] & XmlCharType.fCharData) != 0)
         {
-#endif
           i++;
         }
         if (i == len)
@@ -1716,12 +1631,8 @@ namespace TextMonster.Xml.XmlReader
       }
     }
 
-#if SILVERLIGHT
-        internal static void VerifyCharData(char[] data, int offset, int len, ExceptionType exceptionType) {
-#else
     internal static unsafe void VerifyCharData(char[] data, int offset, int len, ExceptionType exceptionType)
     {
-#endif
       if (data == null || len == 0)
       {
         return;
@@ -1731,12 +1642,8 @@ namespace TextMonster.Xml.XmlReader
       int endPos = offset + len;
       for (; ; )
       {
-#if SILVERLIGHT
-                while ( i < endPos && xmlCharType.IsCharData(data[i])) {
-#else
         while (i < endPos && (xmlCharType.charProperties[data[i]] & XmlCharType.fCharData) != 0)
         {
-#endif
           i++;
         }
         if (i == endPos)
@@ -1766,7 +1673,6 @@ namespace TextMonster.Xml.XmlReader
       }
     }
 
-#if !SILVERLIGHT
     internal static string EscapeValueForDebuggerDisplay(string value)
     {
       StringBuilder sb = null;
@@ -1817,7 +1723,6 @@ namespace TextMonster.Xml.XmlReader
       }
       return sb.ToString();
     }
-#endif
 
     internal static Exception CreateException(string res, ExceptionType exceptionType)
     {
