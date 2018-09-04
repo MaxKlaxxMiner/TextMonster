@@ -1833,11 +1833,6 @@ namespace TextMonster.Xml.XmlReader
         reader = settings.AddValidation(reader);
       }
 
-      if (settings.Async)
-      {
-        reader = XmlAsyncCheckReader.CreateAsyncCheckWrapper(reader);
-      }
-
       return reader;
     }
 
