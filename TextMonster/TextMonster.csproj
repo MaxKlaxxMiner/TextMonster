@@ -56,6 +56,9 @@
     <Compile Include="Xml\XmlReader\CharEntityEncoderFallbackBuffer.cs" />
     <Compile Include="Xml\XmlReader\Axis.cs" />
     <Compile Include="Xml\XmlReader\AstNode.cs" />
+    <Compile Include="Xml\XmlReader\XPathException.cs" />
+    <Compile Include="Xml\XmlReader\XPathScanner.cs" />
+    <Compile Include="Xml\XmlReader\XPathParser.cs" />
     <Compile Include="Xml\XmlReader\XPathResultType.cs" />
     <Compile Include="Xml\XmlReader\CompiledIdentityConstraint.cs" />
     <Compile Include="Xml\XmlReader\Asttree.cs" />
