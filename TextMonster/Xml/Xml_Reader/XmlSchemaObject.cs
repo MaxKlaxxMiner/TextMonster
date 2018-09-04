@@ -89,8 +89,8 @@ namespace TextMonster.Xml.Xml_Reader
     [XmlIgnore]
     internal virtual string NameAttribute
     {
-      get { Debug.Assert(false); return null; }
-      set { Debug.Assert(false); }
+      get { return null; }
+      set { }
     }
 
     [XmlIgnore]

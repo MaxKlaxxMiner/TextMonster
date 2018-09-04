@@ -56,6 +56,9 @@
     <Compile Include="Xml\Xml_Reader\CharEntityEncoderFallbackBuffer.cs" />
     <Compile Include="Xml\Xml_Reader\Axis.cs" />
     <Compile Include="Xml\Xml_Reader\AstNode.cs" />
+    <Compile Include="Xml\Xml_Reader\NamespaceListV1Compat.cs" />
+    <Compile Include="Xml\Xml_Reader\NamespaceList.cs" />
+    <Compile Include="Xml\Xml_Reader\XmlSchemaAny.cs" />
     <Compile Include="Xml\Xml_Reader\XmlSchemaKeyref.cs" />
     <Compile Include="Xml\Xml_Reader\XmlSchemaKey.cs" />
     <Compile Include="Xml\Xml_Reader\XmlSchemaUnique.cs" />
