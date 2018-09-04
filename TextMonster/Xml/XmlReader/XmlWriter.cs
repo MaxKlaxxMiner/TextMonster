@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Globalization;
+using System.IO;
+using System.Runtime.Versioning;
+using System.Text;
 
 namespace TextMonster.Xml.XmlReader
 {
@@ -507,7 +511,6 @@ namespace TextMonster.Xml.XmlReader
           // do nothing on root level namespace
           break;
           default:
-          Debug.Assert(false);
           break;
         }
 

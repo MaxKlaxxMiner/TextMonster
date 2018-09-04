@@ -1,4 +1,7 @@
-﻿namespace TextMonster.Xml.XmlReader
+﻿using System;
+using System.IO;
+
+namespace TextMonster.Xml.XmlReader
 {
   /// <summary>
   /// This writer implements XmlOutputMethod.AutoDetect.  If the first element is "html", then output will be
@@ -9,7 +12,6 @@
     private XmlRawWriter wrapped;
     private OnRemoveWriter onRemove;
     private XmlWriterSettings writerSettings;
-    private XmlEventCache eventCache;           // Cache up events until first StartElement is encountered
     private TextWriter textWriter;
     private Stream strm;
 
@@ -21,9 +23,6 @@
     {
       this.writerSettings = (XmlWriterSettings)writerSettings.Clone();
       this.writerSettings.ReadOnly = true;
-
-      // Start caching all events
-      this.eventCache = new XmlEventCache(string.Empty, true);
     }
 
     public XmlAutoDetectWriter(TextWriter textWriter, XmlWriterSettings writerSettings)
@@ -89,48 +88,37 @@
 
     public override void WriteEndAttribute()
     {
-      Debug.Assert(this.wrapped != null);
       this.wrapped.WriteEndAttribute();
     }
 
     public override void WriteCData(string text)
     {
-      if (TextBlockCreatesWriter(text))
+      if (this.wrapped != null)
         this.wrapped.WriteCData(text);
-      else
-        this.eventCache.WriteCData(text);
     }
 
     public override void WriteComment(string text)
     {
-      if (this.wrapped == null)
-        this.eventCache.WriteComment(text);
-      else
+      if (this.wrapped != null)
         this.wrapped.WriteComment(text);
     }
 
     public override void WriteProcessingInstruction(string name, string text)
     {
-      if (this.wrapped == null)
-        this.eventCache.WriteProcessingInstruction(name, text);
-      else
+      if (this.wrapped != null)
         this.wrapped.WriteProcessingInstruction(name, text);
     }
 
     public override void WriteWhitespace(string ws)
     {
-      if (this.wrapped == null)
-        this.eventCache.WriteWhitespace(ws);
-      else
+      if (this.wrapped != null)
         this.wrapped.WriteWhitespace(ws);
     }
 
     public override void WriteString(string text)
     {
-      if (TextBlockCreatesWriter(text))
+      if (this.wrapped != null)
         this.wrapped.WriteString(text);
-      else
-        this.eventCache.WriteString(text);
     }
 
     public override void WriteChars(char[] buffer, int index, int count)
@@ -145,10 +133,8 @@
 
     public override void WriteRaw(string data)
     {
-      if (TextBlockCreatesWriter(data))
+      if (this.wrapped != null)
         this.wrapped.WriteRaw(data);
-      else
-        this.eventCache.WriteRaw(data);
     }
 
     public override void WriteEntityRef(string name)
@@ -269,9 +255,7 @@
       {
         this.resolver = value;
 
-        if (this.wrapped == null)
-          this.eventCache.NamespaceResolver = value;
-        else
+        if (this.wrapped != null)
           this.wrapped.NamespaceResolver = value;
       }
     }
@@ -292,19 +276,16 @@
 
     internal override void StartElementContent()
     {
-      Debug.Assert(this.wrapped != null);
       this.wrapped.StartElementContent();
     }
 
     internal override void WriteEndElement(string prefix, string localName, string ns)
     {
-      Debug.Assert(this.wrapped != null);
       this.wrapped.WriteEndElement(prefix, localName, ns);
     }
 
     internal override void WriteFullEndElement(string prefix, string localName, string ns)
     {
-      Debug.Assert(this.wrapped != null);
       this.wrapped.WriteFullEndElement(prefix, localName, ns);
     }
 
@@ -396,8 +377,6 @@
     /// </summary>
     private void CreateWrappedWriter(XmlOutputMethod outMethod)
     {
-      Debug.Assert(this.wrapped == null);
-
       // Create either the Xml or Html writer
       this.writerSettings.ReadOnly = false;
       this.writerSettings.OutputMethod = outMethod;
@@ -412,10 +391,6 @@
         this.wrapped = ((XmlWellFormedWriter)XmlWriter.Create(this.textWriter, this.writerSettings)).RawWriter;
       else
         this.wrapped = ((XmlWellFormedWriter)XmlWriter.Create(this.strm, this.writerSettings)).RawWriter;
-
-      // Send cached events to the new writer
-      this.eventCache.EndEvents();
-      this.eventCache.EventsToWriter(this.wrapped);
 
       // Send OnRemoveWriter event
       if (this.onRemove != null)
