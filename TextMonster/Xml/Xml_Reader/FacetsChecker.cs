@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -450,7 +453,6 @@ namespace TextMonster.Xml.Xml_Reader
           break;
 
           default:
-          Debug.Assert(false);
           break;
         }
       }

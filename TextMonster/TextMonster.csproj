@@ -56,6 +56,12 @@
     <Compile Include="Xml\Xml_Reader\CharEntityEncoderFallbackBuffer.cs" />
     <Compile Include="Xml\Xml_Reader\Axis.cs" />
     <Compile Include="Xml\Xml_Reader\AstNode.cs" />
+    <Compile Include="Xml\Xml_Reader\Bits.cs" />
+    <Compile Include="Xml\Xml_Reader\SchemaNamespaceManager.cs" />
+    <Compile Include="Xml\Xml_Reader\XsdDuration.cs" />
+    <Compile Include="Xml\Xml_Reader\XsdDateTime.cs" />
+    <Compile Include="Xml\Xml_Reader\XmlAtomicValue.cs" />
+    <Compile Include="Xml\Xml_Reader\XmlBaseConverter.cs" />
     <Compile Include="Xml\Xml_Reader\NamespaceListV1Compat.cs" />
     <Compile Include="Xml\Xml_Reader\NamespaceList.cs" />
     <Compile Include="Xml\Xml_Reader\XmlSchemaAny.cs" />
@@ -249,6 +255,7 @@
     <Compile Include="Xml\Xml_Reader\XmlNodeType.cs" />
     <Compile Include="Xml\Xml_Reader\XmlReaderSettings.cs" />
     <Compile Include="Xml\Xml_Reader\XmlReader.cs" />
+    <Compile Include="Xml\Xml_Reader\XsdDateTimeFlags.cs" />
     <Compile Include="Xml\X_Comment.cs" />
     <Compile Include="Xml\X_ProcessingInstruction.cs" />
     <Compile Include="Xml\Internal\StreamingElementWriter.cs" />
