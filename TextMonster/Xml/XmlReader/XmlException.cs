@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using System.Security.Permissions;
 using System.Threading;
 
-namespace TextMonster.Xml.Xml_Reader
+namespace TextMonster.Xml.XmlReader
 {
   /// <devdoc>
   ///    <para>Returns detailed information about the last parse error, including the error

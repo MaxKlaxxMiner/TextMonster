@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TextMonster.Xml.Xml_Reader
+namespace TextMonster.Xml.XmlReader
 {
   // Provides read-only access to a set of (prefix, namespace) mappings.  Each distinct prefix is mapped to exactly
   // one namespace, but multiple prefixes may be mapped to the same namespace (e.g. xmlns:foo="ns" xmlns:bar="ns").

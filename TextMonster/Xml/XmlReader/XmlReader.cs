@@ -6,10 +6,10 @@ using System.Runtime.Versioning;
 using System.Text;
 using BufferBuilder = System.Text.StringBuilder;
 
-namespace TextMonster.Xml.Xml_Reader
+namespace TextMonster.Xml.XmlReader
 {
   // ReSharper disable once InconsistentNaming
-  public abstract partial class Xml_Reader : IDisposable
+  public abstract partial class XmlReader : IDisposable
   {
 
     static private uint IsTextualNodeBitmap = 0x6018; // 00 0110 0000 0001 1000
@@ -1379,7 +1379,7 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // Returns an XmlReader that will read only the current element and its descendants and then go to EOF state.
-    public virtual Xml_Reader ReadSubtree()
+    public virtual XmlReader ReadSubtree()
     {
       if (NodeType != XmlNodeType.Element)
       {
@@ -1640,7 +1640,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal static Encoding GetEncoding(Xml_Reader reader)
+    internal static Encoding GetEncoding(XmlReader reader)
     {
       XmlTextReaderImpl tri = GetXmlTextReaderImpl(reader);
       return tri != null ? tri.Encoding : null;

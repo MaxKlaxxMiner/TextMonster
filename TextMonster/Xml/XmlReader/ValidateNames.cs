@@ -1,4 +1,4 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿namespace TextMonster.Xml.XmlReader
 {
   /// <summary>
   /// Contains various static functions and methods for parsing and validating:

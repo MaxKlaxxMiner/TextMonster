@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TextMonster.Xml.Xml_Reader
+namespace TextMonster.Xml.XmlReader
 {
   /// <include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert"]/*' />
   /// <devdoc>

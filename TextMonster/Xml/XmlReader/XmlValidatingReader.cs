@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Security.Permissions;
 
-namespace TextMonster.Xml.Xml_Reader
+namespace TextMonster.Xml.XmlReader
 {
   [PermissionSet(SecurityAction.InheritanceDemand, Name = "FullTrust")]
   [Obsolete("Use XmlReader created by XmlReader.Create() method using appropriate XmlReaderSettings instead. http://go.microsoft.com/fwlink/?linkid=14202")]
-  public class XmlValidatingReader : Xml_Reader, IXmlLineInfo, IXmlNamespaceResolver
+  public class XmlValidatingReader : XmlReader, IXmlLineInfo, IXmlNamespaceResolver
   {
     //
     // Member fields

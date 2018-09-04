@@ -1,4 +1,4 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿namespace TextMonster.Xml.XmlReader
 {
   /// <summary>
   /// Ref class is used to verify string atomization in debug mode.

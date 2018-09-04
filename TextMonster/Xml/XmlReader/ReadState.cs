@@ -1,4 +1,4 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿namespace TextMonster.Xml.XmlReader
 {
   // Specifies the state of the XmlReader.
   public enum ReadState

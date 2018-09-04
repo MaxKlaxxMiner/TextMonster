@@ -4,7 +4,7 @@ using System.Security;
 using System.Security.Permissions;
 using Microsoft.Win32;
 
-namespace TextMonster.Xml.Xml_Reader
+namespace TextMonster.Xml.XmlReader
 {
   public sealed class XmlReaderSettings
   {

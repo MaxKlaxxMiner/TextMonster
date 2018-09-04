@@ -1,10 +1,10 @@
 ﻿using System.Security.Permissions;
 
-namespace TextMonster.Xml.Xml_Reader
+namespace TextMonster.Xml.XmlReader
 {
   [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
   [PermissionSet(SecurityAction.InheritanceDemand, Name = "FullTrust")]
-  public class XmlTextReader : Xml_Reader, IXmlLineInfo, IXmlNamespaceResolver
+  public class XmlTextReader : XmlReader, IXmlLineInfo, IXmlNamespaceResolver
   {
     //
     // Member fields

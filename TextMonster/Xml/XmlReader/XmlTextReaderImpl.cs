@@ -1,6 +1,6 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿namespace TextMonster.Xml.XmlReader
 {
-  internal partial class XmlTextReaderImpl : Xml_Reader, IXmlLineInfo, IXmlNamespaceResolver
+  internal partial class XmlTextReaderImpl : XmlReader, IXmlLineInfo, IXmlNamespaceResolver
   {
     //
     // Private helper types

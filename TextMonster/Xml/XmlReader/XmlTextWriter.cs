@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace TextMonster.Xml.Xml_Reader
+namespace TextMonster.Xml.XmlReader
 {
   [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
   public class XmlTextWriter : XmlWriter

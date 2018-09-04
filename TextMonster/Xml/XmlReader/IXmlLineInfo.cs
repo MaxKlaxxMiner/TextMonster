@@ -1,4 +1,4 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿namespace TextMonster.Xml.XmlReader
 {
   /// <include file='doc\IXmlLineInfo.uex' path='docs/doc[@for="IXmlLineInfo"]/*' />
   public interface IXmlLineInfo

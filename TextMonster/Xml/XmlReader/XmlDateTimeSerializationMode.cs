@@ -1,4 +1,4 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿namespace TextMonster.Xml.XmlReader
 {
   // Options for serializing and deserializing DateTime
   public enum XmlDateTimeSerializationMode

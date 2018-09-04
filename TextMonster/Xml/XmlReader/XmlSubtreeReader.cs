@@ -1,4 +1,4 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿namespace TextMonster.Xml.XmlReader
 {
   internal sealed partial class XmlSubtreeReader : XmlWrappingReader, IXmlLineInfo, IXmlNamespaceResolver
   {
@@ -81,7 +81,7 @@
     // 
     // Constructor
     //
-    internal XmlSubtreeReader(Xml_Reader reader)
+    internal XmlSubtreeReader(XmlReader reader)
       : base(reader)
     {
       initialDepth = reader.Depth;

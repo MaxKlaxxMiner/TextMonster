@@ -1,18 +1,18 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿namespace TextMonster.Xml.XmlReader
 {
-  internal partial class XmlWrappingReader : Xml_Reader, IXmlLineInfo
+  internal partial class XmlWrappingReader : XmlReader, IXmlLineInfo
   {
 
     //
     // Fields
     //
-    protected Xml_Reader reader;
+    protected XmlReader reader;
     protected IXmlLineInfo readerAsIXmlLineInfo;
 
     // 
     // Constructor
     //
-    internal XmlWrappingReader(Xml_Reader baseReader)
+    internal XmlWrappingReader(XmlReader baseReader)
     {
       this.reader = baseReader;
       this.readerAsIXmlLineInfo = baseReader as IXmlLineInfo;

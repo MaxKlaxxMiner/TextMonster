@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Resources;
 using System.Threading;
 
-namespace TextMonster.Xml.Xml_Reader
+namespace TextMonster.Xml.XmlReader
 {
   internal sealed class Res
   {

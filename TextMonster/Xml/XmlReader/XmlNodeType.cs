@@ -1,4 +1,4 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿namespace TextMonster.Xml.XmlReader
 {
   /// <include file='doc\XmlNodeType.uex' path='docs/doc[@for="XmlNodeType"]/*' />
   /// <devdoc>

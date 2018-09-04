@@ -1,4 +1,4 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿namespace TextMonster.Xml.XmlReader
 {
   // An enumeration for the xml:space scope used in XmlReader and XmlWriter.
   public enum XmlSpace
