@@ -49,7 +49,6 @@
         throw e;
       }
       XmlSchemaObjectCollection fields = constraint.Fields;
-      Debug.Assert(fields.Count > 0);
       this.fields = new Asttree[fields.Count];
       for (int idxField = 0; idxField < fields.Count; idxField++)
       {
