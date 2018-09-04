@@ -1,4 +1,9 @@
-﻿using System.Security.Permissions;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Versioning;
+using System.Security.Permissions;
+using System.Text;
 
 namespace TextMonster.Xml.Xml_Reader
 {

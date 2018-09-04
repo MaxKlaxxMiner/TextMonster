@@ -1,4 +1,7 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿using System;
+using System.Collections;
+
+namespace TextMonster.Xml.Xml_Reader
 {
   // Represents an entire document. An XmlDocument contains XML data.
   public class XmlDocument : XmlNode
@@ -126,27 +129,18 @@
     internal XmlName AddXmlName(string prefix, string localName, string namespaceURI, IXmlSchemaInfo schemaInfo)
     {
       XmlName n = domNameTable.AddName(prefix, localName, namespaceURI, schemaInfo);
-      Debug.Assert((prefix == null) ? (n.Prefix.Length == 0) : (prefix == n.Prefix));
-      Debug.Assert(n.LocalName == localName);
-      Debug.Assert((namespaceURI == null) ? (n.NamespaceURI.Length == 0) : (n.NamespaceURI == namespaceURI));
       return n;
     }
 
     internal XmlName GetXmlName(string prefix, string localName, string namespaceURI, IXmlSchemaInfo schemaInfo)
     {
       XmlName n = domNameTable.GetName(prefix, localName, namespaceURI, schemaInfo);
-      Debug.Assert(n == null || ((prefix == null) ? (n.Prefix.Length == 0) : (prefix == n.Prefix)));
-      Debug.Assert(n == null || n.LocalName == localName);
-      Debug.Assert(n == null || ((namespaceURI == null) ? (n.NamespaceURI.Length == 0) : (n.NamespaceURI == namespaceURI)));
       return n;
     }
 
     internal XmlName AddAttrXmlName(string prefix, string localName, string namespaceURI, IXmlSchemaInfo schemaInfo)
     {
       XmlName xmlName = AddXmlName(prefix, localName, namespaceURI, schemaInfo);
-      Debug.Assert((prefix == null) ? (xmlName.Prefix.Length == 0) : (prefix == xmlName.Prefix));
-      Debug.Assert(xmlName.LocalName == localName);
-      Debug.Assert((namespaceURI == null) ? (xmlName.NamespaceURI.Length == 0) : (xmlName.NamespaceURI == namespaceURI));
 
       if (!this.IsLoading)
       {

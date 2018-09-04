@@ -1,4 +1,6 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿using System;
+
+namespace TextMonster.Xml.Xml_Reader
 {
   // Represents an attribute of the XMLElement object. Valid and default
   // values for the attribute are defined in a DTD or schema.
@@ -10,8 +12,6 @@
     internal XmlAttribute(XmlName name, XmlDocument doc)
       : base(doc)
     {
-      Debug.Assert(name != null);
-      Debug.Assert(doc != null);
       this.parentNode = null;
       if (!doc.IsLoading)
       {
@@ -43,7 +43,6 @@
     public override XmlNode CloneNode(bool deep)
     {
       // CloneNode for attributes is deep irrespective of parameter 'deep' value     
-      Debug.Assert(OwnerDocument != null);
       XmlDocument doc = OwnerDocument;
       XmlAttribute attr = doc.CreateAttribute(Prefix, LocalName, NamespaceURI);
       attr.CopyChildren(doc, this, true);

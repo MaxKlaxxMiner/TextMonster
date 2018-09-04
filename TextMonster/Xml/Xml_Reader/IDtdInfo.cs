@@ -1,4 +1,6 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿using System.Collections.Generic;
+
+namespace TextMonster.Xml.Xml_Reader
 {
   //
   // IDtdInfo interface

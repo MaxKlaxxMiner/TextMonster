@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.Versioning;
+using System.Text;
 
 namespace TextMonster.Xml.Xml_Reader
 {
