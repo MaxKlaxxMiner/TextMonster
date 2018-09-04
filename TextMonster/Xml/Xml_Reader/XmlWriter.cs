@@ -317,7 +317,7 @@ namespace TextMonster.Xml.Xml_Reader
     // XmlReader Helper Methods
 
     // Writes out all the attributes found at the current position in the specified XmlReader.
-    public virtual void WriteAttributes(XmlReader reader, bool defattr)
+    public virtual void WriteAttributes(Xml_Reader reader, bool defattr)
     {
       if (null == reader)
       {
@@ -365,7 +365,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     // Copies the current node from the given reader to the writer (including child nodes), and if called on an element moves the XmlReader 
     // to the corresponding end element.
-    public virtual void WriteNode(XmlReader reader, bool defattr)
+    public virtual void WriteNode(Xml_Reader reader, bool defattr)
     {
       if (null == reader)
       {

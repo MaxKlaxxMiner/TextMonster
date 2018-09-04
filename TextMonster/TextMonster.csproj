@@ -46,6 +46,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Xml\Internal\ElementWriter.cs" />
     <Compile Include="Xml\Internal\XNodeBuilder.cs" />
+    <Compile Include="Xml\Xml_Reader\XmlTextReader.cs" />
     <Compile Include="Xml\Xml_Reader\XmlTextWriter.cs" />
     <Compile Include="Xml\Xml_Reader\XmlWriter.cs" />
     <Compile Include="Xml\Xml_Reader\ValidateNames.cs" />
