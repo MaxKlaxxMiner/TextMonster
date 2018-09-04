@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System;
+using System.IO;
+using System.Text;
 
 namespace TextMonster.Xml.XmlReader
 {
@@ -749,7 +751,6 @@ namespace TextMonster.Xml.XmlReader
           {
             Throw(Res.Xml_DoubleBaseUri);
           }
-          Debug.Assert(baseUri == null);
           baseUriStr = context.BaseURI;
         }
       }
