@@ -1,4 +1,6 @@
-﻿namespace TextMonster.Xml.XmlReader
+﻿using System;
+
+namespace TextMonster.Xml.XmlReader
 {
   /// <summary>
   /// Contains various static functions and methods for parsing and validating:
@@ -388,8 +390,6 @@
       // If the name is empty, throw an exception
       if (offsetStartChar >= s.Length)
         return new XmlException(Res.Xml_EmptyName, string.Empty);
-
-      Debug.Assert(offsetBadChar < s.Length);
 
       if (xmlCharType.IsNCNameSingleChar(s[offsetBadChar]) && !xmlCharType.IsStartNCNameSingleChar(s[offsetBadChar]))
       {
