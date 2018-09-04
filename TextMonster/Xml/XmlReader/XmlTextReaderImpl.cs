@@ -1,4 +1,6 @@
-﻿namespace TextMonster.Xml.XmlReader
+﻿using System.Text;
+
+namespace TextMonster.Xml.XmlReader
 {
   internal partial class XmlTextReaderImpl : XmlReader, IXmlLineInfo, IXmlNamespaceResolver
   {
