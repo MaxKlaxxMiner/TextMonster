@@ -1,4 +1,6 @@
-﻿namespace TextMonster.Xml.XmlReader
+﻿using System;
+
+namespace TextMonster.Xml.XmlReader
 {
   internal abstract partial class XmlRawWriter : XmlWriter
   {
@@ -188,12 +190,10 @@
       throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
     }
 
-#if !SILVERLIGHT  // Removing dependency on XPathNavigator
     public override void WriteNode(System.Xml.XPath.XPathNavigator navigator, bool defattr)
     {
       throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
     }
-#endif
 
     //
     // XmlRawWriter methods and properties
