@@ -48,6 +48,7 @@
     <Compile Include="Xml\Internal\XNodeBuilder.cs" />
     <Compile Include="Xml\XmlReader\BinHexDecoder.cs" />
     <Compile Include="Xml\XmlReader\BinHexEncoder.cs" />
+    <Compile Include="Xml\XmlReader\ExceptionType.cs" />
     <Compile Include="Xml\XmlReader\IncrementalReadDecoder.cs" />
     <Compile Include="Xml\XmlReader\XmlCharType.cs" />
     <Compile Include="Xml\XmlReader\ValidationType.cs" />
