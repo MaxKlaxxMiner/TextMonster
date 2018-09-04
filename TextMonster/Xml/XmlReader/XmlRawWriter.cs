@@ -190,7 +190,7 @@ namespace TextMonster.Xml.XmlReader
       throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
     }
 
-    public override void WriteNode(System.Xml.XPath.XPathNavigator navigator, bool defattr)
+    public override void WriteNode(XPathNavigator navigator, bool defattr)
     {
       throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
     }

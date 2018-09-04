@@ -58,18 +58,6 @@ namespace TextMonster.Xml.XmlReader
     // Properties
     //
 
-#if ASYNC || FEATURE_NETCORE
-        public bool Async {
-            get {
-                return useAsync;
-            }
-            set {
-                CheckReadOnly("Async");
-                useAsync = value;
-            }
-        }
-#endif
-
     // Text
     public Encoding Encoding
     {
@@ -83,21 +71,6 @@ namespace TextMonster.Xml.XmlReader
         encoding = value;
       }
     }
-
-#if FEATURE_LEGACYNETCF
-        internal bool DontWriteEncodingTag
-        {
-            get
-            {
-                return dontWriteEncodingTag;
-            }
-            set
-            {
-                CheckReadOnly("DontWriteEncodingTag");
-                dontWriteEncodingTag = value;
-            }
-        }
-#endif
 
     // True if an xml declaration should *not* be written.
     public bool OmitXmlDeclaration
@@ -279,7 +252,6 @@ namespace TextMonster.Xml.XmlReader
       }
     }
 
-#if !SILVERLIGHT
     // Specifies the method (Html, Xml, etc.) that will be used to serialize the result tree.
     public XmlOutputMethod OutputMethod
     {
@@ -292,7 +264,6 @@ namespace TextMonster.Xml.XmlReader
         outputMethod = value;
       }
     }
-#endif
 
     //
     // Public methods
@@ -309,10 +280,8 @@ namespace TextMonster.Xml.XmlReader
     {
       XmlWriterSettings clonedSettings = MemberwiseClone() as XmlWriterSettings;
 
-#if !SILVERLIGHT
       // Deep clone shared settings that are not immutable
       clonedSettings.cdataSections = new List<XmlQualifiedName>(cdataSections);
-#endif
 
       clonedSettings.isReadOnly = false;
       return clonedSettings;
@@ -321,7 +290,6 @@ namespace TextMonster.Xml.XmlReader
     //
     // Internal properties
     //
-#if !SILVERLIGHT
     // Set of XmlQualifiedNames that identify any elements that need to have text children wrapped in CData sections.
     internal List<XmlQualifiedName> CDataSectionElements
     {
@@ -450,9 +418,7 @@ namespace TextMonster.Xml.XmlReader
                docTypeSystem != null || standalone == XmlStandalone.Yes;
       }
     }
-#endif
 
-#if !SILVERLIGHT
     [ResourceConsumption(ResourceScope.Machine)]
     [ResourceExposure(ResourceScope.Machine)]
     internal XmlWriter CreateWriter(string outputFileName)
@@ -474,11 +440,7 @@ namespace TextMonster.Xml.XmlReader
       try
       {
         // open file stream
-#if !ASYNC
         fs = new FileStream(outputFileName, FileMode.Create, FileAccess.Write, FileShare.Read);
-#else
-                fs = new FileStream(outputFileName, FileMode.Create, FileAccess.Write, FileShare.Read, 0x1000, useAsync);
-#endif
 
         // create writer
         return newSettings.CreateWriter(fs);
@@ -492,7 +454,6 @@ namespace TextMonster.Xml.XmlReader
         throw;
       }
     }
-#endif
 
     internal XmlWriter CreateWriter(Stream output)
     {
@@ -647,11 +608,6 @@ namespace TextMonster.Xml.XmlReader
       // wrap with well-formed writer
       writer = new XmlWellFormedWriter(writer, this);
 
-#if ASYNC
-            if (useAsync) {
-                writer = new XmlAsyncCheckWriter(writer);
-            }
-#endif
       return writer;
     }
 
@@ -704,7 +660,6 @@ namespace TextMonster.Xml.XmlReader
       checkCharacters = true;
       writeEndDocumentOnClose = true;
 
-#if !SILVERLIGHT
       outputMethod = XmlOutputMethod.Xml;
       cdataSections.Clear();
       mergeCDataSections = false;
@@ -713,11 +668,7 @@ namespace TextMonster.Xml.XmlReader
       docTypePublic = null;
       standalone = XmlStandalone.Omit;
       doNotEscapeUriAttributes = false;
-#endif
 
-#if ASYNC || FEATURE_NETCORE
-            useAsync = false;
-#endif
       isReadOnly = false;
     }
 
@@ -780,13 +731,11 @@ namespace TextMonster.Xml.XmlReader
         }
       }
 
-#if !SILVERLIGHT
       if (this.IsQuerySpecific && (baseWriterSettings == null || !baseWriterSettings.IsQuerySpecific))
       {
         // Create QueryOutputWriterV1 if CData sections or DocType need to be tracked
         writer = new QueryOutputWriterV1(writer, this);
       }
-#endif
 
       return writer;
     }
@@ -795,116 +744,7 @@ namespace TextMonster.Xml.XmlReader
     // Internal methods
     //
 
-#if !SILVERLIGHT
-
-#if !HIDE_XSL
-    /// <summary>
-    /// Serialize the object to BinaryWriter.
-    /// </summary>
-    internal void GetObjectData(XmlQueryDataWriter writer)
-    {
-      // Encoding encoding;
-      // NOTE: For Encoding we serialize only CodePage, and ignore EncoderFallback/DecoderFallback.
-      // It suffices for XSLT purposes, but not in the general case.
-      Debug.Assert(Encoding.Equals(Encoding.GetEncoding(Encoding.CodePage)), "Cannot serialize encoding correctly");
-      writer.Write(Encoding.CodePage);
-      // bool omitXmlDecl;
-      writer.Write(OmitXmlDeclaration);
-      // NewLineHandling newLineHandling;
-      writer.Write((sbyte)NewLineHandling);
-      // string newLineChars;
-      writer.WriteStringQ(NewLineChars);
-      // TriState indent;
-      writer.Write((sbyte)IndentInternal);
-      // string indentChars;
-      writer.WriteStringQ(IndentChars);
-      // bool newLineOnAttributes;
-      writer.Write(NewLineOnAttributes);
-      // bool closeOutput;
-      writer.Write(CloseOutput);
-      // ConformanceLevel conformanceLevel;
-      writer.Write((sbyte)ConformanceLevel);
-      // bool checkCharacters;
-      writer.Write(CheckCharacters);
-      // XmlOutputMethod outputMethod;
-      writer.Write((sbyte)outputMethod);
-      // List<XmlQualifiedName> cdataSections;
-      writer.Write(cdataSections.Count);
-      foreach (XmlQualifiedName qname in cdataSections)
-      {
-        writer.Write(qname.Name);
-        writer.Write(qname.Namespace);
-      }
-      // bool mergeCDataSections;
-      writer.Write(mergeCDataSections);
-      // string mediaType;
-      writer.WriteStringQ(mediaType);
-      // string docTypeSystem;
-      writer.WriteStringQ(docTypeSystem);
-      // string docTypePublic;
-      writer.WriteStringQ(docTypePublic);
-      // XmlStandalone standalone;
-      writer.Write((sbyte)standalone);
-      // bool autoXmlDecl;
-      writer.Write(autoXmlDecl);
-      // bool isReadOnly;
-      writer.Write(ReadOnly);
-    }
-
-    /// <summary>
-    /// Deserialize the object from BinaryReader.
-    /// </summary>
-    internal XmlWriterSettings(XmlQueryDataReader reader)
-    {
-      // Encoding encoding;
-      Encoding = Encoding.GetEncoding(reader.ReadInt32());
-      // bool omitXmlDecl;
-      OmitXmlDeclaration = reader.ReadBoolean();
-      // NewLineHandling newLineHandling;
-      NewLineHandling = (NewLineHandling)reader.ReadSByte(0, (sbyte)NewLineHandling.None);
-      // string newLineChars;
-      NewLineChars = reader.ReadStringQ();
-      // TriState indent;
-      IndentInternal = (TriState)reader.ReadSByte((sbyte)TriState.Unknown, (sbyte)TriState.True);
-      // string indentChars;
-      IndentChars = reader.ReadStringQ();
-      // bool newLineOnAttributes;
-      NewLineOnAttributes = reader.ReadBoolean();
-      // bool closeOutput;
-      CloseOutput = reader.ReadBoolean();
-      // ConformanceLevel conformanceLevel;
-      ConformanceLevel = (ConformanceLevel)reader.ReadSByte(0, (sbyte)ConformanceLevel.Document);
-      // bool checkCharacters;
-      CheckCharacters = reader.ReadBoolean();
-      // XmlOutputMethod outputMethod;
-      outputMethod = (XmlOutputMethod)reader.ReadSByte(0, (sbyte)XmlOutputMethod.AutoDetect);
-      // List<XmlQualifiedName> cdataSections;
-      int length = reader.ReadInt32();
-      cdataSections = new List<XmlQualifiedName>(length);
-      for (int idx = 0; idx < length; idx++)
-      {
-        cdataSections.Add(new XmlQualifiedName(reader.ReadString(), reader.ReadString()));
-      }
-      // bool mergeCDataSections;
-      mergeCDataSections = reader.ReadBoolean();
-      // string mediaType;
-      mediaType = reader.ReadStringQ();
-      // string docTypeSystem;
-      docTypeSystem = reader.ReadStringQ();
-      // string docTypePublic;
-      docTypePublic = reader.ReadStringQ();
-      // XmlStandalone standalone;
-      Standalone = (XmlStandalone)reader.ReadSByte(0, (sbyte)XmlStandalone.No);
-      // bool autoXmlDecl;
-      autoXmlDecl = reader.ReadBoolean();
-      // bool isReadOnly;
-      ReadOnly = reader.ReadBoolean();
-    }
-#else
-        internal void GetObjectData(object writer) { }
-        internal XmlWriterSettings(object reader) { }
-#endif
-
-#endif
+    internal void GetObjectData(object writer) { }
+    internal XmlWriterSettings(object reader) { }
   }
 }

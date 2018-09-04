@@ -52,6 +52,17 @@
     <Compile Include="Xml\XmlReader\BitStack.cs" />
     <Compile Include="Xml\XmlReader\AttrName.cs" />
     <Compile Include="Xml\XmlReader\AttributeValueCache.cs" />
+    <Compile Include="Xml\XmlReader\CharEntityEncoderFallback.cs" />
+    <Compile Include="Xml\XmlReader\CharEntityEncoderFallbackBuffer.cs" />
+    <Compile Include="Xml\XmlReader\QueryOutputWriterV1.cs" />
+    <Compile Include="Xml\XmlReader\XmlWrappingWriter.cs" />
+    <Compile Include="Xml\XmlReader\XmlCharCheckingWriter.cs" />
+    <Compile Include="Xml\XmlReader\QueryOutputWriter.cs" />
+    <Compile Include="Xml\XmlReader\TextEncodedRawTextWriter.cs" />
+    <Compile Include="Xml\XmlReader\HtmlEncodedRawTextWriter.cs" />
+    <Compile Include="Xml\XmlReader\HtmlEncodedRawTextWriterIndent.cs" />
+    <Compile Include="Xml\XmlReader\XmlEncodedRawTextWriter.cs" />
+    <Compile Include="Xml\XmlReader\XmlEncodedRawTextWriterIndent.cs" />
     <Compile Include="Xml\XmlReader\XPathNamespaceScope.cs" />
     <Compile Include="Xml\XmlReader\NamespaceResolverProxy.cs" />
     <Compile Include="Xml\XmlReader\XmlNamespaceScope.cs" />
