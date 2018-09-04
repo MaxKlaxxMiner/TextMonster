@@ -256,7 +256,10 @@ namespace TestTool
 
       //SpeedCheckBinary();
       //SpeedCheckTextLines();
-      SpeedCheckXmlParser();
+      //SpeedCheckXmlParser();
+
+      //XmlReader
+      
     }
   }
 }

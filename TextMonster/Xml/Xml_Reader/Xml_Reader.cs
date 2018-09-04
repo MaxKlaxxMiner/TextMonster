@@ -1,6 +1,10 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿using System;
+using System.Diagnostics;
+using System.Runtime.Versioning;
+using System.Text;
+
+namespace TextMonster.Xml.Xml_Reader
 {
-  // Represents a reader that provides fast, non-cached forward only stream access to XML data. 
   // ReSharper disable once InconsistentNaming
   public abstract partial class Xml_Reader : IDisposable
   {
@@ -143,7 +147,6 @@
       }
     }
 
-#if !SILVERLIGHT
     // Gets the quotation mark character used to enclose the value of an attribute node.
     public virtual char QuoteChar
     {
@@ -152,7 +155,6 @@
         return '"';
       }
     }
-#endif
 
     // Gets the current xml:space scope.
     public virtual XmlSpace XmlSpace
@@ -172,7 +174,6 @@
       }
     }
 
-#if !SILVERLIGHT // Removing dependency on XmlSchema
     // returns the schema info interface of the reader
     public virtual IXmlSchemaInfo SchemaInfo
     {
@@ -181,7 +182,6 @@
         return this as IXmlSchemaInfo;
       }
     }
-#endif
 
     // returns the type of the current node
     public virtual System.Type ValueType
@@ -376,11 +376,7 @@
       {
         try
         {
-#if SILVERLIGHT 
-                    return XmlUntypedStringConverter.Instance.FromString(strContentValue, returnType, (namespaceResolver == null ? this as IXmlNamespaceResolver : namespaceResolver));
-#else
           return XmlUntypedConverter.Untyped.ChangeType(strContentValue, returnType, (namespaceResolver == null ? this as IXmlNamespaceResolver : namespaceResolver));
-#endif
         }
         catch (FormatException e)
         {
@@ -580,11 +576,7 @@
         FinishReadElementContentAsXxx();
         return value;
       }
-#if SILVERLIGHT
-            return (returnType == typeof(string)) ? string.Empty : XmlUntypedStringConverter.Instance.FromString(string.Empty, returnType, namespaceResolver);
-#else
       return (returnType == typeof(string)) ? string.Empty : XmlUntypedConverter.Untyped.ChangeType(string.Empty, returnType, namespaceResolver);
-#endif
     }
 
     // Checks local name and namespace of the current element and returns its content as the requested type. 
@@ -767,7 +759,6 @@
       throw new NotSupportedException(Res.GetString(Res.Xml_ReadValueChunkNotSupported));
     }
 
-#if !SILVERLIGHT
     // Virtual helper methods
     // Reads the contents of an element as a string. Stops of comments, PIs or entity references.
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
@@ -804,7 +795,6 @@
       }
       return result;
     }
-#endif
 
     // Checks whether the current node is a content (non-whitespace text, CDATA, Element, EndElement, EntityReference
     // or EndEntity) node. If the node is not a content node, then the method skips ahead to the next content node or 
@@ -875,7 +865,6 @@
       }
     }
 
-#if !SILVERLIGHT
     // Reads a text-only element.
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public virtual string ReadElementString()
@@ -967,7 +956,7 @@
 
       return result;
     }
-#endif
+
     // Checks that the current content node is an end tag and advances the reader to the next node.
     public virtual void ReadEndElement()
     {
@@ -1238,9 +1227,7 @@
       {
         if (this.NodeType == XmlNodeType.Attribute)
         {
-#if !SILVERLIGHT // Removing dependency on XmlTextWriter
           ((XmlTextWriter)xtw).QuoteChar = this.QuoteChar;
-#endif
           WriteAttributeValue(xtw);
         }
         if (this.NodeType == XmlNodeType.Element)
@@ -1258,9 +1245,7 @@
     // Writes the content (inner XML) of the current node into the provided XmlWriter.
     private void WriteNode(XmlWriter xtw, bool defattr)
     {
-#if !SILVERLIGHT
       Debug.Assert(xtw is XmlTextWriter);
-#endif
       int d = this.NodeType == XmlNodeType.None ? -1 : this.Depth;
       while (this.Read() && (d < this.Depth))
       {
@@ -1268,9 +1253,7 @@
         {
           case XmlNodeType.Element:
           xtw.WriteStartElement(this.Prefix, this.LocalName, this.NamespaceURI);
-#if !SILVERLIGHT // Removing dependency on XmlTextWriter
           ((XmlTextWriter)xtw).QuoteChar = this.QuoteChar;
-#endif
           xtw.WriteAttributes(this, defattr);
           if (this.IsEmptyElement)
           {
@@ -1367,22 +1350,12 @@
 
     private XmlWriter CreateWriterForInnerOuterXml(StringWriter sw)
     {
-#if SILVERLIGHT // Removing dependency on XmlTextWriter
-            XmlWriterSettings writerSettings = new XmlWriterSettings();
-            writerSettings.OmitXmlDeclaration = true;
-            writerSettings.ConformanceLevel = ConformanceLevel.Fragment;
-            writerSettings.CheckCharacters = false;
-            writerSettings.NewLineHandling = NewLineHandling.None;
-            XmlWriter w = XmlWriter.Create(sw, writerSettings);
-#else
       XmlTextWriter w = new XmlTextWriter(sw);
       // This is a V1 hack; we can put a custom implementation of ReadOuterXml on XmlTextReader/XmlValidatingReader
       SetNamespacesFlag(w);
-#endif
       return w;
     }
 
-#if !SILVERLIGHT // Removing dependency on XmlTextWriter
     void SetNamespacesFlag(XmlTextWriter xtw)
     {
       XmlTextReader tr = this as XmlTextReader;
@@ -1401,7 +1374,6 @@
       }
 #pragma warning restore 618
     }
-#endif
 
     // Returns an XmlReader that will read only the current element and its descendants and then go to EOF state.
     public virtual XmlReader ReadSubtree()
@@ -1442,7 +1414,6 @@
     // Internal methods
     //
     // Validation support
-#if !SILVERLIGHT
     internal virtual XmlNamespaceManager NamespaceManager
     {
       get
@@ -1450,86 +1421,19 @@
         return null;
       }
     }
-#endif
 
     static internal bool IsTextualNode(XmlNodeType nodeType)
     {
-#if DEBUG
-            // This code verifies IsTextualNodeBitmap mapping of XmlNodeType to a bool specifying
-            // whether the node is 'textual' = Text, CDATA, Whitespace or SignificantWhitespace.
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.None)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.Element)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.Attribute)));
-            Debug.Assert(0 != (IsTextualNodeBitmap & (1 << (int)XmlNodeType.Text)));
-            Debug.Assert(0 != (IsTextualNodeBitmap & (1 << (int)XmlNodeType.CDATA)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.EntityReference)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.Entity)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.ProcessingInstruction)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.Comment)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.Document)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.DocumentType)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.DocumentFragment)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.Notation)));
-            Debug.Assert(0 != (IsTextualNodeBitmap & (1 << (int)XmlNodeType.Whitespace)));
-            Debug.Assert(0 != (IsTextualNodeBitmap & (1 << (int)XmlNodeType.SignificantWhitespace)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.EndElement)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.EndEntity)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.XmlDeclaration)));
-#endif
       return 0 != (IsTextualNodeBitmap & (1 << (int)nodeType));
     }
 
     static internal bool CanReadContentAs(XmlNodeType nodeType)
     {
-#if DEBUG
-            // This code verifies IsTextualNodeBitmap mapping of XmlNodeType to a bool specifying
-            // whether ReadContentAsXxx calls are allowed on his node type
-            Debug.Assert(0 == (CanReadContentAsBitmap & (1 << (int)XmlNodeType.None)));
-            Debug.Assert(0 == (CanReadContentAsBitmap & (1 << (int)XmlNodeType.Element)));
-            Debug.Assert(0 != (CanReadContentAsBitmap & (1 << (int)XmlNodeType.Attribute)));
-            Debug.Assert(0 != (CanReadContentAsBitmap & (1 << (int)XmlNodeType.Text)));
-            Debug.Assert(0 != (CanReadContentAsBitmap & (1 << (int)XmlNodeType.CDATA)));
-            Debug.Assert(0 != (CanReadContentAsBitmap & (1 << (int)XmlNodeType.EntityReference)));
-            Debug.Assert(0 == (CanReadContentAsBitmap & (1 << (int)XmlNodeType.Entity)));
-            Debug.Assert(0 != (CanReadContentAsBitmap & (1 << (int)XmlNodeType.ProcessingInstruction)));
-            Debug.Assert(0 != (CanReadContentAsBitmap & (1 << (int)XmlNodeType.Comment)));
-            Debug.Assert(0 == (CanReadContentAsBitmap & (1 << (int)XmlNodeType.Document)));
-            Debug.Assert(0 == (CanReadContentAsBitmap & (1 << (int)XmlNodeType.DocumentType)));
-            Debug.Assert(0 == (CanReadContentAsBitmap & (1 << (int)XmlNodeType.DocumentFragment)));
-            Debug.Assert(0 == (CanReadContentAsBitmap & (1 << (int)XmlNodeType.Notation)));
-            Debug.Assert(0 != (CanReadContentAsBitmap & (1 << (int)XmlNodeType.Whitespace)));
-            Debug.Assert(0 != (CanReadContentAsBitmap & (1 << (int)XmlNodeType.SignificantWhitespace)));
-            Debug.Assert(0 != (CanReadContentAsBitmap & (1 << (int)XmlNodeType.EndElement)));
-            Debug.Assert(0 != (CanReadContentAsBitmap & (1 << (int)XmlNodeType.EndEntity)));
-            Debug.Assert(0 == (CanReadContentAsBitmap & (1 << (int)XmlNodeType.XmlDeclaration)));
-#endif
       return 0 != (CanReadContentAsBitmap & (1 << (int)nodeType));
     }
 
     static internal bool HasValueInternal(XmlNodeType nodeType)
     {
-#if DEBUG
-            // This code verifies HasValueBitmap mapping of XmlNodeType to a bool specifying
-            // whether the node can have a non-empty Value
-            Debug.Assert(0 == (HasValueBitmap & (1 << (int)XmlNodeType.None)));
-            Debug.Assert(0 == (HasValueBitmap & (1 << (int)XmlNodeType.Element)));
-            Debug.Assert(0 != (HasValueBitmap & (1 << (int)XmlNodeType.Attribute)));
-            Debug.Assert(0 != (HasValueBitmap & (1 << (int)XmlNodeType.Text)));
-            Debug.Assert(0 != (HasValueBitmap & (1 << (int)XmlNodeType.CDATA)));
-            Debug.Assert(0 == (HasValueBitmap & (1 << (int)XmlNodeType.EntityReference)));
-            Debug.Assert(0 == (HasValueBitmap & (1 << (int)XmlNodeType.Entity)));
-            Debug.Assert(0 != (HasValueBitmap & (1 << (int)XmlNodeType.ProcessingInstruction)));
-            Debug.Assert(0 != (HasValueBitmap & (1 << (int)XmlNodeType.Comment)));
-            Debug.Assert(0 == (HasValueBitmap & (1 << (int)XmlNodeType.Document)));
-            Debug.Assert(0 != (HasValueBitmap & (1 << (int)XmlNodeType.DocumentType)));
-            Debug.Assert(0 == (HasValueBitmap & (1 << (int)XmlNodeType.DocumentFragment)));
-            Debug.Assert(0 == (HasValueBitmap & (1 << (int)XmlNodeType.Notation)));
-            Debug.Assert(0 != (HasValueBitmap & (1 << (int)XmlNodeType.Whitespace)));
-            Debug.Assert(0 != (HasValueBitmap & (1 << (int)XmlNodeType.SignificantWhitespace)));
-            Debug.Assert(0 == (HasValueBitmap & (1 << (int)XmlNodeType.EndElement)));
-            Debug.Assert(0 == (HasValueBitmap & (1 << (int)XmlNodeType.EndEntity)));
-            Debug.Assert(0 != (HasValueBitmap & (1 << (int)XmlNodeType.XmlDeclaration)));
-#endif
       return 0 != (HasValueBitmap & (1 << (int)nodeType));
     }
 
@@ -1712,9 +1616,6 @@
     {
       get
       {
-#if SILVERLIGHT // Removing dependency on XmlSchema
-                return this.IsDefault;
-#else
         if (this.IsDefault)
         {
           return true;
@@ -1725,11 +1626,9 @@
           return true;
         }
         return false;
-#endif
       }
     }
 
-#if !SILVERLIGHT
     internal virtual IDtdInfo DtdInfo
     {
       get
@@ -1737,15 +1636,12 @@
         return null;
       }
     }
-#endif
 
-#if !SILVERLIGHT // Needed only for XmlTextReader or XmlValidatingReader
     internal static Encoding GetEncoding(XmlReader reader)
     {
       XmlTextReaderImpl tri = GetXmlTextReaderImpl(reader);
       return tri != null ? tri.Encoding : null;
     }
-#endif
 
     internal static ConformanceLevel GetV1ConformanceLevel(XmlReader reader)
     {
@@ -1761,7 +1657,6 @@
         return tri;
       }
 
-#if !SILVERLIGHT // Needed only for XmlTextReader or XmlValidatingReader
       XmlTextReader tr = reader as XmlTextReader;
       if (tr != null)
       {
@@ -1780,7 +1675,6 @@
       {
         return vr.Impl.ReaderImpl;
       }
-#endif
       return null;
     }
 
@@ -1789,30 +1683,24 @@
     //
 
     // Creates an XmlReader for parsing XML from the given Uri.
-#if !SILVERLIGHT
     [ResourceConsumption(ResourceScope.Machine)]
     [ResourceExposure(ResourceScope.Machine)]
-#endif
     public static XmlReader Create(string inputUri)
     {
       return XmlReader.Create(inputUri, (XmlReaderSettings)null, (XmlParserContext)null);
     }
 
     // Creates an XmlReader according to the settings for parsing XML from the given Uri.
-#if !SILVERLIGHT
     [ResourceConsumption(ResourceScope.Machine)]
     [ResourceExposure(ResourceScope.Machine)]
-#endif
     public static XmlReader Create(string inputUri, XmlReaderSettings settings)
     {
       return XmlReader.Create(inputUri, settings, (XmlParserContext)null);
     }
 
     // Creates an XmlReader according to the settings and parser context for parsing XML from the given Uri.
-#if !SILVERLIGHT
     [ResourceConsumption(ResourceScope.Machine)]
     [ResourceExposure(ResourceScope.Machine)]
-#endif
     public static XmlReader Create(String inputUri, XmlReaderSettings settings, XmlParserContext inputContext)
     {
       if (settings == null)
@@ -1896,7 +1784,6 @@
       return settings.CreateReader(reader);
     }
 
-#if !SILVERLIGHT
     // !!!!!!
     // NOTE: This method is called via reflection from System.Data.dll and from Analysis Services in Yukon. 
     // Do not change its signature without notifying the appropriate teams!
@@ -1917,37 +1804,6 @@
       // allocate byte buffer
       byte[] bytes = new byte[CalcBufferSize(input)];
 
-#if false
-            {
-                // catch the binary XML input and dump it into a local file (for debugging and testing purposes)
-
-                // create dump file name
-                string dumpFileNameBase = "~CreateSqlReaderInputDump";
-                string dumpFileName;
-                int i = 0;
-                do {
-                    i++;
-                    dumpFileName = Path.GetFullPath(string.Concat(dumpFileNameBase, i.ToString(), ".bmx"));
-                } while (File.Exists(dumpFileName));
-
-                // dump the input into the file
-                FileStream fs = new FileStream(dumpFileName, FileMode.Create, FileAccess.ReadWrite);
-                byte[] buffer = new byte[4096];
-                int bytesRead;
-                while ((bytesRead = input.Read(buffer, 0, buffer.Length)) > 0) {
-                    fs.Write(buffer, 0, bytesRead);
-                }
-                fs.Seek(0, SeekOrigin.Begin);
-
-                // make sure it will get closed
-                if (settings.CloseInput) {
-                    input.Close();
-                }
-                input = fs;
-                settings = settings.Clone();
-                settings.CloseInput = true;
-            }
-#endif
       int byteCount = 0;
       int read;
       do
@@ -1981,7 +1837,6 @@
 
       return reader;
     }
-#endif
 
     internal static int CalcBufferSize(Stream input)
     {
@@ -2004,7 +1859,6 @@
       return bufferSize;
     }
 
-#if !SILVERLIGHT // This is used for displaying the state of the XmlReader in Watch/Locals windows in the Visual Studio during debugging
     private object debuggerDisplayProxy { get { return new XmlReaderDebuggerDisplayProxy(this); } }
 
     [DebuggerDisplay("{ToString()}")]
@@ -2051,7 +1905,5 @@
         return result;
       }
     }
-#endif
-
   }
 }
