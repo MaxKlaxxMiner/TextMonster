@@ -81,7 +81,7 @@
     // 
     // Constructor
     //
-    internal XmlSubtreeReader(XmlReader reader)
+    internal XmlSubtreeReader(Xml_Reader reader)
       : base(reader)
     {
       initialDepth = reader.Depth;
