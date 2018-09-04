@@ -1378,7 +1378,7 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // Returns an XmlReader that will read only the current element and its descendants and then go to EOF state.
-    public virtual XmlReader ReadSubtree()
+    public virtual Xml_Reader ReadSubtree()
     {
       if (NodeType != XmlNodeType.Element)
       {
