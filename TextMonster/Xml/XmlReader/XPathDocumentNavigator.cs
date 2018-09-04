@@ -1,4 +1,6 @@
-﻿namespace TextMonster.Xml.XmlReader
+﻿using System.Text;
+
+namespace TextMonster.Xml.XmlReader
 {
   /// <summary>
   /// This is the default XPath/XQuery data model cache implementation.  It will be used whenever
@@ -23,8 +25,6 @@
     /// </summary>
     public XPathDocumentNavigator(XPathNode[] pageCurrent, int idxCurrent, XPathNode[] pageParent, int idxParent)
     {
-      Debug.Assert(pageCurrent != null && idxCurrent != 0);
-      Debug.Assert((pageParent == null) == (idxParent == 0));
       this.pageCurrent = pageCurrent;
       this.pageParent = pageParent;
       this.idxCurrent = idxCurrent;
@@ -83,7 +83,6 @@
         // If current node is collapsed text, then parent element has a simple text value
         if (this.idxParent != 0)
         {
-          Debug.Assert(this.pageCurrent[this.idxCurrent].NodeType == XPathNodeType.Text);
           return this.pageParent[this.idxParent].Value;
         }
 
@@ -102,8 +101,6 @@
 
         while (XPathNodeHelper.GetTextFollowing(ref page, ref idx, pageEnd, idxEnd))
         {
-          Debug.Assert(page[idx].NodeType == XPathNodeType.Element || page[idx].IsText);
-
           if (s.Length == 0)
           {
             s = page[idx].Value;
@@ -436,7 +433,6 @@
         // 2. For namespace nodes, parent is always stored in navigator in order to virtualize
         //    XPath 1.0 namespaces.
         // 3. For collapsed text nodes, element parent is always stored in navigator.
-        Debug.Assert(this.pageParent != null);
         this.pageCurrent = this.pageParent;
         this.idxCurrent = this.idxParent;
         this.pageParent = null;
@@ -477,7 +473,6 @@
       if (idx != 0)
       {
         // Move to ID element and clear parent state
-        Debug.Assert(page[idx].NodeType == XPathNodeType.Element);
         this.pageCurrent = page;
         this.idxCurrent = idx;
         this.pageParent = null;
@@ -673,7 +668,6 @@
           if (page[idx].NodeType == XPathNodeType.Element)
           {
             // Virtualize collapsed text nodes
-            Debug.Assert(page[idx].HasCollapsedText);
             this.idxCurrent = page[idx].Document.GetCollapsedTextNode(out this.pageCurrent);
             this.pageParent = page;
             this.idxParent = idx;
@@ -681,7 +675,6 @@
           else
           {
             // Physical text node
-            Debug.Assert(page[idx].IsText);
             this.pageCurrent = page;
             this.idxCurrent = idx;
             this.pageParent = null;

@@ -54,6 +54,13 @@
     <Compile Include="Xml\XmlReader\AttributeValueCache.cs" />
     <Compile Include="Xml\XmlReader\CharEntityEncoderFallback.cs" />
     <Compile Include="Xml\XmlReader\CharEntityEncoderFallbackBuffer.cs" />
+    <Compile Include="Xml\XmlReader\XmlSchemaValidity.cs" />
+    <Compile Include="Xml\XmlReader\XmlNodeOrder.cs" />
+    <Compile Include="Xml\XmlReader\XPathDocumentElementDescendantIterator.cs" />
+    <Compile Include="Xml\XmlReader\XPathDocumentKindDescendantIterator.cs" />
+    <Compile Include="Xml\XmlReader\XPathDocumentElementChildIterator.cs" />
+    <Compile Include="Xml\XmlReader\XPathDocumentBaseIterator.cs" />
+    <Compile Include="Xml\XmlReader\XPathDocumentKindChildIterator.cs" />
     <Compile Include="Xml\XmlReader\EntityHandling.cs" />
     <Compile Include="Xml\XmlReader\IDtdDefaultAttributeInfo.cs" />
     <Compile Include="Xml\XmlReader\IDtdAttributeInfo.cs" />

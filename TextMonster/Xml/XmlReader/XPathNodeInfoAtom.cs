@@ -1,4 +1,6 @@
-﻿namespace TextMonster.Xml.XmlReader
+﻿using System.Text;
+
+namespace TextMonster.Xml.XmlReader
 {
   /// <summary>
   /// There is a great deal of redundancy in typical Xml documents.  Even in documents with thousands or millions
@@ -53,8 +55,6 @@
                      XPathNode[] pageParent, XPathNode[] pageSibling, XPathNode[] pageSimilar,
                      XPathDocument doc, int lineNumBase, int linePosBase)
     {
-      Debug.Assert(localName != null && namespaceUri != null && prefix != null && doc != null);
-
       this.localName = localName;
       this.namespaceUri = namespaceUri;
       this.prefix = prefix;
@@ -214,9 +214,6 @@
     public override bool Equals(object other)
     {
       XPathNodeInfoAtom that = other as XPathNodeInfoAtom;
-      Debug.Assert(that != null);
-      Debug.Assert((object)this.doc == (object)that.doc);
-      Debug.Assert(this.pageInfo == null);
 
       // Assume that name parts are atomized
       if (this.GetHashCode() == that.GetHashCode())
