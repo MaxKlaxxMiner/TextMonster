@@ -362,8 +362,6 @@ namespace TextMonster.Xml.Xml_Reader
                 throw new XmlException(Res.GetString(Res.Xml_EmptyName, string.Empty));
 #endif
 
-      Debug.Assert(offsetBadChar < s.Length);
-
       if (xmlCharType.IsNCNameSingleChar(s[offsetBadChar]) && !XmlCharType.Instance.IsStartNCNameSingleChar(s[offsetBadChar]))
       {
         // The error character is a valid name character, but is not a valid start name character
@@ -460,8 +458,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// </summary>
     private static bool ValidateNameInternal(string prefix, string localName, string ns, XPathNodeType nodeKind, Flags flags, bool throwOnError)
     {
-      Debug.Assert(prefix != null && localName != null && ns != null);
-
       if ((flags & Flags.NCNames) != 0)
       {
 

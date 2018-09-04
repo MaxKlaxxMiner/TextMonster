@@ -57,6 +57,9 @@
     <Compile Include="Xml\Xml_Reader\Axis.cs" />
     <Compile Include="Xml\Xml_Reader\AstNode.cs" />
     <Compile Include="Xml\Xml_Reader\Bits.cs" />
+    <Compile Include="Xml\Xml_Reader\BitSet.cs" />
+    <Compile Include="Xml\Xml_Reader\RangePositionInfo.cs" />
+    <Compile Include="Xml\Xml_Reader\StateUnion.cs" />
     <Compile Include="Xml\Xml_Reader\SchemaNamespaceManager.cs" />
     <Compile Include="Xml\Xml_Reader\XsdDuration.cs" />
     <Compile Include="Xml\Xml_Reader\XsdDateTime.cs" />
