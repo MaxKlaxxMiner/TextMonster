@@ -175,7 +175,6 @@ namespace TextMonster.Xml.XmlReader
         initialDepth = reader.Depth;
 
         // Get atomized xmlns uri
-        Debug.Assert((object)this.nameTable.Get(string.Empty) == (object)string.Empty, "NameTable must contain atomized string.Empty");
         xmlnsUri = this.nameTable.Get(XmlReservedNs.NsXmlNs);
 
         // Read past Initial state; if there are no more events then load is complete
@@ -207,12 +206,10 @@ namespace TextMonster.Xml.XmlReader
                   if (reader.Prefix.Length == 0)
                   {
                     // Default namespace declaration "xmlns"
-                    Debug.Assert(reader.LocalName == "xmlns");
                     builder.WriteNamespaceDeclaration(string.Empty, reader.Value);
                   }
                   else
                   {
-                    Debug.Assert(reader.Prefix == "xmlns");
                     builder.WriteNamespaceDeclaration(reader.LocalName, reader.Value);
                   }
                 }
@@ -382,8 +379,6 @@ namespace TextMonster.Xml.XmlReader
     /// </summary>
     internal void AddNamespace(XPathNode[] pageElem, int idxElem, XPathNode[] pageNmsp, int idxNmsp)
     {
-      Debug.Assert(pageElem[idxElem].NodeType == XPathNodeType.Element && pageNmsp[idxNmsp].NodeType == XPathNodeType.Namespace);
-
       if (this.mapNmsp == null)
         this.mapNmsp = new Dictionary<XPathNodeRef, XPathNodeRef>();
 
@@ -396,7 +391,6 @@ namespace TextMonster.Xml.XmlReader
     internal int LookupNamespaces(XPathNode[] pageElem, int idxElem, out XPathNode[] pageNmsp)
     {
       XPathNodeRef nodeRef = new XPathNodeRef(pageElem, idxElem);
-      Debug.Assert(pageElem[idxElem].NodeType == XPathNodeType.Element);
 
       // Check whether this element has any local namespaces
       if (this.mapNmsp == null || !this.mapNmsp.ContainsKey(nodeRef))

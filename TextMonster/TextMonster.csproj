@@ -54,6 +54,12 @@
     <Compile Include="Xml\XmlReader\AttributeValueCache.cs" />
     <Compile Include="Xml\XmlReader\CharEntityEncoderFallback.cs" />
     <Compile Include="Xml\XmlReader\CharEntityEncoderFallbackBuffer.cs" />
+    <Compile Include="Xml\XmlReader\EntityHandling.cs" />
+    <Compile Include="Xml\XmlReader\IDtdDefaultAttributeInfo.cs" />
+    <Compile Include="Xml\XmlReader\IDtdAttributeInfo.cs" />
+    <Compile Include="Xml\XmlReader\IDtdAttributeListInfo.cs" />
+    <Compile Include="Xml\XmlReader\TextBlockType.cs" />
+    <Compile Include="Xml\XmlReader\XPathDocumentBuilder.cs" />
     <Compile Include="Xml\XmlReader\QueryOutputWriterV1.cs" />
     <Compile Include="Xml\XmlReader\XmlWrappingWriter.cs" />
     <Compile Include="Xml\XmlReader\XmlCharCheckingWriter.cs" />
