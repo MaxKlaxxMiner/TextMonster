@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -79,7 +80,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal static XmlSchemaSimpleType StartBuiltinType(XmlQualifiedName qname, XmlSchemaDatatype dataType)
     {
       XmlSchemaSimpleType simpleType;
-      Debug.Assert(qname != null && dataType != null);
 
       simpleType = new XmlSchemaSimpleType();
       simpleType.SetQualifiedName(qname);
@@ -95,8 +95,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// </summary>
     internal static void FinishBuiltinType(XmlSchemaSimpleType derivedType, XmlSchemaSimpleType baseType)
     {
-      Debug.Assert(derivedType != null && baseType != null);
-
       // Create link from the derived type to the base type
       derivedType.SetBaseSchemaType(baseType);
       derivedType.SetDerivedBy(XmlSchemaDerivationMethod.Restriction);
@@ -268,7 +266,6 @@ namespace TextMonster.Xml.Xml_Reader
       while (currentType.BaseXmlSchemaType != DatatypeImplementation.AnySimpleType)
       {
         currentType = currentType.BaseXmlSchemaType as XmlSchemaSimpleType;
-        Debug.Assert(currentType != null);
       }
       return currentType.TypeCode;
     }
