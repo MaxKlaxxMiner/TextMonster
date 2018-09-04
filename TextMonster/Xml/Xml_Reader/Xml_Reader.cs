@@ -1640,7 +1640,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal static Encoding GetEncoding(XmlReader reader)
+    internal static Encoding GetEncoding(Xml_Reader reader)
     {
       XmlTextReaderImpl tri = GetXmlTextReaderImpl(reader);
       return tri != null ? tri.Encoding : null;
