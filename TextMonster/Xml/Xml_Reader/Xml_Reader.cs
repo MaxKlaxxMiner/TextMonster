@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.Versioning;
 using System.Text;
+using BufferBuilder = System.Text.StringBuilder;
 
 namespace TextMonster.Xml.Xml_Reader
 {
