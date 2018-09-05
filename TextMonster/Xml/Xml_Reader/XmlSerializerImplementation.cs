@@ -1,4 +1,7 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿using System;
+using System.Collections;
+
+namespace TextMonster.Xml.Xml_Reader
 {
   /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializerImplementation"]/*' />
   ///<internalonly/>

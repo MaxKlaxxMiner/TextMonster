@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.IO;
+using System.Threading;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -219,9 +220,6 @@ namespace TextMonster.Xml.Xml_Reader
     [Obsolete("Use System.Xml.Schema.XmlSchemaSet for schema compilation and validation. http://go.microsoft.com/fwlink/?linkid=14202")]
     public void Compile(ValidationEventHandler validationEventHandler)
     {
-      SchemaInfo sInfo = new SchemaInfo();
-      sInfo.SchemaType = SchemaType.XSD;
-      CompileSchema(null, System.Xml.XmlConfiguration.XmlReaderSection.CreateDefaultResolver(), sInfo, null, validationEventHandler, NameTable, false);
     }
 
     /// <include file='doc\XmlSchema.uex' path='docs/doc[@for="XmlSchema.Compileq"]/*' />
@@ -236,37 +234,12 @@ namespace TextMonster.Xml.Xml_Reader
       CompileSchema(null, resolver, sInfo, null, validationEventHandler, NameTable, false);
     }
 
-#pragma warning disable 618
     internal bool CompileSchema(XmlSchemaCollection xsc, XmlResolver resolver, SchemaInfo schemaInfo, string ns, ValidationEventHandler validationEventHandler, XmlNameTable nameTable, bool CompileContentModel)
     {
-
-      //Need to lock here to prevent multi-threading problems when same schema is added to set and compiled
-      lock (this)
-      {
-        //Preprocessing
-        SchemaCollectionPreprocessor prep = new SchemaCollectionPreprocessor(nameTable, null, validationEventHandler);
-        prep.XmlResolver = resolver;
-        if (!prep.Execute(this, ns, true, xsc))
-        {
-          return false;
-        }
-
-        //Compilation
-        SchemaCollectionCompiler compiler = new SchemaCollectionCompiler(nameTable, validationEventHandler);
-        isCompiled = compiler.Execute(this, schemaInfo, CompileContentModel);
-        this.SetIsCompiled(isCompiled);
-        //
-        return isCompiled;
-      }
     }
-#pragma warning restore 618
 
     internal void CompileSchemaInSet(XmlNameTable nameTable, ValidationEventHandler eventHandler, XmlSchemaCompilationSettings compilationSettings)
     {
-      Debug.Assert(this.isPreprocessed);
-      Compiler setCompiler = new Compiler(nameTable, eventHandler, null, compilationSettings);
-      setCompiler.Prepare(this, true);
-      this.isCompiledBySet = setCompiler.Compile();
     }
 
     /// <include file='doc\XmlSchema.uex' path='docs/doc[@for="XmlSchema.AttributeFormDefault"]/*' />
@@ -585,7 +558,6 @@ namespace TextMonster.Xml.Xml_Reader
       that.items = this.items;
       that.BaseUri = this.BaseUri;
 
-      SchemaCollectionCompiler.Cleanup(that);
       return that;
     }
 
@@ -664,7 +636,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal XmlNameTable NameTable
     {
-      get { if (nameTable == null) nameTable = new System.Xml.NameTable(); return nameTable; }
+      get { if (nameTable == null) nameTable = new NameTable(); return nameTable; }
     }
 
     internal ArrayList ImportedSchemas
@@ -693,7 +665,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal void GetExternalSchemasList(IList extList, XmlSchema schema)
     {
-      Debug.Assert(extList != null && schema != null);
       if (extList.Contains(schema))
       {
         return;

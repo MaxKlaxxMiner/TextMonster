@@ -53,7 +53,6 @@
 
     public override void SetXsltContext(XsltContext context)
     {
-      Debug.Assert(context != null);
       nsUri = context.LookupNamespace(prefix);
       qyInput.SetXsltContext(context);
     }
@@ -110,7 +109,6 @@
         {
           return 0.5;   // a/b a[b] id('s')/a
         }
-        Debug.Assert(this is AttributeQuery || this is ChildrenQuery);
         if (name.Length != 0)
         {
           return 0; // p:foo, foo, processing-instruction("foo")

@@ -1,4 +1,8 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿using System;
+using System.Reflection;
+using System.Threading;
+
+namespace TextMonster.Xml.Xml_Reader
 {
   /// <include file='doc\XmlSerializationGeneratedCode.uex' path='docs/doc[@for="XmlSerializationGeneratedCode"]/*' />
   ///<internalonly/>

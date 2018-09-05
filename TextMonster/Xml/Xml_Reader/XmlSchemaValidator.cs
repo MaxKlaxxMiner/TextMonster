@@ -1763,7 +1763,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal object CheckMixedValueConstraint(string elementValue)
     {
       SchemaElementDecl elementDecl = context.ElementDecl;
-      Debug.Assert(elementDecl.ContentValidator.ContentType == XmlSchemaContentType.Mixed && elementDecl.DefaultValueTyped != null);
       if (context.IsNill)
       { //Nil and fixed is error; Nil and default is compile time error
         return null;
@@ -1776,7 +1775,6 @@ namespace TextMonster.Xml.Xml_Reader
       else
       {
         SchemaDeclBase decl = elementDecl as SchemaDeclBase;
-        Debug.Assert(decl != null);
         if (decl.Presence == SchemaDeclBase.Use.Fixed && !elementValue.Equals(elementDecl.DefaultValueRaw))
         { //check string equality for mixed as it is untyped.
           SendValidationEvent(Res.Sch_FixedElementValue, elementDecl.Name.ToString());

@@ -111,10 +111,7 @@ namespace TextMonster.Xml.Xml_Reader
     //notice we must keep GetXmlResolver() to avoid dead lock when init System.Config.ConfigurationManager
     internal XmlResolver GetXmlResolver_CheckConfig()
     {
-      if (System.Xml.XmlConfiguration.XmlReaderSection.ProhibitDefaultUrlResolver && !IsXmlResolverSet)
-        return null;
-      else
-        return xmlResolver;
+      return null;
     }
 
     // Text settings
@@ -732,7 +729,7 @@ namespace TextMonster.Xml.Xml_Reader
         return s_enableLegacyXmlSettings.Value;
       }
 
-      if (!System.Xml.BinaryCompatibility.TargetsAtLeast_Desktop_V4_5_2)
+      if (!BinaryCompatibility.TargetsAtLeast_Desktop_V4_5_2)
       {
         s_enableLegacyXmlSettings = true;
         return s_enableLegacyXmlSettings.Value;

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using System.Resources;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
 using System.Threading;
@@ -100,7 +102,7 @@ namespace TextMonster.Xml.Xml_Reader
       base(FormatUserMessage(message, lineNumber, linePosition), innerException)
     {
 
-      HResult = HResults.Xml;
+      HResult = -2146232000;
       this.res = (message == null ? Res.Xml_DefaultException : Res.Xml_UserException);
       this.args = new string[] { message };
       this.sourceUri = sourceUri;
@@ -158,7 +160,7 @@ namespace TextMonster.Xml.Xml_Reader
     internal XmlException(string res, string[] args, Exception innerException, int lineNumber, int linePosition, string sourceUri) :
       base(CreateMessage(res, args, lineNumber, linePosition), innerException)
     {
-      HResult = HResults.Xml;
+      HResult = -2146232000;
       this.res = res;
       this.args = args;
       this.sourceUri = sourceUri;
@@ -227,10 +229,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal static string[] BuildCharExceptionArgs(char[] data, int length, int invCharIndex)
     {
-      Debug.Assert(invCharIndex < data.Length);
-      Debug.Assert(invCharIndex < length);
-      Debug.Assert(length <= data.Length);
-
       return BuildCharExceptionArgs(data[invCharIndex], invCharIndex + 1 < length ? data[invCharIndex + 1] : '\0');
     }
 

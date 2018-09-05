@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace TextMonster.Xml.Xml_Reader
@@ -120,7 +121,6 @@ namespace TextMonster.Xml.Xml_Reader
           hashTable[nsdecls[decl].prefix] = nsdecls[decl].previousNsIndex;
         }
         decl--;
-        Debug.Assert(decl >= 2);
       }
       lastDecl = decl;
       scopeId--;
@@ -183,7 +183,6 @@ namespace TextMonster.Xml.Xml_Reader
       else if (lastDecl >= MinDeclsCountForHashtable)
       {
         // add all to hash table
-        Debug.Assert(hashTable == null);
         hashTable = new Dictionary<string, int>(lastDecl);
         for (int i = 0; i <= lastDecl; i++)
         {
@@ -247,7 +246,6 @@ namespace TextMonster.Xml.Xml_Reader
         while (nsdecls[i].scopeId == scopeId)
         {
           i--;
-          Debug.Assert(i >= 2);
         }
         i++;
         break;
@@ -258,7 +256,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         string prefix = nsdecls[i].prefix;
         string uri = nsdecls[i].uri;
-        Debug.Assert(prefix != null);
 
         if (uri != null)
         {

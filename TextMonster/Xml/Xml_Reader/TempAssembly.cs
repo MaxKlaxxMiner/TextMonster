@@ -1,5 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.CodeDom.Compiler;
+using System.Collections;
+using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.Versioning;
+using System.Security;
+using System.Security.Permissions;
+using System.Security.Policy;
+using System.Text;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -64,15 +72,6 @@ namespace TextMonster.Xml.Xml_Reader
         fallbackToCSharpAssemblyGeneration = true;
       }
 
-      if (fallbackToCSharpAssemblyGeneration)
-      {
-        assembly = GenerateAssembly(xmlMappings, types, defaultNamespace, evidence, XmlSerializerCompilerParameters.Create(location), null, assemblies);
-      }
-
-#if DEBUG
-            // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-            if (assembly == null) throw new InvalidOperationException(Res.GetString(Res.XmlInternalErrorDetails, "Failed to generate XmlSerializer assembly, but did not throw"));
-#endif
       InitAssemblyMethods(xmlMappings);
     }
 
@@ -88,16 +87,7 @@ namespace TextMonster.Xml.Xml_Reader
     {
       get
       {
-        if (AppSettings.UseLegacySerializerGeneration.HasValue)
-        {
-          // AppSetting will always win if specified
-          return (bool)AppSettings.UseLegacySerializerGeneration;
-        }
-        else
-        {
-          XmlSerializerSection configSection = ConfigurationManager.GetSection(ConfigurationStrings.XmlSerializerSectionPath) as XmlSerializerSection;
-          return configSection == null ? false : configSection.UseLegacySerializerGeneration;
-        }
+        return true;
       }
     }
 
@@ -154,105 +144,6 @@ namespace TextMonster.Xml.Xml_Reader
       string serializerName = null;
 
       // Packaged apps do not support loading generated serializers.
-      if (Microsoft.Win32.UnsafeNativeMethods.IsPackagedProcess.Value)
-      {
-        return null;
-      }
-
-      bool logEnabled = DiagnosticsSwitches.PregenEventLog.Enabled;
-
-      // check to see if we loading explicit pre-generated assembly
-      object[] attrs = type.GetCustomAttributes(typeof(XmlSerializerAssemblyAttribute), false);
-      if (attrs.Length == 0)
-      {
-        // Guess serializer name: if parent assembly signed use strong name 
-        AssemblyName name = GetName(type.Assembly, true);
-        serializerName = Compiler.GetTempAssemblyName(name, defaultNamespace);
-        // use strong name 
-        name.Name = serializerName;
-        name.CodeBase = null;
-        name.CultureInfo = CultureInfo.InvariantCulture;
-        try
-        {
-          serializer = Assembly.Load(name);
-        }
-        catch (Exception e)
-        {
-          if (e is ThreadAbortException || e is StackOverflowException || e is OutOfMemoryException)
-          {
-            throw;
-          }
-          if (logEnabled)
-          {
-            Log(e.Message, EventLogEntryType.Information);
-          }
-          byte[] token = name.GetPublicKeyToken();
-          if (token != null && token.Length > 0)
-          {
-            // the parent assembly was signed, so do not try to LoadWithPartialName
-            return null;
-          }
-#pragma warning disable 618
-          serializer = Assembly.LoadWithPartialName(serializerName, null);
-#pragma warning restore 618
-        }
-        if (serializer == null)
-        {
-#if !FEATURE_PAL // EventLog
-          if (logEnabled)
-          {
-            Log(Res.GetString(Res.XmlPregenCannotLoad, serializerName), EventLogEntryType.Information);
-          }
-#endif //!FEATURE_PAL // EventLog
-          return null;
-        }
-        if (!IsSerializerVersionMatch(serializer, type, defaultNamespace, null))
-        {
-#if !FEATURE_PAL // EventLog
-          if (logEnabled)
-            Log(Res.GetString(Res.XmlSerializerExpiredDetails, serializerName, type.FullName), EventLogEntryType.Error);
-#endif //!FEATURE_PAL // EventLog
-          return null;
-        }
-      }
-      else
-      {
-        XmlSerializerAssemblyAttribute assemblyAttribute = (XmlSerializerAssemblyAttribute)attrs[0];
-        if (assemblyAttribute.AssemblyName != null && assemblyAttribute.CodeBase != null)
-          throw new InvalidOperationException(Res.GetString(Res.XmlPregenInvalidXmlSerializerAssemblyAttribute, "AssemblyName", "CodeBase"));
-
-        // found XmlSerializerAssemblyAttribute attribute, it should have all needed information to load the pre-generated serializer
-        if (assemblyAttribute.AssemblyName != null)
-        {
-          serializerName = assemblyAttribute.AssemblyName;
-#pragma warning disable 618
-          serializer = Assembly.LoadWithPartialName(serializerName, null);
-#pragma warning restore 618
-        }
-        else if (assemblyAttribute.CodeBase != null && assemblyAttribute.CodeBase.Length > 0)
-        {
-          serializerName = assemblyAttribute.CodeBase;
-          serializer = Assembly.LoadFrom(serializerName);
-        }
-        else
-        {
-          serializerName = type.Assembly.FullName;
-          serializer = type.Assembly;
-        }
-        if (serializer == null)
-        {
-          throw new FileNotFoundException(null, serializerName);
-        }
-      }
-      Type contractType = GetTypeFromAssembly(serializer, "XmlSerializerContract");
-      contract = (XmlSerializerImplementation)Activator.CreateInstance(contractType);
-      if (contract.CanSerialize(type))
-        return serializer;
-
-#if !FEATURE_PAL // EventLog
-      if (logEnabled)
-        Log(Res.GetString(Res.XmlSerializerExpiredDetails, serializerName, type.FullName), EventLogEntryType.Error);
-#endif //!FEATURE_PAL // EventLog
       return null;
     }
 
@@ -313,252 +204,13 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal static Assembly GenerateAssembly(XmlMapping[] xmlMappings, Type[] types, string defaultNamespace, Evidence evidence, XmlSerializerCompilerParameters parameters, Assembly assembly, Hashtable assemblies)
     {
-      FileIOPermission.Assert();
-      Compiler compiler = new Compiler();
-      try
-      {
-        Hashtable scopeTable = new Hashtable();
-        foreach (XmlMapping mapping in xmlMappings)
-          scopeTable[mapping.Scope] = mapping;
-        TypeScope[] scopes = new TypeScope[scopeTable.Keys.Count];
-        scopeTable.Keys.CopyTo(scopes, 0);
-
-        assemblies.Clear();
-        Hashtable importedTypes = new Hashtable();
-        foreach (TypeScope scope in scopes)
-        {
-          foreach (Type t in scope.Types)
-          {
-            compiler.AddImport(t, importedTypes);
-            Assembly a = t.Assembly;
-            string name = a.FullName;
-            if (assemblies[name] != null)
-              continue;
-            if (!a.GlobalAssemblyCache)
-            {
-              assemblies[name] = a;
-            }
-          }
-        }
-        for (int i = 0; i < types.Length; i++)
-        {
-          compiler.AddImport(types[i], importedTypes);
-        }
-        compiler.AddImport(typeof(object).Assembly);
-        compiler.AddImport(typeof(XmlSerializer).Assembly);
-
-        IndentedWriter writer = new IndentedWriter(compiler.Source, false);
-
-        writer.WriteLine("#if _DYNAMIC_XMLSERIALIZER_COMPILATION");
-        writer.WriteLine("[assembly:System.Security.AllowPartiallyTrustedCallers()]");
-        writer.WriteLine("[assembly:System.Security.SecurityTransparent()]");
-        writer.WriteLine("[assembly:System.Security.SecurityRules(System.Security.SecurityRuleSet.Level1)]");
-        writer.WriteLine("#endif");
-        // Add AssemblyVersion attribute to match parent accembly version
-        if (types != null && types.Length > 0 && types[0] != null)
-        {
-          writer.WriteLine("[assembly:System.Reflection.AssemblyVersionAttribute(\"" + types[0].Assembly.GetName().Version.ToString() + "\")]");
-        }
-        if (assembly != null && types.Length > 0)
-        {
-          for (int i = 0; i < types.Length; i++)
-          {
-            Type type = types[i];
-            if (type == null)
-              continue;
-            if (DynamicAssemblies.IsTypeDynamic(type))
-            {
-              throw new InvalidOperationException(Res.GetString(Res.XmlPregenTypeDynamic, types[i].FullName));
-            }
-          }
-          writer.Write("[assembly:");
-          writer.Write(typeof(XmlSerializerVersionAttribute).FullName);
-          writer.Write("(");
-          writer.Write("ParentAssemblyId=");
-          ReflectionAwareCodeGen.WriteQuotedCSharpString(writer, GenerateAssemblyId(types[0]));
-          writer.Write(", Version=");
-          ReflectionAwareCodeGen.WriteQuotedCSharpString(writer, ThisAssembly.Version);
-          if (defaultNamespace != null)
-          {
-            writer.Write(", Namespace=");
-            ReflectionAwareCodeGen.WriteQuotedCSharpString(writer, defaultNamespace);
-          }
-          writer.WriteLine(")]");
-        }
-        CodeIdentifiers classes = new CodeIdentifiers();
-        classes.AddUnique("XmlSerializationWriter", "XmlSerializationWriter");
-        classes.AddUnique("XmlSerializationReader", "XmlSerializationReader");
-        string suffix = null;
-        if (types != null && types.Length == 1 && types[0] != null)
-        {
-          suffix = CodeIdentifier.MakeValid(types[0].Name);
-          if (types[0].IsArray)
-          {
-            suffix += "Array";
-          }
-        }
-
-        writer.WriteLine("namespace " + GeneratedAssemblyNamespace + " {");
-        writer.Indent++;
-
-        writer.WriteLine();
-
-        string writerClass = "XmlSerializationWriter" + suffix;
-        writerClass = classes.AddUnique(writerClass, writerClass);
-        XmlSerializationWriterCodeGen writerCodeGen = new XmlSerializationWriterCodeGen(writer, scopes, "public", writerClass);
-
-        writerCodeGen.GenerateBegin();
-        string[] writeMethodNames = new string[xmlMappings.Length];
-
-        for (int i = 0; i < xmlMappings.Length; i++)
-        {
-          writeMethodNames[i] = writerCodeGen.GenerateElement(xmlMappings[i]);
-        }
-        writerCodeGen.GenerateEnd();
-
-        writer.WriteLine();
-
-        string readerClass = "XmlSerializationReader" + suffix;
-        readerClass = classes.AddUnique(readerClass, readerClass);
-        XmlSerializationReaderCodeGen readerCodeGen = new XmlSerializationReaderCodeGen(writer, scopes, "public", readerClass);
-
-        readerCodeGen.GenerateBegin();
-        string[] readMethodNames = new string[xmlMappings.Length];
-        for (int i = 0; i < xmlMappings.Length; i++)
-        {
-          readMethodNames[i] = readerCodeGen.GenerateElement(xmlMappings[i]);
-        }
-        readerCodeGen.GenerateEnd(readMethodNames, xmlMappings, types);
-
-        string baseSerializer = readerCodeGen.GenerateBaseSerializer("XmlSerializer1", readerClass, writerClass, classes);
-        Hashtable serializers = new Hashtable();
-        for (int i = 0; i < xmlMappings.Length; i++)
-        {
-          if (serializers[xmlMappings[i].Key] == null)
-          {
-            serializers[xmlMappings[i].Key] = readerCodeGen.GenerateTypedSerializer(readMethodNames[i], writeMethodNames[i], xmlMappings[i], classes, baseSerializer, readerClass, writerClass);
-          }
-        }
-        readerCodeGen.GenerateSerializerContract("XmlSerializerContract", xmlMappings, types, readerClass, readMethodNames, writerClass, writeMethodNames, serializers);
-        writer.Indent--;
-        writer.WriteLine("}");
-
-        return compiler.Compile(assembly, defaultNamespace, parameters, evidence);
-      }
-      finally
-      {
-        compiler.Close();
-      }
+      return null;
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2106:SecureAsserts", Justification = "It is safe because the serialization assembly is generated by the framework code, not by the user.")]
     internal static Assembly GenerateRefEmitAssembly(XmlMapping[] xmlMappings, Type[] types, string defaultNamespace, Evidence evidence)
     {
-      Hashtable scopeTable = new Hashtable();
-      foreach (XmlMapping mapping in xmlMappings)
-        scopeTable[mapping.Scope] = mapping;
-      TypeScope[] scopes = new TypeScope[scopeTable.Keys.Count];
-      scopeTable.Keys.CopyTo(scopes, 0);
-
-      string assemblyName = "Microsoft.GeneratedCode";
-      AssemblyBuilder assemblyBuilder = CodeGenerator.CreateAssemblyBuilder(AppDomain.CurrentDomain, assemblyName);
-      ConstructorInfo SecurityTransparentAttribute_ctor = typeof(SecurityTransparentAttribute).GetConstructor(
-          CodeGenerator.InstanceBindingFlags,
-          null,
-          CodeGenerator.EmptyTypeArray,
-          null
-          );
-      assemblyBuilder.SetCustomAttribute(new CustomAttributeBuilder(SecurityTransparentAttribute_ctor, new Object[0]));
-      ConstructorInfo AllowPartiallyTrustedCallersAttribute_ctor = typeof(AllowPartiallyTrustedCallersAttribute).GetConstructor(
-          CodeGenerator.InstanceBindingFlags,
-          null,
-          CodeGenerator.EmptyTypeArray,
-          null
-          );
-      assemblyBuilder.SetCustomAttribute(new CustomAttributeBuilder(AllowPartiallyTrustedCallersAttribute_ctor, new Object[0]));
-      ConstructorInfo SecurityRulesAttribute_ctor = typeof(SecurityRulesAttribute).GetConstructor(
-          CodeGenerator.InstanceBindingFlags,
-          null,
-          new Type[] { typeof(SecurityRuleSet) },
-          null
-          );
-      assemblyBuilder.SetCustomAttribute(new CustomAttributeBuilder(SecurityRulesAttribute_ctor, new Object[] { SecurityRuleSet.Level1 }));
-      // Add AssemblyVersion attribute to match parent accembly version
-      if (types != null && types.Length > 0 && types[0] != null)
-      {
-
-        ConstructorInfo AssemblyVersionAttribute_ctor = typeof(AssemblyVersionAttribute).GetConstructor(
-            CodeGenerator.InstanceBindingFlags,
-            null,
-            new Type[] { typeof(String) },
-            null
-            );
-        FileIOPermission.Assert();
-        string assemblyVersion = types[0].Assembly.GetName().Version.ToString();
-        FileIOPermission.RevertAssert();
-        assemblyBuilder.SetCustomAttribute(new CustomAttributeBuilder(AssemblyVersionAttribute_ctor, new Object[] { assemblyVersion }));
-      }
-      CodeIdentifiers classes = new CodeIdentifiers();
-      classes.AddUnique("XmlSerializationWriter", "XmlSerializationWriter");
-      classes.AddUnique("XmlSerializationReader", "XmlSerializationReader");
-      string suffix = null;
-      if (types != null && types.Length == 1 && types[0] != null)
-      {
-        suffix = CodeIdentifier.MakeValid(types[0].Name);
-        if (types[0].IsArray)
-        {
-          suffix += "Array";
-        }
-      }
-
-      ModuleBuilder moduleBuilder = CodeGenerator.CreateModuleBuilder(assemblyBuilder, assemblyName);
-
-      string writerClass = "XmlSerializationWriter" + suffix;
-      writerClass = classes.AddUnique(writerClass, writerClass);
-      XmlSerializationWriterILGen writerCodeGen = new XmlSerializationWriterILGen(scopes, "public", writerClass);
-      writerCodeGen.ModuleBuilder = moduleBuilder;
-
-      writerCodeGen.GenerateBegin();
-      string[] writeMethodNames = new string[xmlMappings.Length];
-
-      for (int i = 0; i < xmlMappings.Length; i++)
-      {
-        writeMethodNames[i] = writerCodeGen.GenerateElement(xmlMappings[i]);
-      }
-      Type writerType = writerCodeGen.GenerateEnd();
-
-      string readerClass = "XmlSerializationReader" + suffix;
-      readerClass = classes.AddUnique(readerClass, readerClass);
-      XmlSerializationReaderILGen readerCodeGen = new XmlSerializationReaderILGen(scopes, "public", readerClass);
-
-      readerCodeGen.ModuleBuilder = moduleBuilder;
-      readerCodeGen.CreatedTypes.Add(writerType.Name, writerType);
-
-      readerCodeGen.GenerateBegin();
-      string[] readMethodNames = new string[xmlMappings.Length];
-      for (int i = 0; i < xmlMappings.Length; i++)
-      {
-        readMethodNames[i] = readerCodeGen.GenerateElement(xmlMappings[i]);
-      }
-      readerCodeGen.GenerateEnd(readMethodNames, xmlMappings, types);
-
-      string baseSerializer = readerCodeGen.GenerateBaseSerializer("XmlSerializer1", readerClass, writerClass, classes);
-      Hashtable serializers = new Hashtable();
-      for (int i = 0; i < xmlMappings.Length; i++)
-      {
-        if (serializers[xmlMappings[i].Key] == null)
-        {
-          serializers[xmlMappings[i].Key] = readerCodeGen.GenerateTypedSerializer(readMethodNames[i], writeMethodNames[i], xmlMappings[i], classes, baseSerializer, readerClass, writerClass);
-        }
-      }
-      readerCodeGen.GenerateSerializerContract("XmlSerializerContract", xmlMappings, types, readerClass, readMethodNames, writerClass, writeMethodNames, serializers);
-
-      if (DiagnosticsSwitches.KeepTempFiles.Enabled)
-      {
-        FileIOPermission.Assert();
-        assemblyBuilder.Save(assemblyName + ".dll");
-      }
-      return writerType.Assembly;
+      return null;
     }
 
     // SxS: This method does not take any resource name and does not expose any resources to the caller.
@@ -727,6 +379,465 @@ namespace TextMonster.Xml.Xml_Reader
       {
         Dictionary.Add(key, value);
       }
+    }
+  }
+
+  internal class CodeGeneratorConversionException : Exception
+  {
+
+    private Type sourceType;
+    private Type targetType;
+    private bool isAddress;
+    private string reason;
+
+    public CodeGeneratorConversionException(Type sourceType, Type targetType, bool isAddress, string reason)
+      : base()
+    {
+
+      this.sourceType = sourceType;
+      this.targetType = targetType;
+      this.isAddress = isAddress;
+      this.reason = reason;
+    }
+  }
+
+  sealed class XmlSerializerCompilerParameters
+  {
+    bool needTempDirAccess;
+    CompilerParameters parameters;
+    XmlSerializerCompilerParameters(CompilerParameters parameters, bool needTempDirAccess)
+    {
+      this.needTempDirAccess = needTempDirAccess;
+      this.parameters = parameters;
+    }
+
+    internal bool IsNeedTempDirAccess { get { return this.needTempDirAccess; } }
+    internal CompilerParameters CodeDomParameters { get { return this.parameters; } }
+
+    internal static XmlSerializerCompilerParameters Create(string location)
+    {
+      return null;
+    }
+
+    internal static XmlSerializerCompilerParameters Create(CompilerParameters parameters, bool needTempDirAccess)
+    {
+      return new XmlSerializerCompilerParameters(parameters, needTempDirAccess);
+    }
+  }
+
+  /// <include file='doc\XmlSerializerVersionAttribute.uex' path='docs/doc[@for="XmlSerializerVersionAttribute"]/*' />
+  /// <devdoc>
+  ///    <para>[To be supplied.]</para>
+  /// </devdoc>
+  [AttributeUsage(AttributeTargets.Assembly)]
+  public sealed class XmlSerializerVersionAttribute : System.Attribute
+  {
+    string mvid;
+    string serializerVersion;
+    string ns;
+    Type type;
+
+    /// <include file='doc\XmlSerializerVersionAttribute.uex' path='docs/doc[@for="XmlSerializerVersionAttribute.XmlSerializerVersionAttribute"]/*' />
+    /// <devdoc>
+    ///    <para>[To be supplied.]</para>
+    /// </devdoc>
+    public XmlSerializerVersionAttribute()
+    {
+    }
+
+    /// <include file='doc\XmlSerializerVersionAttribute.uex' path='docs/doc[@for="XmlSerializerVersionAttribute.XmlSerializerAssemblyAttribute1"]/*' />
+    /// <devdoc>
+    ///    <para>[To be supplied.]</para>
+    /// </devdoc>
+    public XmlSerializerVersionAttribute(Type type)
+    {
+      this.type = type;
+    }
+
+    /// <include file='doc\XmlSerializerVersionAttribute.uex' path='docs/doc[@for="XmlSerializerVersionAttribute.ParentAssemblyId"]/*' />
+    /// <devdoc>
+    ///    <para>[To be supplied.]</para>
+    /// </devdoc>
+    public string ParentAssemblyId
+    {
+      get { return mvid; }
+      set { mvid = value; }
+    }
+
+    /// <include file='doc\XmlSerializerVersionAttribute.uex' path='docs/doc[@for="XmlSerializerVersionAttribute.ParentAssemblyId"]/*' />
+    /// <devdoc>
+    ///    <para>[To be supplied.]</para>
+    /// </devdoc>
+    public string Version
+    {
+      get { return serializerVersion; }
+      set { serializerVersion = value; }
+    }
+
+
+    /// <include file='doc\XmlSerializerVersionAttribute.uex' path='docs/doc[@for="XmlSerializerVersionAttribute.Namespace"]/*' />
+    /// <devdoc>
+    ///    <para>[To be supplied.]</para>
+    /// </devdoc>
+    public string Namespace
+    {
+      get { return ns; }
+      set { ns = value; }
+    }
+
+    /// <include file='doc\XmlSerializerVersionAttribute.uex' path='docs/doc[@for="XmlSerializerVersionAttribute.TypeName"]/*' />
+    /// <devdoc>
+    ///    <para>[To be supplied.]</para>
+    /// </devdoc>
+    public Type Type
+    {
+      get { return type; }
+      set { type = value; }
+    }
+  }
+
+  internal class Soap12
+  {
+    private Soap12() { }
+    internal const string Encoding = "http://www.w3.org/2003/05/soap-encoding";
+    internal const string RpcNamespace = "http://www.w3.org/2003/05/soap-rpc";
+    internal const string RpcResult = "result";
+  }
+
+  /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlDeserializationEvents"]/*' />
+  /// <devdoc>
+  ///    <para>[To be supplied.]</para>
+  /// </devdoc>
+  public struct XmlDeserializationEvents
+  {
+    XmlNodeEventHandler onUnknownNode;
+    XmlAttributeEventHandler onUnknownAttribute;
+    XmlElementEventHandler onUnknownElement;
+    UnreferencedObjectEventHandler onUnreferencedObject;
+    internal object sender;
+
+    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlDeserializationEvents.OnUnknownNode"]/*' />
+    public XmlNodeEventHandler OnUnknownNode
+    {
+      get
+      {
+        return onUnknownNode;
+      }
+
+      set
+      {
+        onUnknownNode = value;
+      }
+    }
+
+    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlDeserializationEvents.OnUnknownAttribute"]/*' />
+    public XmlAttributeEventHandler OnUnknownAttribute
+    {
+      get
+      {
+        return onUnknownAttribute;
+      }
+      set
+      {
+        onUnknownAttribute = value;
+      }
+    }
+
+    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlDeserializationEvents.OnUnknownElement"]/*' />
+    public XmlElementEventHandler OnUnknownElement
+    {
+      get
+      {
+        return onUnknownElement;
+      }
+      set
+      {
+        onUnknownElement = value;
+      }
+    }
+
+    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlDeserializationEvents.OnUnreferencedObject"]/*' />
+    public UnreferencedObjectEventHandler OnUnreferencedObject
+    {
+      get
+      {
+        return onUnreferencedObject;
+      }
+      set
+      {
+        onUnreferencedObject = value;
+      }
+    }
+  }
+
+  /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlNodeEventHandler"]/*' />
+  /// <devdoc>
+  ///    <para>[To be supplied.]</para>
+  /// </devdoc>
+  public delegate void XmlNodeEventHandler(object sender, XmlNodeEventArgs e);
+
+  /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlAttributeEventHandler"]/*' />
+  /// <devdoc>
+  ///    <para>[To be supplied.]</para>
+  /// </devdoc>
+  public delegate void XmlAttributeEventHandler(object sender, XmlAttributeEventArgs e);
+
+  /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlAttributeEventArgs"]/*' />
+  /// <devdoc>
+  ///    <para>[To be supplied.]</para>
+  /// </devdoc>
+  public class XmlAttributeEventArgs : EventArgs
+  {
+    object o;
+    XmlAttribute attr;
+    string qnames;
+    int lineNumber;
+    int linePosition;
+
+
+    internal XmlAttributeEventArgs(XmlAttribute attr, int lineNumber, int linePosition, object o, string qnames)
+    {
+      this.attr = attr;
+      this.o = o;
+      this.qnames = qnames;
+      this.lineNumber = lineNumber;
+      this.linePosition = linePosition;
+    }
+
+
+    /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlAttributeEventArgs.ObjectBeingDeserialized"]/*' />
+    /// <devdoc>
+    ///    <para>[To be supplied.]</para>
+    /// </devdoc>
+    public object ObjectBeingDeserialized
+    {
+      get { return o; }
+    }
+
+    /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlAttributeEventArgs.Attr"]/*' />
+    /// <devdoc>
+    ///    <para>[To be supplied.]</para>
+    /// </devdoc>
+    public XmlAttribute Attr
+    {
+      get { return attr; }
+    }
+
+    /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlAttributeEventArgs.LineNumber"]/*' />
+    /// <devdoc>
+    ///    <para>
+    ///       Gets the current line number.
+    ///    </para>
+    /// </devdoc>
+    public int LineNumber
+    {
+      get { return lineNumber; }
+    }
+
+    /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlAttributeEventArgs.LinePosition"]/*' />
+    /// <devdoc>
+    ///    <para>
+    ///       Gets the current line position.
+    ///    </para>
+    /// </devdoc>
+    public int LinePosition
+    {
+      get { return linePosition; }
+    }
+
+    /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlAttributeEventArgs.Attributes"]/*' />
+    /// <devdoc>
+    ///    <para>
+    ///       List the qnames of attributes expected in the current context.
+    ///    </para>
+    /// </devdoc>
+    public string ExpectedAttributes
+    {
+      get { return qnames == null ? string.Empty : qnames; }
+    }
+  }
+
+  /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlElementEventHandler"]/*' />
+  public delegate void XmlElementEventHandler(object sender, XmlElementEventArgs e);
+
+  /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlElementEventArgs"]/*' />
+  public class XmlElementEventArgs : EventArgs
+  {
+    object o;
+    XmlElement elem;
+    string qnames;
+    int lineNumber;
+    int linePosition;
+
+    internal XmlElementEventArgs(XmlElement elem, int lineNumber, int linePosition, object o, string qnames)
+    {
+      this.elem = elem;
+      this.o = o;
+      this.qnames = qnames;
+      this.lineNumber = lineNumber;
+      this.linePosition = linePosition;
+    }
+
+    /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlElementEventArgs.ObjectBeingDeserialized"]/*' />
+    public object ObjectBeingDeserialized
+    {
+      get { return o; }
+    }
+
+    /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlElementEventArgs.Attr"]/*' />
+    public XmlElement Element
+    {
+      get { return elem; }
+    }
+
+    /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlElementEventArgs.LineNumber"]/*' />
+    public int LineNumber
+    {
+      get { return lineNumber; }
+    }
+
+    /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlElementEventArgs.LinePosition"]/*' />
+    public int LinePosition
+    {
+      get { return linePosition; }
+    }
+
+    /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlAttributeEventArgs.ExpectedElements"]/*' />
+    /// <devdoc>
+    ///    <para>
+    ///       List of qnames of elements expected in the current context.
+    ///    </para>
+    /// </devdoc>
+    public string ExpectedElements
+    {
+      get { return qnames == null ? string.Empty : qnames; }
+    }
+  }
+
+  /// <include file='doc\_Events.uex' path='docs/doc[@for="UnreferencedObjectEventHandler"]/*' />
+  public delegate void UnreferencedObjectEventHandler(object sender, UnreferencedObjectEventArgs e);
+
+  /// <include file='doc\_Events.uex' path='docs/doc[@for="UnreferencedObjectEventArgs"]/*' />
+  public class UnreferencedObjectEventArgs : EventArgs
+  {
+    object o;
+    string id;
+
+    /// <include file='doc\_Events.uex' path='docs/doc[@for="UnreferencedObjectEventArgs.UnreferencedObjectEventArgs"]/*' />
+    public UnreferencedObjectEventArgs(object o, string id)
+    {
+      this.o = o;
+      this.id = id;
+    }
+
+    /// <include file='doc\_Events.uex' path='docs/doc[@for="UnreferencedObjectEventArgs.UnreferencedObject"]/*' />
+    public object UnreferencedObject
+    {
+      get { return o; }
+    }
+
+    /// <include file='doc\_Events.uex' path='docs/doc[@for="UnreferencedObjectEventArgs.UnreferencedId"]/*' />
+    public string UnreferencedId
+    {
+      get { return id; }
+    }
+  }
+
+  /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlNodeEventArgs"]/*' />
+  /// <devdoc>
+  ///    <para>[To be supplied.]</para>
+  /// </devdoc>
+  public class XmlNodeEventArgs : EventArgs
+  {
+    object o;
+    XmlNode xmlNode;
+    int lineNumber;
+    int linePosition;
+
+
+    internal XmlNodeEventArgs(XmlNode xmlNode, int lineNumber, int linePosition, object o)
+    {
+      this.o = o;
+      this.xmlNode = xmlNode;
+      this.lineNumber = lineNumber;
+      this.linePosition = linePosition;
+    }
+
+    /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlNodeEventArgs.ObjectBeingDeserialized"]/*' />
+    /// <devdoc>
+    ///    <para>[To be supplied.]</para>
+    /// </devdoc>
+    public object ObjectBeingDeserialized
+    {
+      get { return o; }
+    }
+
+
+    /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlNodeEventArgs.NodeType"]/*' />
+    /// <devdoc>
+    ///    <para>[To be supplied.]</para>
+    /// </devdoc>
+    public XmlNodeType NodeType
+    {
+      get { return xmlNode.NodeType; }
+    }
+
+    /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlNodeEventArgs.Name"]/*' />
+    /// <devdoc>
+    ///    <para>[To be supplied.]</para>
+    /// </devdoc>
+    public string Name
+    {
+      get { return xmlNode.Name; }
+    }
+
+    /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlNodeEventArgs.LocalName"]/*' />
+    /// <devdoc>
+    ///    <para>[To be supplied.]</para>
+    /// </devdoc>
+    public string LocalName
+    {
+      get { return xmlNode.LocalName; }
+    }
+
+    /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlNodeEventArgs.NamespaceURI"]/*' />
+    /// <devdoc>
+    ///    <para>[To be supplied.]</para>
+    /// </devdoc>
+    public string NamespaceURI
+    {
+      get { return xmlNode.NamespaceURI; }
+    }
+
+    /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlNodeEventArgs.Text"]/*' />
+    /// <devdoc>
+    ///    <para>[To be supplied.]</para>
+    /// </devdoc>
+    public string Text
+    {
+      get { return xmlNode.Value; }
+    }
+
+    /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlNodeEventArgs.LineNumber"]/*' />
+    /// <devdoc>
+    ///    <para>
+    ///       Gets the current line number.
+    ///    </para>
+    /// </devdoc>
+    public int LineNumber
+    {
+      get { return lineNumber; }
+    }
+
+    /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlNodeEventArgs.LinePosition"]/*' />
+    /// <devdoc>
+    ///    <para>
+    ///       Gets the current line position.
+    ///    </para>
+    /// </devdoc>
+    public int LinePosition
+    {
+      get { return linePosition; }
     }
   }
 }

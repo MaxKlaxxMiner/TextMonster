@@ -465,7 +465,6 @@ namespace TextMonster.Xml.Xml_Reader
           {
             // There are child node(s); move to first child
             n = e.FirstChild;
-            Debug.Assert(n != null);
             continue;
           }
         }
@@ -478,13 +477,11 @@ namespace TextMonster.Xml.Xml_Reader
         while (n != root && n == n.ParentNode.LastChild)
         {
           n = n.ParentNode;
-          Debug.Assert(n != null);
           writer.WriteFullEndElement();
         }
         if (n == root)
           break;
         n = n.NextSibling;
-        Debug.Assert(n != null);
       }
     }
 

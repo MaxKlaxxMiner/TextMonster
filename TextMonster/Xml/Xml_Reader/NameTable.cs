@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -33,9 +33,7 @@ namespace TextMonster.Xml.Xml_Reader
     Entry[] entries;
     int count;
     int mask;
-#pragma warning disable 169
-    int hashCodeRandomizer; // Used only on Silverlight but still defined for compatibility
-#pragma warning restore 169
+    int hashCodeRandomizer;
 
     //
     // Constructor

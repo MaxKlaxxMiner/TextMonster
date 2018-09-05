@@ -79,7 +79,6 @@
       {
         if (name == null)
         {
-          Debug.Assert(prefix != null);
           if (prefix.Length > 0)
           {
             if (localName.Length > 0)
@@ -102,7 +101,6 @@
           {
             name = localName;
           }
-          Debug.Assert(Ref.Equal(name, ownerDoc.NameTable.Get(name)));
         }
         return name;
       }
