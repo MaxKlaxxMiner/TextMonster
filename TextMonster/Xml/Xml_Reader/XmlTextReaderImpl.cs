@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using BufferBuilder = System.Text.StringBuilder;
 
 namespace TextMonster.Xml.Xml_Reader
 {

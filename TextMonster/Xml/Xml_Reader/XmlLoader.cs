@@ -575,7 +575,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
 
       IDtdParser dtdParser = DtdParser.Create();
-      XmlTextReaderImpl.DtdParserProxy proxy = new XmlTextReaderImpl.DtdParserProxy(tr);
+      DtdParserProxy proxy = new DtdParserProxy(tr);
 
       IDtdInfo dtdInfo = dtdParser.ParseFreeFloatingDtd(this.doc.BaseURI, dtNode.Name, dtNode.PublicId, dtNode.SystemId, dtNode.InternalSubset, proxy);
       LoadDocumentType(dtdInfo, dtNode);
