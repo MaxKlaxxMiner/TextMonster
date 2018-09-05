@@ -1,4 +1,7 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿using System.Collections;
+using System.Collections.Generic;
+
+namespace TextMonster.Xml.Xml_Reader
 {
   using FT = Function.FunctionType;
 
@@ -454,7 +457,6 @@
         throw XPathException.Create(Res.Xp_QueryTooComplex);
       }
 
-      Debug.Assert(root != null, "root != null");
       Query result = null;
       props = Props.None;
       switch (root.Type)
@@ -484,7 +486,6 @@
         result = new AbsoluteQuery();
         break;
         default:
-        Debug.Assert(false, "Unknown QueryType encountered!!");
         break;
       }
       --parseDepth;
@@ -530,5 +531,4 @@
       return result;
     }
   }
-
 }
