@@ -17,7 +17,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal XmlQualifiedName Examplar
     {
       get { return examplar; }
-      set { examplar = value; }
     }
   }
 }

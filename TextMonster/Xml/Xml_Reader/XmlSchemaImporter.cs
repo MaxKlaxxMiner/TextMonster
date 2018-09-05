@@ -15,13 +15,6 @@ namespace TextMonster.Xml.Xml_Reader
   /// </devdoc>
   public class XmlSchemaImporter : SchemaImporter
   {
-
-    /// <include file='doc\XmlSchemaImporter.uex' path='docs/doc[@for="XmlSchemaImporter.XmlSchemaImporter"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlSchemaImporter(XmlSchemas schemas) : base(schemas, CodeGenerationOptions.GenerateProperties, null, new ImportContext()) { }
-
     /// <include file='doc\XmlSchemaImporter.uex' path='docs/doc[@for="XmlSchemaImporter.XmlSchemaImporter1"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>

@@ -11,15 +11,6 @@ namespace TextMonster.Xml.Xml_Reader
   {
     Hashtable types = new Hashtable();
 
-    /// <include file='doc\XmlAttributeOverrides.uex' path='docs/doc[@for="XmlAttributeOverrides.Add"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public void Add(Type type, XmlAttributes attributes)
-    {
-      Add(type, string.Empty, attributes);
-    }
-
     /// <include file='doc\XmlAttributeOverrides.uex' path='docs/doc[@for="XmlAttributeOverrides.Add1"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>

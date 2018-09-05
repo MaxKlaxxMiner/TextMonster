@@ -34,10 +34,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal int StartOffset
     {
-      get
-      {
-        return startOffset;
-      }
       set
       {
         startOffset = value;

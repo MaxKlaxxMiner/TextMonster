@@ -4,9 +4,6 @@ namespace TextMonster.Xml.Xml_Reader
 {
   internal sealed class SchemaNotation
   {
-    internal const int SYSTEM = 0;
-    internal const int PUBLIC = 1;
-
     private XmlQualifiedName name;
     private String systemLiteral;   // System literal
     private String pubid;    // pubid literal

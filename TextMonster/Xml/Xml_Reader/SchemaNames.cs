@@ -4,11 +4,6 @@
   {
     XmlNameTable nameTable;
 
-    public XmlNameTable NameTable
-    {
-      get { return nameTable; }
-    }
-
     public string NsDataType;
     public string NsDataTypeAlias;
     public string NsDataTypeOld;

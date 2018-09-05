@@ -7,12 +7,10 @@ namespace TextMonster.Xml.Xml_Reader
 
     private enum CachingReaderState
     {
-      None = 0,
       Init = 1,
       Record = 2,
       Replay = 3,
       ReaderClosed = 4,
-      Error = 5,
     }
 
     private FastXmlReader coreReader;

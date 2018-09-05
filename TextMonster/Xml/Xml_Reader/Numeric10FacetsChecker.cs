@@ -6,7 +6,6 @@ namespace TextMonster.Xml.Xml_Reader
 {
   internal class Numeric10FacetsChecker : FacetsChecker
   {
-    static readonly char[] signs = new char[] { '+', '-' };
     decimal maxValue;
     decimal minValue;
 

@@ -8,7 +8,6 @@ namespace TextMonster.Xml.Xml_Reader
 {
   internal static class DynamicAssemblies
   {
-    static ArrayList assembliesInConfig = new ArrayList();
     static volatile Hashtable nameToAssemblyMap = new Hashtable();
     static volatile Hashtable assemblyToNameMap = new Hashtable();
     static Hashtable tableIsTypeDynamic = Hashtable.Synchronized(new Hashtable());

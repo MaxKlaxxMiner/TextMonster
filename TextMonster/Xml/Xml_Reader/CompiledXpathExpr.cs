@@ -32,10 +32,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return expr; }
     }
 
-    public virtual void CheckErrors()
-    {
-    }
-
     public override void AddSort(object expr, IComparer comparer)
     {
       // sort makes sense only when we are dealing with a query that
@@ -61,12 +57,12 @@ namespace TextMonster.Xml.Xml_Reader
       sortQuery.AddSort(evalExpr, comparer);
     }
 
-    public override void AddSort(object expr, XmlSortOrder order, XmlCaseOrder caseOrder, string lang, XmlDataType dataType)
+    public virtual void AddSort(object expr, XmlSortOrder order, XmlCaseOrder caseOrder, string lang, XmlDataType dataType)
     {
       AddSort(expr, new XPathComparerHelper(order, caseOrder, lang, dataType));
     }
 
-    public override XPathExpression Clone()
+    public virtual XPathExpression Clone()
     {
       return new CompiledXpathExpr(Query.Clone(query), expr, needContext);
     }
@@ -92,7 +88,7 @@ namespace TextMonster.Xml.Xml_Reader
       needContext = false;
     }
 
-    public override XPathResultType ReturnType { get { return query.StaticType; } }
+    public virtual XPathResultType ReturnType { get { return query.StaticType; } }
 
     private class UndefinedXsltContext : XsltContext
     {
@@ -132,7 +128,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
       public override bool Whitespace { get { return false; } }
       public override bool PreserveWhitespace(XPathNavigator node) { return false; }
-      public override int CompareDocument(string baseUri, string nextbaseUri)
+      public virtual int CompareDocument(string baseUri, string nextbaseUri)
       {
         return string.CompareOrdinal(baseUri, nextbaseUri);
       }

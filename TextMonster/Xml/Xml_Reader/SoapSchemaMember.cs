@@ -14,7 +14,6 @@ namespace TextMonster.Xml.Xml_Reader
     public XmlQualifiedName MemberType
     {
       get { return type; }
-      set { type = value; }
     }
 
     /// <include file='doc\SoapSchemaMember.uex' path='docs/doc[@for="SoapSchemaMember.MemberName"]/*' />

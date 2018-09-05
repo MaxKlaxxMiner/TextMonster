@@ -17,18 +17,6 @@
     }
 
     public abstract void Reset();
-    public virtual bool MoveToPosition(int pos)
-    {
-      Reset();
-      for (int i = CurrentPosition; i < pos; i++)
-      {
-        if (!MoveNext())
-        {
-          return false;
-        }
-      }
-      return true;
-    }
 
     // Contruct extension: CurrentPosition should return 0 if MoveNext() wasn't called after Reset()
     // (behavior is not defined for XPathNodeIterator)

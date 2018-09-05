@@ -7,6 +7,5 @@
   /// </summary>
   internal interface IRemovableWriter
   {
-    OnRemoveWriter OnRemoveWriterEvent { get; set; }
   }
 }

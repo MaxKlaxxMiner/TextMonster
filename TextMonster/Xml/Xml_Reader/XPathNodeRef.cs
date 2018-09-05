@@ -9,20 +9,10 @@
     private XPathNode[] page;
     private int idx;
 
-    public static XPathNodeRef Null
-    {
-      get { return new XPathNodeRef(); }
-    }
-
     public XPathNodeRef(XPathNode[] page, int idx)
     {
       this.page = page;
       this.idx = idx;
-    }
-
-    public bool IsNull
-    {
-      get { return this.page == null; }
     }
 
     public XPathNode[] Page

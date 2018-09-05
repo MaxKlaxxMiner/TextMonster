@@ -98,14 +98,14 @@ namespace TextMonster.Xml.Xml_Reader
     protected static readonly Type TimeSpanType = typeof(TimeSpan);
     protected static readonly Type XPathNavigatorType = typeof(XPathNavigator);
 
-    public override bool ToBoolean(bool value) { return (bool)ChangeType((object)value, BooleanType, null); }
+    public virtual bool ToBoolean(bool value) { return (bool)ChangeType((object)value, BooleanType, null); }
     public override bool ToBoolean(DateTime value) { return (bool)ChangeType((object)value, BooleanType, null); }
-    public override bool ToBoolean(DateTimeOffset value) { return (bool)ChangeType((object)value, BooleanType, null); }
-    public override bool ToBoolean(decimal value) { return (bool)ChangeType((object)value, BooleanType, null); }
+    public virtual bool ToBoolean(DateTimeOffset value) { return (bool)ChangeType((object)value, BooleanType, null); }
+    public virtual bool ToBoolean(decimal value) { return (bool)ChangeType((object)value, BooleanType, null); }
     public override bool ToBoolean(double value) { return (bool)ChangeType((object)value, BooleanType, null); }
     public override bool ToBoolean(int value) { return (bool)ChangeType((object)value, BooleanType, null); }
     public override bool ToBoolean(long value) { return (bool)ChangeType((object)value, BooleanType, null); }
-    public override bool ToBoolean(float value) { return (bool)ChangeType((object)value, BooleanType, null); }
+    public virtual bool ToBoolean(float value) { return (bool)ChangeType((object)value, BooleanType, null); }
     public override bool ToBoolean(string value) { return (bool)ChangeType((object)value, BooleanType, null); }
     public override bool ToBoolean(object value) { return (bool)ChangeType((object)value, BooleanType, null); }
 
@@ -155,12 +155,12 @@ namespace TextMonster.Xml.Xml_Reader
 
     public override int ToInt32(bool value) { return (int)ChangeType((object)value, Int32Type, null); }
     public override int ToInt32(DateTime value) { return (int)ChangeType((object)value, Int32Type, null); }
-    public override int ToInt32(DateTimeOffset value) { return (int)ChangeType((object)value, Int32Type, null); }
-    public override int ToInt32(decimal value) { return (int)ChangeType((object)value, Int32Type, null); }
+    public virtual int ToInt32(DateTimeOffset value) { return (int)ChangeType((object)value, Int32Type, null); }
+    public virtual int ToInt32(decimal value) { return (int)ChangeType((object)value, Int32Type, null); }
     public override int ToInt32(double value) { return (int)ChangeType((object)value, Int32Type, null); }
-    public override int ToInt32(int value) { return (int)ChangeType((object)value, Int32Type, null); }
+    public virtual int ToInt32(int value) { return (int)ChangeType((object)value, Int32Type, null); }
     public override int ToInt32(long value) { return (int)ChangeType((object)value, Int32Type, null); }
-    public override int ToInt32(float value) { return (int)ChangeType((object)value, Int32Type, null); }
+    public virtual int ToInt32(float value) { return (int)ChangeType((object)value, Int32Type, null); }
     public override int ToInt32(string value) { return (int)ChangeType((object)value, Int32Type, null); }
     public override int ToInt32(object value) { return (int)ChangeType((object)value, Int32Type, null); }
 

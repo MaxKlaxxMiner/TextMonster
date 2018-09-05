@@ -151,7 +151,7 @@ namespace TextMonster.Xml.Xml_Reader
     ///      Find the matching string atom given a range of
     ///      characters.
     /// </devdoc>
-    public override string Get(char[] key, int start, int len)
+    public virtual string Get(char[] key, int start, int len)
     {
       if (len == 0)
       {

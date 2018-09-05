@@ -10,28 +10,7 @@ namespace TextMonster.Xml.Xml_Reader
   [Obsolete("Use XmlReader created by XmlReader.Create() method using appropriate XmlReaderSettings instead. http://go.microsoft.com/fwlink/?linkid=14202")]
   public class XmlValidatingReader : FastXmlReader, IXmlLineInfo, IXmlNamespaceResolver
   {
-    //
-    // Member fields
-    //
     XmlValidatingReaderImpl impl;
-    //
-    // Constructors
-    //
-    public XmlValidatingReader(FastXmlReader reader)
-    {
-      impl = new XmlValidatingReaderImpl(reader);
-      impl.OuterReader = this;
-    }
-
-    public XmlValidatingReader(string xmlFragment, XmlNodeType fragType, XmlParserContext context)
-    {
-      if (xmlFragment == null)
-      {
-        throw new ArgumentNullException("xmlFragment");
-      }
-      impl = new XmlValidatingReaderImpl(xmlFragment, fragType, context);
-      impl.OuterReader = this;
-    }
 
     public XmlValidatingReader(Stream xmlFragment, XmlNodeType fragType, XmlParserContext context)
     {

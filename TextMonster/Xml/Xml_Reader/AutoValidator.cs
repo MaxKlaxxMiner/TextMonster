@@ -2,8 +2,6 @@
 {
   internal class AutoValidator : BaseValidator
   {
-    const string x_schema = "x-schema";
-
     public AutoValidator(XmlValidatingReaderImpl reader, XmlSchemaCollection schemaCollection, IValidationEventHandling eventHandling)
       : base(reader, schemaCollection, eventHandling)
     {

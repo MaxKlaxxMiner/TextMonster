@@ -22,7 +22,6 @@ namespace TextMonster.Xml.Xml_Reader
       InReadBinaryContent,
       ReaderClosed,
       Error,
-      None,
     }
 
     internal class ValidationEventHandling : IValidationEventHandling

@@ -14,7 +14,6 @@
     NOTATION = 8,
     ENUMERATION = 9,
     QName = 10,
-    NCName = 11,
     None = 12
   }
 }

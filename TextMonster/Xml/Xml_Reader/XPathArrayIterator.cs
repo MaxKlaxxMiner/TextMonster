@@ -10,11 +10,6 @@ namespace TextMonster.Xml.Xml_Reader
     protected IList list;
     protected int index;
 
-    public XPathArrayIterator(IList list)
-    {
-      this.list = list;
-    }
-
     public XPathArrayIterator(XPathArrayIterator it)
     {
       this.list = it.list;

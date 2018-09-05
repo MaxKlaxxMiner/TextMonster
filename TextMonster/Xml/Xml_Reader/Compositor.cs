@@ -2,7 +2,6 @@
 {
   internal enum Compositor
   {
-    Root,
     Include,
     Import,
     Redefine

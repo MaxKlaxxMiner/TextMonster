@@ -9,17 +9,5 @@
     {
       enableUpaCheck = true;
     }
-
-    public bool EnableUpaCheck
-    {
-      get
-      {
-        return enableUpaCheck;
-      }
-      set
-      {
-        enableUpaCheck = value;
-      }
-    }
   }
 }

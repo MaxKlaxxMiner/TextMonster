@@ -17,10 +17,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     public override XmlTypeCode TypeCode { get { return XmlTypeCode.DateTime; } }
 
-    internal Datatype_dateTimeBase()
-    {
-    }
-
     internal Datatype_dateTimeBase(XsdDateTimeFlags dateTimeFlags)
     {
       this.dateTimeFlags = dateTimeFlags;

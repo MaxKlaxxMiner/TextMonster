@@ -23,8 +23,7 @@
       Parent,
       Preceding,
       PrecedingSibling,
-      Self,
-      None
+      Self
     };
 
     // constructor

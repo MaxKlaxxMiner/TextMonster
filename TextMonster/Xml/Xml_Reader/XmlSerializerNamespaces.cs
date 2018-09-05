@@ -19,16 +19,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
 
-    /// <include file='doc\XmlSerializerNamespaces.uex' path='docs/doc[@for="XmlSerializerNamespaces.XmlSerializerNamespaces1"]/*' />
-    /// <internalonly/>
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlSerializerNamespaces(XmlSerializerNamespaces namespaces)
-    {
-      this.namespaces = (Hashtable)namespaces.Namespaces.Clone();
-    }
-
     /// <include file='doc\XmlSerializerNamespaces.uex' path='docs/doc[@for="XmlSerializerNamespaces.XmlSerializerNamespaces2"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>

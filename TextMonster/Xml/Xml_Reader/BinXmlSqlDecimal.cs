@@ -23,8 +23,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     private static readonly byte NUMERIC_MAX_PRECISION = 38;            // Maximum precision of numeric
-    private static readonly byte MaxPrecision = NUMERIC_MAX_PRECISION;  // max SS precision
-    private static readonly byte MaxScale = NUMERIC_MAX_PRECISION;      // max SS scale
 
     private static readonly int x_cNumeMax = 4;
     private static readonly long x_lInt32Base = ((long)1) << 32;      // 2**32

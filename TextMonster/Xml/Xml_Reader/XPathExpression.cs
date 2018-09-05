@@ -10,15 +10,9 @@ namespace TextMonster.Xml.Xml_Reader
 
     public abstract void AddSort(object expr, IComparer comparer);
 
-    public abstract void AddSort(object expr, XmlSortOrder order, XmlCaseOrder caseOrder, string lang, XmlDataType dataType);
-
-    public abstract XPathExpression Clone();
-
     public abstract void SetContext(XmlNamespaceManager nsManager);
 
     public abstract void SetContext(IXmlNamespaceResolver nsResolver);
-
-    public abstract XPathResultType ReturnType { get; }
 
     public static XPathExpression Compile(string xpath)
     {

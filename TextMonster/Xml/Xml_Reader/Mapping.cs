@@ -10,11 +10,5 @@ namespace TextMonster.Xml.Xml_Reader
     {
       this.isSoap = mapping.isSoap;
     }
-
-    internal bool IsSoap
-    {
-      get { return isSoap; }
-      set { isSoap = value; }
-    }
   }
 }

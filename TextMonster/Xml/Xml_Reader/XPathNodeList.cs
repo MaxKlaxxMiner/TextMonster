@@ -29,8 +29,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    private static readonly object[] nullparams = { };
-
     private XmlNode GetNode(XPathNavigator n)
     {
       IHasXmlNode iHasNode = (IHasXmlNode)n;

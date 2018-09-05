@@ -12,7 +12,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal bool ReferencedByTopLevelElement
     {
-      get { return referencedByTopLevelElement; }
       set { referencedByTopLevelElement = value; }
     }
 

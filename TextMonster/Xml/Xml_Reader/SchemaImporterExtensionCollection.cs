@@ -17,38 +17,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public int Add(SchemaImporterExtension extension)
-    {
-      return Add(extension.GetType().FullName, extension);
-    }
-
-    public int Add(string name, Type type)
-    {
-      if (type.IsSubclassOf(typeof(SchemaImporterExtension)))
-      {
-        return Add(name, (SchemaImporterExtension)Activator.CreateInstance(type));
-      }
-      else
-      {
-        throw new ArgumentException(Res.GetString(Res.XmlInvalidSchemaExtension, type));
-      }
-    }
-
-    public void Remove(string name)
-    {
-      if (Names[name] != null)
-      {
-        List.Remove(Names[name]);
-        Names[name] = null;
-      }
-    }
-
-    public new void Clear()
-    {
-      Names.Clear();
-      List.Clear();
-    }
-
     internal SchemaImporterExtensionCollection Clone()
     {
       SchemaImporterExtensionCollection clone = new SchemaImporterExtensionCollection();

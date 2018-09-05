@@ -10,7 +10,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private enum ValidatingReaderState
     {
-      None = 0,
       Init = 1,
       Read = 2,
       OnDefaultAttribute = -1,

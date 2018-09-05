@@ -11,8 +11,7 @@
       Function,
       Group,
       Root,
-      Variable,
-      Error
+      Variable
     };
 
     public abstract AstType Type { get; }

@@ -181,11 +181,6 @@ namespace TextMonster.Xml.Xml_Reader
     // XPathItem methods
     //-----------------------------------------------
 
-    public override bool IsNode
-    {
-      get { return false; }
-    }
-
     public override XmlSchemaType XmlType
     {
       get { return this.xmlType; }

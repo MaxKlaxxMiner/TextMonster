@@ -8,11 +8,6 @@ namespace TextMonster.Xml.Xml_Reader
   public abstract class XPathItem
   {
     /// <summary>
-    /// True if this item is a node, and not an atomic value.
-    /// </summary>
-    public abstract bool IsNode { get; }
-
-    /// <summary>
     /// Returns Xsd type of atomic value, or of node's content.
     /// </summary>
     public abstract XmlSchemaType XmlType { get; }

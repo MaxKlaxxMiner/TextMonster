@@ -2,7 +2,6 @@
 {
   internal enum QueryProps
   {
-    None = 0x00,
     Position = 0x01,
     Count = 0x02,
     Cached = 0x04,

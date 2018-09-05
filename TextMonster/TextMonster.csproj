@@ -712,7 +712,6 @@
     <Compile Include="Xml\Internal\Inserter.cs" />
     <Compile Include="Xml\X_NodeEqualityComparer.cs" />
     <Compile Include="Xml\X_NodeDocumentOrderComparer.cs" />
-    <Compile Include="Xml\Internal\NameSerializer.cs" />
     <Compile Include="Xml\X_Attribute.cs" />
     <Compile Include="Xml\X_DocumentType.cs" />
     <Compile Include="Xml\X_Declaration.cs" />

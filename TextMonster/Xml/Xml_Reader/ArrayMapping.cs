@@ -1,5 +1,3 @@
-using System;
-
 namespace TextMonster.Xml.Xml_Reader
 {
   internal class ArrayMapping : TypeMapping
@@ -13,21 +11,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
       get { return elements; }
       set { elements = value; sortedElements = null; }
-    }
-
-    internal ElementAccessor[] ElementsSortedByDerivation
-    {
-      get
-      {
-        if (sortedElements != null)
-          return sortedElements;
-        if (elements == null)
-          return null;
-        sortedElements = new ElementAccessor[elements.Length];
-        Array.Copy(elements, 0, sortedElements, 0, elements.Length);
-        AccessorMapping.SortMostToLeastDerived(sortedElements);
-        return sortedElements;
-      }
     }
 
 

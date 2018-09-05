@@ -5,11 +5,6 @@
   {
     internal XmlLinkedNode next;
 
-    internal XmlLinkedNode()
-      : base()
-    {
-      next = null;
-    }
     internal XmlLinkedNode(XmlDocument doc)
       : base(doc)
     {

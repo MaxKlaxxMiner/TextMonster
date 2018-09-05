@@ -15,15 +15,6 @@ namespace TextMonster.Xml.Xml_Reader
       this.enumerator = enumerator;
     }
 
-    /// <include file='doc\XmlSchemaObjectCollection.uex' path='docs/doc[@for="XmlSchemaObjectEnumerator.Reset"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public void Reset()
-    {
-      enumerator.Reset();
-    }
-
     /// <include file='doc\XmlSchemaObjectCollection.uex' path='docs/doc[@for="XmlSchemaObjectEnumerator.MoveNext"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>

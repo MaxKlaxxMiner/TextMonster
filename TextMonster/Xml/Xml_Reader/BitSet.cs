@@ -42,13 +42,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public void Clear(int index)
-    {
-      int nBitSlot = Subscript(index);
-      EnsureLength(nBitSlot + 1);
-      bits[nBitSlot] &= ~((uint)1 << (index & bitSlotMask));
-    }
-
     public void Set(int index)
     {
       int nBitSlot = Subscript(index);

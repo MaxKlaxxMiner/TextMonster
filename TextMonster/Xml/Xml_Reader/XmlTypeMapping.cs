@@ -17,15 +17,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return Accessor.Mapping; }
     }
 
-    /// <include file='doc\XmlTypeMapping.uex' path='docs/doc[@for="XmlTypeMapping.TypeName"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public string TypeName
-    {
-      get { return Mapping.TypeDesc.Name; }
-    }
-
     /// <include file='doc\XmlTypeMapping.uex' path='docs/doc[@for="XmlTypeMapping.TypeFullName"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>

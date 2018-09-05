@@ -2,7 +2,6 @@
 {
   internal enum FacetType
   {
-    None,
     Length,
     MinLength,
     MaxLength,

@@ -3,7 +3,6 @@ namespace TextMonster.Xml.Xml_Reader
   internal enum BinXmlToken
   {
     Error = 0,
-    NotImpl = -2,
     EOF = -1,
     XmlDecl = 0xFE,
     Encoding = 0xFD,

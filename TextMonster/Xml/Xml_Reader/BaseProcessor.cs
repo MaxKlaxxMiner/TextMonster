@@ -11,9 +11,6 @@ namespace TextMonster.Xml.Xml_Reader
     int errorCount = 0;
     string NsXml;
 
-    public BaseProcessor(XmlNameTable nameTable, SchemaNames schemaNames, ValidationEventHandler eventHandler)
-      : this(nameTable, schemaNames, eventHandler, new XmlSchemaCompilationSettings()) { } //Use the default for XmlSchemaCollection
-
     public BaseProcessor(XmlNameTable nameTable, SchemaNames schemaNames, ValidationEventHandler eventHandler, XmlSchemaCompilationSettings compilationSettings)
     {
       this.nameTable = nameTable;

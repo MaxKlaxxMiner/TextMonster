@@ -11,25 +11,7 @@ namespace TextMonster.Xml.Xml_Reader
   [PermissionSet(SecurityAction.InheritanceDemand, Name = "FullTrust")]
   public class XmlTextReader : FastXmlReader, IXmlLineInfo, IXmlNamespaceResolver
   {
-    //
-    // Member fields
-    //
     XmlTextReaderImpl impl;
-    //
-    //
-    // Constructors
-    //
-    protected XmlTextReader()
-    {
-      impl = new XmlTextReaderImpl();
-      impl.OuterReader = this;
-    }
-
-    protected XmlTextReader(XmlNameTable nt)
-    {
-      impl = new XmlTextReaderImpl(nt);
-      impl.OuterReader = this;
-    }
 
     public XmlTextReader(Stream input)
     {

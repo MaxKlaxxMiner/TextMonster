@@ -12,13 +12,6 @@ namespace TextMonster.Xml.Xml_Reader
   /// </devdoc>
   public abstract class XmlNameTable
   {
-    /// <include file='doc\XmlNameTable.uex' path='docs/doc[@for="XmlNameTable.Get"]/*' />
-    /// <devdoc>
-    ///    <para>Gets the atomized String object containing the same
-    ///       chars as the specified range of chars in the given char array.</para>
-    /// </devdoc>
-    public abstract String Get(char[] array, int offset, int length);
-
     /// <include file='doc\XmlNameTable.uex' path='docs/doc[@for="XmlNameTable.Get1"]/*' />
     /// <devdoc>
     ///    <para>

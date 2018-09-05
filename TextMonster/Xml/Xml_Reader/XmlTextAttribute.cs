@@ -20,15 +20,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
     }
 
-    /// <include file='doc\XmlTextAttribute.uex' path='docs/doc[@for="XmlTextAttribute.XmlTextAttribute1"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlTextAttribute(Type type)
-    {
-      this.type = type;
-    }
-
     /// <include file='doc\XmlTextAttribute.uex' path='docs/doc[@for="XmlTextAttribute.Type"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>

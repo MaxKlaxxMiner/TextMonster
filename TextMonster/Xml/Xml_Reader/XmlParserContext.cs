@@ -24,12 +24,6 @@ namespace TextMonster.Xml.Xml_Reader
       // Intentionally Empty
     }
 
-    public XmlParserContext(XmlNameTable nt, XmlNamespaceManager nsMgr, String xmlLang, XmlSpace xmlSpace, Encoding enc)
-      : this(nt, nsMgr, null, null, null, null, String.Empty, xmlLang, xmlSpace, enc)
-    {
-      // Intentionally Empty
-    }
-
     public XmlParserContext(XmlNameTable nt, XmlNamespaceManager nsMgr, String docTypeName,
               String pubId, String sysId, String internalSubset, String baseURI,
               String xmlLang, XmlSpace xmlSpace)

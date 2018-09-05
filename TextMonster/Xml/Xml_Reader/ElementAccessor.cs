@@ -9,7 +9,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal bool IsSoap
     {
       get { return isSoap; }
-      set { isSoap = value; }
     }
 
     internal bool IsNullable
@@ -21,7 +20,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal bool IsUnbounded
     {
       get { return unbounded; }
-      set { unbounded = value; }
     }
 
     internal ElementAccessor Clone()

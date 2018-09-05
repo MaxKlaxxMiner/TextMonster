@@ -17,12 +17,6 @@ namespace TextMonster.Xml.Xml_Reader
       this.val = val;
     }
 
-    public Operand(bool val)
-    {
-      this.type = XPathResultType.Boolean;
-      this.val = val;
-    }
-
     public override AstType Type { get { return AstType.ConstantOperand; } }
     public override XPathResultType ReturnType { get { return type; } }
 

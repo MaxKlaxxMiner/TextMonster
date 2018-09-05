@@ -4,7 +4,6 @@ namespace TextMonster.Xml.Xml_Reader
   {
 
     public ClonableStack() { }
-    public ClonableStack(int capacity) : base(capacity) { }
 
     private ClonableStack(System.Collections.Generic.IEnumerable<T> collection) : base(collection) { }
 

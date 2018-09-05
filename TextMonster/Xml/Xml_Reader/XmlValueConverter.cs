@@ -4,25 +4,17 @@ namespace TextMonster.Xml.Xml_Reader
 {
   internal abstract class XmlValueConverter
   {
-    public abstract bool ToBoolean(bool value);
     public abstract bool ToBoolean(long value);
     public abstract bool ToBoolean(int value);
-    public abstract bool ToBoolean(decimal value);
-    public abstract bool ToBoolean(float value);
     public abstract bool ToBoolean(double value);
     public abstract bool ToBoolean(DateTime value);
-    public abstract bool ToBoolean(DateTimeOffset value);
     public abstract bool ToBoolean(string value);
     public abstract bool ToBoolean(object value);
 
     public abstract int ToInt32(bool value);
-    public abstract int ToInt32(int value);
     public abstract int ToInt32(long value);
-    public abstract int ToInt32(decimal value);
-    public abstract int ToInt32(float value);
     public abstract int ToInt32(double value);
     public abstract int ToInt32(DateTime value);
-    public abstract int ToInt32(DateTimeOffset value);
     public abstract int ToInt32(string value);
     public abstract int ToInt32(object value);
 

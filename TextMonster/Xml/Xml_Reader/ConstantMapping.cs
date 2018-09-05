@@ -20,7 +20,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal long Value
     {
-      get { return value; }
       set { this.value = value; }
     }
   }

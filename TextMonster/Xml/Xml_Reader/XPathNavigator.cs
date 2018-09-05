@@ -27,11 +27,6 @@ namespace TextMonster.Xml.Xml_Reader
     // XPathItem
     //-----------------------------------------------
 
-    public override sealed bool IsNode
-    {
-      get { return true; }
-    }
-
     public override XmlSchemaType XmlType
     {
       get

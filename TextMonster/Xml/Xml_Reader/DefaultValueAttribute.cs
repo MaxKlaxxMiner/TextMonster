@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -12,27 +11,6 @@ namespace TextMonster.Xml.Xml_Reader
     ///     This is the default value.
     /// </devdoc>
     private object value;
-
-    /// <devdoc>
-    /// <para>Initializes a new instance of the <see cref='System.ComponentModel.DefaultValueAttribute'/> class, converting the
-    ///    specified value to the
-    ///    specified type, and using the U.S. English culture as the
-    ///    translation
-    ///    context.</para>
-    /// </devdoc>
-    public DefaultValueAttribute(Type type, string value)
-    {
-
-      // The try/catch here is because attributes should never throw exceptions.  We would fail to
-      // load an otherwise normal class.
-      try
-      {
-        this.value = TypeDescriptor.GetConverter(type).ConvertFromInvariantString(value);
-      }
-      catch
-      {
-      }
-    }
 
     /// <devdoc>
     /// <para>Initializes a new instance of the <see cref='System.ComponentModel.DefaultValueAttribute'/> class using a Unicode

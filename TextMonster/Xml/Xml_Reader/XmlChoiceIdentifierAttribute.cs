@@ -13,14 +13,6 @@ namespace TextMonster.Xml.Xml_Reader
     string name;
     MemberInfo memberInfo;
 
-    /// <include file='doc\XmlChoiceIdentifierAttribute.uex' path='docs/doc[@for="XmlChoiceIdentifierAttribute.XmlChoiceIdentifierAttribute"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlChoiceIdentifierAttribute()
-    {
-    }
-
     /// <include file='doc\XmlChoiceIdentifierAttribute.uex' path='docs/doc[@for="XmlChoiceIdentifierAttribute.XmlChoiceIdentifierAttribute1"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
