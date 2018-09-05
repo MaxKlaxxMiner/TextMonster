@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.Versioning;
 using System.Threading;
 
 namespace TextMonster.Xml.Xml_Reader
@@ -596,100 +598,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// </devdoc>
     public void Compile()
     {
-      if (isCompiled)
-      {
-        return;
-      }
-      if (schemas.Count == 0)
-      {
-        ClearTables(); //Clear any previously present compiled state left by calling just Remove() on the set
-        cachedCompiledInfo = new SchemaInfo();
-        isCompiled = true;
-        compileAll = false;
-        return;
-      }
-      lock (InternalSyncObject)
-      {
-
-        if (!isCompiled)
-        { //Locking before checking isCompiled to avoid problems with double locking
-          Compiler compiler = new Compiler(nameTable, eventHandler, schemaForSchema, compilationSettings);
-          SchemaInfo newCompiledInfo = new SchemaInfo();
-          int schemaIndex = 0;
-          if (!compileAll)
-          { //if we are not compiling everything again, Move the pre-compiled schemas to the compiler's tables
-            compiler.ImportAllCompiledSchemas(this);
-          }
-          try
-          { //First thing to do in the try block is to acquire locks since finally will try to release them. 
-            //If we dont accuire the locks first, and an exception occurs in the code before the locking code, then Threading.SynchronizationLockException will be thrown
-            //when attempting to release it in the finally block
-            XmlSchema currentSchema;
-            XmlSchema xmlNSSchema = Preprocessor.GetBuildInSchema();
-            for (schemaIndex = 0; schemaIndex < schemas.Count; schemaIndex++)
-            {
-              currentSchema = (XmlSchema)schemas.GetByIndex(schemaIndex);
-
-              //Lock schema to be compiled
-#pragma warning disable 0618
-              //@
-              Monitor.Enter(currentSchema);
-#pragma warning restore 0618
-              if (!currentSchema.IsPreprocessed)
-              {
-                SendValidationEvent(new XmlSchemaException(Res.Sch_SchemaNotPreprocessed, string.Empty), XmlSeverityType.Error);
-                isCompiled = false;
-                return;
-              }
-              if (currentSchema.IsCompiledBySet)
-              {
-                if (!compileAll)
-                {
-                  continue;
-                }
-                else if ((object)currentSchema == (object)xmlNSSchema)
-                { // prepare for xml namespace schema without cleanup
-                  compiler.Prepare(currentSchema, false);
-                  continue;
-                }
-              }
-              compiler.Prepare(currentSchema, true);
-            }
-
-            isCompiled = compiler.Execute(this, newCompiledInfo);
-            if (isCompiled)
-            {
-              if (!compileAll)
-              {
-                newCompiledInfo.Add(cachedCompiledInfo, eventHandler); //Add all the items from the old to the new compiled object
-              }
-              compileAll = false;
-              cachedCompiledInfo = newCompiledInfo; //Replace the compiled info in the set after successful compilation
-            }
-          }
-          finally
-          {
-            //Release locks on all schemas
-            XmlSchema currentSchema;
-            if (schemaIndex == schemas.Count)
-            {
-              schemaIndex--;
-            }
-            for (int i = schemaIndex; i >= 0; i--)
-            {
-              currentSchema = (XmlSchema)schemas.GetByIndex(i);
-              if (currentSchema == Preprocessor.GetBuildInSchema())
-              { //dont re-set compiled flags for xml namespace schema
-                Monitor.Exit(currentSchema);
-                continue;
-              }
-              currentSchema.IsCompiledBySet = isCompiled;
-              Monitor.Exit(currentSchema);
-            }
-          }
-        }
-      }
-      return;
     }
 
     /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.Reprocess"]/*' />
@@ -1016,7 +924,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
       if (schema != null)
       {
-        Debug.Assert(ns != null);
         string tns = schema.TargetNamespace == null ? string.Empty : schema.TargetNamespace;
         if (tns == ns)
         {
@@ -1027,7 +934,6 @@ namespace TextMonster.Xml.Xml_Reader
           // It is OK to pass in the schema we have found so far, since it must have the schemaUri we're looking for
           // (we found it that way above) and it must be the original chameleon schema (the one without target ns)
           // as we don't add the chameleon copies into the locations tables above.
-          Debug.Assert(schema.BaseUri.Equals(schemaUri));
           ChameleonKey cKey = new ChameleonKey(ns, schema);
           schema = (XmlSchema)chameleonSchemas[cKey]; //Need not clone if a schema for that namespace already exists
         }

@@ -79,6 +79,17 @@
     <Compile Include="Xml\Xml_Reader\AutoValidator.cs" />
     <Compile Include="Xml\Xml_Reader\CacheOutputQuery.cs" />
     <Compile Include="Xml\Xml_Reader\AbsoluteQuery.cs" />
+    <Compile Include="Xml\Xml_Reader\XmlSerializationWriteCallback.cs" />
+    <Compile Include="Xml\Xml_Reader\DebuggerDisplayXmlNodeProxy.cs" />
+    <Compile Include="Xml\Xml_Reader\IXmlTextParser.cs" />
+    <Compile Include="Xml\Xml_Reader\TempAssemblyCache.cs" />
+    <Compile Include="Xml\Xml_Reader\TempAssemblyCacheKey.cs" />
+    <Compile Include="Xml\Xml_Reader\WhitespaceHandling.cs" />
+    <Compile Include="Xml\Xml_Reader\XmlCharCheckingReader.cs" />
+    <Compile Include="Xml\Xml_Reader\XmlCharCheckingReaderWithNS.cs" />
+    <Compile Include="Xml\Xml_Reader\XmlChildEnumerator.cs" />
+    <Compile Include="Xml\Xml_Reader\XmlChildNodes.cs" />
+    <Compile Include="Xml\Xml_Reader\XmlCountingReader.cs" />
     <Compile Include="Xml\Xml_Reader\XmlFacetComparer.cs" />
     <Compile Include="Xml\Xml_Reader\ClonableStack.cs" />
     <Compile Include="Xml\Xml_Reader\CodeExporter.cs" />

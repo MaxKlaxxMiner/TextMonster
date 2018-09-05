@@ -729,20 +729,7 @@ namespace TextMonster.Xml.Xml_Reader
         return s_enableLegacyXmlSettings.Value;
       }
 
-      if (!BinaryCompatibility.TargetsAtLeast_Desktop_V4_5_2)
-      {
-        s_enableLegacyXmlSettings = true;
-        return s_enableLegacyXmlSettings.Value;
-      }
-
-      bool enableSettings = false; // default value
-      if (!ReadSettingsFromRegistry(Registry.LocalMachine, ref enableSettings))
-      {
-        // still ok if this call return false too as we'll use the default value which is false
-        ReadSettingsFromRegistry(Registry.CurrentUser, ref enableSettings);
-      }
-
-      s_enableLegacyXmlSettings = enableSettings;
+      s_enableLegacyXmlSettings = true;
       return s_enableLegacyXmlSettings.Value;
     }
 

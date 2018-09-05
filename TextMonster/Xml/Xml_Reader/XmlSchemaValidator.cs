@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Versioning;
 using System.Text;
+using System.Threading;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -1787,7 +1790,6 @@ namespace TextMonster.Xml.Xml_Reader
     [ResourceExposure(ResourceScope.Machine)]
     private void LoadSchema(string uri, string url)
     {
-      Debug.Assert(xmlResolver != null);
       XmlReader Reader = null;
       try
       {
@@ -1883,7 +1885,6 @@ namespace TextMonster.Xml.Xml_Reader
       SchemaDeclBase decl = attdef as SchemaDeclBase;
 
       XmlSchemaDatatype dtype = attdef.Datatype;
-      Debug.Assert(dtype != null);
       string stringValue = value as string;
       Exception exception = null;
 
@@ -1920,7 +1921,6 @@ namespace TextMonster.Xml.Xml_Reader
       SchemaDeclBase decl = context.ElementDecl as SchemaDeclBase;
 
       XmlSchemaDatatype dtype = decl.Datatype;
-      Debug.Assert(dtype != null);
 
       Exception exception = dtype.TryParseValue(stringValue, nameTable, nsResolver, out typedValue);
       if (exception != null)
@@ -2054,7 +2054,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private void CheckRequiredAttributes(SchemaElementDecl currentElementDecl)
     {
-      Debug.Assert(currentElementDecl != null);
       Dictionary<XmlQualifiedName, SchemaAttDef> attributeDefs = currentElementDecl.AttDefs;
       foreach (SchemaAttDef attdef in attributeDefs.Values)
       {
@@ -2192,10 +2191,6 @@ namespace TextMonster.Xml.Xml_Reader
           // check selector from here
           if (constraintStructures[j].axisSelector.MoveToStartElement(localName, namespaceUri))
           {
-            // selector selects new node, activate a new set of fields
-            Debug.WriteLine("Selector Match!");
-            Debug.WriteLine("Name: " + localName + "\t|\tURI: " + namespaceUri + "\n");
-
             // in which axisFields got updated
             constraintStructures[j].axisSelector.PushKS(positionInfo.LineNumber, positionInfo.LinePosition);
           }
@@ -2208,7 +2203,6 @@ namespace TextMonster.Xml.Xml_Reader
             // check field from here
             if (laxis.MoveToStartElement(localName, namespaceUri))
             {
-              Debug.WriteLine("Element Field Match!");
               // checking simpleType / simpleContent
               if (currentElementDecl != null)
               {      // nextElement can be null when xml/xsd are not valid
@@ -2252,11 +2246,6 @@ namespace TextMonster.Xml.Xml_Reader
             // check field from here
             if (laxis.MoveToAttribute(name, ns))
             {
-              Debug.WriteLine("Attribute Field Match!");
-              //attribute is only simpletype, so needn't checking...
-              // can fill value here, yeah!!
-              Debug.WriteLine("Attribute Field Filling Value!");
-              Debug.WriteLine("Name: " + name + "\t|\tURI: " + ns + "\t|\tValue: " + obj + "\n");
               if (laxis.Ks[laxis.Column] != null)
               {
                 // should be evaluated to either an empty node-set or a node-set with exactly one member
@@ -2265,7 +2254,6 @@ namespace TextMonster.Xml.Xml_Reader
               }
               else
               {
-                Debug.Assert(datatype != null);
                 laxis.Ks[laxis.Column] = new TypedObject(obj, sobj, datatype);
               }
             }
@@ -2300,8 +2288,6 @@ namespace TextMonster.Xml.Xml_Reader
             // isMatched is false when nextElement is null. so needn't change this part.
             if (laxis.isMatched)
             {
-              Debug.WriteLine("Element Field Filling Value!");
-              Debug.WriteLine("Name: " + localName + "\t|\tURI: " + namespaceUri + "\t|\tValue: " + typedValue + "\n");
               // fill value
               laxis.isMatched = false;
               if (laxis.Ks[laxis.Column] != null)
@@ -2312,20 +2298,9 @@ namespace TextMonster.Xml.Xml_Reader
               }
               else
               {
-                // for element, Reader.Value = "";
-                if (LocalAppContextSwitches.IgnoreEmptyKeySequences)
+                if (typedValue != null)
                 {
-                  if (typedValue != null && stringValue.Length != 0)
-                  {
-                    laxis.Ks[laxis.Column] = new TypedObject(typedValue, stringValue, datatype);
-                  }
-                }
-                else
-                {
-                  if (typedValue != null)
-                  {
-                    laxis.Ks[laxis.Column] = new TypedObject(typedValue, stringValue, datatype);
-                  }
+                  laxis.Ks[laxis.Column] = new TypedObject(typedValue, stringValue, datatype);
                 }
               }
             }
@@ -2473,7 +2448,6 @@ namespace TextMonster.Xml.Xml_Reader
         XmlSchemaContentType contentType = contentValidator.ContentType;
         if (contentType == XmlSchemaContentType.ElementOnly || (contentType == XmlSchemaContentType.Mixed && contentValidator != ContentValidator.Mixed && contentValidator != ContentValidator.Any))
         {
-          Debug.Assert(contentValidator is DfaContentValidator || contentValidator is NfaContentValidator || contentValidator is RangeContentValidator || contentValidator is AllElementsContentValidator);
           bool getParticles = schemaSet != null;
           if (getParticles)
           {
@@ -2497,7 +2471,6 @@ namespace TextMonster.Xml.Xml_Reader
           }
           else
           {
-            Debug.Assert(names.Count > 0);
             if (context.TooComplex)
             {
               SendValidationEvent(eventHandler, sender, new XmlSchemaValidationException(Res.Sch_InvalidElementContentExpectingComplex, new string[] { BuildElementName(context.LocalName, context.Namespace), BuildElementName(name), PrintExpectedElements(names, getParticles), Res.GetString(Res.Sch_ComplexContentModel) }, sourceUri, lineNo, linePos), XmlSeverityType.Error);
@@ -2547,7 +2520,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
       else
       {
-        Debug.Assert(names.Count > 0);
         if (context.TooComplex)
         {
           SendValidationEvent(eventHandler, sender, new XmlSchemaValidationException(Res.Sch_IncompleteContentExpectingComplex, new string[] { BuildElementName(context.LocalName, context.Namespace), PrintExpectedElements(names, getParticles), Res.GetString(Res.Sch_ComplexContentModel) }, sourceUri, lineNo, linePos), XmlSeverityType.Error);
@@ -2586,7 +2558,6 @@ namespace TextMonster.Xml.Xml_Reader
               expectedNames.Add(currentQName);
               PrintNamesWithNS(expectedNames, builder);
               expectedNames.Clear();
-              Debug.Assert(builder.Length != 0);
               builder.Append(ContinuationString);
             }
             else
@@ -2695,7 +2666,6 @@ namespace TextMonster.Xml.Xml_Reader
       else
       {
         string[] nsList = XmlConvert.SplitString(namespaces);
-        Debug.Assert(nsList.Length > 0);
         subBuilder.Append(nsList[0]);
         for (int i = 1; i < nsList.Length; i++)
         {

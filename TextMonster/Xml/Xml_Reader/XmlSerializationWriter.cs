@@ -1,4 +1,10 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿using System;
+using System.Collections;
+using System.Globalization;
+using System.Reflection;
+using System.Text;
+
+namespace TextMonster.Xml.Xml_Reader
 {
   /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter"]/*' />
   ///<internalonly/>
@@ -208,8 +214,6 @@
         default:
         if (type == typeof(XmlQualifiedName)) typeName = "QName";
         else if (type == typeof(byte[])) typeName = "base64Binary";
-        else if (type == typeof(TimeSpan) && LocalAppContextSwitches.EnableTimeSpanSerialization)
-          typeName = "TimeSpan";
         else if (type == typeof(Guid))
         {
           typeName = "guid";
@@ -326,11 +330,6 @@
           value = XmlConvert.ToString((Guid)o);
           type = "guid";
           typeNs = UrtTypes.Namespace;
-        }
-        else if (t == typeof(TimeSpan) && LocalAppContextSwitches.EnableTimeSpanSerialization)
-        {
-          value = XmlConvert.ToString((TimeSpan)o);
-          type = "TimeSpan";
         }
         else if (typeof(XmlNode[]).IsAssignableFrom(t))
         {
