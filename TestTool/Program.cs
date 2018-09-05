@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-using Linq;
+using System.Xml.Linq;
 using TextMonster;
 using TextMonster.Xml;
 #endregion

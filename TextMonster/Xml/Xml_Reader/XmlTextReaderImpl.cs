@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Runtime.CompilerServices;
+using System.Runtime.Versioning;
 using System.Text;
+using System.Threading;
 using BufferBuilder = System.Text.StringBuilder;
 
 namespace TextMonster.Xml.Xml_Reader
@@ -331,8 +336,6 @@ namespace TextMonster.Xml.Xml_Reader
     // This constructor is used when creating XmlTextReaderImpl for V1 XmlTextReader
     internal XmlTextReaderImpl(XmlNameTable nt)
     {
-      Debug.Assert(nt != null);
-
       v1Compat = true;
       outerReader = this;
 
@@ -351,7 +354,6 @@ namespace TextMonster.Xml.Xml_Reader
       Xml = nt.Add("xml");
       XmlNs = nt.Add("xmlns");
 
-      Debug.Assert(index == 0);
       nodes = new NodeData[NodesInitialSize];
       nodes[0] = new NodeData();
       curNode = nodes[0];
@@ -397,7 +399,6 @@ namespace TextMonster.Xml.Xml_Reader
         if (nt == null)
         {
           nt = new NameTable();
-          Debug.Assert(nameTableFromSettings == false);
         }
         else
         {
@@ -417,8 +418,6 @@ namespace TextMonster.Xml.Xml_Reader
       XmlNs = nt.Add("xmlns");
 
       xmlResolver = resolver;
-
-      Debug.Assert(index == 0);
 
       nodes = new NodeData[NodesInitialSize];
       nodes[0] = new NodeData();
@@ -473,7 +472,6 @@ namespace TextMonster.Xml.Xml_Reader
         fragmentType = XmlNodeType.Document;
         break;
         default:
-        Debug.Assert(false);
         goto case ConformanceLevel.Document;
       }
     }
@@ -658,7 +656,6 @@ namespace TextMonster.Xml.Xml_Reader
           {
             Throw(Res.Xml_DoubleBaseUri);
           }
-          Debug.Assert(baseUri == null);
           baseUriStr = context.BaseURI;
         }
       }
@@ -814,7 +811,6 @@ namespace TextMonster.Xml.Xml_Reader
       // get BaseUri from XmlParserContext
       if (context != null)
       {
-        Debug.Assert(baseUriStr == string.Empty, "BaseURI can come either from XmlParserContext or from the constructor argument, not from both");
         if (context.BaseURI != null)
         {
           baseUriStr = context.BaseURI;
@@ -864,7 +860,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal XmlTextReaderImpl(string xmlFragment, XmlParserContext context, XmlReaderSettings settings)
       : this(null, settings, context)
     {
-      Debug.Assert(xmlFragment != null);
       InitStringInput(string.Empty, Encoding.Unicode, xmlFragment);
       reportedBaseUri = ps.baseUriStr;
       reportedEncoding = ps.encoding;
@@ -891,7 +886,7 @@ namespace TextMonster.Xml.Xml_Reader
           case XmlNodeType.None: settings.ConformanceLevel = ConformanceLevel.Auto; break;
           case XmlNodeType.Element: settings.ConformanceLevel = ConformanceLevel.Fragment; break;
           case XmlNodeType.Document: settings.ConformanceLevel = ConformanceLevel.Document; break;
-          default: Debug.Assert(false); goto case XmlNodeType.None;
+          default: goto case XmlNodeType.None;
         }
         settings.CheckCharacters = checkCharacters;
         settings.LineNumberOffset = lineNumberOffset;
@@ -1264,8 +1259,6 @@ namespace TextMonster.Xml.Xml_Reader
         FinishInitTextReader();
         break;
         default:
-        //should never hit here
-        Debug.Assert(false, "Invalid InitInputType");
         break;
       }
     }
@@ -1291,11 +1284,9 @@ namespace TextMonster.Xml.Xml_Reader
 #if !SILVERLIGHT // Needed only for XmlTextReader
           case ParsingFunction.OpenUrl:
           OpenUrl();
-          Debug.Assert(nextParsingFunction == ParsingFunction.DocumentContent);
           goto case ParsingFunction.SwitchToInteractiveXmlDecl;
 #endif
           case ParsingFunction.SwitchToInteractive:
-          Debug.Assert(!ps.appendMode);
           readState = ReadState.Interactive;
           parsingFunction = nextParsingFunction;
           continue;
@@ -1323,12 +1314,9 @@ namespace TextMonster.Xml.Xml_Reader
           case ParsingFunction.PopElementContext:
           PopElementContext();
           parsingFunction = nextParsingFunction;
-          Debug.Assert(parsingFunction == ParsingFunction.ElementContent ||
-                        parsingFunction == ParsingFunction.DocumentContent);
           continue;
           case ParsingFunction.PopEmptyElementContext:
           curNode = nodes[index];
-          Debug.Assert(curNode.type == XmlNodeType.Element);
           curNode.IsEmptyElement = false;
           ResetAttributes();
           PopElementContext();
@@ -1396,7 +1384,6 @@ namespace TextMonster.Xml.Xml_Reader
           FinishReadElementContentAsBinary();
           continue;
           default:
-          Debug.Assert(false);
           break;
         }
       }
@@ -1424,7 +1411,6 @@ namespace TextMonster.Xml.Xml_Reader
         switch (parsingFunction)
         {
           case ParsingFunction.InReadAttributeValue:
-          Debug.Assert(false);
           break;
 #if !SILVERLIGHT // Needed only for XmlTextReader (ReadChars, ReadBase64, ReadBinHex)
           case ParsingFunction.InIncrementalRead:
@@ -1458,8 +1444,6 @@ namespace TextMonster.Xml.Xml_Reader
         parsingMode = ParsingMode.SkipContent;
         // skip content
         while (outerReader.Read() && index > initialDepth) ;
-        Debug.Assert(curNode.type == XmlNodeType.EndElement);
-        Debug.Assert(parsingFunction != ParsingFunction.Eof);
         parsingMode = ParsingMode.Full;
         break;
         case XmlNodeType.Attribute:
@@ -1579,8 +1563,6 @@ namespace TextMonster.Xml.Xml_Reader
         throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
       }
 
-      Debug.Assert(parsingMode == ParsingMode.Full);
-
       // entity in attribute value
       if (parsingFunction == ParsingFunction.InReadAttributeValue ||
            parsingFunction == ParsingFunction.FragmentAttribute)
@@ -1598,7 +1580,6 @@ namespace TextMonster.Xml.Xml_Reader
           emptyEntityInAttributeResolved = true;
           break;
           default:
-          Debug.Assert(false);
           throw new XmlException(Res.Xml_InternalError, string.Empty);
         }
       }
@@ -1624,7 +1605,6 @@ namespace TextMonster.Xml.Xml_Reader
           parsingFunction = ParsingFunction.AfterResolveEmptyEntityInContent;
           break;
           default:
-          Debug.Assert(false);
           throw new XmlException(Res.Xml_InternalError, string.Empty);
         }
       }
@@ -1642,7 +1622,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
       set
       {
-        Debug.Assert(value is XmlTextReader);
         outerReader = value;
       }
     }
@@ -1661,7 +1640,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     public override string ReadString()
     {
-      Debug.Assert(outerReader is XmlTextReaderImpl);
       MoveOffEntityReference();
       return base.ReadString();
     }
@@ -2149,12 +2127,10 @@ namespace TextMonster.Xml.Xml_Reader
     {
       get
       {
-        Debug.Assert(v1Compat, "XmlTextReaderImpl.Normalization property cannot be accessed on reader created via XmlReader.Create.");
         return normalize;
       }
       set
       {
-        Debug.Assert(v1Compat, "XmlTextReaderImpl.Normalization property cannot be changed on reader created via XmlReader.Create.");
         if (readState == ReadState.Closed)
         {
           throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
@@ -2182,12 +2158,10 @@ namespace TextMonster.Xml.Xml_Reader
     {
       get
       {
-        Debug.Assert(v1Compat, "XmlTextReaderImpl.WhitespaceHandling property cannot be accessed on reader created via XmlReader.Create.");
         return whitespaceHandling;
       }
       set
       {
-        Debug.Assert(v1Compat, "XmlTextReaderImpl.WhitespaceHandling property cannot be changed on reader created via XmlReader.Create.");
         if (readState == ReadState.Closed)
         {
           throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
@@ -2206,13 +2180,10 @@ namespace TextMonster.Xml.Xml_Reader
     {
       get
       {
-        Debug.Assert(v1Compat, "XmlTextReaderImpl.DtdProcessing property cannot be accessed on reader created via XmlReader.Create.");
         return dtdProcessing;
       }
       set
       {
-        Debug.Assert(v1Compat, "XmlTextReaderImpl.DtdProcessing property cannot be changed on reader created via XmlReader.Create.");
-
         if ((uint)value > (uint)DtdProcessing.Parse)
         {
           throw new ArgumentOutOfRangeException("value");
@@ -2263,8 +2234,6 @@ namespace TextMonster.Xml.Xml_Reader
     // Reset the state of the reader so the reader is ready to parse another XML document from the same stream.
     internal void ResetState()
     {
-      Debug.Assert(v1Compat, "XmlTextReaderImpl.ResetState cannot be called on reader created via XmlReader.Create.");
-
       if (fragment)
       {
         Throw(new InvalidOperationException(Res.GetString(Res.Xml_InvalidResetStateCall)));
@@ -2304,9 +2273,6 @@ namespace TextMonster.Xml.Xml_Reader
     // returns the remaining unparsed data as TextReader
     internal TextReader GetRemainder()
     {
-      Debug.Assert(v1Compat, "XmlTextReaderImpl.GetRemainder cannot be called on reader created via XmlReader.Create.");
-
-      Debug.Assert(stringBuilder.Length == 0);
       switch (parsingFunction)
       {
         case ParsingFunction.Eof:
@@ -2346,9 +2312,6 @@ namespace TextMonster.Xml.Xml_Reader
     // This method is designed to read large streams of embedded text by calling it successively.
     internal int ReadChars(char[] buffer, int index, int count)
     {
-      Debug.Assert(v1Compat, "XmlTextReaderImpl.ReadChars cannot be called on reader created via XmlReader.Create.");
-      Debug.Assert(outerReader is XmlTextReader);
-
       if (parsingFunction == ParsingFunction.InIncrementalRead)
       {
         if (incReadDecoder != readCharsDecoder)
@@ -2388,9 +2351,6 @@ namespace TextMonster.Xml.Xml_Reader
     // This method is designed to read base64-encoded large streams of bytes by calling it successively.
     internal int ReadBase64(byte[] array, int offset, int len)
     {
-      Debug.Assert(v1Compat, "XmlTextReaderImpl.ReadBase64 cannot be called on reader created via XmlReader.Create.");
-      Debug.Assert(outerReader is XmlTextReader);
-
       if (parsingFunction == ParsingFunction.InIncrementalRead)
       {
         if (incReadDecoder != base64Decoder)
@@ -2425,9 +2385,6 @@ namespace TextMonster.Xml.Xml_Reader
     // This method is designed to read binhex-encoded large streams of bytes by calling it successively.
     internal int ReadBinHex(byte[] array, int offset, int len)
     {
-      Debug.Assert(v1Compat, "XmlTextReaderImpl.ReadBinHex cannot be called on reader created via XmlReader.Create.");
-      Debug.Assert(outerReader is XmlTextReader);
-
       if (parsingFunction == ParsingFunction.InIncrementalRead)
       {
         if (incReadDecoder != binHexDecoder)
@@ -2564,7 +2521,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
       set
       {
-        Debug.Assert(value >= 0 && value <= ps.charsUsed);
         ps.charPos = value;
       }
     }
@@ -2653,8 +2609,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal void DtdParserProxy_ParseComment(BufferBuilder sb)
     {
-      Debug.Assert(parsingMode == ParsingMode.Full);
-
       try
       {
         if (sb == null)
@@ -2696,11 +2650,7 @@ namespace TextMonster.Xml.Xml_Reader
     {
       get
       {
-#if SILVERLIGHT 
-                return xmlResolver == null;
-#else
-        return xmlResolver == null || (XmlConfiguration.XmlReaderSection.ProhibitDefaultUrlResolver && !xmlResolverIsSet);
-#endif
+        return xmlResolver == null;
       }
     }
 
@@ -2754,9 +2704,6 @@ namespace TextMonster.Xml.Xml_Reader
 #endif
     internal bool DtdParserProxy_PushExternalSubset(string systemId, string publicId)
     {
-      Debug.Assert(parsingStatesStackTop == -1);
-      Debug.Assert((systemId != null && systemId.Length > 0) || (publicId != null && publicId.Length > 0));
-
       if (IsResolverNull)
       {
         return false;
@@ -2770,7 +2717,6 @@ namespace TextMonster.Xml.Xml_Reader
       ps.entity = null;
       ps.entityId = 0;
 
-      Debug.Assert(ps.appendMode);
       int initialPos = ps.charPos;
       if (v1Compat)
       {
@@ -2786,9 +2732,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal void DtdParserProxy_PushInternalDtd(string baseUri, string internalDtd)
     {
-      Debug.Assert(parsingStatesStackTop == -1);
-      Debug.Assert(internalDtd != null);
-
       PushParsingState();
 
       RegisterConsumedCharacters(internalDtd.Length, false);
@@ -2948,7 +2891,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private void FinishAttributeValueIterator()
     {
-      Debug.Assert(InAttributeValueIterator);
       if (parsingFunction == ParsingFunction.InReadValueChunk)
       {
         FinishReadValueChunk();
@@ -2987,14 +2929,12 @@ namespace TextMonster.Xml.Xml_Reader
 
     private void InitStreamInput(string baseUriStr, Stream stream, Encoding encoding)
     {
-      Debug.Assert(baseUriStr != null);
       InitStreamInput(null, baseUriStr, stream, null, 0, encoding);
     }
 #endif
 
     private void InitStreamInput(Uri baseUri, Stream stream, Encoding encoding)
     {
-      Debug.Assert(baseUri != null);
       InitStreamInput(baseUri, baseUri.ToString(), stream, null, 0, encoding);
     }
 
@@ -3007,11 +2947,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private void InitStreamInput(Uri baseUri, string baseUriStr, Stream stream, byte[] bytes, int byteCount, Encoding encoding)
     {
-
-      Debug.Assert(ps.charPos == 0 && ps.charsUsed == 0 && ps.textReader == null);
-      Debug.Assert(baseUriStr != null);
-      Debug.Assert(baseUri == null || (baseUri.ToString().Equals(baseUriStr)));
-
       ps.stream = stream;
       ps.baseUri = baseUri;
       ps.baseUriStr = baseUriStr;
@@ -3101,9 +3036,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private void InitTextReaderInput(string baseUriStr, Uri baseUri, TextReader input)
     {
-      Debug.Assert(ps.charPos == 0 && ps.charsUsed == 0 && ps.stream == null);
-      Debug.Assert(baseUriStr != null);
-
       ps.textReader = input;
       ps.baseUriStr = baseUriStr;
       ps.baseUri = baseUri;
@@ -3132,11 +3064,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private void InitStringInput(string baseUriStr, Encoding originalEncoding, string str)
     {
-      Debug.Assert(ps.stream == null && ps.textReader == null);
-      Debug.Assert(ps.charPos == 0 && ps.charsUsed == 0);
-      Debug.Assert(baseUriStr != null);
-      Debug.Assert(str != null);
-
       ps.baseUriStr = baseUriStr;
       ps.baseUri = null;
 
@@ -3192,12 +3119,9 @@ namespace TextMonster.Xml.Xml_Reader
         nextParsingFunction = ParsingFunction.FragmentAttribute;
         break;
         case XmlNodeType.Element:
-        Debug.Assert(parsingFunction == ParsingFunction.SwitchToInteractiveXmlDecl);
         nextParsingFunction = ParsingFunction.DocumentContent;
         break;
         case XmlNodeType.Document:
-        Debug.Assert(parsingFunction == ParsingFunction.SwitchToInteractiveXmlDecl);
-        Debug.Assert(nextParsingFunction == ParsingFunction.DocumentContent);
         break;
         case XmlNodeType.XmlDeclaration:
         if (allowXmlDeclFragment)
@@ -3222,8 +3146,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private void ProcessDtdFromParserContext(XmlParserContext context)
     {
-      Debug.Assert(context != null && context.HasDtdInfo);
-
       switch (dtdProcessing)
       {
         case DtdProcessing.Prohibit:
@@ -3236,7 +3158,6 @@ namespace TextMonster.Xml.Xml_Reader
         ParseDtdFromParserContext();
         break;
         default:
-        Debug.Assert(false, "Unhandled DtdProcessing enumeration value.");
         break;
       }
     }
@@ -3247,14 +3168,10 @@ namespace TextMonster.Xml.Xml_Reader
     [ResourceExposure(ResourceScope.None)]
     private void OpenUrl()
     {
-      Debug.Assert(url != null && url.Length > 0);
-      Debug.Assert(compressedStack != null);
-
       // It is safe to use the resolver here as we don't resolve or expose any DTD to the caller
       XmlResolver tmpResolver = GetTempResolver();
       if (ps.baseUri != null)
       {
-        Debug.Assert(xmlResolver != null || !XmlReaderSettings.EnableLegacyXmlSettings());
       }
       else
       {
@@ -3291,9 +3208,6 @@ namespace TextMonster.Xml.Xml_Reader
     // Stream input only: detect encoding from the first 4 bytes of the byte buffer starting at ps.bytes[ps.bytePos]
     private Encoding DetectEncoding()
     {
-      Debug.Assert(ps.bytes != null);
-      Debug.Assert(ps.bytePos == 0);
-
       if (ps.bytesUsed < 2)
       {
         return null;
@@ -3394,7 +3308,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
       if (encoding == null)
       {
-        Debug.Assert(ps.charPos == 0);
         ps.encoding = Encoding.UTF8;
         ps.decoder = new SafeAsciiDecoder();
       }
@@ -3426,7 +3339,6 @@ namespace TextMonster.Xml.Xml_Reader
       if ((newEncoding.WebName != ps.encoding.WebName || ps.decoder is SafeAsciiDecoder) && !afterResetState)
       {
 #endif
-        Debug.Assert(ps.stream != null);
         UnDecodeChars();
         ps.appendMode = false;
         SetupEncoding(newEncoding);
@@ -3488,9 +3400,6 @@ namespace TextMonster.Xml.Xml_Reader
         {
           Throw(Res.Xml_UnknownEncoding, newEncodingName, innerEx);
         }
-#if !SILVERLIGHT
-        Debug.Assert(newEncoding.EncodingName != "UTF-8");
-#endif
       }
 
 #if !SILVERLIGHT // Needed only for XmlTextReader
@@ -3506,10 +3415,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     void UnDecodeChars()
     {
-      Debug.Assert(ps.stream != null && ps.decoder != null && ps.bytes != null);
-      Debug.Assert(ps.appendMode, "UnDecodeChars cannot be called after ps.appendMode has been changed to false");
-
-      Debug.Assert(ps.charsUsed >= ps.charPos, "The current position must be in the valid character range.");
       if (maxCharactersInDocument > 0)
       {
         // We're returning back in the input (potentially) so we need to fixup
@@ -3517,16 +3422,12 @@ namespace TextMonster.Xml.Xml_Reader
         // The following code effectively rolls-back all decoded characters
         //   after the ps.charPos (which typically points to the first character
         //   after the XML decl).
-        Debug.Assert(charactersInDocument >= ps.charsUsed - ps.charPos,
-            "We didn't correctly count some of the decoded characters against the MaxCharactersInDocument.");
         charactersInDocument -= ps.charsUsed - ps.charPos;
       }
       if (maxCharactersFromEntities > 0)
       {
         if (InEntity)
         {
-          Debug.Assert(charactersFromEntities >= ps.charsUsed - ps.charPos,
-              "We didn't correctly count some of the decoded characters against the MaxCharactersFromEntities.");
           charactersFromEntities -= ps.charsUsed - ps.charPos;
         }
       }
@@ -3688,7 +3589,6 @@ namespace TextMonster.Xml.Xml_Reader
 
       if (charsRead == 0)
       {
-        Debug.Assert(ps.charsUsed < ps.chars.Length);
         ps.isEof = true;
       }
       ps.chars[ps.charsUsed] = (char)0;
@@ -3698,9 +3598,6 @@ namespace TextMonster.Xml.Xml_Reader
     // Stream input only: read bytes from stream and decodes them according to the current encoding 
     int GetChars(int maxCharsCount)
     {
-      Debug.Assert(ps.stream != null && ps.decoder != null && ps.bytes != null);
-      Debug.Assert(maxCharsCount <= ps.chars.Length - ps.charsUsed - 1);
-
       // determine the maximum number of bytes we can pass to the decoder
       int bytesCount = ps.bytesUsed - ps.bytePos;
       if (bytesCount == 0)
@@ -3723,7 +3620,6 @@ namespace TextMonster.Xml.Xml_Reader
       // move pointers and return
       ps.bytePos += bytesCount;
       ps.charsUsed += charsCount;
-      Debug.Assert(maxCharsCount >= charsCount);
       return charsCount;
     }
 
@@ -3742,7 +3638,6 @@ namespace TextMonster.Xml.Xml_Reader
           charsDecoded += chDec;
           bytesDecoded += bDec;
         }
-        Debug.Assert(false, "We should get an exception again.");
       }
       catch (ArgumentException)
       {
@@ -3815,7 +3710,6 @@ namespace TextMonster.Xml.Xml_Reader
       ps.charPos += 5;
 
       // parsing of text declarations cannot change global stringBuidler or curNode as we may be in the middle of a text node
-      Debug.Assert(stringBuilder.Length == 0 || isTextDecl);
       BufferBuilder sb = isTextDecl ? new BufferBuilder() : stringBuilder;
 
       // parse version, encoding & standalone attributes
@@ -4044,7 +3938,6 @@ namespace TextMonster.Xml.Xml_Reader
             }
             else
             {
-              Debug.Assert(!isTextDecl);
               Throw(Res.Xml_InvalidXmlDecl, ps.LineNo, ps.LinePos - 1);
             }
             if (!isTextDecl)
@@ -4054,7 +3947,6 @@ namespace TextMonster.Xml.Xml_Reader
             xmlDeclState = 3;
             break;
             default:
-            Debug.Assert(false);
             break;
           }
           sb.Append(chars, ps.charPos, pos - ps.charPos);
@@ -4315,8 +4207,6 @@ namespace TextMonster.Xml.Xml_Reader
           continue;
         }
 
-        Debug.Assert(pos == ps.charsUsed && !ps.isEof);
-
       ReadData:
         // read new characters into the buffer
         if (ReadData() != 0)
@@ -4343,7 +4233,6 @@ namespace TextMonster.Xml.Xml_Reader
 #endif
             continue;
           }
-          Debug.Assert(index == 0);
 
           if (!rootElementParsed && fragmentType == XmlNodeType.Document)
           {
@@ -4735,8 +4624,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private void AddDefaultAttributesAndNormalize()
     {
-      Debug.Assert(curNode.type == XmlNodeType.Element);
-
       IDtdAttributeListInfo attlistInfo = dtdInfo.LookupAttributeList(curNode.localName, curNode.prefix);
       if (attlistInfo == null)
       {
@@ -4922,8 +4809,6 @@ namespace TextMonster.Xml.Xml_Reader
           ThrowUnexpectedToken(pos, ">");
         }
 
-        Debug.Assert(false, "We should never get to this point.");
-
       ReadData:
         if (ReadData() == 0)
         {
@@ -4931,12 +4816,10 @@ namespace TextMonster.Xml.Xml_Reader
         }
       }
 
-      Debug.Assert(index > 0);
       index--;
       curNode = nodes[index];
 
       // set the element data
-      Debug.Assert(curNode == startTagNode);
       startTagNode.lineInfo = endTagLineInfo;
       startTagNode.type = XmlNodeType.EndElement;
       ps.charPos = pos + 1;
@@ -4963,7 +4846,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
       else
       {
-        Debug.Assert(startTag.type == XmlNodeType.EntityReference);
         Throw(Res.Xml_UnexpectedEndTag);
       }
     }
@@ -4974,8 +4856,6 @@ namespace TextMonster.Xml.Xml_Reader
       int pos = ps.charPos;
       char[] chars = ps.chars;
       NodeData attr = null;
-
-      Debug.Assert(attrCount == 0);
 
       for (; ; )
       {
@@ -5044,7 +4924,6 @@ namespace TextMonster.Xml.Xml_Reader
           // element end
           if (tmpch1 == '>')
           {
-            Debug.Assert(curNode.type == XmlNodeType.Element);
             ps.charPos = pos + 1;
             parsingFunction = ParsingFunction.MoveToElementContent;
             goto End;
@@ -5052,7 +4931,6 @@ namespace TextMonster.Xml.Xml_Reader
           // empty element end
           else if (tmpch1 == '/')
           {
-            Debug.Assert(curNode.type == XmlNodeType.Element);
             if (pos + 1 == ps.charsUsed)
             {
               goto ReadData;
@@ -5312,7 +5190,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private void ElementNamespaceLookup()
     {
-      Debug.Assert(curNode.type == XmlNodeType.Element);
       if (curNode.prefix.Length == 0)
       {
         curNode.ns = xmlContext.defaultNamespace;
@@ -5450,8 +5327,6 @@ namespace TextMonster.Xml.Xml_Reader
       LineInfo valueChunkLineInfo = new LineInfo(ps.lineNo, ps.LinePos);
       NodeData lastChunk = null;
 #endif
-
-      Debug.Assert(stringBuilder.Length == 0);
 
       for (; ; )
       {
@@ -5673,10 +5548,8 @@ namespace TextMonster.Xml.Xml_Reader
           {
             if (ps.chars[ps.charPos] != (char)0xD)
             {
-              Debug.Assert(false, "We should never get to this point.");
               Throw(Res.Xml_UnexpectedEOF1);
             }
-            Debug.Assert(ps.isEof);
           }
           else
           {
@@ -5697,7 +5570,6 @@ namespace TextMonster.Xml.Xml_Reader
 #else
             if (HandleEntityEnd(true))
             { // no EndEntity reporting while parsing attributes
-              Debug.Assert(false);
               Throw(Res.Xml_InternalError);
             }
             // update info for the next attribute value chunk
@@ -5741,7 +5613,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
       if (lastChunk == null)
       {
-        Debug.Assert(attr.nextAttrValueChunk == null);
         lastChunk = chunk;
         attr.nextAttrValueChunk = chunk;
       }
@@ -5771,7 +5642,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
 
       curNode.SetLineInfo(ps.LineNo, ps.LinePos);
-      Debug.Assert(stringBuilder.Length == 0);
 
       // the whole value is in buffer
       if (ParseText(out startPos, out endPos, ref orChars))
@@ -5785,7 +5655,6 @@ namespace TextMonster.Xml.Xml_Reader
         {
           goto IgnoredNode;
         }
-        Debug.Assert(endPos - startPos > 0);
         curNode.SetValueNode(nodeType, ps.chars, startPos, endPos - startPos);
         return true;
       }
@@ -5808,8 +5677,6 @@ namespace TextMonster.Xml.Xml_Reader
             stringBuilder.Append(ps.chars, startPos, endPos - startPos);
           }
 
-          Debug.Assert(stringBuilder.Length > 0);
-
           XmlNodeType nodeType = GetTextNodeType(orChars);
           if (nodeType == XmlNodeType.None)
           {
@@ -5829,7 +5696,6 @@ namespace TextMonster.Xml.Xml_Reader
           // if it's a partial text value, not a whitespace -> return
           if (orChars > 0x20)
           {
-            Debug.Assert(endPos - startPos > 0);
             curNode.SetValueNode(XmlNodeType.Text, ps.chars, startPos, endPos - startPos);
             nextParsingFunction = parsingFunction;
             parsingFunction = ParsingFunction.PartialTextValue;
@@ -6107,7 +5973,6 @@ namespace TextMonster.Xml.Xml_Reader
             {
               Throw(Res.Xml_UnexpectedEOF1);
             }
-            Debug.Assert(ps.isEof);
           }
           else
           {
@@ -6153,10 +6018,6 @@ namespace TextMonster.Xml.Xml_Reader
     // When in ParsingState.PartialTextValue, this method parses and caches the rest of the value and stores it in curNode.
     void FinishPartialValue()
     {
-      Debug.Assert(stringBuilder.Length == 0);
-      Debug.Assert(parsingFunction == ParsingFunction.PartialTextValue ||
-                    (parsingFunction == ParsingFunction.InReadValueChunk && incReadState == IncrementalReadState.ReadValueChunk_OnPartialValue));
-
       curNode.CopyTo(readValueOffset, stringBuilder);
 
       int startPos;
@@ -6168,7 +6029,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
       stringBuilder.Append(ps.chars, startPos, endPos - startPos);
 
-      Debug.Assert(stringBuilder.Length > 0);
       curNode.SetValue(stringBuilder.ToString());
       stringBuilder.Length = 0;
     }
@@ -6219,11 +6079,9 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // When in ParsingState.PartialTextValue, this method skips over the rest of the partial value.
-    [MethodImplAttribute(MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     void SkipPartialTextValue()
     {
-      Debug.Assert(parsingFunction == ParsingFunction.PartialTextValue || parsingFunction == ParsingFunction.InReadValueChunk ||
-                    parsingFunction == ParsingFunction.InReadContentAsBinary || parsingFunction == ParsingFunction.InReadElementContentAsBinary);
       int startPos;
       int endPos;
       int orChars = 0;
@@ -6234,12 +6092,9 @@ namespace TextMonster.Xml.Xml_Reader
 
     void FinishReadValueChunk()
     {
-      Debug.Assert(parsingFunction == ParsingFunction.InReadValueChunk);
-
       readValueOffset = 0;
       if (incReadState == IncrementalReadState.ReadValueChunk_OnPartialValue)
       {
-        Debug.Assert((index > 0) ? nextParsingFunction == ParsingFunction.ElementContent : nextParsingFunction == ParsingFunction.DocumentContent);
         SkipPartialTextValue();
       }
       else
@@ -6251,12 +6106,9 @@ namespace TextMonster.Xml.Xml_Reader
 
     void FinishReadContentAsBinary()
     {
-      Debug.Assert(parsingFunction == ParsingFunction.InReadContentAsBinary || parsingFunction == ParsingFunction.InReadElementContentAsBinary);
-
       readValueOffset = 0;
       if (incReadState == IncrementalReadState.ReadContentAsBinary_OnPartialValue)
       {
-        Debug.Assert((index > 0) ? nextParsingFunction == ParsingFunction.ElementContent : nextParsingFunction == ParsingFunction.DocumentContent);
         SkipPartialTextValue();
       }
       else
@@ -6284,8 +6136,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private bool ParseRootLevelWhitespace()
     {
-      Debug.Assert(stringBuilder.Length == 0);
-
       XmlNodeType nodeType = GetWhitespaceType();
 
       if (nodeType == XmlNodeType.None)
@@ -6326,7 +6176,6 @@ namespace TextMonster.Xml.Xml_Reader
 #if !SILVERLIGHT
     private void ParseEntityReference()
     {
-      Debug.Assert(ps.chars[ps.charPos] == '&');
       ps.charPos++;
 
       curNode.SetLineInfo(ps.LineNo, ps.LinePos);
@@ -6336,8 +6185,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private EntityType HandleEntityReference(bool isInAttributeValue, EntityExpandType expandType, out int charRefEndPos)
     {
-      Debug.Assert(ps.chars[ps.charPos] == '&');
-
       if (ps.charPos + 1 == ps.charsUsed)
       {
         if (ReadData() == 0)
@@ -6351,7 +6198,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         EntityType entityType;
         charRefEndPos = ParseNumericCharRef(expandType != EntityExpandType.OnlyGeneral, null, out entityType);
-        Debug.Assert(entityType == EntityType.CharacterDec || entityType == EntityType.CharacterHex);
         return entityType;
       }
       // named reference
@@ -6521,7 +6367,6 @@ namespace TextMonster.Xml.Xml_Reader
 #endif
       if (parsingStatesStackTop == -1)
       {
-        Debug.Assert(false);
         Throw(Res.Xml_InternalError);
       }
 
@@ -6567,13 +6412,10 @@ namespace TextMonster.Xml.Xml_Reader
 #if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
     private void SetupEndEntityNodeInContent()
     {
-      Debug.Assert(lastEntity != null);
-
       reportedEncoding = ps.encoding;
       reportedBaseUri = ps.baseUriStr;
 
       curNode = nodes[index];
-      Debug.Assert(curNode.depth == index);
       curNode.SetNamedNode(XmlNodeType.EndEntity, lastEntity.Name);
       curNode.lineInfo.Set(ps.lineNo, ps.LinePos - 1);
 
@@ -6586,8 +6428,6 @@ namespace TextMonster.Xml.Xml_Reader
     private void SetupEndEntityNodeInAttribute()
     {
       curNode = nodes[index + attrCount + 1];
-      Debug.Assert(curNode.type == XmlNodeType.EntityReference);
-      Debug.Assert(Ref.Equal(lastEntity.Name, curNode.localName));
       curNode.lineInfo.linePos += curNode.localName.Length;
       curNode.type = XmlNodeType.EndEntity;
     }
@@ -6606,8 +6446,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         curNode.SetLineInfo(ps.LineNo, ps.LinePos);
       }
-
-      Debug.Assert(stringBuilder.Length == 0);
 
       // parse target name
       int nameEndPos = ParseName();
@@ -6633,7 +6471,6 @@ namespace TextMonster.Xml.Xml_Reader
 
       // check mandatory whitespace
       char ch = ps.chars[ps.charPos];
-      Debug.Assert(ps.charPos < ps.charsUsed);
       if (EatWhitespaces(piInDtdStringBuilder) == 0)
       {
         if (ps.charsUsed - ps.charPos < 2)
@@ -6677,7 +6514,6 @@ namespace TextMonster.Xml.Xml_Reader
             return false;
           }
           sb = stringBuilder;
-          Debug.Assert(stringBuilder.Length == 0);
         }
         else
         {
@@ -6743,7 +6579,6 @@ namespace TextMonster.Xml.Xml_Reader
           {
             if (rcount > 0)
             {
-              Debug.Assert(!ps.eolNormalized);
               ShiftBuffer(rpos + rcount, rpos, pos - rpos - rcount);
               outEndPos = pos - rcount;
             }
@@ -6891,7 +6726,6 @@ namespace TextMonster.Xml.Xml_Reader
       if (parsingMode == ParsingMode.Full)
       {
         curNode.SetLineInfo(ps.LineNo, ps.LinePos);
-        Debug.Assert(stringBuilder.Length == 0);
         if (ParseCDataOrComment(type, out startPos, out endPos))
         {
           curNode.SetValueNode(type, ps.chars, startPos, endPos - startPos);
@@ -6960,7 +6794,6 @@ namespace TextMonster.Xml.Xml_Reader
             {
               if (rcount > 0)
               {
-                Debug.Assert(!ps.eolNormalized);
                 ShiftBuffer(rpos + rcount, rpos, pos - rpos - rcount);
                 outEndPos = pos - rcount;
               }
@@ -7139,8 +6972,6 @@ namespace TextMonster.Xml.Xml_Reader
       // Skip DTD
       else
       {
-        Debug.Assert(dtdProcessing == DtdProcessing.Ignore);
-
         SkipDtd();
         return false;
       }
@@ -7477,10 +7308,8 @@ namespace TextMonster.Xml.Xml_Reader
           {
             if (ps.chars[ps.charPos] != (char)0xD)
             {
-              Debug.Assert(false, "We should never get to this point.");
               Throw(Res.Xml_UnexpectedEOF1);
             }
-            Debug.Assert(ps.isEof);
           }
           else
           {
@@ -7583,10 +7412,8 @@ namespace TextMonster.Xml.Xml_Reader
           }
           if (ps.chars[ps.charPos] != (char)0xD)
           {
-            Debug.Assert(false, "We should never get to this point.");
             Throw(Res.Xml_UnexpectedEOF1);
           }
-          Debug.Assert(ps.isEof);
         }
         pos = ps.charPos;
         chars = ps.chars;
@@ -7595,7 +7422,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private int ParseCharRefInline(int startPos, out int charCount, out EntityType entityType)
     {
-      Debug.Assert(ps.chars[startPos] == '&');
       if (ps.chars[startPos + 1] == '#')
       {
         return ParseNumericCharRefInline(startPos, true, null, out charCount, out entityType);
@@ -7627,7 +7453,6 @@ namespace TextMonster.Xml.Xml_Reader
           {
             Throw(Res.Xml_UnexpectedEOF);
           }
-          Debug.Assert(ps.chars[ps.charPos] == '&');
           continue;
           default:
           if (expand)
@@ -7647,8 +7472,6 @@ namespace TextMonster.Xml.Xml_Reader
     //      - returns position of the end of the character reference, that is of the character next to the original ';'
     private int ParseNumericCharRefInline(int startPos, bool expand, BufferBuilder internalSubsetBuilder, out int charCount, out EntityType entityType)
     {
-      Debug.Assert(ps.chars[startPos] == '&' && ps.chars[startPos + 1] == '#');
-
       int val;
       int pos;
       char[] chars;
@@ -7760,7 +7583,6 @@ namespace TextMonster.Xml.Xml_Reader
         }
 
       Return:
-        Debug.Assert(pos > 0);
         if (expand)
         {
           if (internalSubsetBuilder != null)
@@ -7796,7 +7618,6 @@ namespace TextMonster.Xml.Xml_Reader
           {
             return -1;
           }
-          Debug.Assert(ps.chars[ps.charPos] == '&');
           continue;
           default:
           if (expand)
@@ -7816,10 +7637,6 @@ namespace TextMonster.Xml.Xml_Reader
     //      - returns position of the end of the character reference, that is of the character next to the original ';'
     private int ParseNamedCharRefInline(int startPos, bool expand, BufferBuilder internalSubsetBuilder)
     {
-      Debug.Assert(startPos < ps.charsUsed);
-      Debug.Assert(ps.chars[startPos] == '&');
-      Debug.Assert(ps.chars[startPos + 1] != '#');
-
       int pos = startPos + 1;
       char[] chars = ps.chars;
       char ch;
@@ -7926,7 +7743,6 @@ namespace TextMonster.Xml.Xml_Reader
       return -2;
 
     FoundCharRef:
-      Debug.Assert(pos > 0);
       if (expand)
       {
         if (internalSubsetBuilder != null)
@@ -8094,9 +7910,6 @@ namespace TextMonster.Xml.Xml_Reader
 #endif
     private NodeData AddNode(int nodeIndex, int nodeDepth)
     {
-      Debug.Assert(nodeIndex < nodes.Length);
-      Debug.Assert(nodes[nodes.Length - 1] == null);
-
       NodeData n = nodes[nodeIndex];
       if (n != null)
       {
@@ -8108,14 +7921,12 @@ namespace TextMonster.Xml.Xml_Reader
 
     private NodeData AllocNode(int nodeIndex, int nodeDepth)
     {
-      Debug.Assert(nodeIndex < nodes.Length);
       if (nodeIndex >= nodes.Length - 1)
       {
         NodeData[] newNodes = new NodeData[nodes.Length * 2];
         Array.Copy(nodes, 0, newNodes, 0, nodes.Length);
         nodes = newNodes;
       }
-      Debug.Assert(nodeIndex < nodes.Length);
 
       NodeData node = nodes[nodeIndex];
       if (node == null)
@@ -8188,7 +7999,6 @@ namespace TextMonster.Xml.Xml_Reader
           for (int i = index + 1; i < index + attrCount + 1; i++)
           {
             NodeData attr = nodes[i];
-            Debug.Assert(attr.type == XmlNodeType.Attribute);
             if (Ref.Equal(attr.localName, newAttr.localName))
             {
               attrDuplWalkCount = MaxAttrDuplWalkCount;
@@ -8222,7 +8032,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private void OnEof()
     {
-      Debug.Assert(ps.isEof);
       curNode = nodes[0];
       curNode.Clear(XmlNodeType.None);
       curNode.SetLineInfo(ps.LineNo, ps.LinePos);
@@ -8320,7 +8129,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private void PopXmlContext()
     {
-      Debug.Assert(curNode.xmlContextPushed);
       xmlContext = xmlContext.previousContext;
       curNode.xmlContextPushed = false;
     }
@@ -8423,8 +8231,6 @@ namespace TextMonster.Xml.Xml_Reader
     // Propagates any exceptions from the XmlResolver indicating when the URI cannot be opened.
     private bool OpenAndPush(Uri uri)
     {
-      Debug.Assert(xmlResolver != null);
-
       // First try to get the data as a TextReader
       if (xmlResolver.SupportsType(uri, typeof(TextReader)))
       {
@@ -8439,9 +8245,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
       else
       {
-        // Then try get it as a Stream
-        Debug.Assert(xmlResolver.SupportsType(uri, typeof(Stream)), "Stream must always be a supported type in XmlResolver");
-
         Stream stream = (Stream)xmlResolver.GetEntity(uri, null, typeof(Stream));
         if (stream == null)
         {
@@ -8463,8 +8266,6 @@ namespace TextMonster.Xml.Xml_Reader
 #endif
     private bool PushExternalEntity(IDtdEntityInfo entity)
     {
-      Debug.Assert(entity.IsExternal);
-
       if (!IsResolverNull)
       {
 
@@ -8477,7 +8278,6 @@ namespace TextMonster.Xml.Xml_Reader
 
         RegisterEntity(entity);
 
-        Debug.Assert(ps.appendMode);
         int initialPos = ps.charPos;
         if (v1Compat)
         {
@@ -8506,8 +8306,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private void PushInternalEntity(IDtdEntityInfo entity)
     {
-      Debug.Assert(!entity.IsExternal);
-
       Encoding enc = ps.encoding;
 
       PushParsingState();
@@ -8576,7 +8374,6 @@ namespace TextMonster.Xml.Xml_Reader
       if (parsingStatesStack == null)
       {
         parsingStatesStack = new ParsingState[InitialParsingStatesDepth];
-        Debug.Assert(parsingStatesStackTop == -1);
       }
       else if (parsingStatesStackTop + 1 == parsingStatesStack.Length)
       {
@@ -8592,7 +8389,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private void PopParsingState()
     {
-      Debug.Assert(parsingStatesStackTop >= 0);
       ps.Close(true);
       ps = parsingStatesStack[parsingStatesStackTop--];
     }
@@ -8695,7 +8491,6 @@ namespace TextMonster.Xml.Xml_Reader
           case IncrementalReadState.PI:
           if (ParsePIValue(out startPos, out pos))
           {
-            Debug.Assert(XmlConvert.StrEqual(ps.chars, ps.charPos - 2, 2, "?>"));
             ps.charPos -= 2;
             incReadState = IncrementalReadState.Text;
           }
@@ -8703,7 +8498,6 @@ namespace TextMonster.Xml.Xml_Reader
           case IncrementalReadState.Comment:
           if (ParseCDataOrComment(XmlNodeType.Comment, out startPos, out pos))
           {
-            Debug.Assert(XmlConvert.StrEqual(ps.chars, ps.charPos - 3, 3, "-->"));
             ps.charPos -= 3;
             incReadState = IncrementalReadState.Text;
           }
@@ -8711,7 +8505,6 @@ namespace TextMonster.Xml.Xml_Reader
           case IncrementalReadState.CDATA:
           if (ParseCDataOrComment(XmlNodeType.CDATA, out startPos, out pos))
           {
-            Debug.Assert(XmlConvert.StrEqual(ps.chars, ps.charPos - 3, 3, "]]>"));
             ps.charPos -= 3;
             incReadState = IncrementalReadState.Text;
           }
@@ -8735,13 +8528,9 @@ namespace TextMonster.Xml.Xml_Reader
           pos = startPos;
           break;
           default:
-          Debug.Assert(false);
           break;
         }
-        Debug.Assert(incReadState == IncrementalReadState.Text ||
-                      incReadState == IncrementalReadState.Attributes ||
-                      incReadState == IncrementalReadState.AttributeValue);
-
+        
         char[] chars = ps.chars;
         startPos = ps.charPos;
         pos = startPos;
@@ -8850,9 +8639,6 @@ namespace TextMonster.Xml.Xml_Reader
               // end tag
               case '/':
               {
-                Debug.Assert(ps.charPos - pos == 0);
-                Debug.Assert(ps.charPos - startPos == 0);
-
                 int colonPos;
                 // ParseQName can flush the buffer, so we need to update the startPos, pos and chars after calling it
                 int endPos = ParseQName(true, 2, out colonPos);
@@ -8891,9 +8677,6 @@ namespace TextMonster.Xml.Xml_Reader
               // start tag
               default:
               {
-                Debug.Assert(ps.charPos - pos == 0);
-                Debug.Assert(ps.charPos - startPos == 0);
-
                 int colonPos;
                 // ParseQName can flush the buffer, so we need to update the startPos, pos and chars after calling it
                 int endPos = ParseQName(true, 1, out colonPos);
@@ -8989,7 +8772,6 @@ namespace TextMonster.Xml.Xml_Reader
             ReThrow(e, (int)incReadLineInfo.lineNo, (int)incReadLineInfo.linePos);
             return 0;
           }
-          Debug.Assert(count == charsParsed || incReadDecoder.IsFull, "Check if decoded consumed all characters unless it's full.");
           charsDecoded += count;
           if (incReadDecoder.IsFull)
           {
@@ -9006,14 +8788,11 @@ namespace TextMonster.Xml.Xml_Reader
     {
       incReadDecoder = new IncrementalReadDummyDecoder();
       IncrementalRead();
-      Debug.Assert(IncrementalRead() == 0, "Previous call of IncrementalRead should eat up all characters!");
       incReadDecoder = null;
     }
 
     private bool ParseFragmentAttribute()
     {
-      Debug.Assert(fragmentType == XmlNodeType.Attribute);
-
       // if first call then parse the whole attribute value
       if (curNode.type == XmlNodeType.None)
       {
@@ -9029,7 +8808,6 @@ namespace TextMonster.Xml.Xml_Reader
       // return attribute value chunk
       if (ReadAttributeValue())
       {
-        Debug.Assert(parsingFunction == ParsingFunction.InReadAttributeValue);
         parsingFunction = ParsingFunction.FragmentAttribute;
         return true;
       }
@@ -9058,8 +8836,6 @@ namespace TextMonster.Xml.Xml_Reader
         return true;
       }
 
-      Debug.Assert(stringBuilder.Length == 0);
-
       for (; ; )
       {
         unsafe
@@ -9072,7 +8848,6 @@ namespace TextMonster.Xml.Xml_Reader
         {
           // eol D
           case (char)0xD:
-          Debug.Assert(ps.eolNormalized, "Entity replacement text for attribute values should be EOL-normalized!");
           pos++;
           continue;
           // eol A, tab
@@ -9126,7 +8901,6 @@ namespace TextMonster.Xml.Xml_Reader
               goto ReturnText;
             }
             default:
-            Debug.Assert(false, "We should never get to this point.");
             break;
           }
           chars = ps.chars;
@@ -9178,10 +8952,6 @@ namespace TextMonster.Xml.Xml_Reader
             {
               SetupEndEntityNodeInAttribute();
               return true;
-            }
-            else
-            {
-              Debug.Assert(false, "We should never get to this point.");
             }
           }
         }
@@ -9270,7 +9040,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
       else
       {
-        Debug.Assert(ps.charPos < ps.charsUsed);
         return new string(ps.chars, ps.charPos, 1);
       }
     }
@@ -9341,8 +9110,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private void ParseDtdFromParserContext()
     {
-      Debug.Assert(dtdInfo == null && fragmentParserContext != null && fragmentParserContext.HasDtdInfo);
-
       IDtdParser dtdParser = DtdParser.Create();
 
       // Parse DTD
@@ -9361,8 +9128,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     bool InitReadContentAsBinary()
     {
-      Debug.Assert(parsingFunction != ParsingFunction.InReadContentAsBinary);
-
       if (parsingFunction == ParsingFunction.InReadValueChunk)
       {
         throw new InvalidOperationException(Res.GetString(Res.Xml_MixingReadValueChunkWithBinary));
@@ -9387,9 +9152,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     bool InitReadElementContentAsBinary()
     {
-      Debug.Assert(parsingFunction != ParsingFunction.InReadElementContentAsBinary);
-      Debug.Assert(curNode.type == XmlNodeType.Element);
-
       bool isEmpty = curNode.IsEmptyElement;
 
       // move to content or off the empty element
@@ -9466,8 +9228,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     void SetupFromParserContext(XmlParserContext context, XmlReaderSettings settings)
     {
-      Debug.Assert(context != null);
-
       // setup nameTable
       XmlNameTable nt = settings.NameTable;
       nameTableFromSettings = (nt != null);
@@ -9486,9 +9246,6 @@ namespace TextMonster.Xml.Xml_Reader
 
         // get the nametable from ns manager
         nt = namespaceManager.NameTable;
-
-        Debug.Assert(nt != null);
-        Debug.Assert(context.NameTable == null || context.NameTable == nt, "This check should have been done in XmlParserContext constructor.");
       }
       // get name table directly from XmlParserContext
       else if (context.NameTable != null)
@@ -9504,7 +9261,6 @@ namespace TextMonster.Xml.Xml_Reader
       else if (nt == null)
       {
         nt = new NameTable();
-        Debug.Assert(nameTableFromSettings == false);
       }
       nameTable = nt;
 
@@ -9533,8 +9289,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal void SetDtdInfo(IDtdInfo newDtdInfo)
     {
-      Debug.Assert(dtdInfo == null);
-
       dtdInfo = newDtdInfo;
       if (dtdInfo != null)
       {
@@ -9596,7 +9350,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal void ChangeCurrentNodeType(XmlNodeType newNodeType)
     {
-      Debug.Assert(curNode.type == XmlNodeType.Whitespace && newNodeType == XmlNodeType.SignificantWhitespace, "Incorrect node type change!");
       curNode.type = newNodeType;
     }
 
@@ -9700,8 +9453,6 @@ namespace TextMonster.Xml.Xml_Reader
                                                    defAttrInfo.LineNumber, defAttrInfo.LinePosition,
                                                    defAttrInfo.ValueLineNumber, defAttrInfo.ValueLinePosition, defAttrInfo.IsXmlAttribute);
 
-      Debug.Assert(attr != null);
-
 #if !SILVERLIGHT
       if (DtdValidation)
       {
@@ -9729,7 +9480,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         prefix = namespaceManager.LookupPrefix(ns);
 
-        Debug.Assert(prefix != null);
         if (prefix == null)
         {
           prefix = string.Empty;
@@ -9750,8 +9500,7 @@ namespace TextMonster.Xml.Xml_Reader
       NodeData attr = AddDefaultAttributeInternal(localName, ns, prefix, attrDef.DefaultValueExpanded,
                                                    attrDef.LineNumber, attrDef.LinePosition,
                                                    attrDef.ValueLineNumber, attrDef.ValueLinePosition, attrDef.Reserved != SchemaAttDef.Reserve.None);
-      Debug.Assert(attr != null);
-
+      
       attr.schemaType = (attrDef.SchemaType == null) ? (object)attrDef.Datatype : (object)attrDef.SchemaType;
       attr.typedValue = attrDef.DefaultValueTyped;
       return true;
@@ -9783,7 +9532,6 @@ namespace TextMonster.Xml.Xml_Reader
           if (!attrNeedNamespaceLookup)
           {
             // change element default namespace
-            Debug.Assert(nodes[index].type == XmlNodeType.Element);
             if (nodes[index].prefix.Length == 0)
             {
               nodes[index].ns = xmlContext.defaultNamespace;
@@ -9801,7 +9549,6 @@ namespace TextMonster.Xml.Xml_Reader
           {
             // change namespace of current element and attributes
             string pref = attr.localName;
-            Debug.Assert(nodes[index].type == XmlNodeType.Element);
             for (int i = index; i < index + attrCount + 1; i++)
             {
               if (nodes[i].prefix.Equals(pref))
@@ -9837,8 +9584,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     int ReadContentAsBinary(byte[] buffer, int index, int count)
     {
-      Debug.Assert(incReadDecoder != null);
-
       if (incReadState == IncrementalReadState.ReadContentAsBinary_End)
       {
         return 0;
@@ -9946,7 +9691,6 @@ namespace TextMonster.Xml.Xml_Reader
       // reset state
       parsingFunction = nextParsingFunction;
       nextParsingFunction = nextNextParsingFunction;
-      Debug.Assert(parsingFunction != ParsingFunction.InReadElementContentAsBinary);
 
       // move off the EndElement
       outerReader.Read();
@@ -10007,7 +9751,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// <param name="inEntityReference">true if the characters are result of entity expansion.</param>
     void RegisterConsumedCharacters(long characters, bool inEntityReference)
     {
-      Debug.Assert(characters >= 0);
       if (maxCharactersInDocument > 0)
       {
         long newCharactersInDocument = charactersInDocument + characters;
@@ -10052,10 +9795,6 @@ namespace TextMonster.Xml.Xml_Reader
 #endif
     static internal unsafe void AdjustLineInfo(char[] chars, int startPos, int endPos, bool isNormalized, ref LineInfo lineInfo)
     {
-      Debug.Assert(startPos >= 0);
-      Debug.Assert(endPos < chars.Length);
-      Debug.Assert(startPos <= endPos);
-
       fixed (char* pChars = &chars[startPos])
       {
         AdjustLineInfo(pChars, endPos - startPos, isNormalized, ref lineInfo);
@@ -10067,10 +9806,6 @@ namespace TextMonster.Xml.Xml_Reader
 #endif
     static internal unsafe void AdjustLineInfo(string str, int startPos, int endPos, bool isNormalized, ref LineInfo lineInfo)
     {
-      Debug.Assert(startPos >= 0);
-      Debug.Assert(endPos < str.Length);
-      Debug.Assert(startPos <= endPos);
-
       fixed (char* pChars = str)
       {
         AdjustLineInfo(pChars + startPos, endPos - startPos, isNormalized, ref lineInfo);
@@ -10250,5 +9985,573 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     internal delegate void OnDefaultAttributeUseDelegate(IDtdDefaultAttributeInfo defaultAttribute, XmlTextReaderImpl coreReader);
+
+    private struct ParsingState
+    {
+      // character buffer
+      internal char[] chars;
+      internal int charPos;
+      internal int charsUsed;
+      internal Encoding encoding;
+      internal bool appendMode;
+
+      // input stream & byte buffer
+      internal Stream stream;
+      internal Decoder decoder;
+      internal byte[] bytes;
+      internal int bytePos;
+      internal int bytesUsed;
+
+      // input text reader
+      internal TextReader textReader;
+
+      // current line number & position
+      internal int lineNo;
+      internal int lineStartPos;
+
+      // base uri of the current entity
+      internal string baseUriStr;
+      internal Uri baseUri;
+
+      // eof flag of the entity
+      internal bool isEof;
+      internal bool isStreamEof;
+
+      // entity type & id
+      internal IDtdEntityInfo entity;
+      internal int entityId;
+
+      // normalization
+      internal bool eolNormalized;
+
+#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
+      // EndEntity reporting
+      internal bool entityResolvedManually;
+#endif
+
+      internal void Clear()
+      {
+        chars = null;
+        charPos = 0;
+        charsUsed = 0;
+        encoding = null;
+        stream = null;
+        decoder = null;
+        bytes = null;
+        bytePos = 0;
+        bytesUsed = 0;
+        textReader = null;
+        lineNo = 1;
+        lineStartPos = -1;
+        baseUriStr = string.Empty;
+        baseUri = null;
+        isEof = false;
+        isStreamEof = false;
+        eolNormalized = true;
+#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
+        entityResolvedManually = false;
+#endif
+      }
+
+      internal void Close(bool closeInput)
+      {
+        if (closeInput)
+        {
+          if (stream != null)
+          {
+            stream.Close();
+          }
+          else if (textReader != null)
+          {
+            textReader.Close();
+          }
+        }
+      }
+
+      internal int LineNo
+      {
+        get
+        {
+          return lineNo;
+        }
+      }
+
+      internal int LinePos
+      {
+        get
+        {
+          return charPos - lineStartPos;
+        }
+      }
+    }
+
+    private class NodeData : IComparable
+    {
+      // static instance with no data - is used when XmlTextReader is closed
+      static volatile NodeData s_None;
+
+      // NOTE: Do not use this property for reference comparison. It may not be unique.
+      internal static NodeData None
+      {
+        get
+        {
+          if (s_None == null)
+          {
+            // no locking; s_None is immutable so it's not a problem that it may get initialized more than once
+            s_None = new NodeData();
+          }
+          return s_None;
+        }
+      }
+
+      // type
+      internal XmlNodeType type;
+
+      // name
+      internal string localName;
+      internal string prefix;
+      internal string ns;
+      internal string nameWPrefix;
+
+      // value:
+      // value == null -> the value is kept in the 'chars' buffer starting at valueStartPos and valueLength long
+      string value;
+      char[] chars;
+      int valueStartPos;
+      int valueLength;
+
+      // main line info
+      internal LineInfo lineInfo;
+
+      // second line info
+      internal LineInfo lineInfo2;
+
+      // quote char for attributes
+      internal char quoteChar;
+
+      // depth
+      internal int depth;
+
+      // empty element / default attribute
+      bool isEmptyOrDefault;
+
+      // entity id
+      internal int entityId;
+
+      // helper members
+      internal bool xmlContextPushed;
+
+#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
+      // attribute value chunks
+      internal NodeData nextAttrValueChunk;
+#endif
+
+      // type info
+      internal object schemaType;
+      internal object typedValue;
+
+      internal NodeData()
+      {
+        Clear(XmlNodeType.None);
+        xmlContextPushed = false;
+      }
+
+      internal int LineNo
+      {
+        get
+        {
+          return lineInfo.lineNo;
+        }
+      }
+
+      internal int LinePos
+      {
+        get
+        {
+          return lineInfo.linePos;
+        }
+      }
+
+      internal bool IsEmptyElement
+      {
+        get
+        {
+          return type == XmlNodeType.Element && isEmptyOrDefault;
+        }
+        set
+        {
+          isEmptyOrDefault = value;
+        }
+      }
+
+      internal bool IsDefaultAttribute
+      {
+        get
+        {
+          return type == XmlNodeType.Attribute && isEmptyOrDefault;
+        }
+        set
+        {
+          isEmptyOrDefault = value;
+        }
+      }
+
+      internal bool ValueBuffered
+      {
+        get
+        {
+          return value == null;
+        }
+      }
+
+      internal string StringValue
+      {
+        get
+        {
+          if (this.value == null)
+          {
+            this.value = new string(chars, valueStartPos, valueLength);
+          }
+          return this.value;
+        }
+      }
+
+      internal void TrimSpacesInValue()
+      {
+        if (ValueBuffered)
+        {
+          XmlTextReaderImpl.StripSpaces(chars, valueStartPos, ref valueLength);
+        }
+        else
+        {
+          value = XmlTextReaderImpl.StripSpaces(value);
+        }
+      }
+
+      internal void Clear(XmlNodeType type)
+      {
+        this.type = type;
+        ClearName();
+        value = string.Empty;
+        valueStartPos = -1;
+        nameWPrefix = string.Empty;
+        schemaType = null;
+        typedValue = null;
+      }
+
+      internal void ClearName()
+      {
+        localName = string.Empty;
+        prefix = string.Empty;
+        ns = string.Empty;
+        nameWPrefix = string.Empty;
+      }
+
+      internal void SetLineInfo(int lineNo, int linePos)
+      {
+        lineInfo.Set(lineNo, linePos);
+      }
+
+      internal void SetLineInfo2(int lineNo, int linePos)
+      {
+        lineInfo2.Set(lineNo, linePos);
+      }
+
+      internal void SetValueNode(XmlNodeType type, string value)
+      {
+        this.type = type;
+        ClearName();
+        this.value = value;
+        this.valueStartPos = -1;
+      }
+
+      internal void SetValueNode(XmlNodeType type, char[] chars, int startPos, int len)
+      {
+        this.type = type;
+        ClearName();
+
+        this.value = null;
+        this.chars = chars;
+        this.valueStartPos = startPos;
+        this.valueLength = len;
+      }
+
+      internal void SetNamedNode(XmlNodeType type, string localName)
+      {
+        SetNamedNode(type, localName, string.Empty, localName);
+      }
+
+      internal void SetNamedNode(XmlNodeType type, string localName, string prefix, string nameWPrefix)
+      {
+        this.type = type;
+        this.localName = localName;
+        this.prefix = prefix;
+        this.nameWPrefix = nameWPrefix;
+        this.ns = string.Empty;
+        this.value = string.Empty;
+        this.valueStartPos = -1;
+      }
+
+      internal void SetValue(string value)
+      {
+        this.valueStartPos = -1;
+        this.value = value;
+      }
+
+      internal void SetValue(char[] chars, int startPos, int len)
+      {
+        this.value = null;
+        this.chars = chars;
+        this.valueStartPos = startPos;
+        this.valueLength = len;
+      }
+
+      internal void OnBufferInvalidated()
+      {
+        if (this.value == null)
+        {
+          this.value = new string(chars, valueStartPos, valueLength);
+        }
+        valueStartPos = -1;
+      }
+
+      internal void CopyTo(int valueOffset, BufferBuilder sb)
+      {
+        if (value == null)
+        {
+          sb.Append(chars, valueStartPos + valueOffset, valueLength - valueOffset);
+        }
+        else
+        {
+          if (valueOffset <= 0)
+          {
+            sb.Append(value);
+          }
+          else
+          {
+            sb.Append(value, valueOffset, value.Length - valueOffset);
+          }
+        }
+      }
+
+      internal int CopyTo(int valueOffset, char[] buffer, int offset, int length)
+      {
+        if (value == null)
+        {
+          int copyCount = valueLength - valueOffset;
+          if (copyCount > length)
+          {
+            copyCount = length;
+          }
+          XmlTextReaderImpl.BlockCopyChars(chars, valueStartPos + valueOffset, buffer, offset, copyCount);
+          return copyCount;
+        }
+        else
+        {
+          int copyCount = value.Length - valueOffset;
+          if (copyCount > length)
+          {
+            copyCount = length;
+          }
+          value.CopyTo(valueOffset, buffer, offset, copyCount);
+          return copyCount;
+        }
+      }
+
+      internal int CopyToBinary(IncrementalReadDecoder decoder, int valueOffset)
+      {
+        if (value == null)
+        {
+          return decoder.Decode(chars, valueStartPos + valueOffset, valueLength - valueOffset);
+        }
+        else
+        {
+          return decoder.Decode(value, valueOffset, value.Length - valueOffset);
+        }
+      }
+
+      internal void AdjustLineInfo(int valueOffset, bool isNormalized, ref LineInfo lineInfo)
+      {
+        if (valueOffset == 0)
+        {
+          return;
+        }
+        if (valueStartPos != -1)
+        {
+          XmlTextReaderImpl.AdjustLineInfo(chars, valueStartPos, valueStartPos + valueOffset, isNormalized, ref lineInfo);
+        }
+        else
+        {
+          XmlTextReaderImpl.AdjustLineInfo(value, 0, valueOffset, isNormalized, ref lineInfo);
+        }
+      }
+
+      // This should be inlined by JIT compiler
+      internal string GetNameWPrefix(XmlNameTable nt)
+      {
+        if (nameWPrefix != null)
+        {
+          return nameWPrefix;
+        }
+        else
+        {
+          return CreateNameWPrefix(nt);
+        }
+      }
+
+      internal string CreateNameWPrefix(XmlNameTable nt)
+      {
+        if (prefix.Length == 0)
+        {
+          nameWPrefix = localName;
+        }
+        else
+        {
+          nameWPrefix = nt.Add(string.Concat(prefix, ":", localName));
+        }
+        return nameWPrefix;
+      }
+
+      int IComparable.CompareTo(object obj)
+      {
+        NodeData other = obj as NodeData;
+        if (other != null)
+        {
+          if (Ref.Equal(localName, other.localName))
+          {
+            if (Ref.Equal(ns, other.ns))
+            {
+              return 0;
+            }
+            else
+            {
+              return string.CompareOrdinal(ns, other.ns);
+            }
+          }
+          else
+          {
+            return string.CompareOrdinal(localName, other.localName);
+          }
+        }
+        else
+        {
+          // 'other' is null, 'this' is not null. Always return 1, like "".CompareTo(null).
+          return 1;
+        }
+      }
+    }
+
+    private class XmlContext
+    {
+      internal XmlSpace xmlSpace;
+      internal string xmlLang;
+      internal string defaultNamespace;
+      internal XmlContext previousContext;
+
+      internal XmlContext()
+      {
+        xmlSpace = XmlSpace.None;
+        xmlLang = string.Empty;
+        defaultNamespace = string.Empty;
+        previousContext = null;
+      }
+
+      internal XmlContext(XmlContext previousContext)
+      {
+        this.xmlSpace = previousContext.xmlSpace;
+        this.xmlLang = previousContext.xmlLang;
+        this.defaultNamespace = previousContext.defaultNamespace;
+        this.previousContext = previousContext;
+      }
+    }
+
+    private class NoNamespaceManager : XmlNamespaceManager
+    {
+      public NoNamespaceManager() : base() { }
+      public override string DefaultNamespace { get { return string.Empty; } }
+      public override void PushScope() { }
+      public override bool PopScope() { return false; }
+      public override void AddNamespace(string prefix, string uri) { }
+      public override void RemoveNamespace(string prefix, string uri) { }
+      public override IEnumerator GetEnumerator() { return null; }
+      public override IDictionary<string, string> GetNamespacesInScope(XmlNamespaceScope scope) { return null; }
+      public override string LookupNamespace(string prefix) { return string.Empty; }
+      public override string LookupPrefix(string uri) { return null; }
+      public override bool HasNamespace(string prefix) { return false; }
+    }
+
+    private class DtdDefaultAttributeInfoToNodeDataComparer : IComparer<object>
+    {
+      private static IComparer<object> s_instance = new DtdDefaultAttributeInfoToNodeDataComparer();
+
+      internal static IComparer<object> Instance
+      {
+        get { return s_instance; }
+      }
+
+      public int Compare(object x, object y)
+      {
+        string localName, localName2;
+        string prefix, prefix2;
+
+        if (x == null)
+        {
+          return y == null ? 0 : -1;
+        }
+        else if (y == null)
+        {
+          return 1;
+        }
+
+        NodeData nodeData = x as NodeData;
+        if (nodeData != null)
+        {
+          localName = nodeData.localName;
+          prefix = nodeData.prefix;
+        }
+        else
+        {
+          IDtdDefaultAttributeInfo attrDef = x as IDtdDefaultAttributeInfo;
+          if (attrDef != null)
+          {
+            localName = attrDef.LocalName;
+            prefix = attrDef.Prefix;
+          }
+          else
+          {
+            throw new XmlException(Res.Xml_DefaultException, string.Empty);
+          }
+        }
+
+        nodeData = y as NodeData;
+        if (nodeData != null)
+        {
+          localName2 = nodeData.localName;
+          prefix2 = nodeData.prefix;
+        }
+        else
+        {
+          IDtdDefaultAttributeInfo attrDef = y as IDtdDefaultAttributeInfo;
+          if (attrDef != null)
+          {
+            localName2 = attrDef.LocalName;
+            prefix2 = attrDef.Prefix;
+          }
+          else
+          {
+            throw new XmlException(Res.Xml_DefaultException, string.Empty);
+          }
+        }
+
+        // string.Compare does reference euqality first for us, so we don't have to do it here
+        int result = string.Compare(localName, localName2, StringComparison.Ordinal);
+        if (result != 0)
+        {
+          return result;
+        }
+
+        return string.Compare(prefix, prefix2, StringComparison.Ordinal);
+      }
+    }
   }
 }

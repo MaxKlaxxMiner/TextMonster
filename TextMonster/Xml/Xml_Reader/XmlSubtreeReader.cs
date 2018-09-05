@@ -1,4 +1,7 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿using System;
+using System.Collections.Generic;
+
+namespace TextMonster.Xml.Xml_Reader
 {
   internal sealed partial class XmlSubtreeReader : XmlWrappingReader, IXmlLineInfo, IXmlNamespaceResolver
   {
@@ -410,7 +413,6 @@
       if (curNsAttr >= 0)
       {
         curNsAttr = -1;
-        Debug.Assert(reader.NodeType == XmlNodeType.Element);
         return true;
       }
       else
@@ -435,7 +437,6 @@
       }
       else
       {
-        Debug.Assert(curNode.type == XmlNodeType.Attribute);
         tmpNode.type = XmlNodeType.Text;
         tmpNode.value = curNode.value;
         SetCurrentNode(tmpNode);
@@ -457,7 +458,6 @@
         curNsAttr = -1;
         useCurNode = false;
         reader.MoveToElement();
-        Debug.Assert(reader.Depth >= initialDepth);
         if (reader.Depth == initialDepth)
         {
           if (reader.NodeType == XmlNodeType.EndElement ||
@@ -467,7 +467,6 @@
             SetEmptyNode();
             return false;
           }
-          Debug.Assert(reader.NodeType == XmlNodeType.Element && !reader.IsEmptyElement);
         }
         if (reader.Read())
         {
@@ -511,7 +510,6 @@
         return Read();
 
         default:
-        Debug.Assert(false);
         return false;
       }
     }
@@ -528,7 +526,6 @@
         if (state != State.EndOfFile)
         {
           reader.MoveToElement();
-          Debug.Assert(reader.Depth >= initialDepth);
           // move off the root of the subtree
           if (reader.Depth == initialDepth && reader.NodeType == XmlNodeType.Element && !reader.IsEmptyElement)
           {
@@ -565,7 +562,6 @@
         curNsAttr = -1;
         useCurNode = false;
         reader.MoveToElement();
-        Debug.Assert(reader.Depth >= initialDepth);
         if (reader.Depth == initialDepth)
         {
           if (reader.NodeType == XmlNodeType.Element && !reader.IsEmptyElement)
@@ -579,9 +575,6 @@
               }
             }
           }
-          Debug.Assert(reader.NodeType == XmlNodeType.EndElement ||
-                        reader.NodeType == XmlNodeType.Element && reader.IsEmptyElement ||
-                        reader.ReadState != ReadState.Interactive);
           state = State.EndOfFile;
           SetEmptyNode();
           return;
@@ -593,8 +586,6 @@
         }
         reader.Skip();
         ProcessNamespaces();
-
-        Debug.Assert(reader.Depth >= initialDepth);
         return;
 
         case State.Closed:
@@ -630,7 +621,6 @@
         return;
 
         default:
-        Debug.Assert(false);
         return;
       }
     }
@@ -851,10 +841,8 @@
           }
           goto case XmlNodeType.Text;
           case XmlNodeType.Text:
-          Debug.Assert(AttributeCount > 0);
           return reader.ReadContentAsBase64(buffer, index, count);
           default:
-          Debug.Assert(false);
           return 0;
         }
 
@@ -877,7 +865,6 @@
         throw new InvalidOperationException(Res.GetString(Res.Xml_MixingBinaryContentMethods));
 
         default:
-        Debug.Assert(false);
         return 0;
       }
     }
@@ -934,7 +921,6 @@
         throw new InvalidOperationException(Res.GetString(Res.Xml_MixingBinaryContentMethods));
 
         default:
-        Debug.Assert(false);
         return 0;
       }
     }
@@ -987,10 +973,8 @@
           }
           goto case XmlNodeType.Text;
           case XmlNodeType.Text:
-          Debug.Assert(AttributeCount > 0);
           return reader.ReadContentAsBinHex(buffer, index, count);
           default:
-          Debug.Assert(false);
           return 0;
         }
 
@@ -1013,7 +997,6 @@
         throw new InvalidOperationException(Res.GetString(Res.Xml_MixingBinaryContentMethods));
 
         default:
-        Debug.Assert(false);
         return 0;
       }
     }
@@ -1069,7 +1052,6 @@
         throw new InvalidOperationException(Res.GetString(Res.Xml_MixingBinaryContentMethods));
 
         default:
-        Debug.Assert(false);
         return 0;
       }
     }
@@ -1128,7 +1110,6 @@
         throw new InvalidOperationException(Res.GetString(Res.Xml_MixingReadValueChunkWithBinary));
 
         default:
-        Debug.Assert(false);
         return 0;
       }
     }
@@ -1303,7 +1284,6 @@
         nsAttributes[index].Set(XmlNodeType.Attribute, prefix, xmlns, reader.NameTable.Add(string.Concat(xmlns, ":", prefix)), xmlnsUri, ns);
       }
 
-      Debug.Assert(state == State.ClearNsAttributes || state == State.Interactive || state == State.PopNamespaceScope);
       state = State.ClearNsAttributes;
 
       curNsAttr = -1;
@@ -1331,7 +1311,6 @@
 
     private void MoveToNsAttribute(int index)
     {
-      Debug.Assert(index >= 0 && index <= nsAttrCount);
       reader.MoveToElement();
       curNsAttr = index;
       nsIncReadOffset = 0;
@@ -1364,15 +1343,12 @@
         return false;
       }
 
-      Debug.Assert(state == State.Interactive);
       state = binaryState;
       return true;
     }
 
     private bool FinishReadElementContentAsBinary()
     {
-      Debug.Assert(state == State.ReadElementContentAsBase64 || state == State.ReadElementContentAsBinHex);
-
       byte[] bytes = new byte[256];
       if (state == State.ReadElementContentAsBase64)
       {
@@ -1405,8 +1381,6 @@
 
     private bool FinishReadContentAsBinary()
     {
-      Debug.Assert(state == State.ReadContentAsBase64 || state == State.ReadContentAsBinHex);
-
       byte[] bytes = new byte[256];
       if (state == State.ReadContentAsBase64)
       {
@@ -1474,7 +1448,6 @@
 
     void SetEmptyNode()
     {
-      Debug.Assert(tmpNode.localName == string.Empty && tmpNode.prefix == string.Empty && tmpNode.name == string.Empty && tmpNode.namespaceUri == string.Empty);
       tmpNode.type = XmlNodeType.None;
       tmpNode.value = string.Empty;
 
@@ -1517,7 +1490,6 @@
         throw new InvalidOperationException(Res.GetString(Res.Xml_MixingReadValueChunkWithBinary));
 
         default:
-        Debug.Assert(false);
         break;
       }
       throw CreateReadContentAsException(methodName);
@@ -1525,10 +1497,6 @@
 
     void FinishReadContentAsType()
     {
-      Debug.Assert(state == State.Interactive ||
-                    state == State.PopNamespaceScope ||
-                    state == State.ClearNsAttributes);
-
       switch (NodeType)
       {
         case XmlNodeType.Element:
