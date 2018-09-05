@@ -52,7 +52,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal bool IsReference
     {
-      get { return reference; }
       set { reference = value; }
     }
 

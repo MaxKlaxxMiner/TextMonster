@@ -37,17 +37,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     }
 
-    internal void Replace(XmlQualifiedName name, XmlSchemaObject value)
-    {
-      XmlSchemaObject oldValue;
-      if (table.TryGetValue(name, out oldValue))
-      {
-        table[name] = value; //set new value
-        int matchedIndex = FindIndexByValue(oldValue);
-        entries[matchedIndex] = new XmlSchemaObjectEntry(name, value);
-      }
-    }
-
     internal void Clear()
     {
       table.Clear();

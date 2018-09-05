@@ -10,8 +10,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     public abstract void AddSort(object expr, IComparer comparer);
 
-    public abstract void SetContext(XmlNamespaceManager nsManager);
-
     public abstract void SetContext(IXmlNamespaceResolver nsResolver);
 
     public static XPathExpression Compile(string xpath)

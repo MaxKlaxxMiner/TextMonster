@@ -30,24 +30,6 @@ namespace TextMonster.Xml.Xml_Reader
       SetKeyInternal(key.ToString());
     }
 
-    /// <include file='doc\XmlMembersMapping.uex' path='docs/doc[@for="XmlMembersMapping.TypeName"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public string TypeName
-    {
-      get { return Accessor.Mapping.TypeName; }
-    }
-
-    /// <include file='doc\XmlMembersMapping.uex' path='docs/doc[@for="XmlMembersMapping.TypeNamespace"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public string TypeNamespace
-    {
-      get { return Accessor.Mapping.Namespace; }
-    }
-
     /// <include file='doc\XmlMembersMapping.uex' path='docs/doc[@for="XmlMembersMapping.this"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>

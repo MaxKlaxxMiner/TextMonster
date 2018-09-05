@@ -29,7 +29,6 @@ namespace TextMonster.Xml.Xml_Reader
     public string MemberName
     {
       get { return name == null ? string.Empty : name; }
-      set { name = value; }
     }
 
     internal MemberInfo MemberInfo

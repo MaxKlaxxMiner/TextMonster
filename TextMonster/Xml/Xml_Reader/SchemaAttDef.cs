@@ -39,10 +39,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
     }
 
-    public SchemaAttDef(XmlQualifiedName name)
-      : base(name, null)
-    {
-    }
     private SchemaAttDef() { }
 
     //

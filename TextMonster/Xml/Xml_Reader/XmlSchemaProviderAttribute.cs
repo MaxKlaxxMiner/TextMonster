@@ -37,7 +37,6 @@ namespace TextMonster.Xml.Xml_Reader
     public bool IsAny
     {
       get { return any; }
-      set { any = value; }
     }
   }
 }

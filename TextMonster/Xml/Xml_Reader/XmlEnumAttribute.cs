@@ -35,7 +35,6 @@ namespace TextMonster.Xml.Xml_Reader
     public string Name
     {
       get { return name; }
-      set { name = value; }
     }
   }
 }

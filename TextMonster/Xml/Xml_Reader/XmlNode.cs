@@ -36,51 +36,6 @@ namespace TextMonster.Xml.Xml_Reader
       return doc.CreateNavigator(this);
     }
 
-    // Selects the first node that matches the xpath expression
-    public XmlNode SelectSingleNode(string xpath)
-    {
-      XmlNodeList list = SelectNodes(xpath);
-      // SelectNodes returns null for certain node types
-      return list != null ? list[0] : null;
-    }
-
-    // Selects the first node that matches the xpath expression and given namespace context.
-    public XmlNode SelectSingleNode(string xpath, XmlNamespaceManager nsmgr)
-    {
-      XPathNavigator xn = (this).CreateNavigator();
-      //if the method is called on node types like DocType, Entity, XmlDeclaration,
-      //the navigator returned is null. So just return null from here for those node types.
-      if (xn == null)
-        return null;
-      XPathExpression exp = xn.Compile(xpath);
-      exp.SetContext(nsmgr);
-      return new XPathNodeList(xn.Select(exp))[0];
-    }
-
-    // Selects all nodes that match the xpath expression
-    public XmlNodeList SelectNodes(string xpath)
-    {
-      XPathNavigator n = (this).CreateNavigator();
-      //if the method is called on node types like DocType, Entity, XmlDeclaration,
-      //the navigator returned is null. So just return null from here for those node types.
-      if (n == null)
-        return null;
-      return new XPathNodeList(n.Select(xpath));
-    }
-
-    // Selects all nodes that match the xpath expression and given namespace context.
-    public XmlNodeList SelectNodes(string xpath, XmlNamespaceManager nsmgr)
-    {
-      XPathNavigator xn = (this).CreateNavigator();
-      //if the method is called on node types like DocType, Entity, XmlDeclaration,
-      //the navigator returned is null. So just return null from here for those node types.
-      if (xn == null)
-        return null;
-      XPathExpression exp = xn.Compile(xpath);
-      exp.SetContext(nsmgr);
-      return new XPathNodeList(xn.Select(exp));
-    }
-
     // Gets the name of the node.
     public abstract string Name
     {

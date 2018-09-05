@@ -66,7 +66,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal bool IsFixed
     {
-      get { return isFixed; }
       set { isFixed = value; }
     }
 

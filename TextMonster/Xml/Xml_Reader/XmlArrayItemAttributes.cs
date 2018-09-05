@@ -26,51 +26,5 @@ namespace TextMonster.Xml.Xml_Reader
     {
       return List.Add(attribute);
     }
-
-    /// <include file='doc\XmlArrayItemAttributes.uex' path='docs/doc[@for="XmlArrayItemAttributes.Insert"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public void Insert(int index, XmlArrayItemAttribute attribute)
-    {
-      List.Insert(index, attribute);
-    }
-
-    /// <include file='doc\XmlArrayItemAttributes.uex' path='docs/doc[@for="XmlArrayItemAttributes.IndexOf"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public int IndexOf(XmlArrayItemAttribute attribute)
-    {
-      return List.IndexOf(attribute);
-    }
-
-    /// <include file='doc\XmlArrayItemAttributes.uex' path='docs/doc[@for="XmlArrayItemAttributes.Contains"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public bool Contains(XmlArrayItemAttribute attribute)
-    {
-      return List.Contains(attribute);
-    }
-
-    /// <include file='doc\XmlArrayItemAttributes.uex' path='docs/doc[@for="XmlArrayItemAttributes.Remove"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public void Remove(XmlArrayItemAttribute attribute)
-    {
-      List.Remove(attribute);
-    }
-
-    /// <include file='doc\XmlArrayItemAttributes.uex' path='docs/doc[@for="XmlArrayItemAttributes.CopyTo"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public void CopyTo(XmlArrayItemAttribute[] array, int index)
-    {
-      List.CopyTo(array, index);
-    }
-
   }
 }

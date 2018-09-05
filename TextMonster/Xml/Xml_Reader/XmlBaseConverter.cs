@@ -110,46 +110,46 @@ namespace TextMonster.Xml.Xml_Reader
     public override bool ToBoolean(object value) { return (bool)ChangeType((object)value, BooleanType, null); }
 
     public override DateTime ToDateTime(bool value) { return (DateTime)ChangeType((object)value, DateTimeType, null); }
-    public override DateTime ToDateTime(DateTime value) { return (DateTime)ChangeType((object)value, DateTimeType, null); }
-    public override DateTime ToDateTime(DateTimeOffset value) { return (DateTime)ChangeType((object)value, DateTimeType, null); }
-    public override DateTime ToDateTime(decimal value) { return (DateTime)ChangeType((object)value, DateTimeType, null); }
+    public virtual DateTime ToDateTime(DateTime value) { return (DateTime)ChangeType((object)value, DateTimeType, null); }
+    public virtual DateTime ToDateTime(DateTimeOffset value) { return (DateTime)ChangeType((object)value, DateTimeType, null); }
+    public virtual DateTime ToDateTime(decimal value) { return (DateTime)ChangeType((object)value, DateTimeType, null); }
     public override DateTime ToDateTime(double value) { return (DateTime)ChangeType((object)value, DateTimeType, null); }
     public override DateTime ToDateTime(int value) { return (DateTime)ChangeType((object)value, DateTimeType, null); }
     public override DateTime ToDateTime(long value) { return (DateTime)ChangeType((object)value, DateTimeType, null); }
-    public override DateTime ToDateTime(float value) { return (DateTime)ChangeType((object)value, DateTimeType, null); }
+    public virtual DateTime ToDateTime(float value) { return (DateTime)ChangeType((object)value, DateTimeType, null); }
     public override DateTime ToDateTime(string value) { return (DateTime)ChangeType((object)value, DateTimeType, null); }
     public override DateTime ToDateTime(object value) { return (DateTime)ChangeType((object)value, DateTimeType, null); }
 
-    public override DateTimeOffset ToDateTimeOffset(bool value) { return (DateTimeOffset)ChangeType((object)value, DateTimeOffsetType, null); }
-    public override DateTimeOffset ToDateTimeOffset(DateTime value) { return (DateTimeOffset)ChangeType((object)value, DateTimeOffsetType, null); }
-    public override DateTimeOffset ToDateTimeOffset(DateTimeOffset value) { return (DateTimeOffset)ChangeType((object)value, DateTimeOffsetType, null); }
-    public override DateTimeOffset ToDateTimeOffset(decimal value) { return (DateTimeOffset)ChangeType((object)value, DateTimeOffsetType, null); }
-    public override DateTimeOffset ToDateTimeOffset(double value) { return (DateTimeOffset)ChangeType((object)value, DateTimeOffsetType, null); }
-    public override DateTimeOffset ToDateTimeOffset(int value) { return (DateTimeOffset)ChangeType((object)value, DateTimeOffsetType, null); }
-    public override DateTimeOffset ToDateTimeOffset(long value) { return (DateTimeOffset)ChangeType((object)value, DateTimeOffsetType, null); }
-    public override DateTimeOffset ToDateTimeOffset(float value) { return (DateTimeOffset)ChangeType((object)value, DateTimeOffsetType, null); }
-    public override DateTimeOffset ToDateTimeOffset(string value) { return (DateTimeOffset)ChangeType((object)value, DateTimeOffsetType, null); }
-    public override DateTimeOffset ToDateTimeOffset(object value) { return (DateTimeOffset)ChangeType((object)value, DateTimeOffsetType, null); }
+    public virtual DateTimeOffset ToDateTimeOffset(bool value) { return (DateTimeOffset)ChangeType((object)value, DateTimeOffsetType, null); }
+    public virtual DateTimeOffset ToDateTimeOffset(DateTime value) { return (DateTimeOffset)ChangeType((object)value, DateTimeOffsetType, null); }
+    public virtual DateTimeOffset ToDateTimeOffset(DateTimeOffset value) { return (DateTimeOffset)ChangeType((object)value, DateTimeOffsetType, null); }
+    public virtual DateTimeOffset ToDateTimeOffset(decimal value) { return (DateTimeOffset)ChangeType((object)value, DateTimeOffsetType, null); }
+    public virtual DateTimeOffset ToDateTimeOffset(double value) { return (DateTimeOffset)ChangeType((object)value, DateTimeOffsetType, null); }
+    public virtual DateTimeOffset ToDateTimeOffset(int value) { return (DateTimeOffset)ChangeType((object)value, DateTimeOffsetType, null); }
+    public virtual DateTimeOffset ToDateTimeOffset(long value) { return (DateTimeOffset)ChangeType((object)value, DateTimeOffsetType, null); }
+    public virtual DateTimeOffset ToDateTimeOffset(float value) { return (DateTimeOffset)ChangeType((object)value, DateTimeOffsetType, null); }
+    public virtual DateTimeOffset ToDateTimeOffset(string value) { return (DateTimeOffset)ChangeType((object)value, DateTimeOffsetType, null); }
+    public virtual DateTimeOffset ToDateTimeOffset(object value) { return (DateTimeOffset)ChangeType((object)value, DateTimeOffsetType, null); }
 
-    public override decimal ToDecimal(bool value) { return (decimal)ChangeType((object)value, DecimalType, null); }
-    public override decimal ToDecimal(DateTime value) { return (decimal)ChangeType((object)value, DecimalType, null); }
-    public override decimal ToDecimal(DateTimeOffset value) { return (decimal)ChangeType((object)value, DecimalType, null); }
-    public override decimal ToDecimal(decimal value) { return (decimal)ChangeType((object)value, DecimalType, null); }
-    public override decimal ToDecimal(double value) { return (decimal)ChangeType((object)value, DecimalType, null); }
-    public override decimal ToDecimal(int value) { return (decimal)ChangeType((object)value, DecimalType, null); }
-    public override decimal ToDecimal(long value) { return (decimal)ChangeType((object)value, DecimalType, null); }
-    public override decimal ToDecimal(float value) { return (decimal)ChangeType((object)value, DecimalType, null); }
-    public override decimal ToDecimal(string value) { return (decimal)ChangeType((object)value, DecimalType, null); }
+    public virtual decimal ToDecimal(bool value) { return (decimal)ChangeType((object)value, DecimalType, null); }
+    public virtual decimal ToDecimal(DateTime value) { return (decimal)ChangeType((object)value, DecimalType, null); }
+    public virtual decimal ToDecimal(DateTimeOffset value) { return (decimal)ChangeType((object)value, DecimalType, null); }
+    public virtual decimal ToDecimal(decimal value) { return (decimal)ChangeType((object)value, DecimalType, null); }
+    public virtual decimal ToDecimal(double value) { return (decimal)ChangeType((object)value, DecimalType, null); }
+    public virtual decimal ToDecimal(int value) { return (decimal)ChangeType((object)value, DecimalType, null); }
+    public virtual decimal ToDecimal(long value) { return (decimal)ChangeType((object)value, DecimalType, null); }
+    public virtual decimal ToDecimal(float value) { return (decimal)ChangeType((object)value, DecimalType, null); }
+    public virtual decimal ToDecimal(string value) { return (decimal)ChangeType((object)value, DecimalType, null); }
     public override decimal ToDecimal(object value) { return (decimal)ChangeType((object)value, DecimalType, null); }
 
     public override double ToDouble(bool value) { return (double)ChangeType((object)value, DoubleType, null); }
     public override double ToDouble(DateTime value) { return (double)ChangeType((object)value, DoubleType, null); }
-    public override double ToDouble(DateTimeOffset value) { return (double)ChangeType((object)value, DoubleType, null); }
-    public override double ToDouble(decimal value) { return (double)ChangeType((object)value, DoubleType, null); }
-    public override double ToDouble(double value) { return (double)ChangeType((object)value, DoubleType, null); }
+    public virtual double ToDouble(DateTimeOffset value) { return (double)ChangeType((object)value, DoubleType, null); }
+    public virtual double ToDouble(decimal value) { return (double)ChangeType((object)value, DoubleType, null); }
+    public virtual double ToDouble(double value) { return (double)ChangeType((object)value, DoubleType, null); }
     public override double ToDouble(int value) { return (double)ChangeType((object)value, DoubleType, null); }
     public override double ToDouble(long value) { return (double)ChangeType((object)value, DoubleType, null); }
-    public override double ToDouble(float value) { return (double)ChangeType((object)value, DoubleType, null); }
+    public virtual double ToDouble(float value) { return (double)ChangeType((object)value, DoubleType, null); }
     public override double ToDouble(string value) { return (double)ChangeType((object)value, DoubleType, null); }
     public override double ToDouble(object value) { return (double)ChangeType((object)value, DoubleType, null); }
 
@@ -175,34 +175,34 @@ namespace TextMonster.Xml.Xml_Reader
     public override long ToInt64(string value) { return (long)ChangeType((object)value, Int64Type, null); }
     public override long ToInt64(object value) { return (long)ChangeType((object)value, Int64Type, null); }
 
-    public override float ToSingle(bool value) { return (float)ChangeType((object)value, SingleType, null); }
-    public override float ToSingle(DateTime value) { return (float)ChangeType((object)value, SingleType, null); }
-    public override float ToSingle(DateTimeOffset value) { return (float)ChangeType((object)value, SingleType, null); }
-    public override float ToSingle(decimal value) { return (float)ChangeType((object)value, SingleType, null); }
-    public override float ToSingle(double value) { return (float)ChangeType((object)value, SingleType, null); }
-    public override float ToSingle(int value) { return (float)ChangeType((object)value, SingleType, null); }
-    public override float ToSingle(long value) { return (float)ChangeType((object)value, SingleType, null); }
-    public override float ToSingle(float value) { return (float)ChangeType((object)value, SingleType, null); }
-    public override float ToSingle(string value) { return (float)ChangeType((object)value, SingleType, null); }
+    public virtual float ToSingle(bool value) { return (float)ChangeType((object)value, SingleType, null); }
+    public virtual float ToSingle(DateTime value) { return (float)ChangeType((object)value, SingleType, null); }
+    public virtual float ToSingle(DateTimeOffset value) { return (float)ChangeType((object)value, SingleType, null); }
+    public virtual float ToSingle(decimal value) { return (float)ChangeType((object)value, SingleType, null); }
+    public virtual float ToSingle(double value) { return (float)ChangeType((object)value, SingleType, null); }
+    public virtual float ToSingle(int value) { return (float)ChangeType((object)value, SingleType, null); }
+    public virtual float ToSingle(long value) { return (float)ChangeType((object)value, SingleType, null); }
+    public virtual float ToSingle(float value) { return (float)ChangeType((object)value, SingleType, null); }
+    public virtual float ToSingle(string value) { return (float)ChangeType((object)value, SingleType, null); }
     public override float ToSingle(object value) { return (float)ChangeType((object)value, SingleType, null); }
 
     public override string ToString(bool value) { return (string)ChangeType((object)value, StringType, null); }
     public override string ToString(DateTime value) { return (string)ChangeType((object)value, StringType, null); }
-    public override string ToString(DateTimeOffset value) { return (string)ChangeType((object)value, StringType, null); }
-    public override string ToString(decimal value) { return (string)ChangeType((object)value, StringType, null); }
+    public virtual string ToString(DateTimeOffset value) { return (string)ChangeType((object)value, StringType, null); }
+    public virtual string ToString(decimal value) { return (string)ChangeType((object)value, StringType, null); }
     public override string ToString(double value) { return (string)ChangeType((object)value, StringType, null); }
     public override string ToString(int value) { return (string)ChangeType((object)value, StringType, null); }
     public override string ToString(long value) { return (string)ChangeType((object)value, StringType, null); }
-    public override string ToString(float value) { return (string)ChangeType((object)value, StringType, null); }
-    public override string ToString(string value, IXmlNamespaceResolver nsResolver) { return (string)ChangeType((object)value, StringType, nsResolver); }
+    public virtual string ToString(float value) { return (string)ChangeType((object)value, StringType, null); }
+    public virtual string ToString(string value, IXmlNamespaceResolver nsResolver) { return (string)ChangeType((object)value, StringType, nsResolver); }
     public override string ToString(object value, IXmlNamespaceResolver nsResolver) { return (string)ChangeType((object)value, StringType, nsResolver); }
-    public override string ToString(string value) { return this.ToString(value, null); }
+    public virtual string ToString(string value) { return this.ToString(value, null); }
     public override string ToString(object value) { return this.ToString(value, null); }
 
     public override object ChangeType(bool value, Type destinationType) { return (object)ChangeType((object)value, destinationType, null); }
     public override object ChangeType(DateTime value, Type destinationType) { return (object)ChangeType((object)value, destinationType, null); }
     public override object ChangeType(DateTimeOffset value, Type destinationType) { return (object)ChangeType((object)value, destinationType, null); }
-    public override object ChangeType(decimal value, Type destinationType) { return (object)ChangeType((object)value, destinationType, null); }
+    public virtual object ChangeType(decimal value, Type destinationType) { return (object)ChangeType((object)value, destinationType, null); }
     public override object ChangeType(double value, Type destinationType) { return (object)ChangeType((object)value, destinationType, null); }
     public override object ChangeType(int value, Type destinationType) { return (object)ChangeType((object)value, destinationType, null); }
     public override object ChangeType(long value, Type destinationType) { return (object)ChangeType((object)value, destinationType, null); }

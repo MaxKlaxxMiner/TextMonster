@@ -31,7 +31,6 @@ namespace TextMonster.Xml.Xml_Reader
     public string ElementName
     {
       get { return elementName == null ? string.Empty : elementName; }
-      set { elementName = value; }
     }
 
     /// <include file='doc\XmlRootAttribute.uex' path='docs/doc[@for="XmlRootAttribute.Namespace"]/*' />

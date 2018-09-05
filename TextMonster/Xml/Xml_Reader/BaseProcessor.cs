@@ -42,11 +42,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return eventHandler; }
     }
 
-    protected XmlSchemaCompilationSettings CompilationSettings
-    {
-      get { return compilationSettings; }
-    }
-
     protected bool HasErrors
     {
       get { return errorCount != 0; }

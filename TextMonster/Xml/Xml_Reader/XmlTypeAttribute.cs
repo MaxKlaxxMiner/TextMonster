@@ -30,7 +30,6 @@ namespace TextMonster.Xml.Xml_Reader
     public bool AnonymousType
     {
       get { return anonymousType; }
-      set { anonymousType = value; }
     }
 
     /// <include file='doc\XmlTypeAttribute.uex' path='docs/doc[@for="XmlTypeAttribute.IncludeInSchema"]/*' />
@@ -40,7 +39,6 @@ namespace TextMonster.Xml.Xml_Reader
     public bool IncludeInSchema
     {
       get { return includeInSchema; }
-      set { includeInSchema = value; }
     }
 
     /// <include file='doc\XmlTypeAttribute.uex' path='docs/doc[@for="XmlTypeAttribute.TypeName"]/*' />

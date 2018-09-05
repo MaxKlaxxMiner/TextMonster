@@ -37,21 +37,9 @@ namespace TextMonster.Xml.Xml_Reader
       impl.OuterReader = this;
     }
 
-    public XmlTextReader(string url, TextReader input)
-    {
-      impl = new XmlTextReaderImpl(url, input);
-      impl.OuterReader = this;
-    }
-
     public XmlTextReader(TextReader input, XmlNameTable nt)
     {
       impl = new XmlTextReaderImpl(input, nt);
-      impl.OuterReader = this;
-    }
-
-    public XmlTextReader(string url, TextReader input, XmlNameTable nt)
-    {
-      impl = new XmlTextReaderImpl(url, input, nt);
       impl.OuterReader = this;
     }
 

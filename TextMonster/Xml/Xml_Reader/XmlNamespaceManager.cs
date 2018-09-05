@@ -47,19 +47,6 @@ namespace TextMonster.Xml.Xml_Reader
     // Constants
     const int MinDeclsCountForHashtable = 16;
 
-    internal static IXmlNamespaceResolver EmptyResolver
-    {
-      get
-      {
-        if (s_EmptyResolver == null)
-        {
-          // no locking; the empty resolver is immutable so it's not a problem that it may get initialized more than once
-          s_EmptyResolver = new XmlNamespaceManager(new NameTable());
-        }
-        return s_EmptyResolver;
-      }
-    }
-
     internal XmlNamespaceManager()
     {
     }

@@ -42,9 +42,6 @@ namespace TextMonster.Xml.Xml_Reader
       this.formatterName = formatterName;
     }
 
-    internal TypeDesc(string name, string fullName, XmlSchemaType dataType, TypeKind kind, TypeDesc baseTypeDesc, TypeFlags flags)
-      : this(name, fullName, dataType, kind, baseTypeDesc, flags, null) { }
-
     internal TypeDesc(string name, string fullName, TypeKind kind, TypeDesc baseTypeDesc, TypeFlags flags)
       : this(name, fullName, (XmlSchemaType)null, kind, baseTypeDesc, flags, null) { }
 

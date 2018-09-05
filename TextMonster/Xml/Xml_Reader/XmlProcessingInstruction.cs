@@ -44,7 +44,6 @@ namespace TextMonster.Xml.Xml_Reader
     // excluding the target.
     public String Data
     {
-      get { return data; }
       set
       {
         XmlNode parent = ParentNode;

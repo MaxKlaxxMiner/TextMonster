@@ -34,10 +34,6 @@ namespace TextMonster.Xml.Xml_Reader
       internal string methodKey;
     }
 
-    private TempAssembly()
-    {
-    }
-
     internal TempAssembly(XmlMapping[] xmlMappings, Type[] types, string defaultNamespace, string location, Evidence evidence)
     {
       bool containsSoapMapping = false;

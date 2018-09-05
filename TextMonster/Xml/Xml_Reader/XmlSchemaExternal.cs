@@ -2,7 +2,6 @@
 
 namespace TextMonster.Xml.Xml_Reader
 {
-  /// <include file='doc\XmlSchemaExternal.uex' path='docs/doc[@for="XmlSchemaExternal"]/*' />
   public abstract class XmlSchemaExternal : XmlSchemaObject
   {
     string location;
@@ -12,7 +11,6 @@ namespace TextMonster.Xml.Xml_Reader
     XmlAttribute[] moreAttributes;
     Compositor compositor;
 
-    /// <include file='doc\XmlSchemaExternal.uex' path='docs/doc[@for="XmlSchemaExternal.SchemaLocation"]/*' />
     [XmlAttribute("schemaLocation", DataType = "anyURI")]
     public string SchemaLocation
     {
@@ -20,7 +18,6 @@ namespace TextMonster.Xml.Xml_Reader
       set { location = value; }
     }
 
-    /// <include file='doc\XmlSchemaExternal.uex' path='docs/doc[@for="XmlSchemaExternal.Schema"]/*' />
     [XmlIgnore]
     public XmlSchema Schema
     {
@@ -28,20 +25,11 @@ namespace TextMonster.Xml.Xml_Reader
       set { schema = value; }
     }
 
-    /// <include file='doc\XmlSchemaExternal.uex' path='docs/doc[@for="XmlSchemaExternal.Id"]/*' />
     [XmlAttribute("id", DataType = "ID")]
     public string Id
     {
       get { return id; }
       set { id = value; }
-    }
-
-    /// <include file='doc\XmlSchemaExternal.uex' path='docs/doc[@for="XmlSchemaExternal.UnhandledAttributes"]/*' />
-    [XmlAnyAttribute]
-    public XmlAttribute[] UnhandledAttributes
-    {
-      get { return moreAttributes; }
-      set { moreAttributes = value; }
     }
 
     [XmlIgnore]

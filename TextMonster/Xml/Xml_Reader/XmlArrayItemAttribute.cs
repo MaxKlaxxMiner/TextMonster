@@ -18,33 +18,6 @@ namespace TextMonster.Xml.Xml_Reader
     XmlSchemaForm form = XmlSchemaForm.None;
     int nestingLevel;
 
-    /// <include file='doc\XmlArrayItemAttribute.uex' path='docs/doc[@for="XmlArrayItemAttribute.XmlArrayItemAttribute"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlArrayItemAttribute()
-    {
-    }
-
-    /// <include file='doc\XmlArrayItemAttribute.uex' path='docs/doc[@for="XmlArrayItemAttribute.XmlArrayItemAttribute2"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlArrayItemAttribute(Type type)
-    {
-      this.type = type;
-    }
-
-    /// <include file='doc\XmlArrayItemAttribute.uex' path='docs/doc[@for="XmlArrayItemAttribute.XmlArrayItemAttribute3"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlArrayItemAttribute(string elementName, Type type)
-    {
-      this.elementName = elementName;
-      this.type = type;
-    }
-
     /// <include file='doc\XmlArrayItemAttribute.uex' path='docs/doc[@for="XmlArrayItemAttribute.Type"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
@@ -52,7 +25,6 @@ namespace TextMonster.Xml.Xml_Reader
     public Type Type
     {
       get { return type; }
-      set { type = value; }
     }
 
     /// <include file='doc\XmlArrayItemAttribute.uex' path='docs/doc[@for="XmlArrayItemAttribute.ElementName"]/*' />
@@ -62,7 +34,6 @@ namespace TextMonster.Xml.Xml_Reader
     public string ElementName
     {
       get { return elementName == null ? string.Empty : elementName; }
-      set { elementName = value; }
     }
 
     /// <include file='doc\XmlArrayItemAttribute.uex' path='docs/doc[@for="XmlArrayItemAttribute.Namespace"]/*' />

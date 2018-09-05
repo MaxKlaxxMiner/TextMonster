@@ -67,7 +67,7 @@ namespace TextMonster.Xml.Xml_Reader
       return new CompiledXpathExpr(Query.Clone(query), expr, needContext);
     }
 
-    public override void SetContext(XmlNamespaceManager nsManager)
+    public virtual void SetContext(XmlNamespaceManager nsManager)
     {
       SetContext((IXmlNamespaceResolver)nsManager);
     }

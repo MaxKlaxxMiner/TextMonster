@@ -29,9 +29,6 @@ namespace TextMonster.Xml.Xml_Reader
     private static readonly ulong x_ulInt32Base = ((ulong)1) << 32;     // 2**32
     internal static readonly ulong x_llMax = Int64.MaxValue;   // Max of Int64
     //private static readonly uint x_ulBase10 = 10;
-    private static readonly double DUINT_BASE = (double)x_lInt32Base;     // 2**32
-    private static readonly double DUINT_BASE2 = DUINT_BASE * DUINT_BASE;  // 2**64
-    private static readonly double DUINT_BASE3 = DUINT_BASE2 * DUINT_BASE; // 2**96
     //private static readonly double DMAX_NUME = 1.0e+38;                  // Max value of numeric
     //private static readonly uint DBL_DIG = 17;                       // Max decimal digits of double
     //private static readonly byte x_cNumeDivScaleMin = 6;     // Minimum result scale of numeric division

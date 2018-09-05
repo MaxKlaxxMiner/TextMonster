@@ -41,10 +41,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         return escapeName;
       }
-      set
-      {
-        escapeName = value;
-      }
     }
 
     /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.Writer"]/*' />

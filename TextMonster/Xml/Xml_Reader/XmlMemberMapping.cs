@@ -39,15 +39,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return Accessor.UnescapeName(Accessor.Name); }
     }
 
-    /// <include file='doc\XmlMemberMapping.uex' path='docs/doc[@for="XmlMemberMapping.XsdElementName"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public string XsdElementName
-    {
-      get { return Accessor.Name; }
-    }
-
     /// <include file='doc\XmlMemberMapping.uex' path='docs/doc[@for="XmlMemberMapping.Namespace"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>

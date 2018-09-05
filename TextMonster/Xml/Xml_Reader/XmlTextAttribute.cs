@@ -36,7 +36,6 @@ namespace TextMonster.Xml.Xml_Reader
     public string DataType
     {
       get { return dataType == null ? string.Empty : dataType; }
-      set { dataType = value; }
     }
   }
 }

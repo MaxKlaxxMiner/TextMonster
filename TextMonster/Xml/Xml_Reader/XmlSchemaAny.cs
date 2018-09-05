@@ -42,19 +42,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     [XmlIgnore]
-    internal string ResolvedNamespace
-    {
-      get
-      {
-        if (ns == null || ns.Length == 0)
-        {
-          return "##any";
-        }
-        return ns;
-      }
-    }
-
-    [XmlIgnore]
     internal XmlSchemaContentProcessing ProcessContentsCorrect
     {
       get { return processContents == XmlSchemaContentProcessing.None ? XmlSchemaContentProcessing.Strict : processContents; }

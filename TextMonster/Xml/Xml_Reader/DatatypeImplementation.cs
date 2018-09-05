@@ -23,7 +23,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private const int anySimpleTypeIndex = 11;
 
-    internal static XmlQualifiedName QnAnySimpleType = new XmlQualifiedName("anySimpleType", XmlReservedNs.NsXs);
     internal static XmlQualifiedName QnAnyType = new XmlQualifiedName("anyType", XmlReservedNs.NsXs);
 
     //Create facet checkers

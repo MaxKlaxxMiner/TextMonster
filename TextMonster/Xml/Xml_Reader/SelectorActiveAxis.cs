@@ -18,11 +18,6 @@ namespace TextMonster.Xml.Xml_Reader
     private ArrayList KSs;                  // stack of KSStruct, will not become less 
     private int KSpointer = 0;              // indicate current stack top (next available element);
 
-    public bool EmptyStack
-    {
-      get { return KSpointer == 0; }
-    }
-
     public int lastDepth
     {
       get { return (KSpointer == 0) ? -1 : ((KsStruct)KSs[KSpointer - 1]).depth; }

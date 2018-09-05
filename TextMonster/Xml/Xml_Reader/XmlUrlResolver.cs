@@ -40,16 +40,6 @@ namespace TextMonster.Xml.Xml_Reader
       set { _credentials = value; }
     }
 
-    public IWebProxy Proxy
-    {
-      set { _proxy = value; }
-    }
-
-    public RequestCachePolicy CachePolicy
-    {
-      set { _cachePolicy = value; }
-    }
-
     // Resource resolution
 
     // Maps a URI to an Object containing the actual resource.

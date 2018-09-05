@@ -35,19 +35,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public static XmlSchemaComplexType GetBuiltInComplexType(XmlTypeCode typeCode)
-    {
-      if (typeCode == XmlTypeCode.Item)
-      {
-        return XmlSchemaComplexType.AnyType;
-      }
-      return null;
-    }
-
-    /// <include file='doc\XmlSchemaType.uex' path='docs/doc[@for="XmlSchemaType.GetXsdComplexType"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
     public static XmlSchemaComplexType GetBuiltInComplexType(XmlQualifiedName qualifiedName)
     {
       if (qualifiedName == null)

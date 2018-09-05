@@ -56,11 +56,6 @@ namespace TextMonster.Xml.Xml_Reader
       this.argumentList = new ArrayList(argumentList);
     }
 
-    public Function(FunctionType ftype)
-    {
-      this.functionType = ftype;
-    }
-
     public Function(FunctionType ftype, AstNode arg)
     {
       functionType = ftype;
