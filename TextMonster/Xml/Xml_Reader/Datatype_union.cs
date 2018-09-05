@@ -1,4 +1,6 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿using System;
+
+namespace TextMonster.Xml.Xml_Reader
 {
   //Union datatype
   internal class Datatype_union : Datatype_anySimpleType

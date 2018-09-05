@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Globalization;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -723,9 +725,7 @@ namespace TextMonster.Xml.Xml_Reader
     internal XmlNamespaceManager ParsePartialContent(XmlNode parentNode, string innerxmltext, XmlNodeType nt)
     {
       //the function shouldn't be used to set innerxml for XmlDocument node
-      Debug.Assert(parentNode.NodeType != XmlNodeType.Document);
       this.doc = parentNode.OwnerDocument;
-      Debug.Assert(this.doc != null);
       XmlParserContext pc = GetContext(parentNode);
       this.reader = CreateInnerXmlReader(innerxmltext, nt, pc, this.doc);
       try
@@ -915,7 +915,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         tr.DisableUndeclaredEntityCheck = true;
       }
-      Debug.Assert(tr.EntityHandling == EntityHandling.ExpandCharEntities);
 
       XmlDocumentType dtdNode = doc.DocumentType;
       if (dtdNode != null)
@@ -928,7 +927,7 @@ namespace TextMonster.Xml.Xml_Reader
         else
         {
           IDtdParser dtdParser = DtdParser.Create();
-          XmlTextReaderImpl.DtdParserProxy proxy = new XmlTextReaderImpl.DtdParserProxy(tr);
+          DtdParserProxy proxy = new DtdParserProxy(tr);
 
           IDtdInfo dtdInfo = dtdParser.ParseFreeFloatingDtd(context.BaseURI, context.DocTypeName, context.PublicId, context.SystemId, context.InternalSubset, proxy);
 

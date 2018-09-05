@@ -63,6 +63,9 @@
     <Compile Include="Xml\Xml_Reader\AxisElement.cs" />
     <Compile Include="Xml\Xml_Reader\BinaryFacetsChecker.cs" />
     <Compile Include="Xml\Xml_Reader\ChoiceNode.cs" />
+    <Compile Include="Xml\Xml_Reader\AutoValidator.cs" />
+    <Compile Include="Xml\Xml_Reader\XmlUnionConverter.cs" />
+    <Compile Include="Xml\Xml_Reader\XsdValidator.cs" />
     <Compile Include="Xml\Xml_Reader\XmlNotation.cs" />
     <Compile Include="Xml\Xml_Reader\DtdParserProxy.cs" />
     <Compile Include="Xml\Xml_Reader\IDtdParserAdapterWithValidation.cs" />

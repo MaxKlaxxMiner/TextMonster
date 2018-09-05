@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Runtime.Versioning;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -406,7 +411,7 @@ namespace TextMonster.Xml.Xml_Reader
       _SchemaNames = schemaNames;
       _CurState = S_SchemaEntries[0];
       positionInfo = PositionInfo.GetPositionInfo(_reader);
-      xmlResolver = System.Xml.XmlConfiguration.XmlReaderSection.CreateDefaultResolver();
+      xmlResolver = new XmlUrlResolver();
     }
 
     internal override bool ProcessElement(string prefix, string name, string ns)
@@ -618,7 +623,6 @@ namespace TextMonster.Xml.Xml_Reader
     private void PopGroupInfo()
     {
       _GroupDef = (GroupContent)_GroupStack.Pop();
-      Debug.Assert(_GroupDef != null);
     }
 
     //
