@@ -1,6 +1,3 @@
-using System;
-using System.CodeDom.Compiler;
-
 namespace TextMonster.Xml.Xml_Reader
 {
   /// <include file='doc\XmlMemberMapping.uex' path='docs/doc[@for="XmlMemberMapping"]/*' />
@@ -46,65 +43,6 @@ namespace TextMonster.Xml.Xml_Reader
     public string Namespace
     {
       get { return Accessor.Namespace; }
-    }
-
-    /// <include file='doc\XmlMemberMapping.uex' path='docs/doc[@for="XmlMemberMapping.MemberName"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public string MemberName
-    {
-      get { return mapping.Name; }
-    }
-
-    /// <include file='doc\XmlMemberMapping.uex' path='docs/doc[@for="XmlMemberMapping.TypeName"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public string TypeName
-    {
-      get { return Accessor.Mapping != null ? Accessor.Mapping.TypeName : String.Empty; }
-    }
-
-    /// <include file='doc\XmlMemberMapping.uex' path='docs/doc[@for="XmlMemberMapping.TypeNamespace"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public string TypeNamespace
-    {
-      get { return Accessor.Mapping != null ? Accessor.Mapping.Namespace : null; }
-    }
-
-    /// <include file='doc\XmlMemberMapping.uex' path='docs/doc[@for="XmlMemberMapping.TypeFullName"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public string TypeFullName
-    {
-      get { return mapping.TypeDesc.FullName; }
-    }
-
-    /// <include file='doc\XmlMemberMapping.uex' path='docs/doc[@for="XmlMemberMapping.CheckSpecified"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public bool CheckSpecified
-    {
-      get { return mapping.CheckSpecified != SpecifiedAccessor.None; }
-    }
-
-    internal bool IsNullable
-    {
-      get { return mapping.IsNeedNullable; }
-    }
-
-    /// <include file='doc\XmlMemberMapping.uex' path='docs/doc[@for="XmlMemberMapping.GenerateTypeName"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public string GenerateTypeName(CodeDomProvider codeProvider)
-    {
-      return mapping.GetTypeName(codeProvider);
     }
   }
 }

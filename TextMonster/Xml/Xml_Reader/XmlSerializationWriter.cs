@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Globalization;
-using System.Reflection;
 using System.Text;
 
 namespace TextMonster.Xml.Xml_Reader
@@ -50,34 +49,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         return w;
       }
-      set
-      {
-        w = value;
-      }
-    }
-
-    /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.Namespaces"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    protected ArrayList Namespaces
-    {
-      get
-      {
-        return namespaces == null ? null : namespaces.NamespaceList;
-      }
-      set
-      {
-        if (value == null)
-        {
-          namespaces = null;
-        }
-        else
-        {
-          XmlQualifiedName[] qnames = (XmlQualifiedName[])value.ToArray(typeof(XmlQualifiedName));
-          namespaces = new XmlSerializerNamespaces(qnames);
-        }
-      }
     }
 
     /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.FromByteArrayBase64"]/*' />
@@ -90,35 +61,10 @@ namespace TextMonster.Xml.Xml_Reader
       return value;
     }
 
-    /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.ResolveDynamicAssembly"]/*' />
-    ///<internalonly/>
-    protected static Assembly ResolveDynamicAssembly(string assemblyFullName)
-    {
-      return DynamicAssemblies.Get(assemblyFullName);
-    }
-
-    /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.FromByteArrayHex"]/*' />
-    protected static string FromByteArrayHex(byte[] value)
-    {
-      return XmlCustomFormatter.FromByteArrayHex(value);
-    }
-
     /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.FromDateTime"]/*' />
     protected static string FromDateTime(DateTime value)
     {
       return XmlCustomFormatter.FromDateTime(value);
-    }
-
-    /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.FromDate"]/*' />
-    protected static string FromDate(DateTime value)
-    {
-      return XmlCustomFormatter.FromDate(value);
-    }
-
-    /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.FromTime"]/*' />
-    protected static string FromTime(DateTime value)
-    {
-      return XmlCustomFormatter.FromTime(value);
     }
 
     /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.FromChar"]/*' />

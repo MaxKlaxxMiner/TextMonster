@@ -28,30 +28,6 @@
     }
 
     /// <summary>
-    /// Returns true if the unsigned integer has exactly one bit set.
-    /// </summary>
-    public static bool ExactlyOne(uint num)
-    {
-      return num != 0 && (num & (num - 1)) == 0;
-    }
-
-    /// <summary>
-    /// Returns true if the unsigned integer has more than one bit set.
-    /// </summary>
-    public static bool MoreThanOne(uint num)
-    {
-      return (num & (num - 1)) != 0;
-    }
-
-    /// <summary>
-    /// Clear the least significant bit that is set and return the result.
-    /// </summary>
-    public static uint ClearLeast(uint num)
-    {
-      return num & (num - 1);
-    }
-
-    /// <summary>
     /// Compute the 1-based position of the least sigificant bit that is set, and return it (return 0 if no bits are set).
     /// (e.g. 0x1001100 will return 3, since the 3rd bit is set).
     /// </summary>

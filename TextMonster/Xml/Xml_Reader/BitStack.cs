@@ -67,14 +67,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     /// <summary>
-    /// Return true if there are currently no bits on the stack.
-    /// </summary>
-    public bool IsEmpty
-    {
-      get { return this.curr == 0x1; }
-    }
-
-    /// <summary>
     /// this.curr has enough space for 31 bits (minus 1 for sentinel bit).  Once this space is
     /// exhausted, a uint stack is created to handle the overflow.
     /// </summary>

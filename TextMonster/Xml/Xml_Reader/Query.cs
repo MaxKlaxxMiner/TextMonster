@@ -55,7 +55,6 @@ namespace TextMonster.Xml.Xml_Reader
       throw XPathException.Create(Res.Xp_InvalidPattern);
     }
 
-    public virtual double XsltDefaultPriority { get { return 0.5; } }
     public abstract XPathResultType StaticType { get; }
     public virtual QueryProps Properties { get { return QueryProps.Merge; } }
 

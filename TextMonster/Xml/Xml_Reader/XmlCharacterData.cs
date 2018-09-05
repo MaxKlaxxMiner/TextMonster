@@ -88,47 +88,8 @@ namespace TextMonster.Xml.Xml_Reader
       return String.Empty;
     }
 
-    // Appends the specified string to the end of the character
-    // data of the node.
-    public virtual void AppendData(String strData)
-    {
-      XmlNode parent = ParentNode;
-      int capacity = data != null ? data.Length : 0;
-      if (strData != null) capacity += strData.Length;
-      string newValue = new StringBuilder(capacity).Append(data).Append(strData).ToString();
-      XmlNodeChangedEventArgs args = GetEventArgs(this, parent, parent, data, newValue, XmlNodeChangedAction.Change);
-
-      if (args != null)
-        BeforeEvent(args);
-
-      this.data = newValue;
-
-      if (args != null)
-        AfterEvent(args);
-    }
-
-    // Insert the specified string at the specified character offset.
-    public virtual void InsertData(int offset, string strData)
-    {
-      XmlNode parent = ParentNode;
-      int capacity = data != null ? data.Length : 0;
-      if (strData != null) capacity += strData.Length;
-      string newValue = new StringBuilder(capacity).Append(data).Insert(offset, strData).ToString();
-      XmlNodeChangedEventArgs args = GetEventArgs(this, parent, parent, data, newValue, XmlNodeChangedAction.Change);
-      if (args != null)
-        BeforeEvent(args);
-
-      this.data = newValue;
-
-      if (args != null)
-        AfterEvent(args);
-    }
-
-    // Remove a range of characters from the node.
     public virtual void DeleteData(int offset, int count)
     {
-      //Debug.Assert(offset >= 0 && offset <= Length);
-
       int len = data != null ? data.Length : 0;
       if (len > 0)
       {

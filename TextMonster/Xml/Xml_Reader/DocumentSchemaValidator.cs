@@ -65,7 +65,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     public bool PsviAugmentation
     {
-      get { return psviAugmentation; }
       set { psviAugmentation = value; }
     }
 

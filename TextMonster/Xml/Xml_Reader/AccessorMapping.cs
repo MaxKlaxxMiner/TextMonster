@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-
 namespace TextMonster.Xml.Xml_Reader
 {
   internal abstract class AccessorMapping : Mapping
@@ -56,44 +53,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
       get { return elements; }
       set { elements = value; sortedElements = null; }
-    }
-
-    internal static void SortMostToLeastDerived(ElementAccessor[] elements)
-    {
-      Array.Sort(elements, new AccessorComparer());
-    }
-
-    internal class AccessorComparer : IComparer
-    {
-      public int Compare(object o1, object o2)
-      {
-        if (o1 == o2)
-          return 0;
-        Accessor a1 = (Accessor)o1;
-        Accessor a2 = (Accessor)o2;
-        int w1 = a1.Mapping.TypeDesc.Weight;
-        int w2 = a2.Mapping.TypeDesc.Weight;
-        if (w1 == w2)
-          return 0;
-        if (w1 < w2)
-          return 1;
-        return -1;
-      }
-    }
-
-    internal ElementAccessor[] ElementsSortedByDerivation
-    {
-      get
-      {
-        if (sortedElements != null)
-          return sortedElements;
-        if (elements == null)
-          return null;
-        sortedElements = new ElementAccessor[elements.Length];
-        Array.Copy(elements, 0, sortedElements, 0, elements.Length);
-        SortMostToLeastDerived(sortedElements);
-        return sortedElements;
-      }
     }
 
     internal TextAccessor Text

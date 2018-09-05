@@ -22,7 +22,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal bool HasWrapperElement
     {
-      get { return hasWrapperElement; }
       set { hasWrapperElement = value; }
     }
   }

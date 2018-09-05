@@ -218,7 +218,6 @@
     <Compile Include="Xml\Xml_Reader\ValueQuery.cs" />
     <Compile Include="Xml\Xml_Reader\CompiledXpathExpr.cs" />
     <Compile Include="Xml\Xml_Reader\SortKey.cs" />
-    <Compile Include="Xml\Xml_Reader\SortQuery.cs" />
     <Compile Include="Xml\Xml_Reader\StringFunctions.cs" />
     <Compile Include="Xml\Xml_Reader\Variable.cs" />
     <Compile Include="Xml\Xml_Reader\VariableQuery.cs" />
@@ -253,7 +252,6 @@
     <Compile Include="Xml\Xml_Reader\XPathArrayIterator.cs" />
     <Compile Include="Xml\Xml_Reader\XPathAxisIterator.cs" />
     <Compile Include="Xml\Xml_Reader\XPathChildIterator.cs" />
-    <Compile Include="Xml\Xml_Reader\XPathComparerHelper.cs" />
     <Compile Include="Xml\Xml_Reader\XPathDescendantIterator.cs" />
     <Compile Include="Xml\Xml_Reader\XPathEmptyIterator.cs" />
     <Compile Include="Xml\Xml_Reader\XPathExpression.cs" />

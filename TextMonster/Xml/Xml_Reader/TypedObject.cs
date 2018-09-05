@@ -68,13 +68,11 @@ namespace TextMonster.Xml.Xml_Reader
     public object Value
     {
       get { return ovalue; }
-      set { ovalue = value; }
     }
 
     public XmlSchemaDatatype Type
     {
       get { return xsdtype; }
-      set { xsdtype = value; }
     }
 
     public TypedObject(object obj, string svalue, XmlSchemaDatatype xsdtype)

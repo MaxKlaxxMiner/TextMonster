@@ -36,11 +36,6 @@
       get { return baseMemberTypes; }
     }
 
-    internal void SetBaseMemberTypes(XmlSchemaSimpleType[] baseMemberTypes)
-    {
-      this.baseMemberTypes = baseMemberTypes;
-    }
-
     internal override XmlSchemaObject Clone()
     {
       if (memberTypes != null && memberTypes.Length > 0)

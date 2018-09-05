@@ -1,5 +1,3 @@
-using System.Collections;
-
 namespace TextMonster.Xml.Xml_Reader
 {
   internal class CompiledXpathExpr : XPathExpression
@@ -32,46 +30,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return expr; }
     }
 
-    public override void AddSort(object expr, IComparer comparer)
-    {
-      // sort makes sense only when we are dealing with a query that
-      // returns a nodeset.
-      Query evalExpr;
-      if (expr is string)
-      {
-        evalExpr = new QueryBuilder().Build((string)expr, out needContext); // this will throw if expr is invalid
-      }
-      else if (expr is CompiledXpathExpr)
-      {
-        evalExpr = ((CompiledXpathExpr)expr).QueryTree;
-      }
-      else
-      {
-        throw XPathException.Create(Res.Xp_BadQueryObject);
-      }
-      SortQuery sortQuery = query as SortQuery;
-      if (sortQuery == null)
-      {
-        query = sortQuery = new SortQuery(query);
-      }
-      sortQuery.AddSort(evalExpr, comparer);
-    }
-
-    public virtual void AddSort(object expr, XmlSortOrder order, XmlCaseOrder caseOrder, string lang, XmlDataType dataType)
-    {
-      AddSort(expr, new XPathComparerHelper(order, caseOrder, lang, dataType));
-    }
-
-    public virtual XPathExpression Clone()
-    {
-      return new CompiledXpathExpr(Query.Clone(query), expr, needContext);
-    }
-
-    public virtual void SetContext(XmlNamespaceManager nsManager)
-    {
-      SetContext((IXmlNamespaceResolver)nsManager);
-    }
-
     public override void SetContext(IXmlNamespaceResolver nsResolver)
     {
       XsltContext xsltContext = nsResolver as XsltContext;
@@ -87,8 +45,6 @@ namespace TextMonster.Xml.Xml_Reader
 
       needContext = false;
     }
-
-    public virtual XPathResultType ReturnType { get { return query.StaticType; } }
 
     private class UndefinedXsltContext : XsltContext
     {

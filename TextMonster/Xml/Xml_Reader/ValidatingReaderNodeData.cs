@@ -108,10 +108,6 @@
       {
         return originalStringValue;
       }
-      set
-      {
-        originalStringValue = value;
-      }
     }
 
     public XmlNodeType NodeType

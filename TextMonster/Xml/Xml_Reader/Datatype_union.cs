@@ -56,14 +56,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal XmlSchemaSimpleType[] BaseMemberTypes
-    {
-      get
-      {
-        return types;
-      }
-    }
-
     internal bool HasAtomicMembers()
     {
       for (int i = 0; i < types.Length; ++i)

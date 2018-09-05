@@ -58,19 +58,6 @@ namespace TextMonster.Xml.Xml_Reader
       Initialize();
     }
 
-    // introduced for supporting design-time loading of phone assemblies
-    [Obsolete("This API supports the .NET Framework infrastructure and is not intended to be used directly from your code.", true)]
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-    public XmlReaderSettings(XmlResolver resolver)
-    {
-      Initialize(resolver);
-    }
-
-    //
-    // Properties
-    //
-
-    // Nametable
     public XmlNameTable NameTable
     {
       get

@@ -48,7 +48,6 @@ namespace TextMonster.Xml.Xml_Reader
     public string TypeName
     {
       get { return typeName == null ? string.Empty : typeName; }
-      set { typeName = value; }
     }
 
     /// <include file='doc\XmlTypeAttribute.uex' path='docs/doc[@for="XmlTypeAttribute.Namespace"]/*' />
@@ -58,7 +57,6 @@ namespace TextMonster.Xml.Xml_Reader
     public string Namespace
     {
       get { return ns; }
-      set { ns = value; }
     }
   }
 }

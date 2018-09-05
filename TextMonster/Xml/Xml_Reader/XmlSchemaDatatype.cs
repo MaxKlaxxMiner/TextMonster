@@ -37,44 +37,6 @@ namespace TextMonster.Xml.Xml_Reader
     public virtual XmlSchemaDatatypeVariety Variety { get { return XmlSchemaDatatypeVariety.Atomic; } }
 
 
-    /// <include file='doc\XmlSchemaDatatype.uex' path='docs/doc[@for="XmlSchemaDatatype.ChangeType1"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public virtual object ChangeType(object value, Type targetType)
-    {
-      if (value == null)
-      {
-        throw new ArgumentNullException("value");
-      }
-      if (targetType == null)
-      {
-        throw new ArgumentNullException("targetType");
-      }
-      return ValueConverter.ChangeType(value, targetType);
-    }
-
-    /// <include file='doc\XmlSchemaDatatype.uex' path='docs/doc[@for="XmlSchemaDatatype.ChangeType2"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public virtual object ChangeType(object value, Type targetType, IXmlNamespaceResolver namespaceResolver)
-    {
-      if (value == null)
-      {
-        throw new ArgumentNullException("value");
-      }
-      if (targetType == null)
-      {
-        throw new ArgumentNullException("targetType");
-      }
-      if (namespaceResolver == null)
-      {
-        throw new ArgumentNullException("namespaceResolver");
-      }
-      return ValueConverter.ChangeType(value, targetType, namespaceResolver);
-    }
-
     /// <include file='doc\XmlSchemaDatatype.uex' path='docs/doc[@for="XmlSchemaDatatype.TypeCode"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>

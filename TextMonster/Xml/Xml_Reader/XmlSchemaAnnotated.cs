@@ -40,7 +40,6 @@
     public XmlAttribute[] UnhandledAttributes
     {
       get { return moreAttributes; }
-      set { moreAttributes = value; }
     }
 
     [XmlIgnore]

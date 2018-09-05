@@ -50,15 +50,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    /// <include file='doc\XmlSchemas.uex' path='docs/doc[@for="XmlSchemas.GetSchemas"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public IList GetSchemas(string ns)
-    {
-      return (IList)SchemaSet.Schemas(ns);
-    }
-
     internal SchemaObjectCache Cache
     {
       get

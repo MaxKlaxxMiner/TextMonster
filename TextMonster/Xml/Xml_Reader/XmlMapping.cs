@@ -35,11 +35,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return accessor; }
     }
 
-    internal TypeScope Scope
-    {
-      get { return scope; }
-    }
-
     /// <include file='doc\XmlMapping.uex' path='docs/doc[@for="XmlMapping.ElementName"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
@@ -47,15 +42,6 @@ namespace TextMonster.Xml.Xml_Reader
     public string ElementName
     {
       get { return Xml_Reader.Accessor.UnescapeName(Accessor.Name); }
-    }
-
-    /// <include file='doc\XmlMapping.uex' path='docs/doc[@for="XmlMapping.XsdElementName"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public string XsdElementName
-    {
-      get { return Accessor.Name; }
     }
 
     /// <include file='doc\XmlMapping.uex' path='docs/doc[@for="XmlMapping.Namespace"]/*' />
@@ -69,31 +55,12 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal bool GenerateSerializer
     {
-      get { return generateSerializer; }
       set { generateSerializer = value; }
-    }
-
-    internal bool IsReadable
-    {
-      get { return ((access & XmlMappingAccess.Read) != 0); }
-    }
-
-    internal bool IsWriteable
-    {
-      get { return ((access & XmlMappingAccess.Write) != 0); }
     }
 
     internal bool IsSoap
     {
       get { return isSoap; }
-      set { isSoap = value; }
-    }
-
-    /// <include file='doc\XmlMapping.uex' path='docs/doc[@for="XmlMapping.SetKey"]/*' />
-    ///<internalonly/>
-    public void SetKey(string key)
-    {
-      SetKeyInternal(key);
     }
 
     /// <include file='doc\XmlMapping.uex' path='docs/doc[@for="XmlMapping.SetKeyInternal"]/*' />

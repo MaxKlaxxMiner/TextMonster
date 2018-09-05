@@ -54,10 +54,6 @@ namespace TextMonster.Xml.Xml_Reader
       return XmlListConverter.Create(listItemType.ValueConverter);
     }
 
-    internal Datatype_List(DatatypeImplementation type)
-      : this(type, 0)
-    {
-    }
     internal Datatype_List(DatatypeImplementation type, int minListSize)
     {
       this.itemType = type;

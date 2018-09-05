@@ -1,9 +1,7 @@
-using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections;
 using System.ComponentModel;
-using System.Reflection;
 using System.Security.Permissions;
 
 namespace TextMonster.Xml.Xml_Reader
@@ -37,107 +35,6 @@ namespace TextMonster.Xml.Xml_Reader
       this.options = options;
       this.exportedMappings = exportedMappings;
       this.codeProvider = codeProvider;
-    }
-
-    internal CodeCompileUnit CodeCompileUnit
-    {
-      get { return codeCompileUnit; }
-    }
-
-    internal CodeNamespace CodeNamespace
-    {
-      get
-      {
-        if (codeNamespace == null)
-          codeNamespace = new CodeNamespace();
-        return codeNamespace;
-      }
-    }
-    internal CodeDomProvider CodeProvider
-    {
-      get
-      {
-        if (codeProvider == null)
-          codeProvider = new Microsoft.CSharp.CSharpCodeProvider();
-        return codeProvider;
-      }
-    }
-
-    internal Hashtable ExportedClasses
-    {
-      get
-      {
-        if (exportedClasses == null)
-          exportedClasses = new Hashtable();
-        return exportedClasses;
-      }
-    }
-
-    internal Hashtable ExportedMappings
-    {
-      get
-      {
-        if (exportedMappings == null)
-          exportedMappings = new Hashtable();
-        return exportedMappings;
-      }
-    }
-
-    internal bool GenerateProperties
-    {
-      get { return (options & CodeGenerationOptions.GenerateProperties) != 0; }
-    }
-
-    internal CodeAttributeDeclaration GeneratedCodeAttribute
-    {
-      get
-      {
-        if (generatedCodeAttribute == null)
-        {
-          CodeAttributeDeclaration decl = new CodeAttributeDeclaration(typeof(GeneratedCodeAttribute).FullName);
-          Assembly a = Assembly.GetEntryAssembly();
-          if (a == null)
-          {
-            a = Assembly.GetExecutingAssembly();
-            if (a == null)
-            {
-              a = typeof(CodeExporter).Assembly;
-            }
-          }
-          AssemblyName assemblyName = a.GetName();
-          decl.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(assemblyName.Name)));
-          string version = GetProductVersion(a);
-          decl.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(version == null ? assemblyName.Version.ToString() : version)));
-          generatedCodeAttribute = decl;
-        }
-        return generatedCodeAttribute;
-      }
-    }
-
-    internal static CodeAttributeDeclaration FindAttributeDeclaration(Type type, CodeAttributeDeclarationCollection metadata)
-    {
-      foreach (CodeAttributeDeclaration attribute in metadata)
-      {
-        if (attribute.Name == type.FullName || attribute.Name == type.Name)
-        {
-          return attribute;
-        }
-      }
-      return null;
-    }
-
-    private static string GetProductVersion(Assembly assembly)
-    {
-      object[] attributes = assembly.GetCustomAttributes(true);
-      for (int i = 0; i < attributes.Length; i++)
-      {
-        if (attributes[i] is AssemblyInformationalVersionAttribute)
-        {
-          AssemblyInformationalVersionAttribute version = (AssemblyInformationalVersionAttribute)attributes[i];
-          return version.InformationalVersion;
-        }
-      }
-      return null;
     }
 
     internal static CodeMemberMethod RaisePropertyChangedEventMethod

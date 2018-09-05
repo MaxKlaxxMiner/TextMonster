@@ -61,45 +61,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    // Retrieves the node at the specified index in this XmlNamedNodeMap.
-    public virtual XmlNode Item(int index)
-    {
-      if (index < 0 || index >= nodes.Count)
-        return null;
-      try
-      {
-        return (XmlNode)nodes[index];
-      }
-      catch (ArgumentOutOfRangeException)
-      {
-        throw new IndexOutOfRangeException(Res.GetString(Res.Xdom_IndexOutOfRange));
-      }
-    }
-
-    //
-    // DOM Level 2
-    //
-
-    // Retrieves a node specified by LocalName and NamespaceURI.
-    public virtual XmlNode GetNamedItem(String localName, String namespaceURI)
-    {
-      int offset = FindNodeOffset(localName, namespaceURI);
-      if (offset >= 0)
-        return (XmlNode)nodes[offset];
-      return null;
-    }
-
-    // Removes a node specified by local name and namespace URI.
-    public virtual XmlNode RemoveNamedItem(String localName, String namespaceURI)
-    {
-      int offset = FindNodeOffset(localName, namespaceURI);
-      if (offset >= 0)
-      {
-        return RemoveNodeAt(offset);
-      }
-      return null;
-    }
-
     public virtual IEnumerator GetEnumerator()
     {
       return nodes.GetEnumerator();

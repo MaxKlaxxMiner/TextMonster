@@ -75,22 +75,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal int FindNodeOffset(XmlAttribute node)
-    {
-      for (int i = 0; i < nodes.Count; i++)
-      {
-        XmlAttribute tmp = (XmlAttribute)nodes[i];
-
-        if (tmp.LocalNameHash == node.LocalNameHash
-            && tmp.Name == node.Name
-            && tmp.NamespaceURI == node.NamespaceURI)
-        {
-          return i;
-        }
-      }
-      return -1;
-    }
-
     internal int FindNodeOffsetNS(XmlAttribute node)
     {
       for (int i = 0; i < nodes.Count; i++)

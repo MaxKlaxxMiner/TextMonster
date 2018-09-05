@@ -35,15 +35,6 @@ namespace TextMonster.Xml.Xml_Reader
       this.elementName = elementName;
     }
 
-    /// <include file='doc\XmlElementAttribute.uex' path='docs/doc[@for="XmlElementAttribute.XmlElementAttribute2"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlElementAttribute(Type type)
-    {
-      this.type = type;
-    }
-
     /// <include file='doc\XmlElementAttribute.uex' path='docs/doc[@for="XmlElementAttribute.XmlElementAttribute3"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
@@ -61,7 +52,6 @@ namespace TextMonster.Xml.Xml_Reader
     public Type Type
     {
       get { return type; }
-      set { type = value; }
     }
 
     /// <include file='doc\XmlElementAttribute.uex' path='docs/doc[@for="XmlElementAttribute.ElementName"]/*' />

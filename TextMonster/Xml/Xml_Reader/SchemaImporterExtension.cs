@@ -30,11 +30,5 @@ namespace TextMonster.Xml.Xml_Reader
     {
       return null;
     }
-
-    /// <include file='doc\SchemaImporterExtension.uex' path='docs/doc[@for="SchemaImporterExtension.ImportDefaultValue"]/*' />
-    public virtual CodeExpression ImportDefaultValue(string value, string type)
-    {
-      return null;
-    }
   }
 }

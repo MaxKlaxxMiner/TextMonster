@@ -45,58 +45,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     static Hashtable xmlSerializerTable = new Hashtable();
 
-    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.XmlSerializer8"]/*' />
-    ///<internalonly/>
-    protected XmlSerializer()
-    {
-    }
-
-    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.XmlSerializer"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlSerializer(Type type, XmlAttributeOverrides overrides, Type[] extraTypes, XmlRootAttribute root, string defaultNamespace) :
-      this(type, overrides, extraTypes, root, defaultNamespace, null)
-    {
-    }
-
-    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.XmlSerializer2"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlSerializer(Type type, XmlRootAttribute root)
-      : this(type, null, new Type[0], root, null, null)
-    {
-    }
-
-    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.XmlSerializer3"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlSerializer(Type type, Type[] extraTypes)
-      : this(type, null, extraTypes, null, null, null)
-    {
-    }
-
-    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.XmlSerializer4"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlSerializer(Type type, XmlAttributeOverrides overrides)
-      : this(type, overrides, new Type[0], null, null, null)
-    {
-    }
-
-    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.XmlSerializer5"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlSerializer(XmlTypeMapping xmlTypeMapping)
-    {
-      tempAssembly = GenerateTempAssembly(xmlTypeMapping);
-      this.mapping = xmlTypeMapping;
-    }
-
     /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.XmlSerializer6"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>

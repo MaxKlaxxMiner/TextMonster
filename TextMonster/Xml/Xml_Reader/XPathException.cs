@@ -55,15 +55,6 @@ namespace TextMonster.Xml.Xml_Reader
       info.AddValue("version", "2.0");
     }
 
-    public XPathException() : this(string.Empty, (Exception)null) { }
-
-    public XPathException(string message) : this(message, (Exception)null) { }
-
-    public XPathException(string message, Exception innerException) :
-      this(Res.Xml_UserException, new string[] { message }, innerException)
-    {
-    }
-
     internal static XPathException Create(string res)
     {
       return new XPathException(res, (string[])null);

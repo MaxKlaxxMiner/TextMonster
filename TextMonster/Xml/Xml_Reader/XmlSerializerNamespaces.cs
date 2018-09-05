@@ -19,19 +19,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
 
-    /// <include file='doc\XmlSerializerNamespaces.uex' path='docs/doc[@for="XmlSerializerNamespaces.XmlSerializerNamespaces2"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlSerializerNamespaces(XmlQualifiedName[] namespaces)
-    {
-      for (int i = 0; i < namespaces.Length; i++)
-      {
-        XmlQualifiedName qname = namespaces[i];
-        Add(qname.Name, qname.Namespace);
-      }
-    }
-
     /// <include file='doc\XmlSerializerNamespaces.uex' path='docs/doc[@for="XmlSerializerNamespaces.Add"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
@@ -52,17 +39,6 @@ namespace TextMonster.Xml.Xml_Reader
       Namespaces[prefix] = ns;
     }
 
-    /// <include file='doc\XmlSerializerNamespaces.uex' path='docs/doc[@for="XmlSerializerNamespaces.ToArray"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlQualifiedName[] ToArray()
-    {
-      if (NamespaceList == null)
-        return new XmlQualifiedName[0];
-      return (XmlQualifiedName[])NamespaceList.ToArray(typeof(XmlQualifiedName));
-    }
-
     /// <include file='doc\XmlSerializerNamespaces.uex' path='docs/doc[@for="XmlSerializerNamespaces.Count"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
@@ -70,21 +46,6 @@ namespace TextMonster.Xml.Xml_Reader
     public int Count
     {
       get { return Namespaces.Count; }
-    }
-
-    internal ArrayList NamespaceList
-    {
-      get
-      {
-        if (namespaces == null || namespaces.Count == 0)
-          return null;
-        ArrayList namespaceList = new ArrayList();
-        foreach (string key in Namespaces.Keys)
-        {
-          namespaceList.Add(new XmlQualifiedName(key, (string)Namespaces[key]));
-        }
-        return namespaceList;
-      }
     }
 
     internal Hashtable Namespaces

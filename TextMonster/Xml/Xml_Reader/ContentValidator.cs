@@ -39,11 +39,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return contentType == XmlSchemaContentType.TextOnly || contentType == XmlSchemaContentType.Mixed; }
     }
 
-    public virtual bool IsEmptiable
-    {
-      get { return isEmptiable; }
-    }
-
     public bool IsOpen
     {
       get

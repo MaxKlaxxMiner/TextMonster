@@ -28,7 +28,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Xml_UnexpectedTokenEx = "Xml_UnexpectedTokenEx";
     internal const string Xml_UnexpectedTokens2 = "Xml_UnexpectedTokens2";
     internal const string Xml_ExpectingWhiteSpace = "Xml_ExpectingWhiteSpace";
-    internal const string Xml_TagMismatch = "Xml_TagMismatch";
     internal const string Xml_TagMismatchEx = "Xml_TagMismatchEx";
     internal const string Xml_UnexpectedEndTag = "Xml_UnexpectedEndTag";
     internal const string Xml_UnknownNs = "Xml_UnknownNs";

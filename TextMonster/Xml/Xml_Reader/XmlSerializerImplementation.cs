@@ -20,9 +20,5 @@ namespace TextMonster.Xml.Xml_Reader
     public virtual Hashtable WriteMethods { get { throw new NotSupportedException(); } }
     /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializerImplementation.TypedSerializers"]/*' />
     public virtual Hashtable TypedSerializers { get { throw new NotSupportedException(); } }
-    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializerImplementation.CanSerialize"]/*' />
-    public virtual bool CanSerialize(Type type) { throw new NotSupportedException(); }
-    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializerImplementation.GetSerializer"]/*' />
-    public virtual XmlSerializer GetSerializer(Type type) { throw new NotSupportedException(); }
   }
 }

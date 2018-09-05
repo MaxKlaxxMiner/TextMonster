@@ -57,14 +57,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     [ResourceConsumption(ResourceScope.Machine)]
     [ResourceExposure(ResourceScope.Machine)]
-    public XmlTextReader(string url)
-    {
-      impl = new XmlTextReaderImpl(url, new NameTable());
-      impl.OuterReader = this;
-    }
-
-    [ResourceConsumption(ResourceScope.Machine)]
-    [ResourceExposure(ResourceScope.Machine)]
     public XmlTextReader(String url, XmlNameTable nt)
     {
       impl = new XmlTextReaderImpl(url, nt);

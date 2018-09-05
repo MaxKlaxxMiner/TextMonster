@@ -35,7 +35,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal string InternalDtdSubset
     {
-      get { return internalDtdSubset; }
       set { internalDtdSubset = value; }
     }
 

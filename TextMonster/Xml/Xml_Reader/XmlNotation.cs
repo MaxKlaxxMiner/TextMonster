@@ -42,11 +42,6 @@ namespace TextMonster.Xml.Xml_Reader
       throw new InvalidOperationException(Res.GetString(Res.Xdom_Node_Cloning));
     }
 
-    //
-    // Microsoft extensions
-    //
-
-    // Gets a value indicating whether the node is read-only.
     public override bool IsReadOnly
     {
       get
@@ -55,20 +50,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    // Gets the value of the public identifier on the notation declaration.
-    public String PublicId
-    {
-      get { return publicId; }
-    }
-
-    // Gets the value of
-    // the system identifier on the notation declaration.
-    public String SystemId
-    {
-      get { return systemId; }
-    }
-
-    // Without override these two functions, we can't guarantee that WriteTo()/WriteContent() functions will never be called
     public override String OuterXml
     {
       get { return String.Empty; }
@@ -80,12 +61,10 @@ namespace TextMonster.Xml.Xml_Reader
       set { throw new InvalidOperationException(Res.GetString(Res.Xdom_Set_InnerXml)); }
     }
 
-    // Saves the node to the specified XmlWriter.
     public override void WriteTo(XmlWriter w)
     {
     }
 
-    // Saves all the children of the node to the specified XmlWriter.
     public override void WriteContentTo(XmlWriter w)
     {
     }

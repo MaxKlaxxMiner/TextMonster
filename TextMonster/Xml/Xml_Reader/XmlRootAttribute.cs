@@ -43,16 +43,6 @@ namespace TextMonster.Xml.Xml_Reader
       set { ns = value; }
     }
 
-    /// <include file='doc\XmlRootAttribute.uex' path='docs/doc[@for="XmlRootAttribute.DataType"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public string DataType
-    {
-      get { return dataType == null ? string.Empty : dataType; }
-      set { dataType = value; }
-    }
-
     /// <include file='doc\XmlRootAttribute.uex' path='docs/doc[@for="XmlRootAttribute.IsNullable"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
@@ -60,11 +50,6 @@ namespace TextMonster.Xml.Xml_Reader
     public bool IsNullable
     {
       get { return nullable; }
-      set
-      {
-        nullable = value;
-        nullableSpecified = true;
-      }
     }
 
     internal bool IsNullableSpecified

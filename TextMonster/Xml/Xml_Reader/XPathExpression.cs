@@ -1,14 +1,10 @@
-﻿using System.Collections;
-
-namespace TextMonster.Xml.Xml_Reader
+﻿namespace TextMonster.Xml.Xml_Reader
 {
   public abstract class XPathExpression
   {
     internal XPathExpression() { }
 
     public abstract string Expression { get; }
-
-    public abstract void AddSort(object expr, IComparer comparer);
 
     public abstract void SetContext(IXmlNamespaceResolver nsResolver);
 

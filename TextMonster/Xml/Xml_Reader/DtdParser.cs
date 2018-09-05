@@ -89,13 +89,11 @@ namespace TextMonster.Xml.Xml_Reader
       CondSection1,
       CondSection2,
       CondSection3,
-      Literal,
       SystemId,
       PublicId1,
       PublicId2,
       ClosingTag,
       ParamEntitySpace,
-      None,
     }
 
     enum LiteralType

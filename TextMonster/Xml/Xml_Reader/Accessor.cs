@@ -71,7 +71,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal bool IsOptional
     {
-      get { return isOptional; }
       set { isOptional = value; }
     }
 

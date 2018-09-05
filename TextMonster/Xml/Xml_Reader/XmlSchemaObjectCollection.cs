@@ -46,24 +46,6 @@ namespace TextMonster.Xml.Xml_Reader
       return List.Add(item);
     }
 
-    /// <include file='doc\XmlSchemaObjectCollection.uex' path='docs/doc[@for="XmlSchemaObjectCollection.Insert"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public void Insert(int index, XmlSchemaObject item)
-    {
-      List.Insert(index, item);
-    }
-
-    /// <include file='doc\XmlSchemaObjectCollection.uex' path='docs/doc[@for="XmlSchemaObjectCollection.IndexOf"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public int IndexOf(XmlSchemaObject item)
-    {
-      return List.IndexOf(item);
-    }
-
     /// <include file='doc\XmlSchemaObjectCollection.uex' path='docs/doc[@for="XmlSchemaObjectCollection.Contains"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>

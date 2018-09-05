@@ -101,7 +101,7 @@
       return this;
     }
 
-    public override double XsltDefaultPriority
+    public virtual double XsltDefaultPriority
     {
       get
       {

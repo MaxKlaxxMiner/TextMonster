@@ -78,7 +78,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
       // Following values are used in ReadText, ReadBase64 and ReadBinHex (V1 streaming methods)
       Text,
-      StartTag,
       PI,
       CDATA,
       Comment,

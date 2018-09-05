@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Runtime.Versioning;
 
 namespace TextMonster.Xml.Xml_Reader
@@ -29,93 +28,6 @@ namespace TextMonster.Xml.Xml_Reader
       Fragment = 2,           // Create a document with no document node
     }
 
-
-    //-----------------------------------------------
-    // Creation Methods
-    //-----------------------------------------------
-
-    /// <summary>
-    /// Create a new empty document.
-    /// </summary>
-    internal XPathDocument()
-    {
-      this.nameTable = new NameTable();
-    }
-
-    /// <summary>
-    /// Create a new empty document.  All names should be atomized using "nameTable".
-    /// </summary>
-    internal XPathDocument(XmlNameTable nameTable)
-    {
-      if (nameTable == null)
-        throw new ArgumentNullException("nameTable");
-
-      this.nameTable = nameTable;
-    }
-
-    /// <summary>
-    /// Create a new document and load the content from the reader.
-    /// </summary>
-    public XPathDocument(FastXmlReader reader)
-      : this(reader, XmlSpace.Default)
-    {
-    }
-
-    /// <summary>
-    /// Create a new document from "reader", with whitespace handling controlled according to "space".
-    /// </summary>
-    public XPathDocument(FastXmlReader reader, XmlSpace space)
-    {
-      if (reader == null)
-        throw new ArgumentNullException("reader");
-
-      LoadFromReader(reader, space);
-    }
-
-    /// <summary>
-    /// Create a new document and load the content from the text reader.
-    /// </summary>
-    public XPathDocument(TextReader textReader)
-    {
-      XmlTextReaderImpl reader = SetupReader(new XmlTextReaderImpl(string.Empty, textReader));
-
-      try
-      {
-        LoadFromReader(reader, XmlSpace.Default);
-      }
-      finally
-      {
-        reader.Close();
-      }
-    }
-
-    /// <summary>
-    /// Create a new document and load the content from the stream.
-    /// </summary>
-    public XPathDocument(Stream stream)
-    {
-      XmlTextReaderImpl reader = SetupReader(new XmlTextReaderImpl(string.Empty, stream));
-
-      try
-      {
-        LoadFromReader(reader, XmlSpace.Default);
-      }
-      finally
-      {
-        reader.Close();
-      }
-    }
-
-    /// <summary>
-    /// Create a new document and load the content from the Uri.
-    /// </summary>
-    [ResourceConsumption(ResourceScope.Machine)]
-    [ResourceExposure(ResourceScope.Machine)]
-    public XPathDocument(string uri)
-      : this(uri, XmlSpace.Default)
-    {
-    }
-
     /// <summary>
     /// Create a new document and load the content from the Uri, with whitespace handling controlled according to "space".
     /// </summary>
@@ -133,15 +45,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         reader.Close();
       }
-    }
-
-    /// <summary>
-    /// Create a writer that can be used to create nodes in this document.  The root node will be assigned "baseUri", and flags
-    /// can be passed to indicate that names should be atomized by the builder and/or a fragment should be created.
-    /// </summary>
-    internal XmlRawWriter LoadFromWriter(LoadFlags flags, string baseUri)
-    {
-      return new XPathDocumentBuilder(this, null, baseUri, flags);
     }
 
     /// <summary>

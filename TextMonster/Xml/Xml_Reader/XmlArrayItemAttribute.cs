@@ -43,7 +43,6 @@ namespace TextMonster.Xml.Xml_Reader
     public string Namespace
     {
       get { return ns; }
-      set { ns = value; }
     }
 
     /// <include file='doc\XmlArrayItemAttribute.uex' path='docs/doc[@for="XmlArrayItemAttribute.NestingLevel"]/*' />
@@ -60,7 +59,6 @@ namespace TextMonster.Xml.Xml_Reader
     public string DataType
     {
       get { return dataType == null ? string.Empty : dataType; }
-      set { dataType = value; }
     }
 
     /// <include file='doc\XmlArrayItemAttribute.uex' path='docs/doc[@for="XmlArrayItemAttribute.IsNullable"]/*' />

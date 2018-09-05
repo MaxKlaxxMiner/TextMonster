@@ -47,7 +47,6 @@
     internal XmlSchemaParticle CanonicalParticle
     {
       get { return canonicalParticle; }
-      set { canonicalParticle = value; }
     }
 
     [XmlIgnore]
@@ -60,7 +59,6 @@
     [XmlIgnore]
     internal int SelfReferenceCount
     {
-      get { return selfReferenceCount; }
       set { selfReferenceCount = value; }
     }
 

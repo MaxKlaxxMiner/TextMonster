@@ -32,25 +32,6 @@ namespace TextMonster.Xml.Xml_Reader
       this.attributeName = attributeName;
     }
 
-    /// <include file='doc\XmlAttributeAttribute.uex' path='docs/doc[@for="XmlAttributeAttribute.XmlAttributeAttribute2"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlAttributeAttribute(Type type)
-    {
-      this.type = type;
-    }
-
-    /// <include file='doc\XmlAttributeAttribute.uex' path='docs/doc[@for="XmlAttributeAttribute.XmlAttributeAttribute3"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlAttributeAttribute(string attributeName, Type type)
-    {
-      this.attributeName = attributeName;
-      this.type = type;
-    }
-
     /// <include file='doc\XmlAttributeAttribute.uex' path='docs/doc[@for="XmlAttributeAttribute.Type"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
@@ -58,7 +39,6 @@ namespace TextMonster.Xml.Xml_Reader
     public Type Type
     {
       get { return type; }
-      set { type = value; }
     }
 
     /// <include file='doc\XmlAttributeAttribute.uex' path='docs/doc[@for="XmlAttributeAttribute.AttributeName"]/*' />
@@ -68,7 +48,6 @@ namespace TextMonster.Xml.Xml_Reader
     public string AttributeName
     {
       get { return attributeName == null ? string.Empty : attributeName; }
-      set { attributeName = value; }
     }
 
     /// <include file='doc\XmlAttributeAttribute.uex' path='docs/doc[@for="XmlAttributeAttribute.Namespace"]/*' />
@@ -78,7 +57,6 @@ namespace TextMonster.Xml.Xml_Reader
     public string Namespace
     {
       get { return ns; }
-      set { ns = value; }
     }
 
     /// <include file='doc\XmlAttributeAttribute.uex' path='docs/doc[@for="XmlAttributeAttribute.DataType"]/*' />

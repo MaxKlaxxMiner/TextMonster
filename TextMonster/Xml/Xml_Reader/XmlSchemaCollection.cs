@@ -28,15 +28,6 @@ namespace TextMonster.Xml.Xml_Reader
     private XmlResolver xmlResolver = null;
 
 
-    /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollection.XmlSchemaCollection"]/*' />
-    /// <devdoc>
-    ///    <para>Construct a new empty schema collection.</para>
-    /// </devdoc>
-    public XmlSchemaCollection()
-      : this(new NameTable())
-    {
-    }
-
     /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollection.XmlSchemaCollection1"]/*' />
     /// <devdoc>
     ///    <para>Construct a new empty schema collection with associated XmlNameTable.

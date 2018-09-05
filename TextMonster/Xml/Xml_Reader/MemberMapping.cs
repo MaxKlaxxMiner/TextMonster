@@ -63,19 +63,16 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal MethodInfo CheckShouldPersistMethodInfo
     {
-      get { return checkShouldPersistMethodInfo; }
       set { checkShouldPersistMethodInfo = value; }
     }
 
     internal bool IsReturnValue
     {
-      get { return isReturnValue; }
       set { isReturnValue = value; }
     }
 
     internal bool ReadOnly
     {
-      get { return readOnly; }
       set { readOnly = value; }
     }
 

@@ -60,13 +60,6 @@
     }
 
     [XmlIgnore]
-    internal CompiledIdentityConstraint CompiledConstraint
-    {
-      get { return compiledConstraint; }
-      set { compiledConstraint = value; }
-    }
-
-    [XmlIgnore]
     internal override string NameAttribute
     {
       get { return Name; }

@@ -37,25 +37,6 @@ namespace TextMonster.Xml.Xml_Reader
       this.strm = strm;
     }
 
-
-    //-----------------------------------------------
-    // IRemovableWriter interface
-    //-----------------------------------------------
-
-    /// <summary>
-    /// This writer will raise this event once it has determined whether to replace itself with the Html or Xml writer.
-    /// </summary>
-    public OnRemoveWriter OnRemoveWriterEvent
-    {
-      get { return this.onRemove; }
-      set { this.onRemove = value; }
-    }
-
-
-    //-----------------------------------------------
-    // XmlWriter interface
-    //-----------------------------------------------
-
     public override XmlWriterSettings Settings
     {
       get { return this.writerSettings; }
