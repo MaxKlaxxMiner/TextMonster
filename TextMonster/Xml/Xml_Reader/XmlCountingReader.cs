@@ -286,7 +286,7 @@ namespace TextMonster.Xml.Xml_Reader
       IncrementCount();
       innerReader.ReadEndElement();
     }
-    public override bool ReadToFollowing(string name)
+    public virtual bool ReadToFollowing(string name)
     {
       IncrementCount();
       return ReadToFollowing(name);

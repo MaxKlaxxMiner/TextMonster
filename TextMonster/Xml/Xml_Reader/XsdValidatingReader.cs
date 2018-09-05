@@ -829,7 +829,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public override float ReadElementContentAsFloat()
+    protected virtual float ReadElementContentAsFloat()
     {
       if (this.NodeType != XmlNodeType.Element)
       {
@@ -864,7 +864,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public override Decimal ReadElementContentAsDecimal()
+    protected virtual Decimal ReadElementContentAsDecimal()
     {
       if (this.NodeType != XmlNodeType.Element)
       {

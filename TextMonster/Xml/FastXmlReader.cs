@@ -5,14 +5,14 @@ using System.IO;
 using System.Runtime.Versioning;
 using System.Text;
 using TextMonster.Xml.Xml_Reader;
+// ReSharper disable InconsistentNaming
 
 namespace TextMonster.Xml
 {
   // ReSharper disable once InconsistentNaming
-  public abstract partial class FastXmlReader : IDisposable
+  public abstract class FastXmlReader : IDisposable
   {
-
-    static private uint IsTextualNodeBitmap = 0x6018; // 00 0110 0000 0001 1000
+    private const uint IsTextualNodeBitmap = 0x6018; // 00 0110 0000 0001 1000
     // 0 None, 
     // 0 Element,
     // 0 Attribute,
@@ -32,7 +32,7 @@ namespace TextMonster.Xml
     // 0 EndEntity,
     // 0 XmlDeclaration
 
-    static private uint CanReadContentAsBitmap = 0x1E1BC; // 01 1110 0001 1011 1100
+    private const uint CanReadContentAsBitmap = 0x1E1BC; // 01 1110 0001 1011 1100
     // 0 None, 
     // 0 Element,
     // 1 Attribute,
@@ -52,7 +52,7 @@ namespace TextMonster.Xml
     // 1 EndEntity,
     // 0 XmlDeclaration
 
-    static private uint HasValueBitmap = 0x2659C; // 10 0110 0101 1001 1100
+    private const uint HasValueBitmap = 0x2659C; // 10 0110 0101 1001 1100
     // 0 None, 
     // 0 Element,
     // 1 Attribute,
@@ -76,10 +76,8 @@ namespace TextMonster.Xml
     // Constants
     //
     internal const int DefaultBufferSize = 4096;
-    internal const int BiggerBufferSize = 8192;
-    internal const int MaxStreamLengthForDefaultBufferSize = 64 * 1024; // 64kB
-
-    internal const int AsyncBufferSize = 64 * 1024; //64KB
+    private const int BiggerBufferSize = 8192;
+    private const int MaxStreamLengthForDefaultBufferSize = 64 * 1024; // 64kB
 
     // Settings
     public virtual XmlReaderSettings Settings
@@ -103,10 +101,7 @@ namespace TextMonster.Xml
         {
           return LocalName;
         }
-        else
-        {
-          return NameTable.Add(string.Concat(Prefix, ":", LocalName));
-        }
+        return NameTable.Add(string.Concat(Prefix, ":", LocalName));
       }
     }
 
@@ -124,7 +119,7 @@ namespace TextMonster.Xml
     {
       get
       {
-        return HasValueInternal(this.NodeType);
+        return HasValueInternal(NodeType);
       }
     }
 
@@ -187,7 +182,7 @@ namespace TextMonster.Xml
     }
 
     // returns the type of the current node
-    public virtual System.Type ValueType
+    public virtual Type ValueType
     {
       get
       {
@@ -239,24 +234,6 @@ namespace TextMonster.Xml
       catch (FormatException e)
       {
         throw new XmlException(Res.Xml_ReadContentAsFormatException, "DateTime", e, this as IXmlLineInfo);
-      }
-    }
-
-    // Concatenates values of textual nodes of the current content, ignoring comments and PIs, expanding entity references, 
-    // and converts the content to a DateTimeOffset. Stops at start tags and end tags.
-    public virtual DateTimeOffset ReadContentAsDateTimeOffset()
-    {
-      if (!CanReadContentAs())
-      {
-        throw CreateReadContentAsException("ReadContentAsDateTimeOffset");
-      }
-      try
-      {
-        return XmlConvert.ToDateTimeOffset(InternalReadContentAsString());
-      }
-      catch (FormatException e)
-      {
-        throw new XmlException(Res.Xml_ReadContentAsFormatException, "DateTimeOffset", e, this as IXmlLineInfo);
       }
     }
 
@@ -375,20 +352,17 @@ namespace TextMonster.Xml
       {
         return strContentValue;
       }
-      else
+      try
       {
-        try
-        {
-          return XmlUntypedConverter.Untyped.ChangeType(strContentValue, returnType, (namespaceResolver == null ? this as IXmlNamespaceResolver : namespaceResolver));
-        }
-        catch (FormatException e)
-        {
-          throw new XmlException(Res.Xml_ReadContentAsFormatException, returnType.ToString(), e, this as IXmlLineInfo);
-        }
-        catch (InvalidCastException e)
-        {
-          throw new XmlException(Res.Xml_ReadContentAsFormatException, returnType.ToString(), e, this as IXmlLineInfo);
-        }
+        return XmlUntypedConverter.Untyped.ChangeType(strContentValue, returnType, namespaceResolver ?? this as IXmlNamespaceResolver);
+      }
+      catch (FormatException e)
+      {
+        throw new XmlException(Res.Xml_ReadContentAsFormatException, returnType.ToString(), e, this as IXmlLineInfo);
+      }
+      catch (InvalidCastException e)
+      {
+        throw new XmlException(Res.Xml_ReadContentAsFormatException, returnType.ToString(), e, this as IXmlLineInfo);
       }
     }
 
@@ -468,46 +442,6 @@ namespace TextMonster.Xml
     {
       CheckElement(localName, namespaceURI);
       return ReadElementContentAsDouble();
-    }
-
-    // Returns the content of the current element as a float. Moves to the node following the element's end tag.
-    public virtual float ReadElementContentAsFloat()
-    {
-      if (SetupReadElementContentAsXxx("ReadElementContentAsFloat"))
-      {
-        float value = ReadContentAsFloat();
-        FinishReadElementContentAsXxx();
-        return value;
-      }
-      return XmlConvert.ToSingle(string.Empty);
-    }
-
-    // Checks local name and namespace of the current element and returns its content as a float. 
-    // Moves to the node following the element's end tag.
-    public virtual float ReadElementContentAsFloat(string localName, string namespaceURI)
-    {
-      CheckElement(localName, namespaceURI);
-      return ReadElementContentAsFloat();
-    }
-
-    // Returns the content of the current element as a decimal. Moves to the node following the element's end tag.
-    public virtual decimal ReadElementContentAsDecimal()
-    {
-      if (SetupReadElementContentAsXxx("ReadElementContentAsDecimal"))
-      {
-        decimal value = ReadContentAsDecimal();
-        FinishReadElementContentAsXxx();
-        return value;
-      }
-      return XmlConvert.ToDecimal(string.Empty);
-    }
-
-    // Checks local name and namespace of the current element and returns its content as a decimal. 
-    // Moves to the node following the element's end tag.
-    public virtual decimal ReadElementContentAsDecimal(string localName, string namespaceURI)
-    {
-      CheckElement(localName, namespaceURI);
-      return ReadElementContentAsDecimal();
     }
 
     // Returns the content of the current element as an int. Moves to the node following the element's end tag.
@@ -767,31 +701,31 @@ namespace TextMonster.Xml
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public virtual string ReadString()
     {
-      if (this.ReadState != ReadState.Interactive)
+      if (ReadState != ReadState.Interactive)
       {
         return string.Empty;
       }
-      this.MoveToElement();
-      if (this.NodeType == XmlNodeType.Element)
+      MoveToElement();
+      if (NodeType == XmlNodeType.Element)
       {
-        if (this.IsEmptyElement)
+        if (IsEmptyElement)
         {
           return string.Empty;
         }
-        else if (!this.Read())
+        if (!Read())
         {
           throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
         }
-        if (this.NodeType == XmlNodeType.EndElement)
+        if (NodeType == XmlNodeType.EndElement)
         {
           return string.Empty;
         }
       }
       string result = string.Empty;
-      while (IsTextualNode(this.NodeType))
+      while (IsTextualNode(NodeType))
       {
-        result += this.Value;
-        if (!this.Read())
+        result += Value;
+        if (!Read())
         {
           break;
         }
@@ -806,7 +740,7 @@ namespace TextMonster.Xml
     {
       do
       {
-        switch (this.NodeType)
+        switch (NodeType)
         {
           case XmlNodeType.Attribute:
           MoveToElement();
@@ -817,10 +751,10 @@ namespace TextMonster.Xml
           case XmlNodeType.Text:
           case XmlNodeType.EntityReference:
           case XmlNodeType.EndEntity:
-          return this.NodeType;
+          return NodeType;
         }
       } while (Read());
-      return this.NodeType;
+      return NodeType;
     }
 
     // Checks that the current node is an element and advances the reader to the next node.
@@ -828,7 +762,7 @@ namespace TextMonster.Xml
     {
       if (MoveToContent() != XmlNodeType.Element)
       {
-        throw new XmlException(Res.Xml_InvalidNodeType, this.NodeType.ToString(), this as IXmlLineInfo);
+        throw new XmlException(Res.Xml_InvalidNodeType, NodeType.ToString(), this as IXmlLineInfo);
       }
       Read();
     }
@@ -838,9 +772,9 @@ namespace TextMonster.Xml
     {
       if (MoveToContent() != XmlNodeType.Element)
       {
-        throw new XmlException(Res.Xml_InvalidNodeType, this.NodeType.ToString(), this as IXmlLineInfo);
+        throw new XmlException(Res.Xml_InvalidNodeType, NodeType.ToString(), this as IXmlLineInfo);
       }
-      if (this.Name == name)
+      if (Name == name)
       {
         Read();
       }
@@ -856,15 +790,15 @@ namespace TextMonster.Xml
     {
       if (MoveToContent() != XmlNodeType.Element)
       {
-        throw new XmlException(Res.Xml_InvalidNodeType, this.NodeType.ToString(), this as IXmlLineInfo);
+        throw new XmlException(Res.Xml_InvalidNodeType, NodeType.ToString(), this as IXmlLineInfo);
       }
-      if (this.LocalName == localname && this.NamespaceURI == ns)
+      if (LocalName == localname && NamespaceURI == ns)
       {
         Read();
       }
       else
       {
-        throw new XmlException(Res.Xml_ElementNotFoundNs, new string[2] { localname, ns }, this as IXmlLineInfo);
+        throw new XmlException(Res.Xml_ElementNotFoundNs, new[] { localname, ns }, this as IXmlLineInfo);
       }
     }
 
@@ -876,15 +810,15 @@ namespace TextMonster.Xml
 
       if (MoveToContent() != XmlNodeType.Element)
       {
-        throw new XmlException(Res.Xml_InvalidNodeType, this.NodeType.ToString(), this as IXmlLineInfo);
+        throw new XmlException(Res.Xml_InvalidNodeType, NodeType.ToString(), this as IXmlLineInfo);
       }
-      if (!this.IsEmptyElement)
+      if (!IsEmptyElement)
       {
         Read();
         result = ReadString();
-        if (this.NodeType != XmlNodeType.EndElement)
+        if (NodeType != XmlNodeType.EndElement)
         {
-          throw new XmlException(Res.Xml_UnexpectedNodeInSimpleContent, new string[] { this.NodeType.ToString(), "ReadElementString" }, this as IXmlLineInfo);
+          throw new XmlException(Res.Xml_UnexpectedNodeInSimpleContent, new[] { NodeType.ToString(), "ReadElementString" }, this as IXmlLineInfo);
         }
         Read();
       }
@@ -903,20 +837,20 @@ namespace TextMonster.Xml
 
       if (MoveToContent() != XmlNodeType.Element)
       {
-        throw new XmlException(Res.Xml_InvalidNodeType, this.NodeType.ToString(), this as IXmlLineInfo);
+        throw new XmlException(Res.Xml_InvalidNodeType, NodeType.ToString(), this as IXmlLineInfo);
       }
-      if (this.Name != name)
+      if (Name != name)
       {
         throw new XmlException(Res.Xml_ElementNotFound, name, this as IXmlLineInfo);
       }
 
-      if (!this.IsEmptyElement)
+      if (!IsEmptyElement)
       {
         //Read();
         result = ReadString();
-        if (this.NodeType != XmlNodeType.EndElement)
+        if (NodeType != XmlNodeType.EndElement)
         {
-          throw new XmlException(Res.Xml_InvalidNodeType, this.NodeType.ToString(), this as IXmlLineInfo);
+          throw new XmlException(Res.Xml_InvalidNodeType, NodeType.ToString(), this as IXmlLineInfo);
         }
         Read();
       }
@@ -935,20 +869,20 @@ namespace TextMonster.Xml
       string result = string.Empty;
       if (MoveToContent() != XmlNodeType.Element)
       {
-        throw new XmlException(Res.Xml_InvalidNodeType, this.NodeType.ToString(), this as IXmlLineInfo);
+        throw new XmlException(Res.Xml_InvalidNodeType, NodeType.ToString(), this as IXmlLineInfo);
       }
-      if (this.LocalName != localname || this.NamespaceURI != ns)
+      if (LocalName != localname || NamespaceURI != ns)
       {
-        throw new XmlException(Res.Xml_ElementNotFoundNs, new string[2] { localname, ns }, this as IXmlLineInfo);
+        throw new XmlException(Res.Xml_ElementNotFoundNs, new[] { localname, ns }, this as IXmlLineInfo);
       }
 
-      if (!this.IsEmptyElement)
+      if (!IsEmptyElement)
       {
         //Read();
         result = ReadString();
-        if (this.NodeType != XmlNodeType.EndElement)
+        if (NodeType != XmlNodeType.EndElement)
         {
-          throw new XmlException(Res.Xml_InvalidNodeType, this.NodeType.ToString(), this as IXmlLineInfo);
+          throw new XmlException(Res.Xml_InvalidNodeType, NodeType.ToString(), this as IXmlLineInfo);
         }
         Read();
       }
@@ -965,7 +899,7 @@ namespace TextMonster.Xml
     {
       if (MoveToContent() != XmlNodeType.EndElement)
       {
-        throw new XmlException(Res.Xml_InvalidNodeType, this.NodeType.ToString(), this as IXmlLineInfo);
+        throw new XmlException(Res.Xml_InvalidNodeType, NodeType.ToString(), this as IXmlLineInfo);
       }
       Read();
     }
@@ -981,7 +915,7 @@ namespace TextMonster.Xml
     public virtual bool IsStartElement(string name)
     {
       return (MoveToContent() == XmlNodeType.Element) &&
-             (this.Name == name);
+             (Name == name);
     }
 
     // Calls MoveToContent and tests if the current content node is a start tag or empty element tag (XmlNodeType.Element) and if
@@ -989,34 +923,13 @@ namespace TextMonster.Xml
     public virtual bool IsStartElement(string localname, string ns)
     {
       return (MoveToContent() == XmlNodeType.Element) &&
-             (this.LocalName == localname && this.NamespaceURI == ns);
-    }
-
-    // Reads to the following element with the given Name.
-    public virtual bool ReadToFollowing(string name)
-    {
-      if (name == null || name.Length == 0)
-      {
-        throw XmlConvert.CreateInvalidNameArgumentException(name, "name");
-      }
-      // atomize name
-      name = NameTable.Add(name);
-
-      // find following element with that name
-      while (Read())
-      {
-        if (NodeType == XmlNodeType.Element && Ref.Equal(name, Name))
-        {
-          return true;
-        }
-      }
-      return false;
+             (LocalName == localname && NamespaceURI == ns);
     }
 
     // Reads to the following element with the given LocalName and NamespaceURI.
     public virtual bool ReadToFollowing(string localName, string namespaceURI)
     {
-      if (localName == null || localName.Length == 0)
+      if (string.IsNullOrEmpty(localName))
       {
         throw XmlConvert.CreateInvalidNameArgumentException(localName, "localName");
       }
@@ -1043,7 +956,7 @@ namespace TextMonster.Xml
     // Reads to the first descendant of the current element with the given Name.
     public virtual bool ReadToDescendant(string name)
     {
-      if (name == null || name.Length == 0)
+      if (string.IsNullOrEmpty(name))
       {
         throw XmlConvert.CreateInvalidNameArgumentException(name, "name");
       }
@@ -1085,7 +998,7 @@ namespace TextMonster.Xml
     // Reads to the first descendant of the current element with the given LocalName and NamespaceURI.
     public virtual bool ReadToDescendant(string localName, string namespaceURI)
     {
-      if (localName == null || localName.Length == 0)
+      if (string.IsNullOrEmpty(localName))
       {
         throw XmlConvert.CreateInvalidNameArgumentException(localName, "localName");
       }
@@ -1132,7 +1045,7 @@ namespace TextMonster.Xml
     // Reads to the next sibling of the current element with the given Name.
     public virtual bool ReadToNextSibling(string name)
     {
-      if (name == null || name.Length == 0)
+      if (string.IsNullOrEmpty(name))
       {
         throw XmlConvert.CreateInvalidNameArgumentException(name, "name");
       }
@@ -1160,7 +1073,7 @@ namespace TextMonster.Xml
     // Reads to the next sibling of the current element with the given LocalName and NamespaceURI.
     public virtual bool ReadToNextSibling(string localName, string namespaceURI)
     {
-      if (localName == null || localName.Length == 0)
+      if (string.IsNullOrEmpty(localName))
       {
         throw XmlConvert.CreateInvalidNameArgumentException(localName, "localName");
       }
@@ -1190,26 +1103,6 @@ namespace TextMonster.Xml
       return false;
     }
 
-    // Returns true if the given argument is a valid Name.
-    public static bool IsName(string str)
-    {
-      if (str == null)
-      {
-        throw new NullReferenceException();
-      }
-      return ValidateNames.IsNameNoNamespaces(str);
-    }
-
-    // Returns true if the given argument is a valid NmToken.
-    public static bool IsNameToken(string str)
-    {
-      if (str == null)
-      {
-        throw new NullReferenceException();
-      }
-      return ValidateNames.IsNmtokenNoNamespaces(str);
-    }
-
     // Returns the inner content (including markup) of an element or attribute as a string.
     public virtual string ReadInnerXml()
     {
@@ -1217,7 +1110,7 @@ namespace TextMonster.Xml
       {
         return string.Empty;
       }
-      if ((this.NodeType != XmlNodeType.Attribute) && (this.NodeType != XmlNodeType.Element))
+      if (NodeType != XmlNodeType.Attribute && NodeType != XmlNodeType.Element)
       {
         Read();
         return string.Empty;
@@ -1228,14 +1121,14 @@ namespace TextMonster.Xml
 
       try
       {
-        if (this.NodeType == XmlNodeType.Attribute)
+        if (NodeType == XmlNodeType.Attribute)
         {
-          ((XmlTextWriter)xtw).QuoteChar = this.QuoteChar;
+          ((XmlTextWriter)xtw).QuoteChar = QuoteChar;
           WriteAttributeValue(xtw);
         }
-        if (this.NodeType == XmlNodeType.Element)
+        if (NodeType == XmlNodeType.Element)
         {
-          this.WriteNode(xtw, false);
+          WriteNode(xtw, false);
         }
       }
       finally
@@ -1249,49 +1142,49 @@ namespace TextMonster.Xml
     private void WriteNode(XmlWriter xtw, bool defattr)
     {
       Debug.Assert(xtw is XmlTextWriter);
-      int d = this.NodeType == XmlNodeType.None ? -1 : this.Depth;
-      while (this.Read() && (d < this.Depth))
+      int d = NodeType == XmlNodeType.None ? -1 : Depth;
+      while (Read() && (d < Depth))
       {
-        switch (this.NodeType)
+        switch (NodeType)
         {
           case XmlNodeType.Element:
-          xtw.WriteStartElement(this.Prefix, this.LocalName, this.NamespaceURI);
-          ((XmlTextWriter)xtw).QuoteChar = this.QuoteChar;
+          xtw.WriteStartElement(Prefix, LocalName, NamespaceURI);
+          ((XmlTextWriter)xtw).QuoteChar = QuoteChar;
           xtw.WriteAttributes(this, defattr);
-          if (this.IsEmptyElement)
+          if (IsEmptyElement)
           {
             xtw.WriteEndElement();
           }
           break;
           case XmlNodeType.Text:
-          xtw.WriteString(this.Value);
+          xtw.WriteString(Value);
           break;
           case XmlNodeType.Whitespace:
           case XmlNodeType.SignificantWhitespace:
-          xtw.WriteWhitespace(this.Value);
+          xtw.WriteWhitespace(Value);
           break;
           case XmlNodeType.CDATA:
-          xtw.WriteCData(this.Value);
+          xtw.WriteCData(Value);
           break;
           case XmlNodeType.EntityReference:
-          xtw.WriteEntityRef(this.Name);
+          xtw.WriteEntityRef(Name);
           break;
           case XmlNodeType.XmlDeclaration:
           case XmlNodeType.ProcessingInstruction:
-          xtw.WriteProcessingInstruction(this.Name, this.Value);
+          xtw.WriteProcessingInstruction(Name, Value);
           break;
           case XmlNodeType.DocumentType:
-          xtw.WriteDocType(this.Name, this.GetAttribute("PUBLIC"), this.GetAttribute("SYSTEM"), this.Value);
+          xtw.WriteDocType(Name, GetAttribute("PUBLIC"), GetAttribute("SYSTEM"), Value);
           break;
           case XmlNodeType.Comment:
-          xtw.WriteComment(this.Value);
+          xtw.WriteComment(Value);
           break;
           case XmlNodeType.EndElement:
           xtw.WriteFullEndElement();
           break;
         }
       }
-      if (d == this.Depth && this.NodeType == XmlNodeType.EndElement)
+      if (d == Depth && NodeType == XmlNodeType.EndElement)
       {
         Read();
       }
@@ -1300,19 +1193,19 @@ namespace TextMonster.Xml
     // Writes the attribute into the provided XmlWriter.
     private void WriteAttributeValue(XmlWriter xtw)
     {
-      string attrName = this.Name;
+      string attrName = Name;
       while (ReadAttributeValue())
       {
-        if (this.NodeType == XmlNodeType.EntityReference)
+        if (NodeType == XmlNodeType.EntityReference)
         {
-          xtw.WriteEntityRef(this.Name);
+          xtw.WriteEntityRef(Name);
         }
         else
         {
-          xtw.WriteString(this.Value);
+          xtw.WriteString(Value);
         }
       }
-      this.MoveToAttribute(attrName);
+      MoveToAttribute(attrName);
     }
 
     // Returns the current element and its descendants or an attribute as a string.
@@ -1322,7 +1215,7 @@ namespace TextMonster.Xml
       {
         return string.Empty;
       }
-      if ((this.NodeType != XmlNodeType.Attribute) && (this.NodeType != XmlNodeType.Element))
+      if (NodeType != XmlNodeType.Attribute && NodeType != XmlNodeType.Element)
       {
         Read();
         return string.Empty;
@@ -1333,9 +1226,9 @@ namespace TextMonster.Xml
 
       try
       {
-        if (this.NodeType == XmlNodeType.Attribute)
+        if (NodeType == XmlNodeType.Attribute)
         {
-          xtw.WriteStartAttribute(this.Prefix, this.LocalName, this.NamespaceURI);
+          xtw.WriteStartAttribute(Prefix, LocalName, NamespaceURI);
           WriteAttributeValue(xtw);
           xtw.WriteEndAttribute();
         }
@@ -1468,9 +1361,9 @@ namespace TextMonster.Xml
       return false;
     }
 
-    internal void CheckElement(string localName, string namespaceURI)
+    private void CheckElement(string localName, string namespaceURI)
     {
-      if (localName == null || localName.Length == 0)
+      if (string.IsNullOrEmpty(localName))
       {
         throw XmlConvert.CreateInvalidNameArgumentException(localName, "localName");
       }
@@ -1480,11 +1373,11 @@ namespace TextMonster.Xml
       }
       if (NodeType != XmlNodeType.Element)
       {
-        throw new XmlException(Res.Xml_InvalidNodeType, this.NodeType.ToString(), this as IXmlLineInfo);
+        throw new XmlException(Res.Xml_InvalidNodeType, NodeType.ToString(), this as IXmlLineInfo);
       }
       if (LocalName != localName || NamespaceURI != namespaceURI)
       {
-        throw new XmlException(Res.Xml_ElementNotFoundNs, new string[2] { localName, namespaceURI }, this as IXmlLineInfo);
+        throw new XmlException(Res.Xml_ElementNotFoundNs, new[] { localName, namespaceURI }, this as IXmlLineInfo);
       }
     }
 
@@ -1500,24 +1393,24 @@ namespace TextMonster.Xml
 
     internal bool CanReadContentAs()
     {
-      return CanReadContentAs(this.NodeType);
+      return CanReadContentAs(NodeType);
     }
 
-    static internal Exception CreateReadContentAsException(string methodName, XmlNodeType nodeType, IXmlLineInfo lineInfo)
+    private static Exception CreateReadContentAsException(string methodName, XmlNodeType nodeType, IXmlLineInfo lineInfo)
     {
-      return new InvalidOperationException(AddLineInfo(Res.GetString(Res.Xml_InvalidReadContentAs, new string[] { methodName, nodeType.ToString() }), lineInfo));
+      return new InvalidOperationException(AddLineInfo(Res.GetString(Res.Xml_InvalidReadContentAs, methodName, nodeType.ToString()), lineInfo));
     }
 
-    static internal Exception CreateReadElementContentAsException(string methodName, XmlNodeType nodeType, IXmlLineInfo lineInfo)
+    private static Exception CreateReadElementContentAsException(string methodName, XmlNodeType nodeType, IXmlLineInfo lineInfo)
     {
-      return new InvalidOperationException(AddLineInfo(Res.GetString(Res.Xml_InvalidReadElementContentAs, new string[] { methodName, nodeType.ToString() }), lineInfo));
+      return new InvalidOperationException(AddLineInfo(Res.GetString(Res.Xml_InvalidReadElementContentAs, methodName, nodeType.ToString()), lineInfo));
     }
 
     static string AddLineInfo(string message, IXmlLineInfo lineInfo)
     {
       if (lineInfo != null)
       {
-        string[] lineArgs = new string[2];
+        var lineArgs = new string[2];
         lineArgs[0] = lineInfo.LineNumber.ToString(CultureInfo.InvariantCulture);
         lineArgs[1] = lineInfo.LinePosition.ToString(CultureInfo.InvariantCulture);
         message += " " + Res.GetString(Res.Xml_ErrorPosition, lineArgs);
@@ -1531,10 +1424,10 @@ namespace TextMonster.Xml
       StringBuilder sb = null;
       do
       {
-        switch (this.NodeType)
+        switch (NodeType)
         {
           case XmlNodeType.Attribute:
-          return this.Value;
+          return Value;
           case XmlNodeType.Text:
           case XmlNodeType.Whitespace:
           case XmlNodeType.SignificantWhitespace:
@@ -1542,7 +1435,7 @@ namespace TextMonster.Xml
           // merge text content
           if (value.Length == 0)
           {
-            value = this.Value;
+            value = Value;
           }
           else
           {
@@ -1551,7 +1444,7 @@ namespace TextMonster.Xml
               sb = new StringBuilder();
               sb.Append(value);
             }
-            sb.Append(this.Value);
+            sb.Append(Value);
           }
           break;
           case XmlNodeType.ProcessingInstruction:
@@ -1560,17 +1453,16 @@ namespace TextMonster.Xml
           // skip comments, pis and end entity nodes
           break;
           case XmlNodeType.EntityReference:
-          if (this.CanResolveEntity)
+          if (CanResolveEntity)
           {
-            this.ResolveEntity();
+            ResolveEntity();
             break;
           }
           goto default;
-          case XmlNodeType.EndElement:
           default:
           goto ReturnContent;
         }
-      } while ((this.AttributeCount != 0) ? this.ReadAttributeValue() : this.Read());
+      } while (AttributeCount != 0 ? ReadAttributeValue() : Read());
 
     ReturnContent:
       return (sb == null) ? value : sb.ToString();
@@ -1578,28 +1470,28 @@ namespace TextMonster.Xml
 
     private bool SetupReadElementContentAsXxx(string methodName)
     {
-      if (this.NodeType != XmlNodeType.Element)
+      if (NodeType != XmlNodeType.Element)
       {
         throw CreateReadElementContentAsException(methodName);
       }
 
-      bool isEmptyElement = this.IsEmptyElement;
+      bool isEmptyElement = IsEmptyElement;
 
       // move to content or beyond the empty element
-      this.Read();
+      Read();
 
       if (isEmptyElement)
       {
         return false;
       }
 
-      XmlNodeType nodeType = this.NodeType;
+      XmlNodeType nodeType = NodeType;
       if (nodeType == XmlNodeType.EndElement)
       {
-        this.Read();
+        Read();
         return false;
       }
-      else if (nodeType == XmlNodeType.Element)
+      if (nodeType == XmlNodeType.Element)
       {
         throw new XmlException(Res.Xml_MixedReadElementContentAs, string.Empty, this as IXmlLineInfo);
       }
@@ -1608,22 +1500,22 @@ namespace TextMonster.Xml
 
     private void FinishReadElementContentAsXxx()
     {
-      if (this.NodeType != XmlNodeType.EndElement)
+      if (NodeType != XmlNodeType.EndElement)
       {
-        throw new XmlException(Res.Xml_InvalidNodeType, this.NodeType.ToString());
+        throw new XmlException(Res.Xml_InvalidNodeType, NodeType.ToString());
       }
-      this.Read();
+      Read();
     }
 
     internal bool IsDefaultInternal
     {
       get
       {
-        if (this.IsDefault)
+        if (IsDefault)
         {
           return true;
         }
-        IXmlSchemaInfo schemaInfo = this.SchemaInfo;
+        IXmlSchemaInfo schemaInfo = SchemaInfo;
         if (schemaInfo != null && schemaInfo.IsDefault)
         {
           return true;
@@ -1638,12 +1530,6 @@ namespace TextMonster.Xml
       {
         return null;
       }
-    }
-
-    internal static Encoding GetEncoding(FastXmlReader reader)
-    {
-      XmlTextReaderImpl tri = GetXmlTextReaderImpl(reader);
-      return tri != null ? tri.Encoding : null;
     }
 
     internal static ConformanceLevel GetV1ConformanceLevel(FastXmlReader reader)
@@ -1685,38 +1571,24 @@ namespace TextMonster.Xml
     // Static methods for creating readers
     //
 
-    // Creates an XmlReader for parsing XML from the given Uri.
-    [ResourceConsumption(ResourceScope.Machine)]
-    [ResourceExposure(ResourceScope.Machine)]
-    public static FastXmlReader Create(string inputUri)
-    {
-      return FastXmlReader.Create(inputUri, (XmlReaderSettings)null, (XmlParserContext)null);
-    }
-
     // Creates an XmlReader according to the settings for parsing XML from the given Uri.
     [ResourceConsumption(ResourceScope.Machine)]
     [ResourceExposure(ResourceScope.Machine)]
     public static FastXmlReader Create(string inputUri, XmlReaderSettings settings)
     {
-      return FastXmlReader.Create(inputUri, settings, (XmlParserContext)null);
+      return Create(inputUri, settings, null);
     }
 
     // Creates an XmlReader according to the settings and parser context for parsing XML from the given Uri.
     [ResourceConsumption(ResourceScope.Machine)]
     [ResourceExposure(ResourceScope.Machine)]
-    public static FastXmlReader Create(String inputUri, XmlReaderSettings settings, XmlParserContext inputContext)
+    private static FastXmlReader Create(string inputUri, XmlReaderSettings settings, XmlParserContext inputContext)
     {
       if (settings == null)
       {
         settings = new XmlReaderSettings();
       }
       return settings.CreateReader(inputUri, inputContext);
-    }
-
-    // Creates an XmlReader according for parsing XML from the given stream.
-    public static FastXmlReader Create(Stream input)
-    {
-      return Create(input, (XmlReaderSettings)null, (string)string.Empty);
     }
 
     // Creates an XmlReader according to the settings for parsing XML from the given stream.
@@ -1726,55 +1598,23 @@ namespace TextMonster.Xml
     }
 
     // Creates an XmlReader according to the settings and base Uri for parsing XML from the given stream.
-    public static FastXmlReader Create(Stream input, XmlReaderSettings settings, String baseUri)
+    public static FastXmlReader Create(Stream input, XmlReaderSettings settings, string baseUri)
     {
       if (settings == null)
       {
         settings = new XmlReaderSettings();
       }
-      return settings.CreateReader(input, null, (string)baseUri, null);
-    }
-
-    // Creates an XmlReader according to the settings and parser context for parsing XML from the given stream.
-    public static FastXmlReader Create(Stream input, XmlReaderSettings settings, XmlParserContext inputContext)
-    {
-      if (settings == null)
-      {
-        settings = new XmlReaderSettings();
-      }
-      return settings.CreateReader(input, null, (string)string.Empty, inputContext);
-    }
-
-    // Creates an XmlReader according for parsing XML from the given TextReader.
-    public static FastXmlReader Create(TextReader input)
-    {
-      return Create(input, (XmlReaderSettings)null, (string)string.Empty);
-    }
-
-    // Creates an XmlReader according to the settings for parsing XML from the given TextReader.
-    public static FastXmlReader Create(TextReader input, XmlReaderSettings settings)
-    {
-      return Create(input, settings, string.Empty);
+      return settings.CreateReader(input, null, baseUri, null);
     }
 
     // Creates an XmlReader according to the settings and baseUri for parsing XML from the given TextReader.
-    public static FastXmlReader Create(TextReader input, XmlReaderSettings settings, String baseUri)
+    public static FastXmlReader Create(TextReader input, XmlReaderSettings settings, string baseUri)
     {
       if (settings == null)
       {
         settings = new XmlReaderSettings();
       }
       return settings.CreateReader(input, baseUri, null);
-    }
-
-    // Creates an XmlReader according to the settings and parser context for parsing XML from the given TextReader.
-    public static FastXmlReader Create(TextReader input, XmlReaderSettings settings, XmlParserContext inputContext)
-    {
-      if (settings == null)
-      {
-        settings = new XmlReaderSettings();
-      }
-      return settings.CreateReader(input, string.Empty, inputContext);
     }
 
     // Creates an XmlReader according to the settings wrapped over the given reader.
@@ -1785,55 +1625,6 @@ namespace TextMonster.Xml
         settings = new XmlReaderSettings();
       }
       return settings.CreateReader(reader);
-    }
-
-    // !!!!!!
-    // NOTE: This method is called via reflection from System.Data.dll and from Analysis Services in Yukon. 
-    // Do not change its signature without notifying the appropriate teams!
-    // !!!!!!
-    internal static FastXmlReader CreateSqlReader(Stream input, XmlReaderSettings settings, XmlParserContext inputContext)
-    {
-      if (input == null)
-      {
-        throw new ArgumentNullException("input");
-      }
-      if (settings == null)
-      {
-        settings = new XmlReaderSettings();
-      }
-
-      FastXmlReader reader;
-
-      // allocate byte buffer
-      byte[] bytes = new byte[CalcBufferSize(input)];
-
-      int byteCount = 0;
-      int read;
-      do
-      {
-        read = input.Read(bytes, byteCount, bytes.Length - byteCount);
-        byteCount += read;
-      } while (read > 0 && byteCount < 2);
-
-      // create text or binary XML reader depenting on the stream first 2 bytes
-      if (byteCount >= 2 && (bytes[0] == 0xdf && bytes[1] == 0xff))
-      {
-        if (inputContext != null)
-          throw new ArgumentException(Res.GetString(Res.XmlBinary_NoParserContext), "inputContext");
-        reader = new XmlSqlBinaryReader(input, bytes, byteCount, string.Empty, settings.CloseInput, settings);
-      }
-      else
-      {
-        reader = new XmlTextReaderImpl(input, bytes, byteCount, settings, null, string.Empty, inputContext, settings.CloseInput);
-      }
-
-      // wrap with validating reader
-      if (settings.ValidationType != ValidationType.None)
-      {
-        reader = settings.AddValidation(reader);
-      }
-
-      return reader;
     }
 
     internal static int CalcBufferSize(Stream input)
@@ -1855,53 +1646,6 @@ namespace TextMonster.Xml
 
       // return the byte buffer size
       return bufferSize;
-    }
-
-    private object debuggerDisplayProxy { get { return new XmlReaderDebuggerDisplayProxy(this); } }
-
-    [DebuggerDisplay("{ToString()}")]
-    struct XmlReaderDebuggerDisplayProxy
-    {
-      FastXmlReader reader;
-
-      internal XmlReaderDebuggerDisplayProxy(FastXmlReader reader)
-      {
-        this.reader = reader;
-      }
-
-      public override string ToString()
-      {
-        XmlNodeType nt = reader.NodeType;
-        string result = nt.ToString();
-        switch (nt)
-        {
-          case XmlNodeType.Element:
-          case XmlNodeType.EndElement:
-          case XmlNodeType.EntityReference:
-          case XmlNodeType.EndEntity:
-          result += ", Name=\"" + reader.Name + '"';
-          break;
-          case XmlNodeType.Attribute:
-          case XmlNodeType.ProcessingInstruction:
-          result += ", Name=\"" + reader.Name + "\", Value=\"" + XmlConvert.EscapeValueForDebuggerDisplay(reader.Value) + '"';
-          break;
-          case XmlNodeType.Text:
-          case XmlNodeType.Whitespace:
-          case XmlNodeType.SignificantWhitespace:
-          case XmlNodeType.Comment:
-          case XmlNodeType.XmlDeclaration:
-          case XmlNodeType.CDATA:
-          result += ", Value=\"" + XmlConvert.EscapeValueForDebuggerDisplay(reader.Value) + '"';
-          break;
-          case XmlNodeType.DocumentType:
-          result += ", Name=\"" + reader.Name + "'";
-          result += ", SYSTEM=\"" + reader.GetAttribute("SYSTEM") + '"';
-          result += ", PUBLIC=\"" + reader.GetAttribute("PUBLIC") + '"';
-          result += ", Value=\"" + XmlConvert.EscapeValueForDebuggerDisplay(reader.Value) + '"';
-          break;
-        }
-        return result;
-      }
     }
   }
 }
