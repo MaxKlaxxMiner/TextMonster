@@ -162,11 +162,6 @@ namespace TextMonster.Xml.Xml_Reader
       minMaxNodesCount++;
     }
 
-#if EXPANDRANGE
-        public void AddRange(int min, int max) {
-            Closure(new RangeNode(min, max));
-        }
-#endif
     private void Closure(InteriorNode node)
     {
       if (stack.Count > 0)
@@ -216,12 +211,6 @@ namespace TextMonster.Xml.Xml_Reader
         }
       }
 
-#if DEBUG
-            StringBuilder bb = new StringBuilder();
-            contentNode.Dump(bb, symbols, positions);
-            Debug.WriteLineIf(DiagnosticsSwitches.XmlSchemaContentModel.Enabled,  "\t\t\tContent :   " + bb.ToString());
-#endif
-
       // Add end marker
       InteriorNode contentRoot = new SequenceNode();
       contentRoot.LeftChild = contentNode;
@@ -230,12 +219,6 @@ namespace TextMonster.Xml.Xml_Reader
 
       // Eliminate NamespaceListNode(s) and RangeNode(s)
       contentNode.ExpandTree(contentRoot, symbols, positions);
-
-#if DEBUG
-            bb = new StringBuilder();
-            contentRoot.LeftChild.Dump(bb, symbols, positions);
-            Debug.WriteLineIf(DiagnosticsSwitches.XmlSchemaContentModel.Enabled,  "\t\t\tExpended:   " + bb.ToString());
-#endif
 
       // calculate followpos
       int symbolsCount = symbols.Count;
@@ -248,10 +231,6 @@ namespace TextMonster.Xml.Xml_Reader
         followpos[i] = new BitSet(positionsCount);
       }
       contentRoot.ConstructPos(firstpos, lastpos, followpos);
-#if DEBUG
-            Debug.WriteLineIf(DiagnosticsSwitches.XmlSchemaContentModel.Enabled, "firstpos, lastpos, followpos");
-            SequenceNode.WritePos(firstpos, lastpos, followpos);
-#endif
       if (minMaxNodesCount > 0)
       { //If the tree has any terminal range nodes
         BitSet positionsWithRangeTerminals;
@@ -284,11 +263,6 @@ namespace TextMonster.Xml.Xml_Reader
           // Can return null if the number of states reaches higher than 8192 / positionsCount
           transitionTable = BuildTransitionTable(firstpos, followpos, endMarker.Pos);
         }
-#if DEBUG
-                bb = new StringBuilder();
-                Dump(bb, followpos, transitionTable);    
-                Debug.WriteLineIf(DiagnosticsSwitches.XmlSchemaContentModel.Enabled, bb.ToString());
-#endif
         if (transitionTable != null)
         {
           return new DfaContentValidator(transitionTable, symbols, this.ContentType, this.IsOpen, contentRoot.LeftChild.IsNullable);
@@ -495,37 +469,5 @@ namespace TextMonster.Xml.Xml_Reader
       // now convert transition table to array
       return (int[][])transitionTable.ToArray(typeof(int[]));
     }
-
-#if DEBUG
-        private void Dump(StringBuilder bb, BitSet[] followpos, int[][] transitionTable) {
-            // Temporary printout
-            bb.AppendLine("Positions");
-            for (int i = 0; i < positions.Count; i ++) {
-                bb.AppendLine(i + " " + positions[i].symbol.ToString(NumberFormatInfo.InvariantInfo) + " " + symbols.NameOf(positions[i].symbol));
-            }
-            bb.AppendLine("Followpos");
-            for (int i = 0; i < positions.Count; i++) {
-                for (int j = 0; j < positions.Count; j++) {
-                    bb.Append(followpos[i][j] ? "X" : "O");
-                }
-               bb.AppendLine();
-            }
-            if (transitionTable != null) {
-                // Temporary printout
-                bb.AppendLine("Transitions");
-                for (int i = 0; i < transitionTable.Length; i++) {
-                    for (int j = 0; j < symbols.Count; j++) {
-                        if (transitionTable[i][j] == -1) {
-                            bb.Append("  x  ");
-                        }
-                        else {
-                            bb.AppendFormat(" {0:000} ", transitionTable[i][j]);
-                        }
-                    }
-                    bb.AppendLine(transitionTable[i][symbols.Count] == 1 ? "+" : "");
-                }
-            }
-        }
-#endif
   }
 }

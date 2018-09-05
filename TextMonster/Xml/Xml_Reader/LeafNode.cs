@@ -38,11 +38,5 @@
     {
       get { return false; }
     }
-
-#if DEBUG
-        public override void Dump(StringBuilder bb, SymbolsDictionary symbols, Positions positions) {
-            bb.Append("\"" + symbols.NameOf(positions[pos].symbol) + "\"");
-        }
-#endif
   }
 }

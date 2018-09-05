@@ -66,7 +66,6 @@ namespace TextMonster.Xml.Xml_Reader
       return (this.curr & 0x1) != 0;
     }
 
-#if !SILVERLIGHT // This property is not used in Silverlight
     /// <summary>
     /// Return true if there are currently no bits on the stack.
     /// </summary>
@@ -74,7 +73,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
       get { return this.curr == 0x1; }
     }
-#endif
 
     /// <summary>
     /// this.curr has enough space for 31 bits (minus 1 for sentinel bit).  Once this space is

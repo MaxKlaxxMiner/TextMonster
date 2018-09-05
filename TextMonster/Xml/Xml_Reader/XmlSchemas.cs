@@ -344,13 +344,6 @@ namespace TextMonster.Xml.Xml_Reader
         {
           ret = schema.Notations[name];
         }
-#if DEBUG
-            else {
-                // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                throw new InvalidOperationException(Res.GetString(Res.XmlInternalErrorDetails, "XmlSchemas.Find: Invalid object type " + type.FullName));
-            }
-#endif
-
         if (ret != null && shareTypes && checkCache && !IsReference(ret))
           ret = Cache.AddItem(ret, name, this);
         if (ret != null)

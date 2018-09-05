@@ -38,12 +38,5 @@
         return false;
       }
     }
-
-    /// <summary>
-    /// Print syntax tree
-    /// </summary>
-#if DEBUG        
-        public abstract void Dump(StringBuilder bb, SymbolsDictionary symbols, Positions positions);
-#endif
   }
 }

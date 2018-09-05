@@ -68,13 +68,8 @@ namespace TextMonster.Xml.Xml_Reader
     const int ElementStackInitialSize = 8;
     const int NamespaceStackInitialSize = 8;
     const int AttributeArrayInitialSize = 8;
-#if DEBUG
-        const int MaxAttrDuplWalkCount = 2;
-        const int MaxNamespacesWalkCount = 3;
-#else
     const int MaxAttrDuplWalkCount = 14;
     const int MaxNamespacesWalkCount = 16;
-#endif
 
     //
     // State tables
@@ -1567,7 +1562,6 @@ namespace TextMonster.Xml.Xml_Reader
     //
     // Internal methods
     //
-#if !SILVERLIGHT
     internal XmlWriter InnerWriter
     {
       get
@@ -1583,7 +1577,6 @@ namespace TextMonster.Xml.Xml_Reader
         return rawWriter;
       }
     }
-#endif
 
     //
     // Private methods
@@ -2111,9 +2104,6 @@ namespace TextMonster.Xml.Xml_Reader
       return s;
     }
 
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
-        [System.Security.SecuritySafeCritical]
-#endif
     private unsafe void CheckNCName(string ncname)
     {
       int i;
@@ -2124,11 +2114,6 @@ namespace TextMonster.Xml.Xml_Reader
       { // if ( xmlCharType.IsStartNCNameChar( ncname[0] ) ) {
         i = 1;
       }
-#if XML10_FIFTH_EDITION
-            else if (xmlCharType.IsNCNameSurrogateChar(ncname, 0)) { // surrogate ranges are same for NCName and StartNCName
-                i = 2;
-            }
-#endif
       else
       {
         throw InvalidCharsException(ncname, 0);
@@ -2141,11 +2126,6 @@ namespace TextMonster.Xml.Xml_Reader
         { // if ( xmlCharType.IsNCNameChar( ncname[i] ) ) {
           i++;
         }
-#if XML10_FIFTH_EDITION
-                else if (xmlCharType.IsNCNameSurrogateChar(ncname, i)) {
-                    i += 2;
-                }
-#endif
         else
         {
           throw InvalidCharsException(ncname, i);

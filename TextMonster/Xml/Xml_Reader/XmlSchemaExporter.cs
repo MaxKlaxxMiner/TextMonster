@@ -644,11 +644,6 @@ namespace TextMonster.Xml.Xml_Reader
         ExportElementAccessors(seq, mapping.Elements, true, false, mapping.Namespace);
         if (seq.Items.Count > 0)
         {
-#if DEBUG
-  // we can have only one item for the array mapping
-                        if (seq.Items.Count != 1) 
-                            throw new InvalidOperationException(Res.GetString(Res.XmlInternalErrorDetails, "Type " + mapping.TypeName + " from namespace '" + ns + "' is an invalid array mapping"));
-#endif
           if (seq.Items[0] is XmlSchemaChoice)
           {
             type.Particle = (XmlSchemaChoice)seq.Items[0];
@@ -908,11 +903,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         EnumMapping em = (EnumMapping)mapping;
 
-#if DEBUG
-  // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                    if (value.GetType() != typeof(string)) throw new InvalidOperationException(Res.GetString(Res.XmlInternalErrorDetails, Res.GetString(Res.XmlInvalidDefaultValue, value.ToString(), value.GetType().FullName)));
-#endif
-
         // check the validity of the value
         ConstantMapping[] c = em.Constants;
         if (em.IsFlags)
@@ -946,14 +936,6 @@ namespace TextMonster.Xml.Xml_Reader
 
       if (!pm.TypeDesc.HasCustomFormatter)
       {
-
-#if DEBUG
-  // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                    if (pm.TypeDesc.Type == null) {
-                        throw new InvalidOperationException(Res.GetString(Res.XmlInternalErrorDetails, "Mapping for " + pm.TypeDesc.Name + " missing type property"));
-                    }
-#endif
-
         if (pm.TypeDesc.FormatterName == "String")
           return (string)value;
 

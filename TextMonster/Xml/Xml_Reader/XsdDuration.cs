@@ -217,7 +217,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return (int)(this.nanoseconds & ~NegativeBit); }
     }
 
-#if !SILVERLIGHT
     /// <summary>
     /// Return number of microseconds in this duration.
     /// </summary>
@@ -282,7 +281,6 @@ namespace TextMonster.Xml.Xml_Reader
 
       return new XsdDuration(IsNegative, years, months, days, hours, minutes, seconds, Nanoseconds);
     }
-#endif
 
     /// <summary>
     /// Internal helper method that converts an Xsd duration to a TimeSpan value.  This code uses the estimate
@@ -308,12 +306,10 @@ namespace TextMonster.Xml.Xml_Reader
       return result;
     }
 
-#if !SILVERLIGHT
     internal Exception TryToTimeSpan(out TimeSpan result)
     {
       return TryToTimeSpan(DurationType.Duration, out result);
     }
-#endif
 
     internal Exception TryToTimeSpan(DurationType durationType, out TimeSpan result)
     {
@@ -487,12 +483,10 @@ namespace TextMonster.Xml.Xml_Reader
       return sb.ToString();
     }
 
-#if !SILVERLIGHT
     internal static Exception TryParse(string s, out XsdDuration result)
     {
       return TryParse(s, DurationType.Duration, out result);
     }
-#endif
 
     internal static Exception TryParse(string s, DurationType durationType, out XsdDuration result)
     {

@@ -126,11 +126,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal static string FromEnum(long val, string[] vals, long[] ids, string typeName)
     {
-#if DEBUG
-  // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                if (ids.Length != vals.Length) throw new InvalidOperationException(Res.GetString(Res.XmlInternalErrorDetails, "Invalid enum"));
-#endif
-
       long originalValue = val;
       StringBuilder sb = new StringBuilder();
       int iZero = -1;

@@ -60,9 +60,7 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     [SecuritySafeCritical]
-#if !SILVERLIGHT
     [ReflectionPermission(SecurityAction.Assert, Unrestricted = true)]
-#endif
     private static HashCodeOfStringDelegate GetHashCodeDelegate()
     {
       // If we find the Marvin hash method, we use that

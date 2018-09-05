@@ -6,9 +6,7 @@ namespace TextMonster.Xml.Xml_Reader
 {
   public class XmlNamespaceManager : IXmlNamespaceResolver, IEnumerable
   {
-#if !SILVERLIGHT // EmptyResolver is not used in Silverlight
     static volatile IXmlNamespaceResolver s_EmptyResolver;
-#endif
 
     struct NamespaceDeclaration
     {
@@ -49,7 +47,6 @@ namespace TextMonster.Xml.Xml_Reader
     // Constants
     const int MinDeclsCountForHashtable = 16;
 
-#if !SILVERLIGHT // EmptyResolver is not used in Silverlight
     internal static IXmlNamespaceResolver EmptyResolver
     {
       get
@@ -62,13 +59,10 @@ namespace TextMonster.Xml.Xml_Reader
         return s_EmptyResolver;
       }
     }
-#endif
 
-#if !SILVERLIGHT // This constructor is not used in Silverlight
     internal XmlNamespaceManager()
     {
     }
-#endif
 
     public XmlNamespaceManager(XmlNameTable nameTable)
     {
@@ -351,7 +345,6 @@ namespace TextMonster.Xml.Xml_Reader
       return false;
     }
 
-#if !SILVERLIGHT // This method is not used in Silverlight
     internal bool GetNamespaceDeclaration(int idx, out string prefix, out string uri)
     {
       idx = lastDecl - idx;
@@ -366,6 +359,5 @@ namespace TextMonster.Xml.Xml_Reader
 
       return true;
     }
-#endif
   } //XmlNamespaceManager
 }

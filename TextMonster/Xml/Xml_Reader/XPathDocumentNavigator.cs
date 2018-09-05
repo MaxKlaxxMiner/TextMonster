@@ -64,22 +64,6 @@ namespace TextMonster.Xml.Xml_Reader
         if (value != null)
           return value;
 
-#if DEBUG
-                switch (this.pageCurrent[this.idxCurrent].NodeType) {
-                    case XPathNodeType.Namespace:
-                    case XPathNodeType.Attribute:
-                    case XPathNodeType.Comment:
-                    case XPathNodeType.ProcessingInstruction:
-                        Debug.Assert(false, "ReadStringValue() should have taken care of these node types.");
-                        break;
-
-                    case XPathNodeType.Text:
-                        Debug.Assert(this.idxParent != 0 && this.pageParent[this.idxParent].HasCollapsedText,
-                                     "ReadStringValue() should have taken care of anything but collapsed text.");
-                        break;
-                }
-#endif
-
         // If current node is collapsed text, then parent element has a simple text value
         if (this.idxParent != 0)
         {

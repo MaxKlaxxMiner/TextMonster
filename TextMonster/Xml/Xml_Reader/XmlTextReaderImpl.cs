@@ -20,9 +20,7 @@ namespace TextMonster.Xml.Xml_Reader
     {
       ElementContent = 0,
       NoData,
-#if !SILVERLIGHT
       OpenUrl,
-#endif
       SwitchToInteractive,
       SwitchToInteractiveXmlDecl,
       DocumentContent,
@@ -35,12 +33,10 @@ namespace TextMonster.Xml.Xml_Reader
       ReaderClosed,
       EntityReference,
       InIncrementalRead,
-#if !SILVERLIGHT  // Needed only for XmlTextReader (reporting of entities)
       FragmentAttribute,
       ReportEndEntity,
       AfterResolveEntityInContent,
       AfterResolveEmptyEntityInContent,
-#endif
       XmlDeclarationFragment,
       GoToEof,
       PartialTextValue,
@@ -67,19 +63,15 @@ namespace TextMonster.Xml.Xml_Reader
       Expanded,
       Skipped,
       FakeExpanded,
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
       Unexpanded,
       ExpandedInAttribute,
-#endif
     }
 
     enum EntityExpandType
     {
       All,
       OnlyGeneral,
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
       OnlyCharacter,
-#endif
     }
 
     enum IncrementalReadState
@@ -104,13 +96,6 @@ namespace TextMonster.Xml.Xml_Reader
       ReadContentAsBinary_OnPartialValue,
       ReadContentAsBinary_End,
     }
-
-    //
-    // Fields
-    //
-#if ASYNC  
-        private readonly bool useAsync;
-#endif
 
     #region Later Init Fileds
 
@@ -180,20 +165,16 @@ namespace TextMonster.Xml.Xml_Reader
     // resolver
     XmlResolver xmlResolver;
 
-#if !SILVERLIGHT // Needed only for XmlTextReader constructors that takes url
     // this is only for constructors that takes url 
     string url = string.Empty;
     CompressedStack compressedStack;
-#endif
 
     // settings
     bool normalize;
     bool supportNamespaces = true;
     WhitespaceHandling whitespaceHandling;
     DtdProcessing dtdProcessing = DtdProcessing.Parse;
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
     EntityHandling entityHandling;
-#endif
     bool ignorePIs;
     bool ignoreComments;
     bool checkCharacters;
@@ -228,9 +209,7 @@ namespace TextMonster.Xml.Xml_Reader
     // fragment parsing
     XmlNodeType fragmentType = XmlNodeType.Document;
     XmlParserContext fragmentParserContext;
-#if !SILVERLIGHT // Needed only for XmlTextReader
     bool fragment;
-#endif
 
     // incremental read
     IncrementalReadDecoder incReadDecoder;
@@ -238,28 +217,20 @@ namespace TextMonster.Xml.Xml_Reader
     LineInfo incReadLineInfo;
     BinHexDecoder binHexDecoder;
     Base64Decoder base64Decoder;
-#if !SILVERLIGHT // Needed only for XmlTextReader (ReadChars, ReadBase64, ReadBinHex)
     int incReadDepth;
     int incReadLeftStartPos;
     int incReadLeftEndPos;
     IncrementalReadCharsDecoder readCharsDecoder;
-#endif
 
     // ReadAttributeValue helpers
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
     int attributeValueBaseEntityId;
     bool emptyEntityInAttributeResolved;
-#endif
 
     // Validation helpers
-#if !SILVERLIGHT // No validation in Silverlight
     IValidationEventHandling validationEventHandling;
     OnDefaultAttributeUseDelegate onDefaultAttributeUse;
-#endif
 
-#if !SILVERLIGHT // Needed only for XmlTextReader and XmlValidatingReader
     bool validatingReaderCompatFlag;
-#endif
 
     // misc
     bool addDefaultAttributesAndNormalize;
@@ -269,10 +240,8 @@ namespace TextMonster.Xml.Xml_Reader
     int nextEntityId = 1;
     ParsingMode parsingMode;
     ReadState readState = ReadState.Initial;
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities, ResetState)
     IDtdEntityInfo lastEntity;
     bool afterResetState;
-#endif
     int documentStartBytePos;
     int readValueOffset;
 
@@ -284,19 +253,15 @@ namespace TextMonster.Xml.Xml_Reader
     Dictionary<IDtdEntityInfo, IDtdEntityInfo> currentEntities;
 
     // DOM helpers
-#if !SILVERLIGHT // Needed only for XmlTextReader (when used from XmlDocument)
     bool disableUndeclaredEntityCheck;
-#endif
 
     // Outer XmlReader exposed to the user - either XmlTextReader or XmlTextReaderImpl (when created via XmlReader.Create).
     // Virtual methods called from within XmlTextReaderImpl must be called on the outer reader so in case the user overrides
     // some of the XmlTextReader methods we will call the overriden version.
     FastXmlReader outerReader;
 
-#if !SILVERLIGHT
     //indicate if the XmlResolver is explicit set
     bool xmlResolverIsSet;
-#endif
 
     //
     // Atomized string constants
@@ -320,11 +285,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private const string XmlDeclarationBegining = "<?xml";
 
-    //
-    // Constructors
-    //
-
-#if !SILVERLIGHT // Needed only for XmlTextReader
     internal XmlTextReaderImpl()
     {
       curNode = new NodeData();
@@ -376,16 +336,10 @@ namespace TextMonster.Xml.Xml_Reader
       ps.lineNo = 1;
       ps.lineStartPos = -1;
     }
-#endif
 
     // This constructor is used when creating XmlTextReaderImpl reader via "XmlReader.Create(..)"
     private XmlTextReaderImpl(XmlResolver resolver, XmlReaderSettings settings, XmlParserContext context)
     {
-
-#if ASYNC
-            useAsync = settings.Async;
-#endif
-
       v1Compat = false;
       outerReader = this;
 
@@ -424,12 +378,10 @@ namespace TextMonster.Xml.Xml_Reader
 
       stringBuilder = new StringBuilder();
 
-#if !SILVERLIGHT
       // Needed only for XmlTextReader (reporting of entities)
       entityHandling = EntityHandling.ExpandEntities;
 
       xmlResolverIsSet = settings.IsXmlResolverSet;
-#endif
 
       whitespaceHandling = (settings.IgnoreWhitespace) ? WhitespaceHandling.Significant : WhitespaceHandling.All;
       normalize = true;
@@ -457,15 +409,11 @@ namespace TextMonster.Xml.Xml_Reader
       {
         case ConformanceLevel.Auto:
         fragmentType = XmlNodeType.None;
-#if !SILVERLIGHT // Needed only for XmlTextReader
         fragment = true;
-#endif
         break;
         case ConformanceLevel.Fragment:
         fragmentType = XmlNodeType.Element;
-#if !SILVERLIGHT // Needed only for XmlTextReader
         fragment = true;
-#endif
         break;
         case ConformanceLevel.Document:
         fragmentType = XmlNodeType.Document;
@@ -475,7 +423,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-#if !SILVERLIGHT // Needed only for XmlTextReader
     // Initializes a new instance of the XmlTextReaderImpl class with the specified stream, baseUri and nametable
     // This constructor is used when creating XmlTextReaderImpl for V1 XmlTextReader
     internal XmlTextReaderImpl(Stream input)
@@ -532,10 +479,8 @@ namespace TextMonster.Xml.Xml_Reader
     // Initializes a new instance of XmlTextReaderImpl class for parsing fragments with the specified stream, fragment type and parser context
     // This constructor is used when creating XmlTextReaderImpl for V1 XmlTextReader
     // SxS: The method resolves URI but does not expose the resolved value up the stack hence Resource Exposure scope is None.
-#if !SILVERLIGHT
     [ResourceConsumption(ResourceScope.Machine, ResourceScope.Machine)]
     [ResourceExposure(ResourceScope.None)]
-#endif
     internal XmlTextReaderImpl(Stream xmlFragment, XmlNodeType fragType, XmlParserContext context)
       : this((context != null && context.NameTable != null) ? context.NameTable : new NameTable())
     {
@@ -595,19 +540,15 @@ namespace TextMonster.Xml.Xml_Reader
 
     // Initializes a new instance of the XmlTextReaderImpl class with the specified url and XmlNameTable.
     // This constructor is used when creating XmlTextReaderImpl for V1 XmlTextReader
-#if !SILVERLIGHT
     [ResourceConsumption(ResourceScope.Machine)]
     [ResourceExposure(ResourceScope.Machine)]
-#endif
     public XmlTextReaderImpl(string url)
       : this(url, new NameTable())
     {
     }
 
-#if !SILVERLIGHT
     [ResourceConsumption(ResourceScope.Machine)]
     [ResourceExposure(ResourceScope.Machine)]
-#endif
     public XmlTextReaderImpl(string url, XmlNameTable nt)
       : this(nt)
     {
@@ -633,8 +574,6 @@ namespace TextMonster.Xml.Xml_Reader
 
       parsingFunction = ParsingFunction.OpenUrl;
     }
-#endif
-
 
     // Initializes a new instance of the XmlTextReaderImpl class with the specified arguments.
     // This constructor is used when creating XmlTextReaderImpl via XmlReader.Create
@@ -667,34 +606,12 @@ namespace TextMonster.Xml.Xml_Reader
       laterInitParam.inputContext = context;
       laterInitParam.inputUriResolver = uriResolver;
       laterInitParam.initType = InitInputType.UriString;
-#if !ASYNC
       FinishInitUriString();
-#else
-            if (!settings.Async) {
-                //if not set Async flag, finish the init in create stage.
-                FinishInitUriString();
-            }
-            else {
-                laterInitParam.useAsync = true;
-            }
-#endif
     }
 
     private void FinishInitUriString()
     {
-
       Stream stream = null;
-
-#if ASYNC
-            if (laterInitParam.useAsync) { 
-                //this will be hit when user create a XmlReader by setting Async, but the first call is Read() instead of ReadAsync(), 
-                //then we still should create an async stream here. And wait for the method finish.
-                System.Threading.Tasks.Task<object> t = laterInitParam.inputUriResolver.GetEntityAsync(laterInitParam.inputbaseUri, string.Empty, typeof(Stream));
-                t.Wait();
-                stream = (Stream)t.Result;
-            }
-            else 
-#endif
       {
         stream = (Stream)laterInitParam.inputUriResolver.GetEntity(laterInitParam.inputbaseUri, string.Empty, typeof(Stream));
       }
@@ -764,17 +681,7 @@ namespace TextMonster.Xml.Xml_Reader
       laterInitParam.inputContext = context;
 
       laterInitParam.initType = InitInputType.Stream;
-#if !ASYNC
       FinishInitStream();
-#else
-            if (!settings.Async) {
-                //if not set Async flag, finish the init in create stage.
-                FinishInitStream();
-            }
-            else {
-                laterInitParam.useAsync = true;
-            }
-#endif
     }
 
     private void FinishInitStream()
@@ -822,17 +729,7 @@ namespace TextMonster.Xml.Xml_Reader
       laterInitParam.inputTextReader = input;
       laterInitParam.inputContext = context;
       laterInitParam.initType = InitInputType.TextReader;
-#if !ASYNC
       FinishInitTextReader();
-#else
-            if (!settings.Async) {
-                //if not set Async flag, finish the init in create stage.
-                FinishInitTextReader();
-            }
-            else {
-                laterInitParam.useAsync = true;
-            }
-#endif
     }
 
     private void FinishInitTextReader()
@@ -852,8 +749,6 @@ namespace TextMonster.Xml.Xml_Reader
       laterInitParam = null;
     }
 
-
-#if !SILVERLIGHT
     // Initializes a new instance of the XmlTextReaderImpl class for fragment parsing.
     // This constructor is used by XmlBinaryReader for nested text XML
     internal XmlTextReaderImpl(string xmlFragment, XmlParserContext context, XmlReaderSettings settings)
@@ -863,7 +758,6 @@ namespace TextMonster.Xml.Xml_Reader
       reportedBaseUri = ps.baseUriStr;
       reportedEncoding = ps.encoding;
     }
-#endif
 
     //
     // XmlReader members
@@ -897,12 +791,10 @@ namespace TextMonster.Xml.Xml_Reader
         settings.MaxCharactersInDocument = maxCharactersInDocument;
         settings.MaxCharactersFromEntities = maxCharactersFromEntities;
 
-#if !SILVERLIGHT
         if (!XmlReaderSettings.EnableLegacyXmlSettings())
         {
           settings.XmlResolver = xmlResolver;
         }
-#endif
         settings.ReadOnly = true;
         return settings;
       }
@@ -1010,7 +902,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-#if !SILVERLIGHT
     // Returns the quote character used in the current attribute declaration
     public override char QuoteChar
     {
@@ -1019,7 +910,6 @@ namespace TextMonster.Xml.Xml_Reader
         return curNode.type == XmlNodeType.Attribute ? curNode.quoteChar : '"';
       }
     }
-#endif
 
     // Returns the current xml:space scope.
     public override XmlSpace XmlSpace
@@ -1280,11 +1170,9 @@ namespace TextMonster.Xml.Xml_Reader
           return ParseElementContent();
           case ParsingFunction.DocumentContent:
           return ParseDocumentContent();
-#if !SILVERLIGHT // Needed only for XmlTextReader
           case ParsingFunction.OpenUrl:
           OpenUrl();
           goto case ParsingFunction.SwitchToInteractiveXmlDecl;
-#endif
           case ParsingFunction.SwitchToInteractive:
           readState = ReadState.Interactive;
           parsingFunction = nextParsingFunction;
@@ -1321,7 +1209,6 @@ namespace TextMonster.Xml.Xml_Reader
           PopElementContext();
           parsingFunction = nextParsingFunction;
           continue;
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
           case ParsingFunction.EntityReference:
           parsingFunction = nextParsingFunction;
           ParseEntityReference();
@@ -1344,12 +1231,10 @@ namespace TextMonster.Xml.Xml_Reader
           reportedBaseUri = ps.baseUriStr;
           parsingFunction = nextParsingFunction;
           return true;
-#endif
           case ParsingFunction.InReadAttributeValue:
           FinishAttributeValueIterator();
           curNode = nodes[index];
           continue;
-#if !SILVERLIGHT // Needed only for XmlTextReader (ReadChars, ReadBase64, ReadBinHex)
           case ParsingFunction.InIncrementalRead:
           FinishIncrementalRead();
           return true;
@@ -1359,7 +1244,6 @@ namespace TextMonster.Xml.Xml_Reader
           ParseXmlDeclarationFragment();
           parsingFunction = ParsingFunction.GoToEof;
           return true;
-#endif
           case ParsingFunction.GoToEof:
           OnEof();
           return false;
@@ -1411,11 +1295,9 @@ namespace TextMonster.Xml.Xml_Reader
         {
           case ParsingFunction.InReadAttributeValue:
           break;
-#if !SILVERLIGHT // Needed only for XmlTextReader (ReadChars, ReadBase64, ReadBinHex)
           case ParsingFunction.InIncrementalRead:
           FinishIncrementalRead();
           break;
-#endif
           case ParsingFunction.PartialTextValue:
           SkipPartialTextValue();
           break;
@@ -1487,16 +1369,6 @@ namespace TextMonster.Xml.Xml_Reader
           FinishReadContentAsBinary();
         }
 
-#if SILVERLIGHT
-                NodeData simpleValueNode = AddNode( index + attrCount + 1, curNode.depth + 1 );
-                simpleValueNode.SetValueNode( XmlNodeType.Text, curNode.StringValue );
-                simpleValueNode.lineInfo = curNode.lineInfo2;
-                simpleValueNode.depth = curNode.depth + 1;
-                curNode = simpleValueNode;
-
-                nextParsingFunction = parsingFunction;
-                parsingFunction = ParsingFunction.InReadAttributeValue;
-#else
         if (curNode.nextAttrValueChunk == null || entityHandling == EntityHandling.ExpandEntities)
         {
           NodeData simpleValueNode = AddNode(index + attrCount + 1, curNode.depth + 1);
@@ -1524,14 +1396,10 @@ namespace TextMonster.Xml.Xml_Reader
         nextParsingFunction = parsingFunction;
         parsingFunction = ParsingFunction.InReadAttributeValue;
         attributeValueBaseEntityId = ps.entityId;
-#endif
         return true;
       }
       else
       {
-#if SILVERLIGHT
-                return false;
-#else
         if (ps.entityId == attributeValueBaseEntityId)
         {
           if (curNode.nextAttrValueChunk != null)
@@ -1547,16 +1415,12 @@ namespace TextMonster.Xml.Xml_Reader
           // expanded entity in attribute value
           return ParseAttributeValueChunk();
         }
-#endif
       }
     }
 
     // Resolves the current entity reference node
     public override void ResolveEntity()
     {
-#if SILVERLIGHT // entities are always resolved V2 XmlReader that is Silverlight 
-            throw new InvalidOperationException( Res.GetString( Res.Xml_InvalidOperation ) );
-#else
       if (curNode.type != XmlNodeType.EntityReference)
       {
         throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
@@ -1609,10 +1473,8 @@ namespace TextMonster.Xml.Xml_Reader
       }
       ps.entityResolvedManually = true;
       index++;
-#endif
     }
 
-#if !SILVERLIGHT // Needed only for XmlTextReader or XmlValidatingReader
     internal FastXmlReader OuterReader
     {
       get
@@ -1642,7 +1504,6 @@ namespace TextMonster.Xml.Xml_Reader
       MoveOffEntityReference();
       return base.ReadString();
     }
-#endif
 
     public override bool CanReadBinaryContent
     {
@@ -2080,8 +1941,6 @@ namespace TextMonster.Xml.Xml_Reader
     //
     // XmlTextReader members
     //
-#if !SILVERLIGHT // Needed only for XmlTextReader
-    // Disables or enables support of W3C XML 1.0 Namespaces
     internal bool Namespaces
     {
       get
@@ -2413,7 +2272,6 @@ namespace TextMonster.Xml.Xml_Reader
         return IncrementalRead(array, offset, len);
       }
     }
-#endif
 
     //
     // Helpers for DtdParserProxy
@@ -2438,11 +2296,7 @@ namespace TextMonster.Xml.Xml_Reader
     {
       get
       {
-#if SILVERLIGHT
-                return false;
-#else
         return DtdValidation;
-#endif
       }
     }
 
@@ -2474,10 +2328,8 @@ namespace TextMonster.Xml.Xml_Reader
     {
       // SxS: ps.baseUri may be initialized in the constructor (public XmlTextReaderImpl( string url, XmlNameTable nt )) based on 
       // url provided by the user. Here the property returns ps.BaseUri - so it may expose a path. 
-#if !SILVERLIGHT
       [ResourceConsumption(ResourceScope.Machine)]
       [ResourceExposure(ResourceScope.Machine)]
-#endif
       get
       {
         if (ps.baseUriStr.Length > 0 && ps.baseUri == null && xmlResolver != null)
@@ -2540,7 +2392,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-#if !SILVERLIGHT
     internal IValidationEventHandling DtdParserProxy_ValidationEventHandling
     {
       get
@@ -2552,7 +2403,6 @@ namespace TextMonster.Xml.Xml_Reader
         validationEventHandling = value;
       }
     }
-#endif
 
     internal void DtdParserProxy_OnNewLine(int pos)
     {
@@ -2630,7 +2480,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
       catch (XmlException e)
       {
-#if !SILVERLIGHT
         if (e.ResString == Res.Xml_UnexpectedEOF && ps.entity != null)
         {
           SendValidationEvent(XmlSeverityType.Error, Res.Sch_ParEntityRefNesting, null, ps.LineNo, ps.LinePos);
@@ -2639,9 +2488,6 @@ namespace TextMonster.Xml.Xml_Reader
         {
           throw;
         }
-#else
-                throw e;
-#endif
       }
     }
 
@@ -2653,12 +2499,10 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-#if !SILVERLIGHT
     private XmlResolver GetTempResolver()
     {
       return xmlResolver == null ? new XmlUrlResolver() : xmlResolver;
     }
-#endif
 
     internal bool DtdParserProxy_PushEntity(IDtdEntityInfo entity, out int entityId)
     {
@@ -2697,10 +2541,8 @@ namespace TextMonster.Xml.Xml_Reader
 
     // SxS: The caller did not provide any SxS sensitive name or resource. No resource is being exposed either. 
     // It is OK to suppress SxS warning.
-#if !SILVERLIGHT
     [ResourceConsumption(ResourceScope.Machine, ResourceScope.Machine)]
     [ResourceExposure(ResourceScope.None)]
-#endif
     internal bool DtdParserProxy_PushExternalSubset(string systemId, string publicId)
     {
       if (IsResolverNull)
@@ -2860,7 +2702,6 @@ namespace TextMonster.Xml.Xml_Reader
       readState = ReadState.Error;
     }
 
-#if !SILVERLIGHT
     void SendValidationEvent(XmlSeverityType severity, string code, string arg, int lineNo, int linePos)
     {
       SendValidationEvent(severity, new XmlSchemaException(code, arg, ps.baseUriStr, lineNo, linePos));
@@ -2873,15 +2714,12 @@ namespace TextMonster.Xml.Xml_Reader
         validationEventHandling.SendEvent(exception, severity);
       }
     }
-#endif
 
     //
     // Private implementation methods & properties
     //
     private bool InAttributeValueIterator
     {
-#if !SILVERLIGHT
-#endif
       get
       {
         return attrCount > 0 && parsingFunction >= ParsingFunction.InReadAttributeValue;
@@ -2900,19 +2738,16 @@ namespace TextMonster.Xml.Xml_Reader
       }
       if (parsingFunction == ParsingFunction.InReadAttributeValue)
       {
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
         while (ps.entityId != attributeValueBaseEntityId)
         {
           HandleEntityEnd(false);
         }
         emptyEntityInAttributeResolved = false;
-#endif
         parsingFunction = nextParsingFunction;
         nextParsingFunction = (index > 0) ? ParsingFunction.ElementContent : ParsingFunction.DocumentContent;
       }
     }
 
-#if !SILVERLIGHT
     private bool DtdValidation
     {
       get
@@ -2930,19 +2765,16 @@ namespace TextMonster.Xml.Xml_Reader
     {
       InitStreamInput(null, baseUriStr, stream, null, 0, encoding);
     }
-#endif
 
     private void InitStreamInput(Uri baseUri, Stream stream, Encoding encoding)
     {
       InitStreamInput(baseUri, baseUri.ToString(), stream, null, 0, encoding);
     }
 
-#if !SILVERLIGHT
     private void InitStreamInput(Uri baseUri, string baseUriStr, Stream stream, Encoding encoding)
     {
       InitStreamInput(baseUri, baseUriStr, stream, null, 0, encoding);
     }
-#endif
 
     private void InitStreamInput(Uri baseUri, string baseUriStr, Stream stream, byte[] bytes, int byteCount, Encoding encoding)
     {
@@ -2961,16 +2793,7 @@ namespace TextMonster.Xml.Xml_Reader
       else
       {
         // allocate the byte buffer 
-#if !ASYNC
         bufferSize = FastXmlReader.CalcBufferSize(stream);
-#else
-                if (laterInitParam != null && laterInitParam.useAsync) {
-                    bufferSize = AsyncBufferSize;
-                }
-                else {
-                    bufferSize = XmlReader.CalcBufferSize(stream);
-                }
-#endif
         if (ps.bytes == null || ps.bytes.Length < bufferSize)
         {
           ps.bytes = new byte[bufferSize];
@@ -3041,16 +2864,7 @@ namespace TextMonster.Xml.Xml_Reader
 
       if (ps.chars == null)
       {
-#if !ASYNC
         ps.chars = new char[FastXmlReader.DefaultBufferSize + 1];
-#else
-                if (laterInitParam != null && laterInitParam.useAsync) {
-                    ps.chars = new char[XmlReader.AsyncBufferSize + 1];
-                }
-                else {
-                    ps.chars = new char[XmlReader.DefaultBufferSize + 1];
-                }
-#endif
       }
 
       ps.encoding = Encoding.Unicode;
@@ -3078,7 +2892,6 @@ namespace TextMonster.Xml.Xml_Reader
       ps.isEof = true;
     }
 
-#if !SILVERLIGHT
     private void InitFragmentReader(XmlNodeType fragmentType, XmlParserContext parserContext, bool allowXmlDeclFragment)
     {
 
@@ -3141,7 +2954,6 @@ namespace TextMonster.Xml.Xml_Reader
       this.fragmentType = fragmentType;
       this.fragment = true;
     }
-#endif
 
     private void ProcessDtdFromParserContext(XmlParserContext context)
     {
@@ -3161,7 +2973,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-#if !SILVERLIGHT // Needed only for XmlTextReader
     // SxS: This method resolve Uri but does not expose it to the caller. It's OK to suppress the warning.
     [ResourceConsumption(ResourceScope.Machine, ResourceScope.Machine)]
     [ResourceExposure(ResourceScope.None)]
@@ -3202,7 +3013,6 @@ namespace TextMonster.Xml.Xml_Reader
       // Safe to have valid resolver here as it is not used to parse DTD
       ps.stream = (Stream)GetTempResolver().GetEntity(ps.baseUri, null, typeof(Stream));
     }
-#endif
 
     // Stream input only: detect encoding from the first 4 bytes of the byte buffer starting at ps.bytes[ps.bytePos]
     private Encoding DetectEncoding()
@@ -3216,7 +3026,6 @@ namespace TextMonster.Xml.Xml_Reader
 
       switch (first2Bytes)
       {
-#if !SILVERLIGHT // Removing USC4 encoding
         case 0x0000:
         switch (next2Bytes)
         {
@@ -3230,11 +3039,7 @@ namespace TextMonster.Xml.Xml_Reader
           return Ucs4Encoding.UCS4_2143;
         }
         break;
-#endif
         case 0xFEFF:
-#if SILVERLIGHT // Removing USC4 encoding
-                    return Encoding.BigEndianUnicode;
-#else
         if (next2Bytes == 0x0000)
         {
           return Ucs4Encoding.UCS4_3412;
@@ -3243,11 +3048,7 @@ namespace TextMonster.Xml.Xml_Reader
         {
           return Encoding.BigEndianUnicode;
         }
-#endif
         case 0xFFFE:
-#if SILVERLIGHT // Removing USC4 encoding
-                    return Encoding.Unicode;
-#else
         if (next2Bytes == 0x0000)
         {
           return Ucs4Encoding.UCS4_Littleendian;
@@ -3256,11 +3057,7 @@ namespace TextMonster.Xml.Xml_Reader
         {
           return Encoding.Unicode;
         }
-#endif
         case 0x3C00:
-#if SILVERLIGHT // Removing USC4 encoding
-                    return Encoding.Unicode;
-#else
         if (next2Bytes == 0x0000)
         {
           return Ucs4Encoding.UCS4_Littleendian;
@@ -3269,11 +3066,7 @@ namespace TextMonster.Xml.Xml_Reader
         {
           return Encoding.Unicode;
         }
-#endif
         case 0x003C:
-#if SILVERLIGHT // Removing USC4 encoding
-                    return Encoding.BigEndianUnicode;
-#else
         if (next2Bytes == 0x0000)
         {
           return Ucs4Encoding.UCS4_3412;
@@ -3282,7 +3075,6 @@ namespace TextMonster.Xml.Xml_Reader
         {
           return Encoding.BigEndianUnicode;
         }
-#endif
         case 0x4C6F:
         if (next2Bytes == 0xA794)
         {
@@ -3332,12 +3124,8 @@ namespace TextMonster.Xml.Xml_Reader
     // Switches the reader's encoding
     private void SwitchEncoding(Encoding newEncoding)
     {
-#if SILVERLIGHT 
-            if ( ( newEncoding.WebName != ps.encoding.WebName || ps.decoder is SafeAsciiDecoder ) ) {
-#else
       if ((newEncoding.WebName != ps.encoding.WebName || ps.decoder is SafeAsciiDecoder) && !afterResetState)
       {
-#endif
         UnDecodeChars();
         ps.appendMode = false;
         SetupEncoding(newEncoding);
@@ -3364,9 +3152,6 @@ namespace TextMonster.Xml.Xml_Reader
              ps.encoding.WebName != "utf-16" &&
              0 != String.Compare(newEncodingName, "ucs-4", StringComparison.OrdinalIgnoreCase))
         {
-#if SILVERLIGHT // Needed only for XmlTextReader
-                    ThrowWithoutLineInfo(Res.Xml_MissingByteOrderMark);
-#else
           if (afterResetState)
           {
             Throw(Res.Xml_EncodingSwitchAfterResetState, newEncodingName);
@@ -3375,7 +3160,6 @@ namespace TextMonster.Xml.Xml_Reader
           {
             ThrowWithoutLineInfo(Res.Xml_MissingByteOrderMark);
           }
-#endif
         }
         return ps.encoding;
       }
@@ -3401,13 +3185,11 @@ namespace TextMonster.Xml.Xml_Reader
         }
       }
 
-#if !SILVERLIGHT // Needed only for XmlTextReader
       // check for invalid encoding switches after ResetState
       if (afterResetState && ps.encoding.WebName != newEncoding.WebName)
       {
         Throw(Res.Xml_EncodingSwitchAfterResetState, newEncodingName);
       }
-#endif
 
       return newEncoding;
     }
@@ -3693,9 +3475,6 @@ namespace TextMonster.Xml.Xml_Reader
 
       if (!XmlConvert.StrEqual(ps.chars, ps.charPos, 5, XmlDeclarationBegining) ||
            xmlCharType.IsNameSingleChar(ps.chars[ps.charPos + 5])
-#if XML10_FIFTH_EDITION
-                 || xmlCharType.IsNCNameHighSurrogateChar( ps.chars[ps.charPos + 5] ) 
-#endif
 )
       {
         goto NoXmlDecl;
@@ -3749,7 +3528,6 @@ namespace TextMonster.Xml.Xml_Reader
               {
                 Throw(Res.Xml_InvalidTextDecl);
               }
-#if !SILVERLIGHT // Needed only for XmlTextReader
               if (afterResetState)
               {
                 // check for invalid encoding switches to default encoding
@@ -3760,7 +3538,6 @@ namespace TextMonster.Xml.Xml_Reader
                   Throw(Res.Xml_EncodingSwitchAfterResetState, (ps.encoding.GetByteCount("A") == 1) ? "UTF-8" : "UTF-16");
                 }
               }
-#endif
               if (ps.decoder is SafeAsciiDecoder)
               {
                 SwitchEncodingToUTF8();
@@ -3874,11 +3651,6 @@ namespace TextMonster.Xml.Xml_Reader
         char[] chars;
       Continue:
         chars = ps.chars;
-#if SILVERLIGHT
-                while (xmlCharType.IsAttributeValueChar(chars[pos])) {
-                    pos++;
-                }
-#else // Optimization due to the lack of inlining when a method uses byte*
         unsafe
         {
           while (((xmlCharType.charProperties[chars[pos]] & XmlCharType.fAttrValue) != 0))
@@ -3886,7 +3658,6 @@ namespace TextMonster.Xml.Xml_Reader
             pos++;
           }
         }
-#endif
 
         if (ps.chars[pos] == quoteChar)
         {
@@ -3894,17 +3665,9 @@ namespace TextMonster.Xml.Xml_Reader
           {
             // version
             case 0:
-#if XML10_FIFTH_EDITION
-                            //  VersionNum ::= '1.' [0-9]+   (starting with XML Fifth Edition)
-                            if ( pos - ps.charPos >= 3 && 
-                                 ps.chars[ps.charPos] == '1' && 
-                                 ps.chars[ps.charPos + 1] == '.' && 
-                                 XmlCharType.IsOnlyDigits( ps.chars, ps.charPos + 2, pos - ps.charPos - 2 ) ) {
-#else
             // VersionNum  ::=  '1.0'        (XML Fourth Edition and earlier)
             if (XmlConvert.StrEqual(ps.chars, ps.charPos, pos - ps.charPos, "1.0"))
             {
-#endif
               if (!isTextDecl)
               {
                 attr.SetValue(ps.chars, ps.charPos, pos - ps.charPos);
@@ -3982,7 +3745,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         parsingFunction = nextParsingFunction;
       }
-#if !SILVERLIGHT // Needed only for XmlTextReader
       if (afterResetState)
       {
         // check for invalid encoding switches to default encoding
@@ -3993,7 +3755,6 @@ namespace TextMonster.Xml.Xml_Reader
           Throw(Res.Xml_EncodingSwitchAfterResetState, (ps.encoding.GetByteCount("A") == 1) ? "UTF-8" : "UTF-16");
         }
       }
-#endif
       if (ps.decoder is SafeAsciiDecoder)
       {
         SwitchEncodingToUTF8();
@@ -4007,15 +3768,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
 
       bool mangoQuirks = false;
-#if FEATURE_LEGACYNETCF
-            // Dev11 447539 quirk:
-            // In Mango the default XmlTextReader is instantiated
-            // with v1Compat flag set to true.  One of the effects
-            // of this settings is to eat any trailing nulls in the
-            // buffer and some apps depend on this behavior.
-            if (CompatibilitySwitches.IsAppEarlierThanWindowsPhone8)
-                mangoQuirks = true;
-#endif
       for (; ; )
       {
         bool needMoreChars = false;
@@ -4153,7 +3905,6 @@ namespace TextMonster.Xml.Xml_Reader
             int i;
             switch (HandleEntityReference(false, EntityExpandType.OnlyGeneral, out i))
             {
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
               case EntityType.Unexpanded:
               if (parsingFunction == ParsingFunction.EntityReference)
               {
@@ -4161,7 +3912,6 @@ namespace TextMonster.Xml.Xml_Reader
               }
               ParseEntityReference();
               return true;
-#endif
               case EntityType.CharacterDec:
               case EntityType.CharacterHex:
               case EntityType.CharacterNamed:
@@ -4221,15 +3971,11 @@ namespace TextMonster.Xml.Xml_Reader
 
           if (InEntity)
           {
-#if SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
-                        HandleEntityEnd( true );
-#else
             if (HandleEntityEnd(true))
             {
               SetupEndEntityNodeInContent();
               return true;
             }
-#endif
             continue;
           }
 
@@ -4387,15 +4133,11 @@ namespace TextMonster.Xml.Xml_Reader
             }
             ThrowUnclosedElements();
           }
-#if SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
-                    HandleEntityEnd( true );
-#else
           if (HandleEntityEnd(true))
           {
             SetupEndEntityNodeInContent();
             return true;
           }
-#endif
         }
       }
     }
@@ -4446,19 +4188,10 @@ namespace TextMonster.Xml.Xml_Reader
       // check element name start char
       unsafe
       {
-#if SILVERLIGHT
-                if ( xmlCharType.IsStartNCNameSingleChar( chars[pos] ) ) {
-#else // Optimization due to the lack of inlining when a method uses byte*
         if ((xmlCharType.charProperties[chars[pos]] & XmlCharType.fNCStartNameSC) != 0)
         {
-#endif
           pos++;
         }
-#if XML10_FIFTH_EDITION
-                else if ( pos + 1 < ps.charsUsed && xmlCharType.IsNCNameSurrogateChar(chars[pos + 1], chars[pos])) {
-                    pos += 2;
-                }
-#endif
         else
         {
           goto ParseQNameSlow;
@@ -4471,19 +4204,10 @@ namespace TextMonster.Xml.Xml_Reader
         // parse element name
         for (; ; )
         {
-#if SILVERLIGHT
-                    if ( xmlCharType.IsNCNameSingleChar( chars[pos] ) ) {
-#else // Optimization due to the lack of inlining when a method uses byte*
           if (((xmlCharType.charProperties[chars[pos]] & XmlCharType.fNCNameSC) != 0))
           {
-#endif
             pos++;
           }
-#if XML10_FIFTH_EDITION
-                    else if ( pos < ps.charsUsed && xmlCharType.IsNCNameSurrogateChar(chars[pos + 1], chars[pos])) {
-                        pos += 2;
-                    }
-#endif
           else
           {
             break;
@@ -4556,14 +4280,10 @@ namespace TextMonster.Xml.Xml_Reader
       char ch = chars[pos];
       // white space after element name -> there are probably some attributes
       bool isWs;
-#if SILVERLIGHT
-            isWs = xmlCharType.IsWhiteSpace(ch);
-#else // Optimization due to the lack of inlining when a method uses byte*
       unsafe
       {
         isWs = ((xmlCharType.charProperties[ch] & XmlCharType.fWhitespace) != 0);
       }
-#endif
       if (isWs)
       {
         ps.charPos = pos;
@@ -4640,7 +4360,6 @@ namespace TextMonster.Xml.Xml_Reader
           IDtdAttributeInfo attributeInfo = attlistInfo.LookupAttribute(attr.prefix, attr.localName);
           if (attributeInfo != null && attributeInfo.IsNonCDataType)
           {
-#if !SILVERLIGHT // No DTD validation in Silverlight
             if (DtdValidation && standalone && attributeInfo.IsDeclaredInExternal)
             {
               // VC constraint:
@@ -4656,7 +4375,6 @@ namespace TextMonster.Xml.Xml_Reader
               }
             }
             else
-#endif
               attr.TrimSpacesInValue();
           }
         }
@@ -4680,14 +4398,12 @@ namespace TextMonster.Xml.Xml_Reader
         {
           if (AddDefaultAttributeDtd(defaultAttributeInfo, true, nameSortedAttributes))
           {
-#if !SILVERLIGHT // No DTD validation in Silverlight
             if (DtdValidation && standalone && defaultAttributeInfo.IsDeclaredInExternal)
             {
               string prefix = defaultAttributeInfo.Prefix;
               string qname = (prefix.Length == 0) ? defaultAttributeInfo.LocalName : (prefix + ':' + defaultAttributeInfo.LocalName);
               SendValidationEvent(XmlSeverityType.Error, Res.Sch_UnSpecifiedDefaultAttributeInExternalStandalone, qname, curNode.LineNo, curNode.LinePos);
             }
-#endif
           }
         }
 
@@ -4753,16 +4469,7 @@ namespace TextMonster.Xml.Xml_Reader
 
         unsafe
         {
-#if SILVERLIGHT
-                    if ( xmlCharType.IsNCNameSingleChar( chars[pos] ) ||
-#else // Optimization due to the lack of inlining when a method uses byte*
-          if (((xmlCharType.charProperties[chars[pos]] & XmlCharType.fNCNameSC) != 0) ||
-#endif
- (chars[pos] == ':')
-#if XML10_FIFTH_EDITION
-                         || xmlCharType.IsNCNameHighSurrogateChar( chars[pos] ) 
-#endif
-)
+          if (((xmlCharType.charProperties[chars[pos]] & XmlCharType.fNCNameSC) != 0) || (chars[pos] == ':'))
           {
             ThrowTagMismatch(startTagNode);
           }
@@ -4861,15 +4568,10 @@ namespace TextMonster.Xml.Xml_Reader
         // eat whitespaces
         int lineNoDelta = 0;
         char tmpch0;
-#if SILVERLIGHT
-                {
-                    while (xmlCharType.IsWhiteSpace(tmpch0 = chars[pos])) {
-#else // Optimization due to the lack of inlining when a method uses byte*
         unsafe
         {
           while (((xmlCharType.charProperties[tmpch0 = chars[pos]] & XmlCharType.fWhitespace) != 0))
           {
-#endif
             if (tmpch0 == (char)0xA)
             {
               OnNewLine(pos + 1);
@@ -4903,19 +4605,10 @@ namespace TextMonster.Xml.Xml_Reader
 
         unsafe
         {
-#if SILVERLIGHT
-                    if ( xmlCharType.IsStartNCNameSingleChar( tmpch1 = chars[pos]) ) {
-#else // Optimization due to the lack of inlining when a method uses byte*
           if ((xmlCharType.charProperties[tmpch1 = chars[pos]] & XmlCharType.fNCStartNameSC) != 0)
           {
-#endif
             startNameCharSize = 1;
           }
-#if XML10_FIFTH_EDITION
-                    else if ( pos + 1 < ps.charsUsed && xmlCharType.IsNCNameSurrogateChar( chars[pos + 1], tmpch1 ) ) {
-                        startNameCharSize = 2;
-                    }
-#endif
         }
 
         if (startNameCharSize == 0)
@@ -4966,10 +4659,6 @@ namespace TextMonster.Xml.Xml_Reader
         // save attribute name line position
         int attrNameLinePos = ps.LinePos;
 
-#if DEBUG
-                int attrNameLineNo = ps.LineNo;
-#endif
-
         // parse attribute name
         int colonPos = -1;
 
@@ -4985,19 +4674,10 @@ namespace TextMonster.Xml.Xml_Reader
         {
           for (; ; )
           {
-#if SILVERLIGHT
-                        if ( xmlCharType.IsNCNameSingleChar( tmpch2 = chars[pos] ) ) {
-#else // Optimization due to the lack of inlining when a method uses byte*
             if (((xmlCharType.charProperties[tmpch2 = chars[pos]] & XmlCharType.fNCNameSC) != 0))
             {
-#endif
               pos++;
             }
-#if XML10_FIFTH_EDITION
-                        else if (pos + 1 < ps.charsUsed && xmlCharType.IsNCNameSurrogateChar(chars[pos + 1], tmpch2)) {
-                            pos += 2;
-                        }
-#endif
             else
             {
               break;
@@ -5027,21 +4707,11 @@ namespace TextMonster.Xml.Xml_Reader
 
             unsafe
             {
-#if SILVERLIGHT
-                            if ( xmlCharType.IsStartNCNameSingleChar( chars[pos] ) ) {
-#else // Optimization due to the lack of inlining when a method uses byte*
               if (((xmlCharType.charProperties[chars[pos]] & XmlCharType.fNCStartNameSC) != 0))
               {
-#endif
                 pos++;
                 goto ContinueParseName;
               }
-#if XML10_FIFTH_EDITION
-                            else if ( pos + 1 < ps.charsUsed && xmlCharType.IsNCNameSurrogateChar( chars[pos + 1], chars[pos] ) ) {
-                                pos += 2;
-                                goto ContinueParseName;
-                            }
-#endif
             }
             // else fallback to full name parsing routine
             pos = ParseQName(out colonPos);
@@ -5056,10 +4726,6 @@ namespace TextMonster.Xml.Xml_Reader
 
         attr = AddAttribute(pos, colonPos);
         attr.SetLineInfo(ps.LineNo, attrNameLinePos);
-
-#if DEBUG
-                Debug.Assert( attrNameLineNo == ps.LineNo );
-#endif
 
         // parse equals and quote char; 
         if (chars[pos] != '=')
@@ -5094,11 +4760,6 @@ namespace TextMonster.Xml.Xml_Reader
 
         // parse attribute value
         char tmpch3;
-#if SILVERLIGHT
-                while (xmlCharType.IsAttributeValueChar(tmpch3 = chars[pos])) {
-                    pos++;
-                }
-#else // Optimization due to the lack of inlining when a method uses byte*
         unsafe
         {
           while (((xmlCharType.charProperties[tmpch3 = chars[pos]] & XmlCharType.fAttrValue) != 0))
@@ -5106,17 +4767,8 @@ namespace TextMonster.Xml.Xml_Reader
             pos++;
           }
         }
-#endif
         if (tmpch3 == quoteChar)
         {
-#if DEBUG
-#if !SILVERLIGHT
-                    if ( normalize ) {
-                        string val = new string( chars, ps.charPos, pos - ps.charPos );
-                        Debug.Assert( val == XmlComplianceUtil.CDataNormalize( val ), "The attribute value is not CDATA normalized!" ); 
-                    }
-#endif
-#endif
           attr.SetValue(chars, ps.charPos, pos - ps.charPos);
           pos++;
           ps.charPos = pos;
@@ -5321,20 +4973,13 @@ namespace TextMonster.Xml.Xml_Reader
       int pos = curPos;
       char[] chars = ps.chars;
       int attributeBaseEntityId = ps.entityId;
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
       int valueChunkStartPos = 0;
       LineInfo valueChunkLineInfo = new LineInfo(ps.lineNo, ps.LinePos);
       NodeData lastChunk = null;
-#endif
 
       for (; ; )
       {
         // parse the rest of the attribute value
-#if SILVERLIGHT
-                while (xmlCharType.IsAttributeValueChar(chars[pos])) {
-                    pos++;
-                }
-#else // Optimization due to the lack of inlining when a method uses byte*
         unsafe
         {
           while (((xmlCharType.charProperties[chars[pos]] & XmlCharType.fAttrValue) != 0))
@@ -5342,7 +4987,6 @@ namespace TextMonster.Xml.Xml_Reader
             pos++;
           }
         }
-#endif
 
         if (pos - ps.charPos > 0)
         {
@@ -5419,17 +5063,14 @@ namespace TextMonster.Xml.Xml_Reader
             }
             ps.charPos = pos;
 
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
             int enclosingEntityId = ps.entityId;
             LineInfo entityLineInfo = new LineInfo(ps.lineNo, ps.LinePos + 1);
-#endif
             switch (HandleEntityReference(true, EntityExpandType.All, out pos))
             {
               case EntityType.CharacterDec:
               case EntityType.CharacterHex:
               case EntityType.CharacterNamed:
               break;
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
               case EntityType.Unexpanded:
               if (parsingMode == ParsingMode.Full && ps.entityId == attributeBaseEntityId)
               {
@@ -5503,7 +5144,6 @@ namespace TextMonster.Xml.Xml_Reader
               }
               pos = ps.charPos;
               break;
-#endif
               default:
               pos = ps.charPos;
               break;
@@ -5564,9 +5204,6 @@ namespace TextMonster.Xml.Xml_Reader
               }
               Throw(Res.Xml_UnclosedQuote);
             }
-#if SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
-                        HandleEntityEnd( true );
-#else
             if (HandleEntityEnd(true))
             { // no EndEntity reporting while parsing attributes
               Throw(Res.Xml_InternalError);
@@ -5577,7 +5214,6 @@ namespace TextMonster.Xml.Xml_Reader
               valueChunkStartPos = stringBuilder.Length;
               valueChunkLineInfo.Set(ps.LineNo, ps.LinePos);
             }
-#endif
           }
         }
 
@@ -5585,7 +5221,6 @@ namespace TextMonster.Xml.Xml_Reader
         chars = ps.chars;
       }
 
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
       if (attr.nextAttrValueChunk != null)
       {
         // construct last text value chunk
@@ -5599,7 +5234,6 @@ namespace TextMonster.Xml.Xml_Reader
           AddAttributeChunkToList(attr, textChunk, ref lastChunk);
         }
       }
-#endif
 
       ps.charPos = pos + 1;
 
@@ -5607,7 +5241,6 @@ namespace TextMonster.Xml.Xml_Reader
       stringBuilder.Length = 0;
     }
 
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
     private void AddAttributeChunkToList(NodeData attr, NodeData chunk, ref NodeData lastChunk)
     {
       if (lastChunk == null)
@@ -5621,7 +5254,6 @@ namespace TextMonster.Xml.Xml_Reader
         lastChunk = chunk;
       }
     }
-#endif
 
     // Parses text or white space node.
     // Returns true if a node has been parsed and its data set to curNode. 
@@ -5743,8 +5375,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     IgnoredNode:
 
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
-
       // ignored whitespace at the end of manually resolved entity
       if (parsingFunction == ParsingFunction.ReportEndEntity)
       {
@@ -5758,7 +5388,6 @@ namespace TextMonster.Xml.Xml_Reader
         ParseEntityReference();
         return true;
       }
-#endif
       return false;
     }
 
@@ -5780,12 +5409,6 @@ namespace TextMonster.Xml.Xml_Reader
       for (; ; )
       {
         // parse text content
-#if SILVERLIGHT
-                while (xmlCharType.IsTextChar(c = chars[pos])) {
-                    orChars |= (int)c;
-                    pos++;
-                }
-#else // Optimization due to the lack of inlining when a method uses byte*
         unsafe
         {
           while (((xmlCharType.charProperties[c = chars[pos]] & XmlCharType.fText) != 0))
@@ -5794,7 +5417,6 @@ namespace TextMonster.Xml.Xml_Reader
             pos++;
           }
         }
-#endif
 
         switch (c)
         {
@@ -5878,14 +5500,12 @@ namespace TextMonster.Xml.Xml_Reader
             }
             switch (HandleEntityReference(false, EntityExpandType.All, out pos))
             {
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
               case EntityType.Unexpanded:
               // make sure we will report EntityReference after the text node
               nextParsingFunction = parsingFunction;
               parsingFunction = ParsingFunction.EntityReference;
               // end the value (returns nothing)
               goto NoValue;
-#endif
               case EntityType.CharacterDec:
               if (!v1Compat)
               {
@@ -5980,9 +5600,6 @@ namespace TextMonster.Xml.Xml_Reader
               // end the value (returns nothing)
               goto NoValue;
             }
-#if SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
-                        HandleEntityEnd( true );
-#else
             if (HandleEntityEnd(true))
             {
               // report EndEntity after the text node
@@ -5991,7 +5608,6 @@ namespace TextMonster.Xml.Xml_Reader
               // end the value (returns nothing)
               goto NoValue;
             }
-#endif
           }
         }
         pos = ps.charPos;
@@ -6172,7 +5788,6 @@ namespace TextMonster.Xml.Xml_Reader
       return false;
     }
 
-#if !SILVERLIGHT
     private void ParseEntityReference()
     {
       ps.charPos++;
@@ -6180,7 +5795,6 @@ namespace TextMonster.Xml.Xml_Reader
       curNode.SetLineInfo(ps.LineNo, ps.LinePos);
       curNode.SetNamedNode(XmlNodeType.EntityReference, ParseEntityName());
     }
-#endif
 
     private EntityType HandleEntityReference(bool isInAttributeValue, EntityExpandType expandType, out int charRefEndPos)
     {
@@ -6210,7 +5824,6 @@ namespace TextMonster.Xml.Xml_Reader
         }
 
         // general entity reference
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
         // NOTE: XmlValidatingReader compatibility mode: expand all entities in attribute values
         // general entity reference
         if (expandType == EntityExpandType.OnlyCharacter ||
@@ -6219,7 +5832,6 @@ namespace TextMonster.Xml.Xml_Reader
         {
           return EntityType.Unexpanded;
         }
-#endif
         int endPos;
 
         ps.charPos++;
@@ -6266,7 +5878,6 @@ namespace TextMonster.Xml.Xml_Reader
       if (dtdInfo == null ||
            ((entity = dtdInfo.LookupEntity(name)) == null))
       {
-#if !SILVERLIGHT // Needed only for XmlTextReader (when used from XmlDocument)
         if (disableUndeclaredEntityCheck)
         {
           SchemaEntity schemaEntity = new SchemaEntity(new XmlQualifiedName(name), false);
@@ -6274,13 +5885,11 @@ namespace TextMonster.Xml.Xml_Reader
           entity = schemaEntity;
         }
         else
-#endif
           Throw(Res.Xml_UndeclaredEntity, name, ps.LineNo, entityStartLinePos);
       }
 
       if (entity.IsUnparsedEntity)
       {
-#if !SILVERLIGHT // Needed only for XmlTextReader (when used from XmlDocument)
         if (disableUndeclaredEntityCheck)
         {
           SchemaEntity schemaEntity = new SchemaEntity(new XmlQualifiedName(name), false);
@@ -6288,7 +5897,6 @@ namespace TextMonster.Xml.Xml_Reader
           entity = schemaEntity;
         }
         else
-#endif
           Throw(Res.Xml_UnparsedEntityRef, name, ps.LineNo, entityStartLinePos);
       }
 
@@ -6324,11 +5932,7 @@ namespace TextMonster.Xml.Xml_Reader
         {
           PushExternalEntity(entity);
           curNode.entityId = ps.entityId;
-#if SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
-                    return EntityType.Expanded; 
-#else
           return (isInAttributeValue && validatingReaderCompatFlag) ? EntityType.ExpandedInAttribute : EntityType.Expanded;
-#endif
         }
       }
       else
@@ -6341,11 +5945,7 @@ namespace TextMonster.Xml.Xml_Reader
         PushInternalEntity(entity);
 
         curNode.entityId = ps.entityId;
-#if SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
-                return EntityType.Expanded;
-#else
         return (isInAttributeValue && validatingReaderCompatFlag) ? EntityType.ExpandedInAttribute : EntityType.Expanded;
-#endif
       }
     }
 
@@ -6358,18 +5958,13 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // return true if EndEntity node should be reported. The entity is stored in lastEntity.
-#if SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
-        private void HandleEntityEnd( bool checkEntityNesting ) {
-#else
     private bool HandleEntityEnd(bool checkEntityNesting)
     {
-#endif
       if (parsingStatesStackTop == -1)
       {
         Throw(Res.Xml_InternalError);
       }
 
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
       if (ps.entityResolvedManually)
       {
         index--;
@@ -6389,7 +5984,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
       else
       {
-#endif
         if (checkEntityNesting)
         {
           if (ps.entityId != nodes[index].entityId)
@@ -6402,13 +5996,10 @@ namespace TextMonster.Xml.Xml_Reader
 
         reportedEncoding = ps.encoding;
         reportedBaseUri = ps.baseUriStr;
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
         return false;
       }
-#endif
     }
 
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
     private void SetupEndEntityNodeInContent()
     {
       reportedEncoding = ps.encoding;
@@ -6430,7 +6021,6 @@ namespace TextMonster.Xml.Xml_Reader
       curNode.lineInfo.linePos += curNode.localName.Length;
       curNode.type = XmlNodeType.EndEntity;
     }
-#endif
 
     private bool ParsePI()
     {
@@ -6554,12 +6144,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
 
         char tmpch;
-#if SILVERLIGHT
-                while (xmlCharType.IsTextChar(tmpch = chars[pos]) &&
-                    tmpch != '?') {
-                    pos++;
-                }
-#else // Optimization due to the lack of inlining when a method uses byte*
         unsafe
         {
           while (((xmlCharType.charProperties[tmpch = chars[pos]] & XmlCharType.fText) != 0) &&
@@ -6568,7 +6152,6 @@ namespace TextMonster.Xml.Xml_Reader
             pos++;
           }
         }
-#endif
 
         switch (chars[pos])
         {
@@ -6768,12 +6351,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
 
         char tmpch;
-#if SILVERLIGHT
-                while (xmlCharType.IsTextChar(tmpch = chars[pos]) &&
-                    tmpch != stopChar) {
-                    pos++;
-                }
-#else // Optimization due to the lack of inlining when a method uses byte*
         unsafe
         {
           while (((xmlCharType.charProperties[tmpch = chars[pos]] & XmlCharType.fText) != 0) &&
@@ -6782,7 +6359,6 @@ namespace TextMonster.Xml.Xml_Reader
             pos++;
           }
         }
-#endif
 
         // posibbly end of comment or cdata section
         if (chars[pos] == stopChar)
@@ -6982,12 +6558,8 @@ namespace TextMonster.Xml.Xml_Reader
 
       dtdInfo = dtdParser.ParseInternalDtd(new DtdParserProxy(this), true);
 
-#if SILVERLIGHT // Needed only for XmlTextReader and XmlValidatingReader
-            if (dtdInfo.HasDefaultAttributes || dtdInfo.HasNonCDataAttributes) {
-#else
       if ((validatingReaderCompatFlag || !v1Compat) && (dtdInfo.HasDefaultAttributes || dtdInfo.HasNonCDataAttributes))
       {
-#endif
         addDefaultAttributesAndNormalize = true;
       }
 
@@ -7128,11 +6700,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         char ch;
 
-#if SILVERLIGHT
-                while ( xmlCharType.IsAttributeValueChar( ch = chars[pos] ) && ch != stopChar && ch != '-' && ch != '?') {
-                    pos++;
-                }
-#else // Optimization due to the lack of inlining when a method uses byte*
         unsafe
         {
           while (((xmlCharType.charProperties[ch = chars[pos]] & XmlCharType.fAttrValue) != 0) && chars[pos] != stopChar && ch != '-' && ch != '?')
@@ -7140,7 +6707,6 @@ namespace TextMonster.Xml.Xml_Reader
             pos++;
           }
         }
-#endif
 
         // closing stopChar outside of literal and ignore/include sections -> save value & return
         if (ch == stopChar && !inLiteral)
@@ -7775,19 +7341,10 @@ namespace TextMonster.Xml.Xml_Reader
       // start name char
       unsafe
       {
-#if SILVERLIGHT
-                if ( xmlCharType.IsStartNCNameSingleChar( chars[pos] ) ) {
-#else // Optimization due to the lack of inlining when a method uses byte*
         if ((xmlCharType.charProperties[chars[pos]] & XmlCharType.fNCStartNameSC) != 0)
         {
-#endif
           pos++;
         }
-#if XML10_FIFTH_EDITION
-                else if ( pos + 1 < ps.charsUsed && xmlCharType.IsNCNameSurrogateChar( chars[pos + 1], chars[pos] ) ) {
-                    pos += 2;
-                }
-#endif
         else
         {
           if (pos + 1 >= ps.charsUsed)
@@ -7811,19 +7368,10 @@ namespace TextMonster.Xml.Xml_Reader
       {
         for (; ; )
         {
-#if SILVERLIGHT
-                    if ( xmlCharType.IsNCNameSingleChar( chars[pos] )) {
-#else // Optimization due to the lack of inlining when a method uses byte*
           if (((xmlCharType.charProperties[chars[pos]] & XmlCharType.fNCNameSC) != 0))
           {
-#endif
             pos++;
           }
-#if XML10_FIFTH_EDITION
-                    else if ( pos + 1 < ps.charsUsed && xmlCharType.IsNCNameSurrogateChar( chars[pos + 1], chars[pos] ) ) {
-                        pos += 2;
-                    }
-#endif
           else
           {
             break;
@@ -7852,11 +7400,7 @@ namespace TextMonster.Xml.Xml_Reader
         }
       }
       // end of buffer
-      else if (pos == ps.charsUsed
-#if XML10_FIFTH_EDITION
-                || ( pos + 1 == ps.charsUsed && xmlCharType.IsNCNameHighSurrogateChar( chars[pos] ) ) 
-#endif
-)
+      else if (pos == ps.charsUsed)
       {
         if (ReadDataInName(ref pos))
         {
@@ -7879,7 +7423,6 @@ namespace TextMonster.Xml.Xml_Reader
       return newDataRead;
     }
 
-#if !SILVERLIGHT
     private string ParseEntityName()
     {
       int endPos;
@@ -7903,10 +7446,7 @@ namespace TextMonster.Xml.Xml_Reader
       ps.charPos = endPos + 1;
       return entityName;
     }
-#endif
 
-#if !SILVERLIGHT
-#endif
     private NodeData AddNode(int nodeIndex, int nodeDepth)
     {
       NodeData n = nodes[nodeIndex];
@@ -8088,11 +7628,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         ReThrow(e, (int)attr.lineInfo.lineNo, (int)attr.lineInfo.linePos);
       }
-#if DEBUG
-            if ( prefix.Length == 0 ) {
-                Debug.Assert( xmlContext.defaultNamespace == uri );
-            }
-#endif
     }
 
     private void ResetAttributes()
@@ -8112,9 +7647,7 @@ namespace TextMonster.Xml.Xml_Reader
       for (int i = index + 1; i < index + attrCount + 1; i++)
       {
         NodeData attr = nodes[i];
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
         attr.nextAttrValueChunk = null;
-#endif
         attr.IsDefaultAttribute = false;
       }
       fullAttrCleanup = false;
@@ -8163,10 +7696,8 @@ namespace TextMonster.Xml.Xml_Reader
 
     // This method resolves and opens an external DTD subset or an external entity based on its SYSTEM or PUBLIC ID.
     // SxS: This method may expose a name if a resource in baseUri (ref) parameter. 
-#if !SILVERLIGHT
     [ResourceConsumption(ResourceScope.Machine)]
     [ResourceExposure(ResourceScope.Machine)]
-#endif
     private void PushExternalEntityOrSubset(string publicId, string systemId, Uri baseUri, string entityName)
     {
       Uri uri;
@@ -8205,11 +7736,7 @@ namespace TextMonster.Xml.Xml_Reader
           throw;
         }
         string innerMessage;
-#if SILVERLIGHT // This is to remove the second "An error occured" from "An error has occurred while opening external entity 'bla.ent': An error occurred."
-                innerMessage = string.Empty;
-#else
         innerMessage = e.Message;
-#endif
         Throw(new XmlException(entityName == null ? Res.Xml_ErrorOpeningExternalDtd : Res.Xml_ErrorOpeningExternalEntity, new string[] { uri.ToString(), innerMessage }, e, 0, 0));
       }
 
@@ -8259,10 +7786,8 @@ namespace TextMonster.Xml.Xml_Reader
     // returns true if real entity has been pushed, false if fake entity (=empty content entity)
     // SxS: The method neither takes any name of resource directly nor it exposes any resource to the caller. 
     // Entity info was created based on source document. It's OK to suppress the SxS warning
-#if !SILVERLIGHT
     [ResourceConsumption(ResourceScope.Machine, ResourceScope.Machine)]
     [ResourceExposure(ResourceScope.None)]
-#endif
     private bool PushExternalEntity(IDtdEntityInfo entity)
     {
       if (!IsResolverNull)
@@ -8392,7 +7917,6 @@ namespace TextMonster.Xml.Xml_Reader
       ps = parsingStatesStack[parsingStatesStackTop--];
     }
 
-#if !SILVERLIGHT // Needed only for XmlTextReader (ReadChars, ReadBase64, ReadBinHex)
     private void InitIncrementalRead(IncrementalReadDecoder decoder)
     {
       ResetAttributes();
@@ -8529,7 +8053,7 @@ namespace TextMonster.Xml.Xml_Reader
           default:
           break;
         }
-        
+
         char[] chars = ps.chars;
         startPos = ps.charPos;
         pos = startPos;
@@ -8817,9 +8341,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-#endif
-
-#if !SILVERLIGHT // Needed only for XmlTextReader (ReadChars, ReadBase64, ReadBinHex)
     private bool ParseAttributeValueChunk()
     {
       char[] chars = ps.chars;
@@ -8981,7 +8502,6 @@ namespace TextMonster.Xml.Xml_Reader
         ReThrow(e, e.LineNumber, e.LinePosition - 6); // 6 == strlen( "<?xml " );
       }
     }
-#endif
 
     private void ThrowUnexpectedToken(int pos, string expectedToken)
     {
@@ -9097,13 +8617,11 @@ namespace TextMonster.Xml.Xml_Reader
     // Note that this method calls ReadData() which may change the value of ps.chars and ps.charPos.
     private bool ZeroEndingStream(int pos)
     {
-#if !SILVERLIGHT
       if (v1Compat && pos == ps.charsUsed - 1 && ps.chars[pos] == (char)0 && ReadData() == 0 && ps.isStreamEof)
       {
         ps.charsUsed--;
         return true;
       }
-#endif
       return false;
     }
 
@@ -9115,12 +8633,8 @@ namespace TextMonster.Xml.Xml_Reader
       dtdInfo = dtdParser.ParseFreeFloatingDtd(fragmentParserContext.BaseURI, fragmentParserContext.DocTypeName, fragmentParserContext.PublicId,
                                                fragmentParserContext.SystemId, fragmentParserContext.InternalSubset, new DtdParserProxy(this));
 
-#if SILVERLIGHT // Needed only for XmlTextReader or XmlValidatingReader
-            if (dtdInfo.HasDefaultAttributes || dtdInfo.HasNonCDataAttributes) {
-#else
       if ((validatingReaderCompatFlag || !v1Compat) && (dtdInfo.HasDefaultAttributes || dtdInfo.HasNonCDataAttributes))
       {
-#endif
         addDefaultAttributesAndNormalize = true;
       }
     }
@@ -9277,7 +8791,6 @@ namespace TextMonster.Xml.Xml_Reader
     //
     // DtdInfo
     //
-#if !SILVERLIGHT
     internal override IDtdInfo DtdInfo
     {
       get
@@ -9297,13 +8810,11 @@ namespace TextMonster.Xml.Xml_Reader
         }
       }
     }
-#endif
 
     //
     // Validation support
     //
 
-#if !SILVERLIGHT // no validation in Silverlight
     internal IValidationEventHandling ValidationEventHandling
     {
       set
@@ -9316,12 +8827,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
       set { onDefaultAttributeUse = value; }
     }
-#endif
-
-    //
-    // Internal properties for XmlValidatingReader
-    //
-#if !SILVERLIGHT // Needed only for XmlValidatingReader
 
     internal bool XmlValidatingReaderCompatibilityMode
     {
@@ -9408,7 +8913,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-#endif
     internal ConformanceLevel V1ComformanceLevel
     {
       get
@@ -9452,7 +8956,6 @@ namespace TextMonster.Xml.Xml_Reader
                                                    defAttrInfo.LineNumber, defAttrInfo.LinePosition,
                                                    defAttrInfo.ValueLineNumber, defAttrInfo.ValueLinePosition, defAttrInfo.IsXmlAttribute);
 
-#if !SILVERLIGHT
       if (DtdValidation)
       {
         if (onDefaultAttributeUse != null)
@@ -9461,11 +8964,9 @@ namespace TextMonster.Xml.Xml_Reader
         }
         attr.typedValue = defAttrInfo.DefaultValueTyped;
       }
-#endif
       return attr != null;
     }
 
-#if !SILVERLIGHT // Needed only for XmlValidatingReader
     internal bool AddDefaultAttributeNonDtd(SchemaAttDef attrDef)
     {
 
@@ -9499,12 +9000,11 @@ namespace TextMonster.Xml.Xml_Reader
       NodeData attr = AddDefaultAttributeInternal(localName, ns, prefix, attrDef.DefaultValueExpanded,
                                                    attrDef.LineNumber, attrDef.LinePosition,
                                                    attrDef.ValueLineNumber, attrDef.ValueLinePosition, attrDef.Reserved != SchemaAttDef.Reserve.None);
-      
+
       attr.schemaType = (attrDef.SchemaType == null) ? (object)attrDef.Datatype : (object)attrDef.SchemaType;
       attr.typedValue = attrDef.DefaultValueTyped;
       return true;
     }
-#endif
 
     private NodeData AddDefaultAttributeInternal(string localName, string ns, string prefix, string value,
                                                  int lineNo, int linePos, int valueLineNo, int valueLinePos, bool isXmlAttribute)
@@ -9571,7 +9071,6 @@ namespace TextMonster.Xml.Xml_Reader
       return attr;
     }
 
-#if !SILVERLIGHT // Needed only for XmlTextReader (when used from XmlDocument)
     internal bool DisableUndeclaredEntityCheck
     {
       set
@@ -9579,7 +9078,6 @@ namespace TextMonster.Xml.Xml_Reader
         disableUndeclaredEntityCheck = value;
       }
     }
-#endif
 
     int ReadContentAsBinary(byte[] buffer, int index, int count)
     {
@@ -9723,10 +9221,8 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // SxS: URIs are resolved only to be compared. No resource exposure. It's OK to suppress the SxS warning.
-#if !SILVERLIGHT
     [ResourceConsumption(ResourceScope.Machine, ResourceScope.Machine)]
     [ResourceExposure(ResourceScope.None)]
-#endif
     bool UriEqual(Uri uri1, string uri1Str, string uri2Str, XmlResolver resolver)
     {
       if (resolver == null)
@@ -9789,9 +9285,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY
-        [System.Security.SecuritySafeCritical]
-#endif
     static internal unsafe void AdjustLineInfo(char[] chars, int startPos, int endPos, bool isNormalized, ref LineInfo lineInfo)
     {
       fixed (char* pChars = &chars[startPos])
@@ -9800,9 +9293,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY
-        [System.Security.SecuritySafeCritical]
-#endif
     static internal unsafe void AdjustLineInfo(string str, int startPos, int endPos, bool isNormalized, ref LineInfo lineInfo)
     {
       fixed (char* pChars = str)
@@ -9811,9 +9301,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-#if SILVERLIGHT
-        [System.Security.SecurityCritical]
-#endif
     static internal unsafe void AdjustLineInfo(char* pChars, int length, bool isNormalized, ref LineInfo lineInfo)
     {
       int lastNewLinePos = -1;
@@ -9967,20 +9454,12 @@ namespace TextMonster.Xml.Xml_Reader
     internal static void BlockCopyChars(char[] src, int srcOffset, char[] dst, int dstOffset, int count)
     {
       // PERF: Buffer.BlockCopy is faster than Array.Copy
-#if SILVERLIGHT
-            Array.Copy( src, srcOffset, dst, dstOffset, count );
-#else
       Buffer.BlockCopy(src, srcOffset * sizeof(char), dst, dstOffset * sizeof(char), count * sizeof(char));
-#endif
     }
 
     internal static void BlockCopy(byte[] src, int srcOffset, byte[] dst, int dstOffset, int count)
     {
-#if SILVERLIGHT
-            Array.Copy( src, srcOffset, dst, dstOffset, count );
-#else
       Buffer.BlockCopy(src, srcOffset, dst, dstOffset, count);
-#endif
     }
 
     internal delegate void OnDefaultAttributeUseDelegate(IDtdDefaultAttributeInfo defaultAttribute, XmlTextReaderImpl coreReader);
@@ -10023,10 +9502,8 @@ namespace TextMonster.Xml.Xml_Reader
       // normalization
       internal bool eolNormalized;
 
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
       // EndEntity reporting
       internal bool entityResolvedManually;
-#endif
 
       internal void Clear()
       {
@@ -10047,9 +9524,7 @@ namespace TextMonster.Xml.Xml_Reader
         isEof = false;
         isStreamEof = false;
         eolNormalized = true;
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
         entityResolvedManually = false;
-#endif
       }
 
       internal void Close(bool closeInput)
@@ -10140,10 +9615,8 @@ namespace TextMonster.Xml.Xml_Reader
       // helper members
       internal bool xmlContextPushed;
 
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
       // attribute value chunks
       internal NodeData nextAttrValueChunk;
-#endif
 
       // type info
       internal object schemaType;

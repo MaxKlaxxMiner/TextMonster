@@ -33,7 +33,6 @@ namespace TextMonster.Xml.Xml_Reader
     // size of XmlCharType table
     private const uint CharPropertiesSize = (uint)char.MaxValue + 1;
 
-#if !XMLCHARTYPE_USE_RESOURCE || XMLCHARTYPE_GEN_RESOURCE
     internal const string s_Whitespace =
         "\u0009\u000a\u000d\u000d\u0020\u0020";
 
@@ -308,7 +307,6 @@ namespace TextMonster.Xml.Xml_Reader
         "\u3007\u3007\u3021\u302f\u3031\u3035\u3041\u3094" +
         "\u3099\u309a\u309d\u309e\u30a1\u30fa\u30fc\u30fe" +
         "\u3105\u312c\u4e00\u9fa5\uac00\ud7a3";
-#endif
 
     // static lock for XmlCharType class
     private static object s_Lock;

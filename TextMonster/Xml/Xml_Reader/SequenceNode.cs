@@ -96,57 +96,5 @@ namespace TextMonster.Xml.Xml_Reader
     {
       ExpandTreeNoRecursive(parent, symbols, positions);
     }
-
-#if DEBUG
-        internal static void WritePos(BitSet firstpos, BitSet lastpos, BitSet[] followpos) {
-            Debug.WriteLineIf(DiagnosticsSwitches.XmlSchemaContentModel.Enabled, "FirstPos:  ");
-            WriteBitSet(firstpos);
-
-            Debug.WriteLineIf(DiagnosticsSwitches.XmlSchemaContentModel.Enabled, "LastPos:  ");
-            WriteBitSet(lastpos);
-
-            Debug.WriteLineIf(DiagnosticsSwitches.XmlSchemaContentModel.Enabled, "Followpos:  ");
-            for(int i =0; i < followpos.Length; i++) {
-                WriteBitSet(followpos[i]);
-            }
-        }
-        internal static void WriteBitSet(BitSet curpos) {
-            int[] list = new int[curpos.Count];
-            for (int pos = curpos.NextSet(-1); pos != -1; pos = curpos.NextSet(pos)) {
-                list[pos] = 1;
-            }
-            for(int i = 0; i < list.Length; i++) {
-                Debug.WriteIf(DiagnosticsSwitches.XmlSchemaContentModel.Enabled, list[i] + " ");
-            }
-            Debug.WriteLineIf(DiagnosticsSwitches.XmlSchemaContentModel.Enabled, "");
-        }
-       
-
-        public override void Dump(StringBuilder bb, SymbolsDictionary symbols, Positions positions) {
-            Stack<SequenceNode> nodeStack = new Stack<SequenceNode>();
-            SequenceNode this_ = this;
-
-            while (true) {
-                bb.Append("(");
-                if (this_.LeftChild is SequenceNode) {
-                    nodeStack.Push(this_);
-                    this_ = (SequenceNode)this_.LeftChild;
-                    continue;
-                }
-                this_.LeftChild.Dump(bb, symbols, positions);
-
-            ProcessRight:
-                bb.Append(", ");
-                this_.RightChild.Dump(bb, symbols, positions);
-                bb.Append(")");
-                if (nodeStack.Count == 0)
-                    break;
-
-                this_ = nodeStack.Pop();
-                goto ProcessRight;
-            }
-        }
-#endif
-
   }
 }

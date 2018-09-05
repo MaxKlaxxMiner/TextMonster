@@ -19,7 +19,6 @@ namespace TextMonster.Xml.Xml_Reader
     protected bool isDeclaredInExternal = false;
     protected Use presence;     // the presence, such as fixed, implied, etc
 
-#if !SILVERLIGHT
     protected XmlSchemaType schemaType;
     protected XmlSchemaDatatype datatype;
 
@@ -30,23 +29,18 @@ namespace TextMonster.Xml.Xml_Reader
     protected long minLength; // dt:minLength
 
     protected List<string> values;    // array of values for enumerated and notation types
-#endif
 
     protected SchemaDeclBase(XmlQualifiedName name, string prefix)
     {
       this.name = name;
       this.prefix = prefix;
-#if !SILVERLIGHT
       maxLength = -1;
       minLength = -1;
-#endif
     }
 
-#if !SILVERLIGHT
     protected SchemaDeclBase()
     {
     }
-#endif
 
     internal XmlQualifiedName Name
     {
@@ -72,7 +66,6 @@ namespace TextMonster.Xml.Xml_Reader
       set { presence = value; }
     }
 
-#if !SILVERLIGHT
     internal long MaxLength
     {
       get { return maxLength; }
@@ -133,6 +126,5 @@ namespace TextMonster.Xml.Xml_Reader
     {
       return (presence != Use.Fixed && presence != Use.RequiredFixed) || (defaultValueTyped != null && datatype.IsEqual(pVal, defaultValueTyped));
     }
-#endif
   };
 }

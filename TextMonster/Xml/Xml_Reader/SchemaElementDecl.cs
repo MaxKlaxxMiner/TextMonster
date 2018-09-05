@@ -11,7 +11,6 @@ namespace TextMonster.Xml.Xml_Reader
     bool isIdDeclared;
     bool hasNonCDataAttribute = false;
 
-#if !SILVERLIGHT
     bool isAbstract = false;
     bool isNillable = false;
     bool hasRequiredAttribute = false;
@@ -24,12 +23,10 @@ namespace TextMonster.Xml.Xml_Reader
     XmlSchemaElement schemaElement;
 
     internal static readonly SchemaElementDecl Empty = new SchemaElementDecl();
-#endif
 
     //
     // Constructor
     //
-#if !SILVERLIGHT
     internal SchemaElementDecl()
     {
     }
@@ -39,7 +36,6 @@ namespace TextMonster.Xml.Xml_Reader
       Datatype = dtype;
       contentValidator = ContentValidator.TextOnly;
     }
-#endif
 
     internal SchemaElementDecl(XmlQualifiedName name, String prefix)
       : base(name, prefix)
@@ -49,14 +45,12 @@ namespace TextMonster.Xml.Xml_Reader
     //
     // Static methods
     //
-#if !SILVERLIGHT
     internal static SchemaElementDecl CreateAnyTypeElementDecl()
     {
       SchemaElementDecl anyTypeElementDecl = new SchemaElementDecl();
       anyTypeElementDecl.Datatype = DatatypeImplementation.AnySimpleType.Datatype;
       return anyTypeElementDecl;
     }
-#endif
 
     //
     // IDtdAttributeListInfo interface
@@ -122,7 +116,6 @@ namespace TextMonster.Xml.Xml_Reader
       set { hasNonCDataAttribute = value; }
     }
 
-#if !SILVERLIGHT
     internal SchemaElementDecl Clone()
     {
       return (SchemaElementDecl)MemberwiseClone();
@@ -186,17 +179,14 @@ namespace TextMonster.Xml.Xml_Reader
       get { return schemaElement; }
       set { schemaElement = value; }
     }
-#endif
     // add a new SchemaAttDef to the SchemaElementDecl
     internal void AddAttDef(SchemaAttDef attdef)
     {
       attdefs.Add(attdef.Name, attdef);
-#if !SILVERLIGHT
       if (attdef.Presence == SchemaDeclBase.Use.Required || attdef.Presence == SchemaDeclBase.Use.RequiredFixed)
       {
         hasRequiredAttribute = true;
       }
-#endif
       if (attdef.Presence == SchemaDeclBase.Use.Default || attdef.Presence == SchemaDeclBase.Use.Fixed)
       { //Not adding RequiredFixed here
         if (defaultAttdefs == null)
@@ -227,7 +217,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return defaultAttdefs; }
     }
 
-#if !SILVERLIGHT
     internal Dictionary<XmlQualifiedName, SchemaAttDef> AttDefs
     {
       get { return attdefs; }
@@ -255,6 +244,5 @@ namespace TextMonster.Xml.Xml_Reader
         }
       }
     }
-#endif
   }
 }

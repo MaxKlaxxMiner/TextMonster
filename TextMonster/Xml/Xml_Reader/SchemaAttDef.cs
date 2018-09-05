@@ -25,17 +25,11 @@ namespace TextMonster.Xml.Xml_Reader
 
     private Reserve reserved = Reserve.None; // indicate the attribute type, such as xml:lang or xml:space   
 
-#if SILVERLIGHT
-        XmlTokenizedType tokenizedType;
-#endif
-
-#if !SILVERLIGHT
     private bool defaultValueChecked;
     private bool hasEntityRef;  // whether there is any entity reference in the default value
     XmlSchemaAttribute schemaAttribute;
 
     public static readonly SchemaAttDef Empty = new SchemaAttDef();
-#endif
 
     //
     // Constructors
@@ -45,13 +39,11 @@ namespace TextMonster.Xml.Xml_Reader
     {
     }
 
-#if !SILVERLIGHT
     public SchemaAttDef(XmlQualifiedName name)
       : base(name, null)
     {
     }
     private SchemaAttDef() { }
-#endif
 
     //
     // IDtdAttributeInfo interface
@@ -105,11 +97,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     object IDtdDefaultAttributeInfo.DefaultValueTyped
     {
-#if SILVERLIGHT
-            get { return null; }
-#else
       get { return ((SchemaAttDef)this).DefaultValueTyped; }
-#endif
     }
 
     int IDtdDefaultAttributeInfo.ValueLineNumber
@@ -160,19 +148,11 @@ namespace TextMonster.Xml.Xml_Reader
     {
       get
       {
-#if SILVERLIGHT
-                return tokenizedType;
-#else
         return Datatype.TokenizedType;
-#endif
       }
       set
       {
-#if SILVERLIGHT
-                tokenizedType = value;
-#else
         this.Datatype = XmlSchemaDatatype.FromXmlTokenizedType(value);
-#endif
       }
     }
 
@@ -182,7 +162,6 @@ namespace TextMonster.Xml.Xml_Reader
       set { reserved = value; }
     }
 
-#if !SILVERLIGHT
     internal bool DefaultValueChecked
     {
       get
@@ -236,6 +215,5 @@ namespace TextMonster.Xml.Xml_Reader
     {
       return (SchemaAttDef)MemberwiseClone();
     }
-#endif
   }
 }

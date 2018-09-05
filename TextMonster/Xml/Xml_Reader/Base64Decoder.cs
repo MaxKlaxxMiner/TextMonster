@@ -39,9 +39,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY
-        [System.Security.SecuritySafeCritical]
-#endif
     internal override unsafe int Decode(char[] chars, int startPos, int len)
     {
       if (chars == null)
@@ -77,9 +74,6 @@ namespace TextMonster.Xml.Xml_Reader
       return charsDecoded;
     }
 
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY
-        [System.Security.SecuritySafeCritical]
-#endif
     internal override unsafe int Decode(string str, int startPos, int len)
     {
       if (str == null)
@@ -146,18 +140,10 @@ namespace TextMonster.Xml.Xml_Reader
       return mapBase64;
     }
 
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY
-        [System.Security.SecurityCritical]
-#endif
     private unsafe void Decode(char* pChars, char* pCharsEndPos,
                          byte* pBytes, byte* pBytesEndPos,
                          out int charsDecoded, out int bytesDecoded)
     {
-#if DEBUG
-            Debug.Assert( pCharsEndPos - pChars >= 0 );
-            Debug.Assert( pBytesEndPos - pBytes >= 0 );
-#endif
-
       // walk hex digits pairing them up and shoving the value of each pair into a byte
       byte* pByte = pBytes;
       char* pChar = pChars;

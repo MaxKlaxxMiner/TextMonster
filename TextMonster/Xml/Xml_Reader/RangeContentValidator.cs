@@ -63,10 +63,6 @@ namespace TextMonster.Xml.Xml_Reader
       int firstMatchedIndex = -1;
       bool matched = false;
 
-#if RANGE_DEBUG
-            WriteRunningPositions("Current running positions to match", runningPositions, name, matchCount);
-#endif
-
       while (k < matchCount)
       { //we are looking for the first match in the list of bitsets
         rposInfo = runningPositions[k];
@@ -102,9 +98,6 @@ namespace TextMonster.Xml.Xml_Reader
       { //There is a match
         if (k != 0)
         { //If the first bitset itself matched, then no need to remove anything
-#if RANGE_DEBUG
-                    WriteRunningPositions("Removing unmatched entries till the first match", runningPositions, XmlQualifiedName.Empty, k);
-#endif
           runningPositions.RemoveRange(0, k); //Delete entries from 0 to k-1
         }
         matchCount = matchCount - k;
@@ -115,10 +108,6 @@ namespace TextMonster.Xml.Xml_Reader
           matched = rposInfo.curpos.Get(pos); //Look for the bitset that matches the same position as pos
           if (matched)
           { //If match found, get the follow positions of the current matched position
-#if RANGE_DEBUG
-                        Debug.WriteIf(DiagnosticsSwitches.XmlSchemaContentModel.Enabled, "Matched position: " + pos + " "); SequenceNode.WriteBitSet(rposInfo.curpos);
-                        Debug.WriteIf(DiagnosticsSwitches.XmlSchemaContentModel.Enabled, "Follow pos of Matched position: "); SequenceNode.WriteBitSet(followpos[pos]);
-#endif
             rposInfo.curpos = followpos[pos]; //Note that we are copying the same counters of the current position to that of the follow position
             runningPositions[k] = rposInfo;
             k++;
@@ -147,9 +136,6 @@ namespace TextMonster.Xml.Xml_Reader
           context.TooComplex = true;
           matchCount /= 2;
         }
-#if RANGE_DEBUG
-                WriteRunningPositions("Matched positions to expand ", runningPositions, name, matchCount);
-#endif
 
         for (k = matchCount - 1; k >= 0; k--)
         {
@@ -224,24 +210,6 @@ namespace TextMonster.Xml.Xml_Reader
       return null;
     }
 
-#if RANGE_DEBUG
-        private void WriteRunningPositions(string text, List<RangePositionInfo> runningPositions, XmlQualifiedName name, int length) {
-            int counter = 0;
-            Debug.WriteLineIf(DiagnosticsSwitches.XmlSchemaContentModel.Enabled, "");
-            Debug.WriteLineIf(DiagnosticsSwitches.XmlSchemaContentModel.Enabled, "");
-            Debug.WriteLineIf(DiagnosticsSwitches.XmlSchemaContentModel.Enabled, text + name.Name);
-            while (counter < length) {
-                BitSet curpos = runningPositions[counter].curpos;
-                SequenceNode.WriteBitSet(curpos);
-                for(int rcnt = 0; rcnt < runningPositions[counter].rangeCounters.Length; rcnt++) {
-                    Debug.WriteIf(DiagnosticsSwitches.XmlSchemaContentModel.Enabled, "RangeCounter[" + rcnt + "]" + runningPositions[counter].rangeCounters[rcnt] + " ");                    
-                }
-                Debug.WriteLineIf(DiagnosticsSwitches.XmlSchemaContentModel.Enabled, "");
-                Debug.WriteLineIf(DiagnosticsSwitches.XmlSchemaContentModel.Enabled, "");
-                counter++;
-            }
-        }
-#endif
     public override bool CompleteValidation(ValidationState context)
     {
       return context.HasMatched;

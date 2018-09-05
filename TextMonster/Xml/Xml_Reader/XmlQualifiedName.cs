@@ -75,17 +75,12 @@ namespace TextMonster.Xml.Xml_Reader
     {
       if (hash == 0)
       {
-#if !SILVERLIGHT
         if (hashCodeDelegate == null)
         {
           hashCodeDelegate = GetHashCodeDelegate();
         }
 
         hash = hashCodeDelegate(Name, Name.Length, 0);
-#else
-
-                hash = Name.GetHashCode() /*+ Namespace.GetHashCode()*/; // for perf reasons we are not taking ns's hashcode.
-#endif
       }
       return hash;
     }
@@ -162,7 +157,6 @@ namespace TextMonster.Xml.Xml_Reader
       return ns == null || ns.Length == 0 ? name : ns + ":" + name;
     }
 
-#if !SILVERLIGHT // These methods are not used in Silverlight
     [SecuritySafeCritical]
     [ReflectionPermission(SecurityAction.Assert, Unrestricted = true)]
     private static HashCodeOfStringDelegate GetHashCodeDelegate()
@@ -292,6 +286,5 @@ namespace TextMonster.Xml.Xml_Reader
       }
       return i;
     }
-#endif
   }
 }

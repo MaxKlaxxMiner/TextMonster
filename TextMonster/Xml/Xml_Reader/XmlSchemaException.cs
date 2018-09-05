@@ -79,9 +79,6 @@ namespace TextMonster.Xml.Xml_Reader
     public XmlSchemaException(String message)
       : this(message, ((Exception)null), 0, 0)
     {
-#if DEBUG
-            Debug.Assert(message == null || !message.StartsWith("Sch_", StringComparison.Ordinal), "Do not pass a resource here!");
-#endif
     }
 
     /// <include file='doc\XmlSchemaException.uex' path='docs/doc[@for="XmlSchemaException.XmlSchemaException0"]/*' />

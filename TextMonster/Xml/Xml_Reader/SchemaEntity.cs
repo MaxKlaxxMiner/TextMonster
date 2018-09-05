@@ -97,7 +97,6 @@ namespace TextMonster.Xml.Xml_Reader
     //
     // Internal methods and properties
     //
-#if !SILVERLIGHT
     internal static bool IsPredefinedEntity(String n)
     {
       return (n == "lt" ||
@@ -106,7 +105,6 @@ namespace TextMonster.Xml.Xml_Reader
              n == "apos" ||
              n == "quot");
     }
-#endif
 
     internal XmlQualifiedName Name
     {

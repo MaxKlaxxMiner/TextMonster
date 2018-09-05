@@ -34,9 +34,7 @@ namespace TextMonster.Xml.Xml_Reader
       GMonthDay,
       GDay,
       GMonth,
-#if !SILVERLIGHT // XDR is not supported in Silverlight
       XdrDateTime,
-#endif
     }
 
     // Internal representation of DateTimeKind
@@ -84,7 +82,6 @@ namespace TextMonster.Xml.Xml_Reader
     static readonly int Lz___dd = "---dd".Length;
 
 
-#if !SILVERLIGHT
     /// <summary>
     /// Constructs an XsdDateTime from a string trying all possible formats.
     /// </summary>
@@ -92,7 +89,6 @@ namespace TextMonster.Xml.Xml_Reader
       : this(text, XsdDateTimeFlags.AllXsd)
     {
     }
-#endif
 
     /// <summary>
     /// Constructs an XsdDateTime from a string using specific format.
@@ -108,13 +104,11 @@ namespace TextMonster.Xml.Xml_Reader
       InitiateXsdDateTime(parser);
     }
 
-#if !SILVERLIGHT
     private XsdDateTime(Parser parser)
       : this()
     {
       InitiateXsdDateTime(parser);
     }
-#endif
 
     private void InitiateXsdDateTime(Parser parser)
     {
@@ -126,7 +120,6 @@ namespace TextMonster.Xml.Xml_Reader
       extra = (uint)(((int)parser.typeCode << TypeShift) | ((int)parser.kind << KindShift) | (parser.zoneHour << ZoneHourShift) | parser.zoneMinute);
     }
 
-#if !SILVERLIGHT
     internal static bool TryParse(string text, XsdDateTimeFlags kinds, out XsdDateTime result)
     {
       Parser parser = new Parser();
@@ -138,7 +131,6 @@ namespace TextMonster.Xml.Xml_Reader
       result = new XsdDateTime(parser);
       return true;
     }
-#endif
 
     /// <summary>
     /// Constructs an XsdDateTime from a DateTime.
@@ -226,7 +218,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return (XsdDateTimeKind)((extra & KindMask) >> KindShift); }
     }
 
-#if !SILVERLIGHT
     /// <summary>
     /// Returns XmlTypeCode of the value being stored
     /// </summary>
@@ -255,7 +246,6 @@ namespace TextMonster.Xml.Xml_Reader
         }
       }
     }
-#endif
 
     /// <summary>
     /// Returns the year part of XsdDateTime
@@ -346,7 +336,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-#if !SILVERLIGHT
     public DateTime ToZulu()
     {
       switch (InternalKind)
@@ -364,7 +353,6 @@ namespace TextMonster.Xml.Xml_Reader
         return dt;
       }
     }
-#endif
 
     /// <summary>
     /// Cast to DateTime
@@ -486,7 +474,6 @@ namespace TextMonster.Xml.Xml_Reader
       return result;
     }
 
-#if !SILVERLIGHT
     /// <summary>
     /// Compares two DateTime values, returning an integer that indicates
     /// their relationship.
@@ -522,7 +509,6 @@ namespace TextMonster.Xml.Xml_Reader
       if (value == null) return 1;
       return Compare(this, (XsdDateTime)value);
     }
-#endif
 
     /// <summary>
     /// Serialization to a string
@@ -674,7 +660,6 @@ namespace TextMonster.Xml.Xml_Reader
       text[start + 1] = (char)(value % 10 + '0');
     }
 
-#if !SILVERLIGHT
     // Auxiliary for compare. 
     // Returns UTC DateTime
     private DateTime GetZuluDateTime()
@@ -691,7 +676,6 @@ namespace TextMonster.Xml.Xml_Reader
         return dt.ToUniversalTime();
       }
     }
-#endif
 
     private static readonly XmlTypeCode[] typeCodes = {
             XmlTypeCode.DateTime,
@@ -740,12 +724,8 @@ namespace TextMonster.Xml.Xml_Reader
         }
         // Choose format starting from the most common and trying not to reparse the same thing too many times
 
-#if !SILVERLIGHT // XDR is not supported in Silverlight
         if (Test(kinds, XsdDateTimeFlags.DateTime | XsdDateTimeFlags.Date | XsdDateTimeFlags.XdrDateTime | XsdDateTimeFlags.XdrDateTimeNoTz))
         {
-#else
-                if (Test(kinds, XsdDateTimeFlags.DateTime | XsdDateTimeFlags.Date)) {
-#endif
           if (ParseDate(start))
           {
             if (Test(kinds, XsdDateTimeFlags.DateTime))
@@ -764,7 +744,6 @@ namespace TextMonster.Xml.Xml_Reader
                 return true;
               }
             }
-#if !SILVERLIGHT // XDR is not supported in Silverlight
             if (Test(kinds, XsdDateTimeFlags.XdrDateTime))
             {
               if (ParseZoneAndWhitespace(start + Lzyyyy_MM_dd) || (ParseChar(start + Lzyyyy_MM_dd, 'T') && ParseTimeAndZoneAndWhitespace(start + Lzyyyy_MM_ddT)))
@@ -789,7 +768,6 @@ namespace TextMonster.Xml.Xml_Reader
                 return true;
               }
             }
-#endif
           }
         }
 
@@ -805,7 +783,6 @@ namespace TextMonster.Xml.Xml_Reader
           }
         }
 
-#if !SILVERLIGHT // XDR is not supported in Silverlight
         if (Test(kinds, XsdDateTimeFlags.XdrTimeNoTz))
         {
           if (ParseTimeAndWhitespace(start))
@@ -817,7 +794,6 @@ namespace TextMonster.Xml.Xml_Reader
             return true;
           }
         }
-#endif
 
         if (Test(kinds, XsdDateTimeFlags.GYearMonth | XsdDateTimeFlags.GYear))
         {
@@ -924,7 +900,6 @@ namespace TextMonster.Xml.Xml_Reader
         return false;
       }
 
-#if !SILVERLIGHT // XDR is not supported in Silverlight
       private bool ParseTimeAndWhitespace(int start)
       {
         if (ParseTime(ref start))
@@ -937,7 +912,6 @@ namespace TextMonster.Xml.Xml_Reader
         }
         return false;
       }
-#endif
 
       static int[] Power10 = new int[maxFractionDigits] { -1, 10, 100, 1000, 10000, 100000, 1000000 };
       private bool ParseTime(ref int start)

@@ -86,11 +86,6 @@ namespace TextMonster.Xml.Xml_Reader
     // Construct and initialize an instance of this class.
     protected XmlEncodedRawTextWriter(XmlWriterSettings settings)
     {
-
-#if ASYNC
-            useAsync = settings.Async;
-#endif
-
       // copy settings
       newLineHandling = settings.NewLineHandling;
       omitXmlDeclaration = settings.OmitXmlDeclaration;

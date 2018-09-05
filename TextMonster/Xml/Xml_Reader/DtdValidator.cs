@@ -536,13 +536,8 @@ namespace TextMonster.Xml.Xml_Reader
         }
         attdef.DefaultValueTyped = dtype.ParseValue(value, readerAdapter.NameTable, readerAdapter.NamespaceResolver);
       }
-#if DEBUG
-            catch (XmlSchemaException ex) {
-                Debug.WriteLineIf(DiagnosticsSwitches.XmlSchema.TraceError, ex.Message);
-#else
       catch (Exception)
       {
-#endif
         IValidationEventHandling eventHandling = ((IDtdParserAdapterWithValidation)readerAdapter).ValidationEventHandling;
         if (eventHandling != null)
         {
@@ -601,14 +596,8 @@ namespace TextMonster.Xml.Xml_Reader
           }
         }
       }
-#if DEBUG
-            catch (XmlSchemaException ex) {
-                Debug.WriteLineIf(DiagnosticsSwitches.XmlSchema.TraceError, ex.Message);
-#else
       catch (Exception)
       {
-#endif
-
         if (eventHandling != null)
         {
           XmlSchemaException e = new XmlSchemaException(Res.Sch_AttributeDefaultDataType, attdef.Name.ToString());

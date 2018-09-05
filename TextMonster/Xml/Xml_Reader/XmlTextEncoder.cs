@@ -101,9 +101,6 @@ namespace TextMonster.Xml.Xml_Reader
       textWriter.Write(lowChar);
     }
 
-#if FEATURE_NETCORE
-        [System.Security.SecurityCritical]
-#endif
     internal void Write(char[] array, int offset, int count)
     {
       if (null == array)
@@ -247,9 +244,6 @@ namespace TextMonster.Xml.Xml_Reader
       textWriter.Write(';');
     }
 
-#if FEATURE_NETCORE
-        [System.Security.SecurityCritical]
-#endif
     internal void Write(string text)
     {
       if (text == null)
@@ -393,9 +387,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-#if FEATURE_NETCORE
-        [System.Security.SecurityCritical]
-#endif
     internal void WriteRawWithSurrogateChecking(string text)
     {
       if (text == null)

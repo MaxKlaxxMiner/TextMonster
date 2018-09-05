@@ -1895,11 +1895,7 @@ namespace TextMonster.Xml.Xml_Reader
         throw new InvalidOperationException();
 
         case XmlNodeType.DocumentType:
-#if TEMP_HACK_FOR_SCHEMA_INFO
-                    validator.SetDtdSchemaInfo((SchemaInfo)coreReader.DtdInfo);
-#else
         validator.SetDtdSchemaInfo(coreReader.DtdInfo);
-#endif
         break;
 
         default:

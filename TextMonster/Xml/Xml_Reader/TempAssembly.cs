@@ -147,13 +147,11 @@ namespace TextMonster.Xml.Xml_Reader
       return null;
     }
 
-#if !FEATURE_PAL // EventLog
     static void Log(string message, EventLogEntryType type)
     {
       new EventLogPermission(PermissionState.Unrestricted).Assert();
       EventLog.WriteEntry("XmlSerializer", message, type);
     }
-#endif //!FEATURE_PAL // EventLog
 
     static AssemblyName GetName(Assembly assembly, bool copyName)
     {

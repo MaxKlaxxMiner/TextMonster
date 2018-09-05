@@ -803,20 +803,5 @@ namespace TextMonster.Xml.Xml_Reader
       }
       return 0;
     }
-
-#if Microsoft
-        protected object GetValueToCheck(object value, IXmlNamespaceResolver nsmgr) {
-            object valueToCheck = value;
-            string resId;
-            if (CanConvert(value, value.GetType(), this.ValueType, out resId)) {
-                valueToCheck = this.ValueConverter.ChangeType(value, this.ValueType, nsmgr);
-            }
-            else {
-                throw new XmlSchemaException(resId, string.Empty);
-            }
-            return valueToCheck;
-        }
-#endif
-
   }
 }

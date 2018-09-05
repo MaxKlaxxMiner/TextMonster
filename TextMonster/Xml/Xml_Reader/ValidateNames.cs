@@ -277,7 +277,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-#if !SILVERLIGHT
     /// <summary>
     /// Parses the input string as a NameTest (see the XPath spec), returning the prefix and
     /// local name parts.  Throws an exception if the given string is not a valid NameTest.
@@ -344,7 +343,6 @@ namespace TextMonster.Xml.Xml_Reader
         ThrowInvalidName(s, 0, len);
       }
     }
-#endif
 
     /// <summary>
     /// Throws an invalid name exception.
@@ -356,33 +354,20 @@ namespace TextMonster.Xml.Xml_Reader
     {
       // If the name is empty, throw an exception
       if (offsetStartChar >= s.Length)
-#if !SILVERLIGHT_XPATH
         throw new XmlException(Res.Xml_EmptyName, string.Empty);
-#else
-                throw new XmlException(Res.GetString(Res.Xml_EmptyName, string.Empty));
-#endif
 
       if (xmlCharType.IsNCNameSingleChar(s[offsetBadChar]) && !XmlCharType.Instance.IsStartNCNameSingleChar(s[offsetBadChar]))
       {
         // The error character is a valid name character, but is not a valid start name character
-#if !SILVERLIGHT_XPATH
         throw new XmlException(Res.Xml_BadStartNameChar, XmlException.BuildCharExceptionArgs(s, offsetBadChar));
-#else
-                throw new XmlException(Res.GetString(Res.Xml_BadStartNameChar, XmlExceptionHelper.BuildCharExceptionArgs(s, offsetBadChar)));
-#endif
       }
       else
       {
         // The error character is an invalid name character
-#if !SILVERLIGHT_XPATH
         throw new XmlException(Res.Xml_BadNameChar, XmlException.BuildCharExceptionArgs(s, offsetBadChar));
-#else
-                throw new XmlException(Res.GetString(Res.Xml_BadNameChar, XmlExceptionHelper.BuildCharExceptionArgs(s, offsetBadChar)));
-#endif
       }
     }
 
-#if !SILVERLIGHT
     internal static Exception GetInvalidNameException(string s, int offsetStartChar, int offsetBadChar)
     {
       // If the name is empty, throw an exception
@@ -600,10 +585,8 @@ namespace TextMonster.Xml.Xml_Reader
     {
       return (prefix.Length != 0) ? prefix + ":" + localName : localName;
     }
-#endif
 
 
-#if !SILVERLIGHT || SILVERLIGHT_XPATH
     /// <summary>
     /// Split a QualifiedName into prefix and localname, w/o any checking.
     /// (Used for XmlReader/XPathNavigator MoveTo(name) methods)
@@ -618,11 +601,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
       else if (0 == colonPos || (name.Length - 1) == colonPos)
       {
-#if !SILVERLIGHT_XPATH
         throw new ArgumentException(Res.GetString(Res.Xml_BadNameChar, XmlException.BuildCharExceptionArgs(':', '\0')), "name");
-#else
-                throw new ArgumentException(Res.GetString(Res.Xml_BadNameChar, XmlExceptionHelper.BuildCharExceptionArgs(':', '\0')), "name");
-#endif
       }
       else
       {
@@ -631,6 +610,5 @@ namespace TextMonster.Xml.Xml_Reader
         lname = name.Substring(colonPos, name.Length - colonPos);
       }
     }
-#endif
   }
 }

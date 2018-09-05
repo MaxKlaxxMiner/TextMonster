@@ -150,11 +150,7 @@ namespace TextMonster.Xml.Xml_Reader
     // Constants and constant tables
     //
     const int NamespaceStackInitialSize = 8;
-#if DEBUG
-        const int MaxNamespacesWalkCount = 3;
-#else
     const int MaxNamespacesWalkCount = 16;
-#endif
 
     static string[] stateName = {
             "Start",

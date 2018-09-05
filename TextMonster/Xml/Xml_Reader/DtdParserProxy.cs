@@ -34,10 +34,8 @@ namespace TextMonster.Xml.Xml_Reader
     {
       // SxS: DtdParserProxy_BaseUri property on the reader may expose machine scope resources. This property
       // is just returning the value of the other property, so it may expose machine scope resource as well.
-#if !SILVERLIGHT
       [ResourceConsumption(ResourceScope.Machine)]
       [ResourceExposure(ResourceScope.Machine)]
-#endif
       get { return reader.DtdParserProxy_BaseUri; }
     }
 
@@ -149,7 +147,6 @@ namespace TextMonster.Xml.Xml_Reader
       reader.DtdParserProxy_OnPublicId(publicId, keywordLineInfo, publicLiteralLineInfo);
     }
 
-#if !SILVERLIGHT
     bool IDtdParserAdapterWithValidation.DtdValidation
     {
       get { return reader.DtdParserProxy_DtdValidation; }
@@ -174,7 +171,5 @@ namespace TextMonster.Xml.Xml_Reader
     {
       get { return reader.DtdParserProxy_V1CompatibilityMode; }
     }
-#endif
-
   }
 }

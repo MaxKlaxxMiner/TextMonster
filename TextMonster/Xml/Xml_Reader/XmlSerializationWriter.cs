@@ -624,11 +624,6 @@ namespace TextMonster.Xml.Xml_Reader
 
       if (o != null && objectsInUse != null)
       {
-#if DEBUG
-                    // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                    if (!objectsInUse.ContainsKey(o)) throw new InvalidOperationException(Res.GetString(Res.XmlInternalErrorDetails, "missing stack object of type " + o.GetType().FullName));
-#endif
-
         objectsInUse.Remove(o);
       }
     }
@@ -1301,11 +1296,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
       else
       {
-#if DEBUG
-                    // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                    if (!typeof(IEnumerable).IsAssignableFrom(type)) throw new InvalidOperationException(Res.GetString(Res.XmlInternalErrorDetails, "not array like type " + type.FullName));
-#endif
-
         int arrayLength = typeof(ICollection).IsAssignableFrom(type) ? ((ICollection)o).Count : -1;
         if (soap12)
         {

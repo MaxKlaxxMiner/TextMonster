@@ -11,11 +11,7 @@ namespace TextMonster.Xml.Xml_Reader
     private int sizeTable;
     private XPathNodeInfoAtom infoCached;
 
-#if DEBUG
-        private const int DefaultTableSize = 2;
-#else
     private const int DefaultTableSize = 32;
-#endif
 
     /// <summary>
     /// Constructor.

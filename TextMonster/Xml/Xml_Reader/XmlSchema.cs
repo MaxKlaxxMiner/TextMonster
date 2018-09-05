@@ -680,43 +680,5 @@ namespace TextMonster.Xml.Xml_Reader
         }
       }
     }
-
-#if TRUST_COMPILE_STATE
-        internal void AddCompiledInfo(SchemaInfo schemaInfo) {
-            XmlQualifiedName itemName;
-            foreach (XmlSchemaElement element in elements.Values) {
-                itemName = element.QualifiedName;
-                schemaInfo.TargetNamespaces[itemName.Namespace] = true;
-                if (schemaInfo.ElementDecls[itemName] == null) {
-                    schemaInfo.ElementDecls.Add(itemName, element.ElementDecl);
-                }
-            }
-            foreach (XmlSchemaAttribute attribute in attributes.Values) {
-                itemName = attribute.QualifiedName;
-                schemaInfo.TargetNamespaces[itemName.Namespace] = true;
-                if (schemaInfo.ElementDecls[itemName] == null) {
-                    schemaInfo.AttributeDecls.Add(itemName, attribute.AttDef);
-                }
-            }    
-            foreach (XmlSchemaType type in types.Values) {
-                itemName = type.QualifiedName;
-                schemaInfo.TargetNamespaces[itemName.Namespace] = true;
-                XmlSchemaComplexType complexType = type as XmlSchemaComplexType;
-                if ((complexType == null || type != XmlSchemaComplexType.AnyType) && schemaInfo.ElementDeclsByType[itemName] == null) {
-                    schemaInfo.ElementDeclsByType.Add(itemName, type.ElementDecl);
-                }
-            }
-            foreach (XmlSchemaNotation notation in notations.Values) {
-                itemName = notation.QualifiedName;
-                schemaInfo.TargetNamespaces[itemName.Namespace] = true;
-                SchemaNotation no = new SchemaNotation(itemName);
-                no.SystemLiteral = notation.System;
-                no.Pubid = notation.Public;
-                if (schemaInfo.Notations[itemName.Name] == null) {
-                    schemaInfo.Notations.Add(itemName.Name, no);
-                }
-            }
-        }
-#endif//TRUST_COMPILE_STATE
   }
 }

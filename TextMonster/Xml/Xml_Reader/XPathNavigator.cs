@@ -1897,11 +1897,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
       int cmp = 0;
 
-#if DEBUG
-            Debug.Assert(!n1.IsSamePosition(n2));
-            XPathNavigator p1 = n1.Clone(), p2 = n2.Clone();
-            Debug.Assert(p1.MoveToParent() && p2.MoveToParent() && p1.IsSamePosition(p2));
-#endif
       switch (n1.NodeType)
       {
         case XPathNodeType.Namespace:

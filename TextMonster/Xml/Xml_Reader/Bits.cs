@@ -35,7 +35,6 @@
       return num != 0 && (num & (num - 1)) == 0;
     }
 
-#if !SILVERLIGHT // These methods are not used in Silverlight
     /// <summary>
     /// Returns true if the unsigned integer has more than one bit set.
     /// </summary>
@@ -51,7 +50,6 @@
     {
       return num & (num - 1);
     }
-#endif
 
     /// <summary>
     /// Compute the 1-based position of the least sigificant bit that is set, and return it (return 0 if no bits are set).

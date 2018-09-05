@@ -85,13 +85,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     static bool IsValidStart(char c)
     {
-
-      // the given char is already a valid name character
-#if DEBUG
-  // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                if (!IsValid(c)) throw new ArgumentException(Res.GetString(Res.XmlInternalErrorDetails, "Invalid identifier character " + ((Int16)c).ToString(CultureInfo.InvariantCulture)), "c");
-#endif
-
       // First char cannot be a number
       if (Char.GetUnicodeCategory(c) == UnicodeCategory.DecimalDigitNumber)
         return false;
@@ -138,12 +131,7 @@ namespace TextMonster.Xml.Xml_Reader
         case UnicodeCategory.OtherNotAssigned:
           return false;
         default:
-#if DEBUG
-  // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                        throw new ArgumentException(Res.GetString(Res.XmlInternalErrorDetails, "Unhandled category " + uc), "c");
-#else
           return false;
-#endif
       }
       return true;
     }

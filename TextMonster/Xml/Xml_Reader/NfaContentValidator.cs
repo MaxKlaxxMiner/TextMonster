@@ -67,24 +67,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     }
 
-#if FINDUPA_PARTICLE
-        private bool FindUPAParticle(ref object originalParticle, object newParticle) {
-            if (originalParticle == null) { 
-                originalParticle = newParticle;
-                if (originalParticle is XmlSchemaElement) { //if the first particle is element, then break, otherwise try to find an element
-                    return true;
-                }
-            }
-            else if (newParticle is XmlSchemaElement) {
-                if (originalParticle is XmlSchemaAny) { //Weak wildcards, element takes precendence over any
-                    originalParticle = newParticle;
-                    return true;
-                }
-            }
-            return false;
-        }
-#endif
-
     public override bool CompleteValidation(ValidationState context)
     {
       if (!context.CurPos[context.CurrentState.CurPosIndex][endMarkerPos])

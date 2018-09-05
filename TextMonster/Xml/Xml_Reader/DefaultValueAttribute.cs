@@ -27,17 +27,7 @@ namespace TextMonster.Xml.Xml_Reader
       // load an otherwise normal class.
       try
       {
-#if !SILVERLIGHT
         this.value = TypeDescriptor.GetConverter(type).ConvertFromInvariantString(value);
-#else
-                if (type.IsEnum) {
-                    this.value = Enum.Parse(type, value, true);
-                } else if (type == typeof(TimeSpan)) {
-                    this.value = TimeSpan.Parse(value);
-                } else if (type.Module == typeof(string).Module) {
-                    this.value = Convert.ChangeType(value, type, CultureInfo.InvariantCulture);
-                }
-#endif
       }
       catch
       {

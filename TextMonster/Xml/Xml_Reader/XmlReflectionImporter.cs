@@ -765,16 +765,6 @@ namespace TextMonster.Xml.Xml_Reader
           ImportStructWorkItem item = limiter.DeferredWorkItems[index];
           if (InitializeStructMembers(item.Mapping, item.Model, openModel, typeName, limiter))
           {
-            //
-            // if InitializeStructMembers returns true, then there were *no* chages to the DeferredWorkItems
-            //
-#if DEBUG
-  // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                    if (index != limiter.DeferredWorkItems.Count - 1)
-                        throw new InvalidOperationException(Res.GetString(Res.XmlInternalErrorDetails, "DeferredWorkItems.Count have changed"));
-                    if (item != limiter.DeferredWorkItems[index])
-                        throw new InvalidOperationException(Res.GetString(Res.XmlInternalErrorDetails, "DeferredWorkItems.Top have changed"));
-#endif
             // Remove the last work item
             limiter.DeferredWorkItems.RemoveAt(index);
           }
@@ -2180,10 +2170,6 @@ namespace TextMonster.Xml.Xml_Reader
         }
         else
         {
-#if DEBUG
-                    if (!(accessor is AttributeAccessor))
-                        throw new InvalidOperationException(Res.GetString(Res.XmlInternalErrorDetails, "Bad accessor type " + accessor.GetType().FullName));
-#endif
           throw new InvalidOperationException(Res.GetString(Res.XmlDuplicateAttributeName, existing.Name, existing.Namespace));
         }
       }

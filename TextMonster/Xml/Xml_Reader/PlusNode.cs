@@ -15,12 +15,5 @@
     {
       get { return LeftChild.IsNullable; }
     }
-
-#if DEBUG
-        public override void Dump(StringBuilder bb, SymbolsDictionary symbols, Positions positions) {
-            LeftChild.Dump(bb, symbols, positions);
-            bb.Append("+");
-        }
-#endif
   }
 }

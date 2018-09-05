@@ -72,24 +72,6 @@ namespace TextMonster.Xml.Xml_Reader
       XPathNavigator nav = navToRead.Clone();
       IXmlLineInfo xli = nav as IXmlLineInfo;
       IXmlSchemaInfo xsi = nav as IXmlSchemaInfo;
-#if NAVREADER_SUPPORTSLINEINFO
-            if (null == xsi) {
-                if (null == xli) {
-                    return new XPathNavigatorReader(nav, xli, xsi);
-                }
-                else {
-                    return new XPathNavigatorReaderWithLI(nav, xli, xsi);
-                }
-            }
-            else {
-                if (null == xli) {
-                    return new XPathNavigatorReaderWithSI(nav, xli, xsi);
-                }
-                else {
-                    return new XPathNavigatorReaderWithLIAndSI(nav, xli, xsi);
-                }
-            }
-#else
       if (null == xsi)
       {
         return new XPathNavigatorReader(nav, xli, xsi);
@@ -98,7 +80,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         return new XPathNavigatorReaderWithSI(nav, xli, xsi);
       }
-#endif
     }
 
     protected XPathNavigatorReader(XPathNavigator navToRead, IXmlLineInfo xli, IXmlSchemaInfo xsi)

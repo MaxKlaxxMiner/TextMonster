@@ -15,21 +15,16 @@ namespace TextMonster.Xml.Xml_Reader
     bool hasNonCDataAttributes = false;
     bool hasDefaultAttributes = false;
 
-#if !SILVERLIGHT
     Dictionary<string, bool> targetNamespaces = new Dictionary<string, bool>();
     Dictionary<XmlQualifiedName, SchemaAttDef> attributeDecls = new Dictionary<XmlQualifiedName, SchemaAttDef>();
     int errorCount;
     SchemaType schemaType;
     Dictionary<XmlQualifiedName, SchemaElementDecl> elementDeclsByType = new Dictionary<XmlQualifiedName, SchemaElementDecl>();
     Dictionary<string, SchemaNotation> notations;
-#endif
-
 
     internal SchemaInfo()
     {
-#if !SILVERLIGHT
       schemaType = SchemaType.None;
-#endif
     }
 
     public XmlQualifiedName DocTypeName
@@ -78,7 +73,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-#if !SILVERLIGHT
     internal SchemaType SchemaType
     {
       get { return schemaType; }
@@ -363,9 +357,7 @@ namespace TextMonster.Xml.Xml_Reader
           Notations.Add(notation.Name.Name, notation);
         }
       }
-
     }
-#endif
 
     internal void Finish()
     {

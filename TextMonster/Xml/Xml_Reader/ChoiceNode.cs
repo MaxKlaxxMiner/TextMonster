@@ -53,32 +53,5 @@
     {
       ExpandTreeNoRecursive(parent, symbols, positions);
     }
-
-#if DEBUG
-        public override void Dump(StringBuilder bb, SymbolsDictionary symbols, Positions positions) {
-            Stack<ChoiceNode> nodeStack = new Stack<ChoiceNode>();
-            ChoiceNode this_ = this;
-
-            while (true) {
-                bb.Append("(");
-                if (this_.LeftChild is ChoiceNode) {
-                    nodeStack.Push(this_);
-                    this_ = (ChoiceNode)this_.LeftChild;
-                    continue;
-                }
-                this_.LeftChild.Dump(bb, symbols, positions);
-
-            ProcessRight:
-                bb.Append(" | ");
-                this_.RightChild.Dump(bb, symbols, positions);
-                bb.Append(")");
-                if (nodeStack.Count == 0)
-                    break;
-
-                this_ = nodeStack.Pop();
-                goto ProcessRight;
-            }
-        }
-#endif
   }
 }

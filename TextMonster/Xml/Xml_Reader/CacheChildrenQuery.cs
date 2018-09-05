@@ -6,9 +6,6 @@ namespace TextMonster.Xml.Xml_Reader
     ClonableStack<XPathNavigator> elementStk;
     ClonableStack<int> positionStk;
     bool needInput;
-#if DEBUG
-        XPathNavigator lastNode = null;
-#endif
 
     public CacheChildrenQuery(Query qyInput, string name, string prefix, XPathNodeType type)
       : base(qyInput, name, prefix, type)
@@ -24,9 +21,6 @@ namespace TextMonster.Xml.Xml_Reader
       this.elementStk = other.elementStk.Clone();
       this.positionStk = other.positionStk.Clone();
       this.needInput = other.needInput;
-#if DEBUG
-            this.lastNode    = Clone(other.lastNode);
-#endif
     }
 
     public override void Reset()
@@ -36,9 +30,6 @@ namespace TextMonster.Xml.Xml_Reader
       positionStk.Clear();
       needInput = true;
       base.Reset();
-#if DEBUG
-            lastNode = null;
-#endif
     }
 
     public override XPathNavigator Advance()
@@ -79,15 +70,6 @@ namespace TextMonster.Xml.Xml_Reader
             continue;
           }
         }
-#if DEBUG
-                if (lastNode != null) {
-                    if (currentNode.GetType().ToString() == "Microsoft.VisualStudio.Modeling.StoreNavigator") {
-                        XmlNodeOrder order = CompareNodes(lastNode, currentNode);
-                        Debug.Assert(order == XmlNodeOrder.Before, "Algorith error. Nodes expected to be DocOrderDistinct");
-                    }
-                }
-                lastNode = currentNode.Clone();
-#endif
         if (matches(currentNode))
         {
           position++;

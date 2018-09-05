@@ -613,13 +613,8 @@ namespace TextMonster.Xml.Xml_Reader
         }
         attdef.DefaultValueTyped = typedValue;
       }
-#if DEBUG
-            catch (XmlSchemaException ex) {
-                Debug.WriteLineIf(DiagnosticsSwitches.XmlSchema.TraceError, ex.Message);
-#else
       catch
       {
-#endif
         XmlSchemaException e = new XmlSchemaException(Res.Sch_AttributeDefaultDataType, attdef.Name.ToString(), baseUri, lineNo, linePos);
         if (eventhandler != null)
         {

@@ -45,9 +45,7 @@ namespace TextMonster.Xml.Xml_Reader
     protected bool checkCharacters;
 
     protected XmlStandalone standalone;
-#if !SILVERLIGHT
     protected XmlOutputMethod outputMethod;
-#endif
 
     protected bool autoXmlDeclaration;
     protected bool mergeCDataSections;
@@ -66,11 +64,6 @@ namespace TextMonster.Xml.Xml_Reader
     // Construct and initialize an instance of this class.
     protected XmlUtf8RawTextWriter(XmlWriterSettings settings)
     {
-
-#if ASYNC
-            useAsync = settings.Async;
-#endif
-
       // copy settings
       newLineHandling = settings.NewLineHandling;
       omitXmlDeclaration = settings.OmitXmlDeclaration;
@@ -78,11 +71,9 @@ namespace TextMonster.Xml.Xml_Reader
       checkCharacters = settings.CheckCharacters;
       closeOutput = settings.CloseOutput;
 
-#if !SILVERLIGHT
       standalone = settings.Standalone;
       outputMethod = settings.OutputMethod;
       mergeCDataSections = settings.MergeCDataSections;
-#endif
 
       if (checkCharacters && newLineHandling == NewLineHandling.Replace)
       {
@@ -137,11 +128,9 @@ namespace TextMonster.Xml.Xml_Reader
         settings.ConformanceLevel = ConformanceLevel.Auto;
         settings.CheckCharacters = checkCharacters;
 
-#if !SILVERLIGHT
         settings.AutoXmlDeclaration = autoXmlDeclaration;
         settings.Standalone = standalone;
         settings.OutputMethod = outputMethod;
-#endif
 
         settings.ReadOnly = true;
         return settings;

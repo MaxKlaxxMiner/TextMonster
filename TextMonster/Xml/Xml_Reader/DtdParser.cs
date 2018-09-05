@@ -107,7 +107,6 @@ namespace TextMonster.Xml.Xml_Reader
       SystemOrPublicID
     }
 
-#if !SILVERLIGHT
     class UndeclaredNotation
     {
       internal string name;
@@ -123,16 +122,13 @@ namespace TextMonster.Xml.Xml_Reader
         this.next = null;
       }
     }
-#endif
 
     //
     // Fields
     //
     // connector to reader
     IDtdParserAdapter readerAdapter;
-#if !SILVERLIGHT
     IDtdParserAdapterWithValidation readerAdapterWithValidation;
-#endif
 
     // name table
     XmlNameTable nameTable;
@@ -148,12 +144,10 @@ namespace TextMonster.Xml.Xml_Reader
     string publicId = string.Empty;
 
     // flags
-#if !SILVERLIGHT
     bool normalize = true;
     bool validate = false;
     bool supportNamespaces = true;
     bool v1Compat = false;
-#endif
 
     // cached character buffer
     char[] chars;
@@ -193,10 +187,8 @@ namespace TextMonster.Xml.Xml_Reader
     string documentBaseUri = string.Empty;
     string externalDtdBaseUri = string.Empty;
 
-#if !SILVERLIGHT
     Dictionary<string, UndeclaredNotation> undeclaredNotations = null;
     int[] condSectionEntityIds = null;
-#endif
 
     const int CondSectionEntityIdsInitialSize = 2;
 
@@ -206,18 +198,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     static DtdParser()
     {
-#if DEBUG
-            //  The absolute numbering is utilized in attribute type parsing
-            Debug.Assert( (int)Token.CDATA    == (int)XmlTokenizedType.CDATA    && (int)XmlTokenizedType.CDATA    == 0 );
-            Debug.Assert( (int)Token.ID       == (int)XmlTokenizedType.ID       && (int)XmlTokenizedType.ID       == 1 );
-            Debug.Assert( (int)Token.IDREF    == (int)XmlTokenizedType.IDREF    && (int)XmlTokenizedType.IDREF    == 2 );
-            Debug.Assert( (int)Token.IDREFS   == (int)XmlTokenizedType.IDREFS   && (int)XmlTokenizedType.IDREFS   == 3 );
-            Debug.Assert( (int)Token.ENTITY   == (int)XmlTokenizedType.ENTITY   && (int)XmlTokenizedType.ENTITY   == 4 );
-            Debug.Assert( (int)Token.ENTITIES == (int)XmlTokenizedType.ENTITIES && (int)XmlTokenizedType.ENTITIES == 5 );
-            Debug.Assert( (int)Token.NMTOKEN  == (int)XmlTokenizedType.NMTOKEN  && (int)XmlTokenizedType.NMTOKEN  == 6 );
-            Debug.Assert( (int)Token.NMTOKENS == (int)XmlTokenizedType.NMTOKENS && (int)XmlTokenizedType.NMTOKENS == 7 );
-            Debug.Assert( (int)Token.NOTATION == (int)XmlTokenizedType.NOTATION && (int)XmlTokenizedType.NOTATION == 8 );
-#endif
     }
 
     DtdParser()
@@ -236,13 +216,10 @@ namespace TextMonster.Xml.Xml_Reader
     private void Initialize(IDtdParserAdapter readerAdapter)
     {
       this.readerAdapter = readerAdapter;
-#if !SILVERLIGHT
       this.readerAdapterWithValidation = readerAdapter as IDtdParserAdapterWithValidation;
-#endif
 
       nameTable = readerAdapter.NameTable;
 
-#if !SILVERLIGHT
       IDtdParserAdapterWithValidation raWithValidation = readerAdapter as IDtdParserAdapterWithValidation;
       if (raWithValidation != null)
       {
@@ -255,12 +232,9 @@ namespace TextMonster.Xml.Xml_Reader
         this.normalize = raV1.Normalization;
         this.supportNamespaces = raV1.Namespaces;
       }
-#endif
 
       schemaInfo = new SchemaInfo();
-#if !SILVERLIGHT
       schemaInfo.SchemaType = SchemaType.DTD;
-#endif
 
       stringBuilder = new StringBuilder();
 
@@ -392,11 +366,7 @@ namespace TextMonster.Xml.Xml_Reader
     {
       get
       {
-#if SILVERLIGHT
-            return true;
-#else
         return supportNamespaces;
-#endif
       }
     }
 
@@ -404,11 +374,7 @@ namespace TextMonster.Xml.Xml_Reader
     {
       get
       {
-#if SILVERLIGHT
-            return true;
-#else
         return normalize;
-#endif
       }
     }
 
@@ -429,7 +395,6 @@ namespace TextMonster.Xml.Xml_Reader
 
       schemaInfo.Finish();
 
-#if !SILVERLIGHT
       // check undeclared forward references
       if (validate && undeclaredNotations != null)
       {
@@ -443,7 +408,6 @@ namespace TextMonster.Xml.Xml_Reader
           }
         }
       }
-#endif
     }
 
     private void ParseInDocumentDtd(bool saveInternalSubset)
@@ -533,11 +497,6 @@ namespace TextMonster.Xml.Xml_Reader
 
       // parse
       ParseSubset();
-
-#if DEBUG
-            Debug.Assert( readerAdapter.EntityStackLength == 0 ||
-                         ( freeFloatingDtd && readerAdapter.EntityStackLength == 1 ) );
-#endif
     }
 
     private void ParseSubset()
@@ -585,12 +544,10 @@ namespace TextMonster.Xml.Xml_Reader
           if (condSectionDepth > 0)
           {
             condSectionDepth--;
-#if !SILVERLIGHT
             if (validate && currentEntityId != condSectionEntityIds[condSectionDepth])
             {
               SendValidationEvent(curPos, XmlSeverityType.Error, Res.Sch_ParEntityRefNesting, string.Empty);
             }
-#endif
           }
           else
           {
@@ -616,11 +573,6 @@ namespace TextMonster.Xml.Xml_Reader
             {
               ThrowUnexpectedToken(curPos, ">");
             }
-#if DEBUG
-                            // check entity nesting
-                            Debug.Assert( readerAdapter.EntityStackLength == 0 || 
-                                          ( freeFloatingDtd && readerAdapter.EntityStackLength == 1 ) );
-#endif
           }
           else
           {
@@ -643,9 +595,6 @@ namespace TextMonster.Xml.Xml_Reader
 
         if (currentEntityId != startTagEntityId)
         {
-#if SILVERLIGHT
-                    Throw(curPos, Res.Sch_ParEntityRefNesting);
-#else
           if (validate)
           {
             SendValidationEvent(curPos, XmlSeverityType.Error, Res.Sch_ParEntityRefNesting, string.Empty);
@@ -657,7 +606,6 @@ namespace TextMonster.Xml.Xml_Reader
               Throw(curPos, Res.Sch_ParEntityRefNesting);
             }
           }
-#endif
         }
       }
     }
@@ -694,7 +642,6 @@ namespace TextMonster.Xml.Xml_Reader
           attrDef.LinePosition = (int)LinePos - (curPos - tokenStartPos);
           break;
           case Token.GreaterThan:
-#if !SILVERLIGHT
           if (v1Compat)
           {
             // check xml:space and xml:lang
@@ -714,7 +661,6 @@ namespace TextMonster.Xml.Xml_Reader
               }
             }
           }
-#endif
           return;
           default:
           goto UnexpectedError;
@@ -730,13 +676,8 @@ namespace TextMonster.Xml.Xml_Reader
         {
           if (attrDef.Name.Name == "space")
           {
-#if !SILVERLIGHT
             if (v1Compat)
             {
-              // 
-
-
-
               string val = attrDef.DefaultValueExpanded.Trim();
               if (val.Equals("preserve") || val.Equals("default"))
               {
@@ -745,19 +686,16 @@ namespace TextMonster.Xml.Xml_Reader
             }
             else
             {
-#endif
               attrDef.Reserved = SchemaAttDef.Reserve.XmlSpace;
               if (attrDef.TokenizedType != XmlTokenizedType.ENUMERATION)
               {
                 Throw(Res.Xml_EnumerationRequired, string.Empty, attrDef.LineNumber, attrDef.LinePosition);
               }
-#if !SILVERLIGHT
               if (validate)
               {
                 attrDef.CheckXmlSpace(readerAdapterWithValidation.ValidationEventHandling);
               }
             }
-#endif
           }
           else if (attrDef.Name.Name == "lang")
           {
@@ -788,16 +726,13 @@ namespace TextMonster.Xml.Xml_Reader
       if (IsAttributeValueType(token))
       {
         attrDef.TokenizedType = (XmlTokenizedType)(int)token;
-#if !SILVERLIGHT
         attrDef.SchemaType = XmlSchemaType.GetBuiltInSimpleType(attrDef.Datatype.TypeCode);
-#endif
 
         switch (token)
         {
           case Token.NOTATION:
           break;
           case Token.ID:
-#if !SILVERLIGHT
           if (validate && elementDecl.IsIdDeclared)
           {
             SchemaAttDef idAttrDef = elementDecl.GetAttDef(attrDef.Name);
@@ -806,13 +741,11 @@ namespace TextMonster.Xml.Xml_Reader
               SendValidationEvent(XmlSeverityType.Error, Res.Sch_IdAttrDeclared, elementDecl.Name.ToString());
             }
           }
-#endif
           elementDecl.IsIdDeclared = true;
           return;
           default:
           return;
         }
-#if !SILVERLIGHT
         // check notation constrains
         if (validate)
         {
@@ -831,7 +764,6 @@ namespace TextMonster.Xml.Xml_Reader
             elementDecl.IsNotationDeclared = true;
           }
         }
-#endif
 
         if (GetToken(true) != Token.LeftParen)
         {
@@ -846,7 +778,6 @@ namespace TextMonster.Xml.Xml_Reader
         for (; ; )
         {
           string notationName = GetNameString();
-#if !SILVERLIGHT
           if (!schemaInfo.Notations.ContainsKey(notationName))
           {
             AddUndeclaredNotation(notationName);
@@ -856,7 +787,6 @@ namespace TextMonster.Xml.Xml_Reader
             SendValidationEvent(XmlSeverityType.Error, new XmlSchemaException(Res.Xml_AttlistDuplNotationValue, notationName, BaseUriStr, (int)LineNo, (int)LinePos));
           }
           attrDef.AddValue(notationName);
-#endif
 
           switch (GetToken(false))
           {
@@ -876,16 +806,12 @@ namespace TextMonster.Xml.Xml_Reader
       else if (token == Token.LeftParen)
       {
         attrDef.TokenizedType = XmlTokenizedType.ENUMERATION;
-#if !SILVERLIGHT
         attrDef.SchemaType = XmlSchemaType.GetBuiltInSimpleType(attrDef.Datatype.TypeCode);
-#endif
 
         // parse nmtoken list
         if (GetToken(false) != Token.Nmtoken)
           goto UnexpectedError;
-#if !SILVERLIGHT
         attrDef.AddValue(GetNameString());
-#endif
 
         for (; ; )
         {
@@ -895,13 +821,11 @@ namespace TextMonster.Xml.Xml_Reader
             if (GetToken(false) != Token.Nmtoken)
               goto UnexpectedError;
             string nmtoken = GetNmtokenString();
-#if !SILVERLIGHT
             if (validate && !v1Compat && attrDef.Values != null && attrDef.Values.Contains(nmtoken) && !ignoreErrors)
             {
               SendValidationEvent(XmlSeverityType.Error, new XmlSchemaException(Res.Xml_AttlistDuplEnumValue, nmtoken, BaseUriStr, (int)LineNo, (int)LinePos));
             }
             attrDef.AddValue(nmtoken);
-#endif
             break;
             case Token.RightParen:
             return;
@@ -909,10 +833,6 @@ namespace TextMonster.Xml.Xml_Reader
             goto UnexpectedError;
           }
         }
-      }
-      else
-      {
-        goto UnexpectedError;
       }
 
     UnexpectedError:
@@ -942,12 +862,10 @@ namespace TextMonster.Xml.Xml_Reader
         goto UnexpectedError;
       }
 
-#if !SILVERLIGHT
       if (validate && attrDef.Datatype.TokenizedType == XmlTokenizedType.ID && !ignoreErrors)
       {
         SendValidationEvent(curPos, XmlSeverityType.Error, Res.Sch_AttListPresence, string.Empty);
       }
-#endif
 
       if (attrDef.TokenizedType != XmlTokenizedType.CDATA)
       {
@@ -961,9 +879,7 @@ namespace TextMonster.Xml.Xml_Reader
       attrDef.ValueLineNumber = (int)literalLineInfo.lineNo;
       attrDef.ValueLinePosition = (int)literalLineInfo.linePos + 1;
 
-#if !SILVERLIGHT
       DtdValidator.SetDefaultTypedValue(attrDef, readerAdapter);
-#endif
       return;
 
     UnexpectedError:
@@ -984,12 +900,10 @@ namespace TextMonster.Xml.Xml_Reader
 
       if (schemaInfo.ElementDecls.TryGetValue(name, out elementDecl))
       {
-#if !SILVERLIGHT
         if (validate)
         {
           SendValidationEvent(curPos - name.Name.Length, XmlSeverityType.Error, Res.Sch_DupElementDecl, GetNameString());
         }
-#endif
       }
       else
       {
@@ -1005,28 +919,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
       elementDecl.IsDeclaredInExternal = !ParsingInternalSubset;
 
-      // content spec
-#if SILVERLIGHT
-            switch ( GetToken( true ) ) {
-                case Token.EMPTY:
-                case Token.ANY:
-                    break;
-                case Token.LeftParen:
-                    switch ( GetToken( false ) ) {
-                        case Token.PCDATA:
-                            ParseElementMixedContentNoValidation();
-                            break;
-                        case Token.None:
-                            ParseElementOnlyContentNoValidation();
-                            break;
-                        default:
-                            goto UnexpectedError;
-                    }
-                    break;
-                default:
-                    goto UnexpectedError;
-            }
-#else
       switch (GetToken(true))
       {
         case Token.EMPTY:
@@ -1069,7 +961,6 @@ namespace TextMonster.Xml.Xml_Reader
         default:
         goto UnexpectedError;
       }
-#endif
       if (GetToken(false) != Token.GreaterThan)
       {
         ThrowUnexpectedToken(curPos, ">");
@@ -1079,127 +970,6 @@ namespace TextMonster.Xml.Xml_Reader
     UnexpectedError:
       OnUnexpectedError();
     }
-
-#if SILVERLIGHT // Element content model parsing methods without validation
-
-        private class ParseElementOnlyContentNoValidation_LocalFrame
-        {
-            public ParseElementOnlyContentNoValidation_LocalFrame() {
-                parsingSchema = Token.None;
-            }
-
-            public Token parsingSchema;
-        }
-
-        private void ParseElementOnlyContentNoValidation() {
-            Stack<ParseElementOnlyContentNoValidation_LocalFrame> localFrames = 
-                new Stack<ParseElementOnlyContentNoValidation_LocalFrame>();
-            ParseElementOnlyContentNoValidation_LocalFrame currentFrame =
-                new ParseElementOnlyContentNoValidation_LocalFrame();
-            localFrames.Push(currentFrame);
-
-        RecursiveCall:
-            
-        Loop:
-
-            switch ( GetToken( false ) ) {
-                case Token.QName:
-                    GetNameQualified(true);
-                    ParseHowManyNoValidation();
-                    break;
-                case Token.LeftParen:
-                    // We could just do this:
-                    // ParseElementOnlyContentNoValidation();
-                    //
-                    // But that would be a recursion - so we will simulate the call using our localFrames stack
-                    //   instead.
-                    currentFrame =
-                        new ParseElementOnlyContentNoValidation_LocalFrame();
-                    localFrames.Push(currentFrame);
-                    goto RecursiveCall;
-                    // And we should return here when we return from the recursion
-                    //   but it's the samea s returning after the switch statement
-
-                case Token.GreaterThan:
-                    Throw( curPos, Res.Xml_InvalidContentModel );
-                    goto Return;
-                default:
-                    goto UnexpectedError;
-            }
-
-        ReturnFromRecursiveCall:
-
-            switch ( GetToken( false ) ) {
-                case Token.Comma:
-                    if ( currentFrame.parsingSchema == Token.Or ) {
-                        Throw( curPos, Res.Xml_InvalidContentModel );
-                    }
-                    currentFrame.parsingSchema = Token.Comma;
-                    break;
-                case Token.Or:
-                    if ( currentFrame.parsingSchema == Token.Comma ) {
-                        Throw( curPos, Res.Xml_InvalidContentModel );
-                    }
-                    currentFrame.parsingSchema = Token.Or;
-                    break;
-                case Token.RightParen:
-                    ParseHowManyNoValidation();
-                    goto Return;
-                case Token.GreaterThan:
-                    Throw( curPos, Res.Xml_InvalidContentModel );
-                    goto Return;
-                default:
-                    goto UnexpectedError;
-            }
-            goto Loop;
-
-        UnexpectedError:
-            OnUnexpectedError();
-
-        Return:
-            // This is equivalent to return; statement
-            //   we simulate it using our localFrames stack
-            localFrames.Pop();
-            if (localFrames.Count > 0) {
-                currentFrame = localFrames.Peek();
-                goto ReturnFromRecursiveCall;
-            }
-            else {
-                return;
-            }
-        }
-
-        private void ParseHowManyNoValidation() {
-            GetToken( false );
-        }
-
-        private void ParseElementMixedContentNoValidation() {
-            bool hasNames = false;
-
-            for (;;) {
-                switch ( GetToken( false ) ) {
-                    case Token.RightParen:
-                        if ( GetToken( false ) != Token.Star && hasNames ) {
-                            ThrowUnexpectedToken( curPos, "*" );
-                        }
-                        return;
-                    case Token.Or:
-                        if ( !hasNames ) {
-                            hasNames = true;
-                        }
-                        if ( GetToken( false ) != Token.QName ) {
-                            goto default;
-                        }
-                        GetNameQualified( true );
-                        continue;
-                    default:
-                        OnUnexpectedError();
-                        break;
-                }
-            }
-        }
-
-#else // Element content model parsing methods with validation support
 
     private class ParseElementOnlyContent_LocalFrame
     {
@@ -1392,7 +1162,6 @@ namespace TextMonster.Xml.Xml_Reader
         }
       }
     }
-#endif // Element content model parsing methods with validation support
 
     private void ParseEntityDecl()
     {
@@ -1469,13 +1238,11 @@ namespace TextMonster.Xml.Xml_Reader
           }
 
           entity.NData = GetNameQualified(false);
-#if !SILVERLIGHT
           string notationName = entity.NData.Name;
           if (!schemaInfo.Notations.ContainsKey(notationName))
           {
             AddUndeclaredNotation(notationName);
           }
-#endif
         }
         break;
         case Token.Literal:
@@ -1506,7 +1273,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
 
       XmlQualifiedName notationName = GetNameQualified(false);
-#if !SILVERLIGHT
       SchemaNotation notation = null;
       if (!schemaInfo.Notations.ContainsKey(notationName.Name))
       {
@@ -1526,7 +1292,6 @@ namespace TextMonster.Xml.Xml_Reader
           SendValidationEvent(curPos - notationName.Name.Length, XmlSeverityType.Error, Res.Sch_DupNotation, notationName.Name);
         }
       }
-#endif
 
       // public / system id
       Token token = GetToken(true);
@@ -1536,13 +1301,11 @@ namespace TextMonster.Xml.Xml_Reader
 
         ParseExternalId(token, Token.NOTATION, out notationPublicId, out notationSystemId);
 
-#if !SILVERLIGHT
         if (notation != null)
         {
           notation.SystemLiteral = notationSystemId;
           notation.Pubid = notationPublicId;
         }
-#endif
       }
       else
       {
@@ -1553,7 +1316,6 @@ namespace TextMonster.Xml.Xml_Reader
         OnUnexpectedError();
     }
 
-#if !SILVERLIGHT
     private void AddUndeclaredNotation(string notationName)
     {
       if (undeclaredNotations == null)
@@ -1572,15 +1334,12 @@ namespace TextMonster.Xml.Xml_Reader
         undeclaredNotations.Add(notationName, un);
       }
     }
-#endif
 
     private void ParseComment()
     {
       SaveParsingBuffer();
-#if !SILVERLIGHT
       try
       {
-#endif
         if (SaveInternalSubsetValue)
         {
           readerAdapter.ParseComment(internalSubsetValueSb);
@@ -1590,7 +1349,6 @@ namespace TextMonster.Xml.Xml_Reader
         {
           readerAdapter.ParseComment(null);
         }
-#if !SILVERLIGHT
       }
       catch (XmlException e)
       {
@@ -1603,7 +1361,6 @@ namespace TextMonster.Xml.Xml_Reader
           throw;
         }
       }
-#endif
       LoadParsingBuffer();
     }
 
@@ -1633,7 +1390,6 @@ namespace TextMonster.Xml.Xml_Reader
         {
           goto default;
         }
-#if !SILVERLIGHT
         if (validate && csEntityId != currentEntityId)
         {
           SendValidationEvent(curPos, XmlSeverityType.Error, Res.Sch_ParEntityRefNesting, string.Empty);
@@ -1652,7 +1408,6 @@ namespace TextMonster.Xml.Xml_Reader
           }
           condSectionEntityIds[condSectionDepth] = csEntityId;
         }
-#endif
         condSectionDepth++;
         break;
         case Token.IGNORE:
@@ -1660,23 +1415,19 @@ namespace TextMonster.Xml.Xml_Reader
         {
           goto default;
         }
-#if !SILVERLIGHT
         if (validate && csEntityId != currentEntityId)
         {
           SendValidationEvent(curPos, XmlSeverityType.Error, Res.Sch_ParEntityRefNesting, string.Empty);
         }
-#endif
         // the content of the ignore section is parsed & skipped by scanning function
         if (GetToken(false) != Token.CondSectionEnd)
         {
           goto default;
         }
-#if !SILVERLIGHT
         if (validate && csEntityId != currentEntityId)
         {
           SendValidationEvent(curPos, XmlSeverityType.Error, Res.Sch_ParEntityRefNesting, string.Empty);
         }
-#endif
         break;
         default:
         OnUnexpectedError();
@@ -2622,20 +2373,10 @@ namespace TextMonster.Xml.Xml_Reader
       curPos++;
       tokenStartPos = curPos;
 
-#if SILVERLIGHT
-            stringBuilder.Clear();
-#else
       stringBuilder.Length = 0;
-#endif
 
       for (; ; )
       {
-
-#if SILVERLIGHT
-                while ( xmlCharType.IsAttributeValueChar( chars[curPos] ) && chars[curPos] != '%' ) {
-                    curPos++;
-                }
-#else
         unsafe
         {
           while ((xmlCharType.charProperties[chars[curPos]] & XmlCharType.fAttrValue) != 0 && chars[curPos] != '%')
@@ -2643,7 +2384,6 @@ namespace TextMonster.Xml.Xml_Reader
             curPos++;
           }
         }
-#endif
 
         if (chars[curPos] == quoteChar && currentEntityId == startQuoteEntityId)
         {
@@ -3037,11 +2777,7 @@ namespace TextMonster.Xml.Xml_Reader
           }
           if (chars[curPos + 1] != 'C' || chars[curPos + 2] != 'L' ||
                chars[curPos + 3] != 'U' || chars[curPos + 4] != 'D' ||
-               chars[curPos + 5] != 'E' || xmlCharType.IsNameSingleChar(chars[curPos + 6])
-#if XML10_FIFTH_EDITION
-                             || xmlCharType.IsNCNameHighSurrogateChar( chars[curPos+6] ) 
-#endif
-)
+               chars[curPos + 5] != 'E' || xmlCharType.IsNameSingleChar(chars[curPos + 6]))
           {
             goto default;
           }
@@ -3052,11 +2788,7 @@ namespace TextMonster.Xml.Xml_Reader
           case 'G':
           if (chars[curPos + 1] != 'N' || chars[curPos + 2] != 'O' ||
                chars[curPos + 3] != 'R' || chars[curPos + 4] != 'E' ||
-               xmlCharType.IsNameSingleChar(chars[curPos + 5])
-#if XML10_FIFTH_EDITION
-                            ||xmlCharType.IsNCNameHighSurrogateChar( chars[curPos+5] ) 
-#endif
-)
+               xmlCharType.IsNameSingleChar(chars[curPos + 5]))
           {
             goto default;
           }
@@ -3095,11 +2827,6 @@ namespace TextMonster.Xml.Xml_Reader
       for (; ; )
       {
 
-#if SILVERLIGHT
-                while ( xmlCharType.IsTextChar(chars[curPos]) && chars[curPos] != ']' ) {
-                    curPos++;
-                }
-#else
         unsafe
         {
           while ((xmlCharType.charProperties[chars[curPos]] & XmlCharType.fText) != 0 && chars[curPos] != ']')
@@ -3107,7 +2834,6 @@ namespace TextMonster.Xml.Xml_Reader
             curPos++;
           }
         }
-#endif
 
         switch (chars[curPos])
         {
@@ -3235,20 +2961,10 @@ namespace TextMonster.Xml.Xml_Reader
         unsafe
         {
 
-#if SILVERLIGHT
-                    if ( xmlCharType.IsStartNCNameSingleChar(chars[curPos]) || chars[curPos] == ':' ) {
-#else
           if ((xmlCharType.charProperties[chars[curPos]] & XmlCharType.fNCStartNameSC) != 0 || chars[curPos] == ':')
           { // if ( xmlCharType.IsStartNCNameSingleChar(chars[curPos]) || chars[curPos] == ':' ) {
-#endif
-
             curPos++;
           }
-#if XML10_FIFTH_EDITION
-                    else if ( curPos + 1 < charsUsed && xmlCharType.IsNCNameSurrogateChar(chars[curPos+1], chars[curPos])) {
-                        curPos += 2;
-                    }
-#endif
           else
           {
             if (curPos + 1 >= charsUsed)
@@ -3272,20 +2988,10 @@ namespace TextMonster.Xml.Xml_Reader
         {
           for (; ; )
           {
-#if SILVERLIGHT
-                        if ( xmlCharType.IsNCNameSingleChar( chars[curPos] ) ) {
-#else
             if ((xmlCharType.charProperties[chars[curPos]] & XmlCharType.fNCNameSC) != 0)
             { // while ( xmlCharType.IsNCNameSingleChar(chars[curPos]) ) {
-#endif
-
               curPos++;
             }
-#if XML10_FIFTH_EDITION
-                        else if ( curPos + 1 < charsUsed && xmlCharType.IsNameSurrogateChar(chars[curPos + 1], chars[curPos]) ) {
-                            curPos += 2;
-                        }
-#endif
             else
             {
               break;
@@ -3312,11 +3018,7 @@ namespace TextMonster.Xml.Xml_Reader
           }
         }
         // end of buffer
-        else if (curPos == charsUsed
-#if XML10_FIFTH_EDITION
-                    || ( curPos + 1 == charsUsed && xmlCharType.IsNCNameHighSurrogateChar( chars[curPos] ) ) 
-#endif
-)
+        else if (curPos == charsUsed)
         {
           if (ReadDataInName())
           {
@@ -3354,20 +3056,10 @@ namespace TextMonster.Xml.Xml_Reader
         {
           for (; ; )
           {
-#if SILVERLIGHT
-                        if ( xmlCharType.IsNCNameSingleChar(chars[curPos]) || chars[curPos] == ':' ) {
-#else
             if ((xmlCharType.charProperties[chars[curPos]] & XmlCharType.fNCNameSC) != 0 || chars[curPos] == ':')
             {  // if ( xmlCharType.IsNCNameChar(chars[curPos]) || chars[curPos] == ':' ) {
-#endif
-
               curPos++;
             }
-#if XML10_FIFTH_EDITION
-                        else if (curPos + 1 < charsUsed && xmlCharType.IsNCNameSurrogateChar(chars[curPos + 1], chars[curPos])) {
-                            curPos += 2;
-                        }
-#endif
             else
             {
               break;
@@ -3375,11 +3067,7 @@ namespace TextMonster.Xml.Xml_Reader
           }
         }
 
-        if (curPos < charsUsed
-#if XML10_FIFTH_EDITION
-                    && ( !xmlCharType.IsNCNameHighSurrogateChar( chars[curPos] ) || curPos + 1 < charsUsed ) 
-#endif
-)
+        if (curPos < charsUsed)
         {
           if (curPos - tokenStartPos == 0)
           {
@@ -3648,23 +3336,19 @@ namespace TextMonster.Xml.Xml_Reader
       {
         if (paramEntity)
         {
-#if !SILVERLIGHT
           if (validate)
           {
             SendValidationEvent(curPos - entityName.Name.Length - 1, XmlSeverityType.Error, Res.Xml_UndeclaredParEntity, entityName.Name);
           }
-#endif
         }
         else if (mustBeDeclared)
         {
           if (!ParsingInternalSubset)
           {
-#if !SILVERLIGHT
             if (validate)
             {
               SendValidationEvent(curPos - entityName.Name.Length - 1, XmlSeverityType.Error, Res.Xml_UndeclaredEntity, entityName.Name);
             }
-#endif
           }
           else
           {
@@ -3690,7 +3374,6 @@ namespace TextMonster.Xml.Xml_Reader
     //
     // Helper methods and properties
     //
-#if !SILVERLIGHT
     private void SendValidationEvent(int pos, XmlSeverityType severity, string code, string arg)
     {
       SendValidationEvent(severity, new XmlSchemaException(code, arg, BaseUriStr, (int)LineNo, (int)LinePos + (pos - curPos)));
@@ -3709,7 +3392,6 @@ namespace TextMonster.Xml.Xml_Reader
         eventHandling.SendEvent(e, severity);
       }
     }
-#endif
 
     private bool IsAttributeValueType(Token token)
     {
@@ -3800,11 +3482,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     private string ParseUnexpectedToken(int startPos)
     {
-      if (xmlCharType.IsNCNameSingleChar(chars[startPos])
-#if XML10_FIFTH_EDITION
-                || xmlCharType.IsNCNameHighSurrogateChar( chars[startPos] ) 
-#endif
-)
+      if (xmlCharType.IsNCNameSingleChar(chars[startPos]))
       { // postpone the proper surrogate checking to the loop below
 
         int endPos = startPos;
@@ -3814,12 +3492,6 @@ namespace TextMonster.Xml.Xml_Reader
           {
             endPos++;
           }
-#if XML10_FIFTH_EDITION
-                    else if ( chars[endPos] != 0 && // check for end of the buffer
-                              xmlCharType.IsNCNameSurrogateChar( chars[endPos], chars[endPos + 1] ) ) {
-                        endPos += 2;
-                    }
-#endif
           else
           {
             break;

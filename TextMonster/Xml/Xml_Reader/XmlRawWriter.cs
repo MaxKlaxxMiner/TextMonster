@@ -33,12 +33,10 @@ namespace TextMonster.Xml.Xml_Reader
       throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
     }
 
-#if !SILVERLIGHT // This code is not being hit in Silverlight
     public override void WriteDocType(string name, string pubid, string sysid, string subset)
     {
 
     }
-#endif
 
     // Raw writers do not have to keep a stack of element names.
     public override void WriteEndElement()
@@ -108,7 +106,6 @@ namespace TextMonster.Xml.Xml_Reader
       throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
     }
 
-#if !SILVERLIGHT // This code is not being hit in Silverlight
     // Forward call to WriteString(string).
     public override void WriteCData(string text)
     {
@@ -150,7 +147,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
       WriteString(data);
     }
-#endif
 
     // Override in order to handle Xml simple typed values and to pass resolver for QName values
     public override void WriteValue(object value)
@@ -159,11 +155,7 @@ namespace TextMonster.Xml.Xml_Reader
       {
         throw new ArgumentNullException("value");
       }
-#if SILVERLIGHT // 
-            WriteString(XmlUntypedStringConverter.Instance.ToString( value, resolver ) );
-#else
       WriteString(XmlUntypedConverter.Untyped.ToString(value, resolver));
-#endif
     }
 
     // Override in order to handle Xml simple typed values and to pass resolver for QName values
@@ -213,7 +205,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // Write the xml declaration.  This must be the first call.
-#if !SILVERLIGHT // This code is not being hit in Silverlight
     internal virtual void WriteXmlDeclaration(XmlStandalone standalone)
     {
 
@@ -222,13 +213,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
 
     }
-#else
-
-        internal abstract void WriteXmlDeclaration(XmlStandalone standalone);
-
-        internal abstract void WriteXmlDeclaration(string xmldecl);
-
-#endif
 
     // Called after an element's attributes have been enumerated, but before any children have been
     // enumerated.  This method must always be called, even for empty elements.
@@ -245,16 +229,10 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal abstract void WriteEndElement(string prefix, string localName, string ns);
 
-#if !SILVERLIGHT // This code is not being hit in Silverlight
     internal virtual void WriteFullEndElement(string prefix, string localName, string ns)
     {
       WriteEndElement(prefix, localName, ns);
     }
-#else
-
-        internal abstract void WriteFullEndElement(string prefix, string localName, string ns);
-
-#endif
 
     internal virtual void WriteQualifiedName(string prefix, string localName, string ns)
     {

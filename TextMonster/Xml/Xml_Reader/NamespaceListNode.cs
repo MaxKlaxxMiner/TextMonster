@@ -71,11 +71,5 @@ namespace TextMonster.Xml.Xml_Reader
       // NamespaceListNode nodes have to be removed prior to that
       get { throw new InvalidOperationException(); }
     }
-
-#if DEBUG
-        public override void Dump(StringBuilder bb, SymbolsDictionary symbols, Positions positions) {
-            bb.Append("[" + namespaceList.ToString() + "]");
-        }
-#endif
   }
 }

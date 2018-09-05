@@ -68,8 +68,6 @@ namespace TextMonster.Xml.Xml_Reader
     public abstract void WriteFullEndElement();
 
     // Writes out the attribute with the specified LocalName, value, and NamespaceURI.
-#if !SILVERLIGHT
-#endif
     public void WriteAttributeString(string localName, string ns, string value)
     {
       WriteStartAttribute(null, localName, ns);
@@ -241,11 +239,7 @@ namespace TextMonster.Xml.Xml_Reader
       {
         throw new ArgumentNullException("value");
       }
-#if SILVERLIGHT
-            WriteString(XmlUntypedStringConverter.Instance.ToString(value, null));
-#else
       WriteString(XmlUntypedConverter.Untyped.ToString(value, null));
-#endif
     }
 
     // Writes out the specified value.
@@ -441,7 +435,6 @@ namespace TextMonster.Xml.Xml_Reader
       } while (reader.Read() && (d < reader.Depth || (d == reader.Depth && reader.NodeType == XmlNodeType.EndElement)));
     }
 
-#if !SILVERLIGHT // Removing dependency on XPathNavigator
     // Copies the current node from the given XPathNavigator to the writer (including child nodes).
     public virtual void WriteNode(XPathNavigator navigator, bool defattr)
     {
@@ -564,7 +557,6 @@ namespace TextMonster.Xml.Xml_Reader
         }
       }
     }
-#endif
 
     // Element Helper Methods
 
@@ -610,7 +602,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-#if !SILVERLIGHT // Removing dependency on XPathNavigator
     // Copy local namespaces on the navigator's current node to the raw writer. The namespaces are returned by the navigator in reversed order. 
     // The recursive call reverses them back.
     private void WriteLocalNamespaces(XPathNavigator nsNav)
@@ -632,12 +623,10 @@ namespace TextMonster.Xml.Xml_Reader
         WriteAttributeString("xmlns", prefix, XmlReservedNs.NsXmlNs, ns);
       }
     }
-#endif
 
     //
     // Static methods for creating writers
     //
-#if !SILVERLIGHT
     // Creates an XmlWriter for writing into the provided file.
     [ResourceConsumption(ResourceScope.Machine)]
     [ResourceExposure(ResourceScope.Machine)]
@@ -657,7 +646,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
       return settings.CreateWriter(outputFileName);
     }
-#endif
 
     // Creates an XmlWriter for writing into the provided stream.
     public static XmlWriter Create(Stream output)

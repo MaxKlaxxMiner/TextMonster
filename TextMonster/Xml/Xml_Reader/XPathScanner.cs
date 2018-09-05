@@ -45,19 +45,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-#if XML10_FIFTH_EDITION
-        private char PeekNextChar() {
-            Debug.Assert(0 <= xpathExprIndex && xpathExprIndex <= xpathExpr.Length);
-            if (xpathExprIndex < xpathExpr.Length) {
-                return xpathExpr[xpathExprIndex];
-            }
-            else {
-                Debug.Assert(xpathExprIndex == xpathExpr.Length);
-                return '\0';
-            }
-        }
-#endif
-
     public LexKind Kind { get { return this.kind; } }
 
     public string Name
@@ -192,11 +179,7 @@ namespace TextMonster.Xml.Xml_Reader
           kind = LexKind.Number;
           numberValue = ScanNumber();
         }
-        else if (xmlCharType.IsStartNCNameSingleChar(this.CurerntChar)
-#if XML10_FIFTH_EDITION
-                    || xmlCharType.IsNCNameHighSurrogateChar(this.CurerntChar) 
-#endif
-)
+        else if (xmlCharType.IsStartNCNameSingleChar(this.CurerntChar))
         {
           kind = LexKind.Name;
           this.name = ScanName();
@@ -220,11 +203,7 @@ namespace TextMonster.Xml.Xml_Reader
                 NextChar();
                 this.name = "*";
               }
-              else if (xmlCharType.IsStartNCNameSingleChar(this.CurerntChar)
-#if XML10_FIFTH_EDITION
-                                || xmlCharType.IsNCNameHighSurrogateChar(this.CurerntChar)
-#endif
-)
+              else if (xmlCharType.IsStartNCNameSingleChar(this.CurerntChar))
               {
                 this.name = ScanName();
               }

@@ -16,11 +16,9 @@ namespace TextMonster.Xml.Xml_Reader
     GMonthDay = 0x20,
     GDay = 0x40,
     GMonth = 0x80,
-#if !SILVERLIGHT // XDR is not supported in Silverlight
     XdrDateTimeNoTz = 0x100,
     XdrDateTime = 0x200,
     XdrTimeNoTz = 0x400,  //XDRTime with tz is the same as xsd:time  
-#endif
     AllXsd = 0xFF //All still does not include the XDR formats
   }
 }
