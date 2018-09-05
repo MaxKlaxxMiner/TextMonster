@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Runtime.Versioning;
 using System.Text;
@@ -946,7 +948,6 @@ namespace TextMonster.Xml.Xml_Reader
           case State.Closed:
           return WriteState.Closed;
           default:
-          Debug.Assert(false);
           return WriteState.Error;
         }
       }
@@ -1396,7 +1397,6 @@ namespace TextMonster.Xml.Xml_Reader
         switch (stack[top].defaultNsState)
         {
           case NamespaceState.DeclaredButNotWrittenOut:
-          Debug.Assert(declared == true, "Unexpected situation!!");
           // the first namespace that the user gave us is what we
           // like to keep. 
           break;
@@ -1406,7 +1406,6 @@ namespace TextMonster.Xml.Xml_Reader
           stack[top].defaultNs = ns;
           break;
           default:
-          Debug.Assert(false, "Should have never come here");
           return;
         }
         stack[top].defaultNsState = (declared ? NamespaceState.DeclaredAndWrittenOut : NamespaceState.DeclaredButNotWrittenOut);
@@ -1482,10 +1481,8 @@ namespace TextMonster.Xml.Xml_Reader
 
     private void PopNamespaces(int indexFrom, int indexTo)
     {
-      Debug.Assert(useNsHashtable);
       for (int i = indexTo; i >= indexFrom; i--)
       {
-        Debug.Assert(nsHashtable.ContainsKey(nsStack[i].prefix));
         if (nsStack[i].prevNsIndex == -1)
         {
           nsHashtable.Remove(nsStack[i].prefix);

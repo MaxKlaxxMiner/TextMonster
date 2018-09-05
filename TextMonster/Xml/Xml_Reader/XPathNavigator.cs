@@ -2,6 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
+using System.Globalization;
+using System.IO;
+using System.Text;
 
 namespace TextMonster.Xml.Xml_Reader
 {

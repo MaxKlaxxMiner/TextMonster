@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.Versioning;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -1108,7 +1110,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         int defaultIndex = i - coreReaderAttributeCount;
         ValidatingReaderNodeData attNode = (ValidatingReaderNodeData)defaultAttributes[defaultIndex];
-        Debug.Assert(attNode != null);
         return attNode.RawValue;
       }
     }
@@ -1160,7 +1161,6 @@ namespace TextMonster.Xml.Xml_Reader
         if (inlineSchemaParser == null)
         {
           attributePSVI = GetAttributePSVI(name, ns);
-          Debug.Assert(attributePSVI != null);
         }
         else
         { //Parsing inline schema, no PSVI for schema attributes
@@ -1265,7 +1265,6 @@ namespace TextMonster.Xml.Xml_Reader
       if (currentAttrIndex + 1 < coreReaderAttributeCount)
       {
         bool moveTo = coreReader.MoveToNextAttribute();
-        Debug.Assert(moveTo);
         currentAttrIndex++;
         if (inlineSchemaParser == null)
         {
@@ -1857,7 +1856,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
       get
       {
-        Debug.Assert(attributePSVI != null);
         return attributePSVI.attributeSchemaInfo;
       }
     }
@@ -2000,7 +1998,6 @@ namespace TextMonster.Xml.Xml_Reader
       originalAtomicValueString = GetOriginalAtomicValueStringOfElement();
       if (xmlSchemaInfo.IsDefault)
       { //The atomicValue returned is a default value
-        Debug.Assert(atomicValue != null);
         int depth = coreReader.Depth;
         coreReader = GetCachingReader();
         cachingReader.RecordTextNode(xmlSchemaInfo.XmlType.ValueConverter.ToString(atomicValue), originalAtomicValueString, depth + 1, 0, 0);
@@ -2089,8 +2086,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private AttributePSVIInfo GetAttributePSVI(string localName, string ns)
     {
-      Debug.Assert(coreReaderNameTable.Get(localName) != null);
-      Debug.Assert(coreReaderNameTable.Get(ns) != null);
       AttributePSVIInfo attInfo = null;
 
       for (int i = 0; i < coreReaderAttributeCount; i++)
@@ -2131,8 +2126,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private ValidatingReaderNodeData GetDefaultAttribute(string attrLocalName, string ns, bool updatePosition)
     {
-      Debug.Assert(coreReaderNameTable.Get(attrLocalName) != null);
-      Debug.Assert(coreReaderNameTable.Get(ns) != null);
       ValidatingReaderNodeData defaultNode = null;
 
       for (int i = 0; i < defaultAttributes.Count; i++)
@@ -2152,7 +2145,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private AttributePSVIInfo AddAttributePSVI(int attIndex)
     {
-      Debug.Assert(attIndex <= attributePSVINodes.Length);
       AttributePSVIInfo attInfo = attributePSVINodes[attIndex];
       if (attInfo != null)
       {
@@ -2181,7 +2173,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private void ProcessInlineSchema()
     {
-      Debug.Assert(inlineSchemaParser != null);
       if (coreReader.Read())
       {
         if (coreReader.NodeType == XmlNodeType.Element)
@@ -2303,8 +2294,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private object InternalReadElementContentAsObject(out XmlSchemaType xmlType, bool unwrapTypedValue, out string originalString)
     {
-
-      Debug.Assert(this.NodeType == XmlNodeType.Element);
       object typedValue = null;
       xmlType = null;
       //If its an empty element, can have default/fixed value
@@ -2434,7 +2423,6 @@ namespace TextMonster.Xml.Xml_Reader
       { //Switch back without going over the cached contents again.
         this.coreReader = cachingReader.GetCoreReader();
       }
-      Debug.Assert(coreReader.NodeType == XmlNodeType.EndElement);
       replayCache = false;
     }
 
@@ -2445,7 +2433,6 @@ namespace TextMonster.Xml.Xml_Reader
         switch (coreReader.NodeType)
         {
           case XmlNodeType.Element:
-          Debug.Assert(false); //Should not happen as the caching reader does not cache elements in simple content
           break;
 
           case XmlNodeType.Text:
@@ -2498,7 +2485,6 @@ namespace TextMonster.Xml.Xml_Reader
             switch (coreReader.NodeType)
             {
               case XmlNodeType.Element:
-              Debug.Assert(false); //Should not happen as the caching reader does not cache elements in simple content
               break;
 
               case XmlNodeType.Text:
@@ -2556,7 +2542,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         if (unWrap)
         { //convert XmlAtomicValue[] to object[] for list of unions; The other cases return typed value of the valueType anyway
-          Debug.Assert(xmlType != null && xmlType.Datatype != null);
           if (xmlType.Datatype.Variety == XmlSchemaDatatypeVariety.List)
           {
             Datatype_List listType = xmlType.Datatype as Datatype_List;
@@ -2570,7 +2555,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
       else
       { //return the original string value of the element or attribute
-        Debug.Assert(NodeType != XmlNodeType.Attribute);
         typedValue = validator.GetConcatenatedValue();
       }
       return typedValue;

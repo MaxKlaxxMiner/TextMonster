@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Diagnostics;
+using System.Text;
 
 namespace TextMonster.Xml.Xml_Reader
 {

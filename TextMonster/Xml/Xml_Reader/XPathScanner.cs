@@ -1,4 +1,7 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿using System;
+using System.Globalization;
+
+namespace TextMonster.Xml.Xml_Reader
 {
   internal sealed class XPathScanner
   {
@@ -30,7 +33,6 @@
 
     private bool NextChar()
     {
-      Debug.Assert(0 <= xpathExprIndex && xpathExprIndex <= xpathExpr.Length);
       if (xpathExprIndex < xpathExpr.Length)
       {
         currentChar = xpathExpr[xpathExprIndex++];
@@ -62,8 +64,6 @@
     {
       get
       {
-        Debug.Assert(this.kind == LexKind.Name || this.kind == LexKind.Axe);
-        Debug.Assert(this.name != null);
         return this.name;
       }
     }
@@ -72,8 +72,6 @@
     {
       get
       {
-        Debug.Assert(this.kind == LexKind.Name);
-        Debug.Assert(this.prefix != null);
         return this.prefix;
       }
     }
@@ -82,8 +80,6 @@
     {
       get
       {
-        Debug.Assert(this.kind == LexKind.String);
-        Debug.Assert(this.stringValue != null);
         return this.stringValue;
       }
     }
@@ -92,8 +88,6 @@
     {
       get
       {
-        Debug.Assert(this.kind == LexKind.Number);
-        Debug.Assert(this.numberValue != double.NaN);
         return this.numberValue;
       }
     }
@@ -104,7 +98,6 @@
     {
       get
       {
-        Debug.Assert(this.kind == LexKind.Name);
         return this.canBeFunction;
       }
     }
@@ -274,7 +267,6 @@
 
     private double ScanNumber()
     {
-      Debug.Assert(this.CurerntChar == '.' || XmlCharType.IsDigit(this.CurerntChar));
       int start = xpathExprIndex - 1;
       int len = 0;
       while (XmlCharType.IsDigit(this.CurerntChar))
@@ -294,9 +286,7 @@
 
     private double ScanFraction()
     {
-      Debug.Assert(XmlCharType.IsDigit(this.CurerntChar));
       int start = xpathExprIndex - 2;
-      Debug.Assert(0 <= start && this.xpathExpr[start] == '.');
       int len = 1; // '.'
       while (XmlCharType.IsDigit(this.CurerntChar))
       {
@@ -319,18 +309,12 @@
         }
         len++;
       }
-      Debug.Assert(this.CurerntChar == endChar);
       NextChar();
       return this.xpathExpr.Substring(start, len);
     }
 
     private string ScanName()
     {
-      Debug.Assert(xmlCharType.IsStartNCNameSingleChar(this.CurerntChar)
-#if XML10_FIFTH_EDITION
-                || xmlCharType.IsNCNameHighSurrogateChar(this.CurerntChar)
-#endif
-);
       int start = xpathExprIndex - 1;
       int len = 0;
 
@@ -341,13 +325,6 @@
           NextChar();
           len++;
         }
-#if XML10_FIFTH_EDITION
-                else if (xmlCharType.IsNCNameSurrogateChar(this.PeekNextChar(), this.CurerntChar)) {
-                    NextChar(); 
-                    NextChar(); 
-                    len += 2;
-                }
-#endif
         else
         {
           break;

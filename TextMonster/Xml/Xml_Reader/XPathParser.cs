@@ -1,4 +1,6 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿using System.Collections;
+
+namespace TextMonster.Xml.Xml_Reader
 {
   internal class XPathParser
   {
@@ -409,7 +411,6 @@
               this.scanner.Name == "processing-instruction" ? XPathNodeType.ProcessingInstruction :
             /* default: */ XPathNodeType.Root
           );
-          Debug.Assert(nodeType != XPathNodeType.Root);
           NextLex();
 
           PassToken(XPathScanner.LexKind.LParens);
@@ -462,7 +463,6 @@
     //>> PrimaryExpr ::= Literal | Number | VariableReference | '(' Expr ')' | FunctionCall
     private AstNode ParsePrimaryExpr(AstNode qyInput)
     {
-      Debug.Assert(IsPrimaryExpr(this.scanner));
       AstNode opnd = null;
       switch (this.scanner.Kind)
       {
@@ -496,7 +496,6 @@
         }
         break;
       }
-      Debug.Assert(opnd != null, "IsPrimaryExpr() was true. We should recognize this lex.");
       return opnd;
     }
 
@@ -653,7 +652,6 @@
     //>> IdKeyPattern ::= 'id' '(' Literal ')' | 'key' '(' Literal ',' Literal ')'  
     private AstNode ParseIdKeyPattern(AstNode qyInput)
     {
-      Debug.Assert(this.scanner.CanBeFunction);
       ArrayList argList = new ArrayList();
       if (this.scanner.Prefix.Length == 0)
       {
@@ -865,7 +863,6 @@
 
     private Axis.AxisType GetAxis(XPathScanner scaner)
     {
-      Debug.Assert(scaner.Kind == XPathScanner.LexKind.Axe);
       object axis = AxesTable[scaner.Name];
       if (axis == null)
       {

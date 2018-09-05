@@ -84,6 +84,7 @@
     <Compile Include="Xml\Xml_Reader\CacheOutputQuery.cs" />
     <Compile Include="Xml\Xml_Reader\AbsoluteQuery.cs" />
     <Compile Include="Xml\Xml_Reader\BinXmlSqlDecimal.cs" />
+    <Compile Include="Xml\Xml_Reader\Root.cs" />
     <Compile Include="Xml\Xml_Reader\XmlTextEncoder.cs" />
     <Compile Include="Xml\Xml_Reader\IncrementalReadCharsDecoder.cs" />
     <Compile Include="Xml\Xml_Reader\ConstantModel.cs" />
@@ -251,11 +252,16 @@
     <Compile Include="Xml\Xml_Reader\XmlSchemaImporter.cs" />
     <Compile Include="Xml\Xml_Reader\XmlSchemaObjectComparer.cs" />
     <Compile Include="Xml\Xml_Reader\XmlSchemas.cs" />
+    <Compile Include="Xml\Xml_Reader\XmlTextWriterBase64Encoder.cs" />
     <Compile Include="Xml\Xml_Reader\XmlTypeAttribute.cs" />
     <Compile Include="Xml\Xml_Reader\XmlTypeMapping.cs" />
+    <Compile Include="Xml\Xml_Reader\XPathAncestorIterator.cs" />
     <Compile Include="Xml\Xml_Reader\XPathAncestorQuery.cs" />
     <Compile Include="Xml\Xml_Reader\XPathArrayIterator.cs" />
+    <Compile Include="Xml\Xml_Reader\XPathAxisIterator.cs" />
+    <Compile Include="Xml\Xml_Reader\XPathChildIterator.cs" />
     <Compile Include="Xml\Xml_Reader\XPathComparerHelper.cs" />
+    <Compile Include="Xml\Xml_Reader\XPathDescendantIterator.cs" />
     <Compile Include="Xml\Xml_Reader\XPathEmptyIterator.cs" />
     <Compile Include="Xml\Xml_Reader\XPathExpression.cs" />
     <Compile Include="Xml\Xml_Reader\QueryBuilder.cs" />
