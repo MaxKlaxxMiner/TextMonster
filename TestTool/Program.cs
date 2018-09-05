@@ -237,6 +237,23 @@ namespace TestTool
       return xel;
     }
 
+    static object ParseXml3(string fileName)
+    {
+      X_Element xel;
+      int sum = 0;
+      using (var rdat = File.OpenRead(fileName))
+      {
+        xel = X_Element.LoadFast(rdat);
+        foreach (var x in xel.Elements())
+        {
+          int count = x.GetAttribut("count").Length;
+          int value = x.Value.Length;
+          sum += count + value;
+        }
+      }
+      return xel;
+    }
+
     static void SpeedCheckXmlParser()
     {
       //fullFile = File.ReadAllBytes(TestFile.CreateFilePrime(TestFile.FileType.Xml, 100000000));
@@ -246,7 +263,8 @@ namespace TestTool
       for (int r = 0; r < 3; r++)
       {
         SpeedCheck("ParseXml1() - XElement", ParseXml1);
-        SpeedCheck("ParseXml2() - XElement", ParseXml2);
+        SpeedCheck("ParseXml2() - X_Element", ParseXml2);
+        SpeedCheck("ParseXml3() - X_Element Fast", ParseXml3);
       }
     }
 
@@ -256,7 +274,7 @@ namespace TestTool
 
       //SpeedCheckBinary();
       //SpeedCheckTextLines();
-      //SpeedCheckXmlParser();
+      SpeedCheckXmlParser();
 
       //XmlReader
       //XmlException

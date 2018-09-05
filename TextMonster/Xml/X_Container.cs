@@ -768,6 +768,70 @@ namespace TextMonster.Xml
       while (r.Read());
     }
 
+    internal void ReadContentFrom(FastXmlReader r)
+    {
+      if (r.ReadState != Xml_Reader.ReadState.Interactive)
+        throw new InvalidOperationException("InvalidOperation_ExpectedInteractive");
+      var xcontainer = this;
+      do
+      {
+        switch (r.NodeType)
+        {
+          case Xml_Reader.XmlNodeType.Element:
+          var xelement = new X_Element(r.LocalName);
+          if (r.MoveToFirstAttribute())
+          {
+            do
+            {
+              xelement.AppendAttributeSkipNotify(new X_Attribute(r.LocalName, r.Value));
+            }
+            while (r.MoveToNextAttribute());
+            r.MoveToElement();
+          }
+          xcontainer.AddNodeSkipNotify(xelement);
+          if (!r.IsEmptyElement)
+          {
+            xcontainer = xelement;
+          }
+          goto case Xml_Reader.XmlNodeType.EndEntity;
+          case Xml_Reader.XmlNodeType.Text:
+          case Xml_Reader.XmlNodeType.Whitespace:
+          case Xml_Reader.XmlNodeType.SignificantWhitespace:
+          xcontainer.AddStringSkipNotify(r.Value);
+          goto case Xml_Reader.XmlNodeType.EndEntity;
+          case Xml_Reader.XmlNodeType.CDATA:
+          xcontainer.AddNodeSkipNotify(new X_CData(r.Value));
+          goto case Xml_Reader.XmlNodeType.EndEntity;
+          case Xml_Reader.XmlNodeType.EntityReference:
+          if (!r.CanResolveEntity)
+            throw new InvalidOperationException("InvalidOperation_UnresolvedEntityReference");
+          r.ResolveEntity();
+          goto case Xml_Reader.XmlNodeType.EndEntity;
+          case Xml_Reader.XmlNodeType.ProcessingInstruction:
+          xcontainer.AddNodeSkipNotify(new X_ProcessingInstruction(r.Name, r.Value));
+          goto case Xml_Reader.XmlNodeType.EndEntity;
+          case Xml_Reader.XmlNodeType.Comment:
+          xcontainer.AddNodeSkipNotify(new X_Comment(r.Value));
+          goto case Xml_Reader.XmlNodeType.EndEntity;
+          case Xml_Reader.XmlNodeType.DocumentType:
+          xcontainer.AddNodeSkipNotify(new X_DocumentType(r.LocalName, r.GetAttribute("PUBLIC"), r.GetAttribute("SYSTEM"), r.Value));
+          goto case Xml_Reader.XmlNodeType.EndEntity;
+          case Xml_Reader.XmlNodeType.EndElement:
+          if (xcontainer.content == null)
+            xcontainer.content = string.Empty;
+          if (xcontainer == this)
+            return;
+          xcontainer = xcontainer.parent;
+          goto case Xml_Reader.XmlNodeType.EndEntity;
+          case Xml_Reader.XmlNodeType.EndEntity:
+          continue;
+          default:
+          throw new InvalidOperationException("InvalidOperation_UnexpectedNodeType");
+        }
+      }
+      while (r.Read());
+    }
+
     internal void RemoveNode(X_Node n)
     {
       if (n.parent != this) throw new InvalidOperationException("InvalidOperation_ExternalCode");

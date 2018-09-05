@@ -260,6 +260,11 @@ namespace TextMonster.Xml
       ReadElementFrom(r);
     }
 
+    internal X_Element(FastXmlReader r)
+    {
+      ReadElementFrom(r);
+    }
+
     /// <summary>
     /// Wandelt den Wert dieses <see cref="T:System.Xml.Linq.XElement"/> in <see cref="T:System.String"/> um.
     /// </summary>
@@ -777,6 +782,19 @@ namespace TextMonster.Xml
     }
 
     /// <summary>
+    /// Erstellt mithilfe des angegebenen Streams eine neue <see cref="T:System.Xml.Linq.XElement"/>-Instanz, wobei optional Leerraum und Zeileninformationen beibehalten werden und der Basis-URI festgelegt wird.
+    /// </summary>
+    /// 
+    /// <returns>
+    /// Ein <see cref="T:System.Xml.Linq.XElement"/>-Objekt, mit dem die im Stream enthaltenen Daten gelesen werden.
+    /// </returns>
+    /// <param name="stream">Der Stream, der die XML-Daten enthält.</param>
+    public static X_Element LoadFast(Stream stream)
+    {
+      using (var reader = FastXmlReader.Create(stream, DefaultXmlReaderSettingsFast)) return Load(reader);
+    }
+
+    /// <summary>
     /// Lädt ein <see cref="T:System.Xml.Linq.XElement"/> aus einem <see cref="T:System.IO.TextReader"/>, wobei optional Leerraum und Zeileninformationen beibehalten werden.
     /// </summary>
     /// 
@@ -802,6 +820,27 @@ namespace TextMonster.Xml
       if (reader == null)
         throw new ArgumentNullException("reader");
       if (reader.MoveToContent() != XmlNodeType.Element)
+        throw new InvalidOperationException("InvalidOperation_ExpectedNodeType");
+      var xelement = new X_Element(reader);
+      reader.MoveToContent();
+      if (!reader.EOF)
+        throw new InvalidOperationException("InvalidOperation_ExpectedEndOfFile");
+      return xelement;
+    }
+
+    /// <summary>
+    /// Lädt ein <see cref="T:System.Xml.Linq.XElement"/> aus einem <see cref="T:System.Xml.XmlReader"/>, wobei optional Leerraum und Zeileninformationen beibehalten werden und der Basis-URI festgelegt wird.
+    /// </summary>
+    /// 
+    /// <returns>
+    /// Ein <see cref="T:System.Xml.Linq.XElement"/>, das die XML-Daten enthält, die aus dem angegebenen <see cref="T:System.Xml.XmlReader"/> gelesen wurden.
+    /// </returns>
+    /// <param name="reader">Ein <see cref="T:System.Xml.XmlReader"/>, der zum Ermitteln des Inhalts von <see cref="T:System.Xml.Linq.XElement"/> gelesen wird.</param>
+    public static X_Element Load(FastXmlReader reader)
+    {
+      if (reader == null)
+        throw new ArgumentNullException("reader");
+      if (reader.MoveToContent() != Xml_Reader.XmlNodeType.Element)
         throw new InvalidOperationException("InvalidOperation_ExpectedNodeType");
       var xelement = new X_Element(reader);
       reader.MoveToContent();
@@ -1110,6 +1149,29 @@ namespace TextMonster.Xml
     void ReadElementFrom(XmlReader r)
     {
       if (r.ReadState != ReadState.Interactive)
+        throw new InvalidOperationException("InvalidOperation_ExpectedInteractive");
+      name = r.LocalName;
+      if (r.MoveToFirstAttribute())
+      {
+        do
+        {
+          var a = new X_Attribute(r.LocalName, r.Value);
+          AppendAttributeSkipNotify(a);
+        }
+        while (r.MoveToNextAttribute());
+        r.MoveToElement();
+      }
+      if (!r.IsEmptyElement)
+      {
+        r.Read();
+        ReadContentFrom(r);
+      }
+      r.Read();
+    }
+
+    void ReadElementFrom(FastXmlReader r)
+    {
+      if (r.ReadState != Xml_Reader.ReadState.Interactive)
         throw new InvalidOperationException("InvalidOperation_ExpectedInteractive");
       name = r.LocalName;
       if (r.MoveToFirstAttribute())
