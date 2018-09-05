@@ -1,4 +1,7 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿using System;
+using System.Globalization;
+
+namespace TextMonster.Xml.Xml_Reader
 {
   internal class TypedObject
   {

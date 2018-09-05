@@ -1,4 +1,6 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿using System.Collections;
+
+namespace TextMonster.Xml.Xml_Reader
 {
   internal sealed class ConstraintStruct
   {

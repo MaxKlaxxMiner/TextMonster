@@ -1,4 +1,7 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿using System;
+using System.Text;
+
+namespace TextMonster.Xml.Xml_Reader
 {
   internal class KeySequence
   {
@@ -9,7 +12,6 @@
 
     internal KeySequence(int dim, int line, int col)
     {
-      Debug.Assert(dim > 0);
       this.dim = dim;
       this.ks = new TypedObject[dim];
       this.posline = line;
