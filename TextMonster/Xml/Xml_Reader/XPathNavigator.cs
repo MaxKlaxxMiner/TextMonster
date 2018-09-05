@@ -585,7 +585,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public virtual XmlReader ReadSubtree()
+    public virtual FastXmlReader ReadSubtree()
     {
       switch (NodeType)
       {
@@ -1081,11 +1081,11 @@ namespace TextMonster.Xml.Xml_Reader
 
       Debug.Assert(schemaType != null || this.NodeType == XPathNodeType.Root, "schemaType != null  || this.NodeType == XPathNodeType.Root");
 
-      XmlReader reader = CreateReader();
+      FastXmlReader reader = CreateReader();
 
       CheckValidityHelper validityTracker = new CheckValidityHelper(validationEventHandler, reader as XPathNavigatorReader);
       validationEventHandler = new ValidationEventHandler(validityTracker.ValidationCallback);
-      XmlReader validatingReader = GetValidatingReader(reader, schemas, validationEventHandler, schemaType, schemaElement, schemaAttribute);
+      FastXmlReader validatingReader = GetValidatingReader(reader, schemas, validationEventHandler, schemaType, schemaElement, schemaAttribute);
 
       while (validatingReader.Read())
         ;
@@ -1093,7 +1093,7 @@ namespace TextMonster.Xml.Xml_Reader
       return validityTracker.IsValid;
     }
 
-    private XmlReader GetValidatingReader(XmlReader reader, XmlSchemaSet schemas, ValidationEventHandler validationEvent, XmlSchemaType schemaType, XmlSchemaElement schemaElement, XmlSchemaAttribute schemaAttribute)
+    private FastXmlReader GetValidatingReader(FastXmlReader reader, XmlSchemaSet schemas, ValidationEventHandler validationEvent, XmlSchemaType schemaType, XmlSchemaElement schemaElement, XmlSchemaAttribute schemaAttribute)
     {
       if (schemaAttribute != null)
       {
@@ -1113,7 +1113,7 @@ namespace TextMonster.Xml.Xml_Reader
       readerSettings.ValidationType = ValidationType.Schema;
       readerSettings.Schemas = schemas;
       readerSettings.ValidationEventHandler += validationEvent;
-      return XmlReader.Create(reader, readerSettings);
+      return FastXmlReader.Create(reader, readerSettings);
     }
 
     class CheckValidityHelper
@@ -1342,11 +1342,11 @@ namespace TextMonster.Xml.Xml_Reader
 
     public virtual void ReplaceSelf(string newNode)
     {
-      XmlReader reader = CreateContextReader(newNode, false);
+      FastXmlReader reader = CreateContextReader(newNode, false);
       ReplaceSelf(reader);
     }
 
-    public virtual void ReplaceSelf(XmlReader newNode)
+    public virtual void ReplaceSelf(FastXmlReader newNode)
     {
       if (newNode == null)
       {
@@ -1370,7 +1370,7 @@ namespace TextMonster.Xml.Xml_Reader
       {
         throw new ArgumentNullException("newNode");
       }
-      XmlReader reader = newNode.CreateReader();
+      FastXmlReader reader = newNode.CreateReader();
       ReplaceSelf(reader);
     }
 
@@ -1502,11 +1502,11 @@ namespace TextMonster.Xml.Xml_Reader
 
     public virtual void AppendChild(string newChild)
     {
-      XmlReader reader = CreateContextReader(newChild, true);
+      FastXmlReader reader = CreateContextReader(newChild, true);
       AppendChild(reader);
     }
 
-    public virtual void AppendChild(XmlReader newChild)
+    public virtual void AppendChild(FastXmlReader newChild)
     {
       if (newChild == null)
       {
@@ -1527,17 +1527,17 @@ namespace TextMonster.Xml.Xml_Reader
       {
         throw new InvalidOperationException(Res.GetString(Res.Xpn_BadPosition));
       }
-      XmlReader reader = newChild.CreateReader();
+      FastXmlReader reader = newChild.CreateReader();
       AppendChild(reader);
     }
 
     public virtual void PrependChild(string newChild)
     {
-      XmlReader reader = CreateContextReader(newChild, true);
+      FastXmlReader reader = CreateContextReader(newChild, true);
       PrependChild(reader);
     }
 
-    public virtual void PrependChild(XmlReader newChild)
+    public virtual void PrependChild(FastXmlReader newChild)
     {
       if (newChild == null)
       {
@@ -1558,17 +1558,17 @@ namespace TextMonster.Xml.Xml_Reader
       {
         throw new InvalidOperationException(Res.GetString(Res.Xpn_BadPosition));
       }
-      XmlReader reader = newChild.CreateReader();
+      FastXmlReader reader = newChild.CreateReader();
       PrependChild(reader);
     }
 
     public virtual void InsertBefore(string newSibling)
     {
-      XmlReader reader = CreateContextReader(newSibling, false);
+      FastXmlReader reader = CreateContextReader(newSibling, false);
       InsertBefore(reader);
     }
 
-    public virtual void InsertBefore(XmlReader newSibling)
+    public virtual void InsertBefore(FastXmlReader newSibling)
     {
       if (newSibling == null)
       {
@@ -1589,17 +1589,17 @@ namespace TextMonster.Xml.Xml_Reader
       {
         throw new InvalidOperationException(Res.GetString(Res.Xpn_BadPosition));
       }
-      XmlReader reader = newSibling.CreateReader();
+      FastXmlReader reader = newSibling.CreateReader();
       InsertBefore(reader);
     }
 
     public virtual void InsertAfter(string newSibling)
     {
-      XmlReader reader = CreateContextReader(newSibling, false);
+      FastXmlReader reader = CreateContextReader(newSibling, false);
       InsertAfter(reader);
     }
 
-    public virtual void InsertAfter(XmlReader newSibling)
+    public virtual void InsertAfter(FastXmlReader newSibling)
     {
       if (newSibling == null)
       {
@@ -1620,7 +1620,7 @@ namespace TextMonster.Xml.Xml_Reader
       {
         throw new InvalidOperationException(Res.GetString(Res.Xpn_BadPosition));
       }
-      XmlReader reader = newSibling.CreateReader();
+      FastXmlReader reader = newSibling.CreateReader();
       InsertAfter(reader);
     }
 
@@ -2066,12 +2066,12 @@ namespace TextMonster.Xml.Xml_Reader
       return false;
     }
 
-    private XmlReader CreateReader()
+    private FastXmlReader CreateReader()
     {
       return XPathNavigatorReader.Create(this);
     }
 
-    private XmlReader CreateContextReader(string xml, bool fromCurrentNode)
+    private FastXmlReader CreateContextReader(string xml, bool fromCurrentNode)
     {
       if (xml == null)
       {
@@ -2102,7 +2102,7 @@ namespace TextMonster.Xml.Xml_Reader
       return reader;
     }
 
-    internal void BuildSubtree(XmlReader reader, XmlWriter writer)
+    internal void BuildSubtree(FastXmlReader reader, XmlWriter writer)
     {
       // important (perf) string literal...
       string xmlnsUri = XmlReservedNs.NsXmlNs; // http://www.w3.org/2000/xmlns/

@@ -212,7 +212,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal XmlReader Validate(XmlReader reader, XmlResolver resolver, XmlSchemaSet schemaSet, ValidationEventHandler valEventHandler)
+    internal FastXmlReader Validate(FastXmlReader reader, XmlResolver resolver, XmlSchemaSet schemaSet, ValidationEventHandler valEventHandler)
     {
       if (schemaSet != null)
       {

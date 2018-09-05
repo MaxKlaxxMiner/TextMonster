@@ -88,7 +88,7 @@ namespace TextMonster.Xml.Xml_Reader
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public static XmlSchema Read(XmlReader reader, ValidationEventHandler validationEventHandler)
+    public static XmlSchema Read(FastXmlReader reader, ValidationEventHandler validationEventHandler)
     {
       XmlNameTable nameTable = reader.NameTable;
       Parser parser = new Parser(SchemaType.XSD, nameTable, new SchemaNames(nameTable), validationEventHandler);

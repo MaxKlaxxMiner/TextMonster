@@ -330,7 +330,7 @@ namespace TextMonster.Xml.Xml_Reader
         else
         {
           //Url already not processed; Load SOM from url
-          XmlReader reader = XmlReader.Create(schemaUri, readerSettings);
+          FastXmlReader reader = FastXmlReader.Create(schemaUri, readerSettings);
           try
           {
             schema = Add(targetNamespace, ParseSchema(targetNamespace, reader)); //
@@ -352,7 +352,7 @@ namespace TextMonster.Xml.Xml_Reader
     ///       If the given schema references other namespaces, the schemas for those
     ///       other namespaces are NOT automatically loaded.</para>
     /// </devdoc>
-    public XmlSchema Add(String targetNamespace, XmlReader schemaDocument)
+    public XmlSchema Add(String targetNamespace, FastXmlReader schemaDocument)
     {
       if (schemaDocument == null)
       {
@@ -841,7 +841,7 @@ namespace TextMonster.Xml.Xml_Reader
 #endif
 
     //For use by the validator when loading schemaLocations in the instance
-    internal void Add(String targetNamespace, XmlReader reader, Hashtable validatedNamespaces)
+    internal void Add(String targetNamespace, FastXmlReader reader, Hashtable validatedNamespaces)
     {
       if (reader == null)
       {
@@ -945,7 +945,7 @@ namespace TextMonster.Xml.Xml_Reader
       return schema;
     }
 
-    private void SetDtdProcessing(XmlReader reader)
+    private void SetDtdProcessing(FastXmlReader reader)
     {
       if (reader.Settings != null)
       {
@@ -1141,7 +1141,7 @@ namespace TextMonster.Xml.Xml_Reader
       return hasErrors;
     }
 
-    internal XmlSchema ParseSchema(string targetNamespace, XmlReader reader)
+    internal XmlSchema ParseSchema(string targetNamespace, FastXmlReader reader)
     {
       XmlNameTable readerNameTable = reader.NameTable;
       SchemaNames schemaNames = GetSchemaNames(readerNameTable);

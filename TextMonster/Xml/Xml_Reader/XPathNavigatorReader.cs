@@ -6,7 +6,7 @@ namespace TextMonster.Xml.Xml_Reader
   /// <summary>
   /// Reader that traverses the subtree rooted at the current position of the specified navigator.
   /// </summary>
-  internal class XPathNavigatorReader : XmlReader, IXmlNamespaceResolver
+  internal class XPathNavigatorReader : FastXmlReader, IXmlNamespaceResolver
   {
     enum State
     {

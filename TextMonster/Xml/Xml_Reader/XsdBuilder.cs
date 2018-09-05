@@ -111,9 +111,9 @@ namespace TextMonster.Xml.Xml_Reader
     class BuilderNamespaceManager : XmlNamespaceManager
     {
       XmlNamespaceManager nsMgr;
-      XmlReader reader;
+      FastXmlReader reader;
 
-      public BuilderNamespaceManager(XmlNamespaceManager nsMgr, XmlReader reader)
+      public BuilderNamespaceManager(XmlNamespaceManager nsMgr, FastXmlReader reader)
       {
         this.nsMgr = nsMgr;
         this.reader = reader;
@@ -619,7 +619,7 @@ namespace TextMonster.Xml.Xml_Reader
     private static readonly string[] UseStringValues = { "optional", "prohibited", "required" };
     private static readonly string[] ProcessContentsStringValues = { "skip", "lax", "strict" };
 
-    private XmlReader reader;
+    private FastXmlReader reader;
     private PositionInfo positionInfo;
     private XsdEntry currentEntry;
     private XsdEntry nextEntry;
@@ -673,7 +673,7 @@ namespace TextMonster.Xml.Xml_Reader
     private Hashtable namespaces;
 
     internal XsdBuilder(
-                       XmlReader reader,
+                       FastXmlReader reader,
                        XmlNamespaceManager curmgr,
                        XmlSchema schema,
                        XmlNameTable nameTable,

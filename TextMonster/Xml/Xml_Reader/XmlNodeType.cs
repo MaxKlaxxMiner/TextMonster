@@ -193,7 +193,7 @@
     /// <include file='doc\XmlNodeType.uex' path='docs/doc[@for="XmlNodeType.EndEntity"]/*' />
     /// <devdoc>
     ///    <para>Returned when XmlReader gets to the end of the entity 
-    ///       replacement as a result of a call to <see cref='XmlReader.ResolveEntity'/>
+    ///       replacement as a result of a call to <see cref='FastXmlReader.ResolveEntity'/>
     ///       .</para>
     /// </devdoc>
     EndEntity,

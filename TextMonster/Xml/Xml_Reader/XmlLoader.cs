@@ -7,7 +7,7 @@ namespace TextMonster.Xml.Xml_Reader
   internal class XmlLoader
   {
     XmlDocument doc;
-    XmlReader reader;
+    FastXmlReader reader;
     bool preserveWhitespace;
 
 
@@ -15,7 +15,7 @@ namespace TextMonster.Xml.Xml_Reader
     {
     }
 
-    internal void Load(XmlDocument doc, XmlReader reader, bool preserveWhitespace)
+    internal void Load(XmlDocument doc, FastXmlReader reader, bool preserveWhitespace)
     {
       this.doc = doc;
       // perf: unwrap XmlTextReader if no one derived from it
@@ -58,7 +58,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal XmlNode ReadCurrentNode(XmlDocument doc, XmlReader reader)
+    internal XmlNode ReadCurrentNode(XmlDocument doc, FastXmlReader reader)
     {
       this.doc = doc;
       this.reader = reader;
@@ -88,7 +88,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     private XmlNode LoadNode(bool skipOverWhitespace)
     {
-      XmlReader r = this.reader;
+      FastXmlReader r = this.reader;
       XmlNode parent = null;
       XmlElement element;
       IXmlSchemaInfo schemaInfo;
@@ -239,7 +239,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     private XmlAttribute LoadAttributeNode()
     {
-      XmlReader r = reader;
+      FastXmlReader r = reader;
       if (r.IsDefault)
       {
         return LoadDefaultAttribute();
@@ -284,7 +284,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     private XmlAttribute LoadDefaultAttribute()
     {
-      XmlReader r = reader;
+      FastXmlReader r = reader;
       XmlAttribute attr = doc.CreateDefaultAttribute(r.Prefix, r.LocalName, r.NamespaceURI);
       IXmlSchemaInfo schemaInfo = r.SchemaInfo;
       if (schemaInfo != null)
@@ -304,7 +304,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     private void LoadAttributeValue(XmlNode parent, bool direct)
     {
-      XmlReader r = reader;
+      FastXmlReader r = reader;
       while (r.ReadAttributeValue())
       {
         XmlNode node;
@@ -433,7 +433,7 @@ namespace TextMonster.Xml.Xml_Reader
     // XmlDocument is not extended if XmlDocumentType and XmlDeclaration handling is added.
     private XmlNode LoadNodeDirect()
     {
-      XmlReader r = this.reader;
+      FastXmlReader r = this.reader;
       XmlNode parent = null;
       do
       {
@@ -538,7 +538,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     private XmlAttribute LoadAttributeNodeDirect()
     {
-      XmlReader r = reader;
+      FastXmlReader r = reader;
       XmlAttribute attr;
       if (r.IsDefault)
       {
@@ -899,7 +899,7 @@ namespace TextMonster.Xml.Xml_Reader
 
 #pragma warning disable 618
     // Creates a XmlValidatingReader suitable for parsing InnerXml strings
-    private XmlReader CreateInnerXmlReader(String xmlFragment, XmlNodeType nt, XmlParserContext context, XmlDocument doc)
+    private FastXmlReader CreateInnerXmlReader(String xmlFragment, XmlNodeType nt, XmlParserContext context, XmlDocument doc)
     {
       XmlNodeType contentNT = nt;
       if (contentNT == XmlNodeType.Entity || contentNT == XmlNodeType.EntityReference)

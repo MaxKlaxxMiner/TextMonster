@@ -344,25 +344,25 @@ namespace TextMonster.Xml.Xml_Reader
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public object Deserialize(XmlReader xmlReader)
+    public object Deserialize(FastXmlReader xmlReader)
     {
       return Deserialize(xmlReader, null);
     }
 
     /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.Deserialize3"]/*' />
-    public object Deserialize(XmlReader xmlReader, XmlDeserializationEvents events)
+    public object Deserialize(FastXmlReader xmlReader, XmlDeserializationEvents events)
     {
       return Deserialize(xmlReader, null, events);
     }
 
     /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.Deserialize4"]/*' />
-    public object Deserialize(XmlReader xmlReader, string encodingStyle)
+    public object Deserialize(FastXmlReader xmlReader, string encodingStyle)
     {
       return Deserialize(xmlReader, encodingStyle, this.events);
     }
 
     /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.Deserialize5"]/*' />
-    public object Deserialize(XmlReader xmlReader, string encodingStyle, XmlDeserializationEvents events)
+    public object Deserialize(FastXmlReader xmlReader, string encodingStyle, XmlDeserializationEvents events)
     {
       events.sender = this;
       try
@@ -418,7 +418,7 @@ namespace TextMonster.Xml.Xml_Reader
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public virtual bool CanDeserialize(XmlReader xmlReader)
+    public virtual bool CanDeserialize(FastXmlReader xmlReader)
     {
       if (primitiveType != null)
       {
@@ -833,7 +833,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    object DeserializePrimitive(XmlReader xmlReader, XmlDeserializationEvents events)
+    object DeserializePrimitive(FastXmlReader xmlReader, XmlDeserializationEvents events)
     {
       XmlSerializationPrimitiveReader reader = new XmlSerializationPrimitiveReader();
       reader.Init(xmlReader, events, null, null);

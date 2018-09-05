@@ -122,7 +122,7 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollection.Add4"]/*' />
-    public XmlSchema Add(String ns, XmlReader reader)
+    public XmlSchema Add(String ns, FastXmlReader reader)
     {
       return Add(ns, reader, xmlResolver);
     }
@@ -133,7 +133,7 @@ namespace TextMonster.Xml.Xml_Reader
     ///       If the given schema references other namespaces, the schemas for those
     ///       other namespaces are NOT automatically loaded.</para>
     /// </devdoc>
-    public XmlSchema Add(String ns, XmlReader reader, XmlResolver resolver)
+    public XmlSchema Add(String ns, FastXmlReader reader, XmlResolver resolver)
     {
       if (reader == null)
         throw new ArgumentNullException("reader");

@@ -56,7 +56,7 @@ namespace TextMonster.Xml.Xml_Reader
     /// <summary>
     /// Create a new document and load the content from the reader.
     /// </summary>
-    public XPathDocument(XmlReader reader)
+    public XPathDocument(FastXmlReader reader)
       : this(reader, XmlSpace.Default)
     {
     }
@@ -64,7 +64,7 @@ namespace TextMonster.Xml.Xml_Reader
     /// <summary>
     /// Create a new document from "reader", with whitespace handling controlled according to "space".
     /// </summary>
-    public XPathDocument(XmlReader reader, XmlSpace space)
+    public XPathDocument(FastXmlReader reader, XmlSpace space)
     {
       if (reader == null)
         throw new ArgumentNullException("reader");
@@ -148,7 +148,7 @@ namespace TextMonster.Xml.Xml_Reader
     /// Create a writer that can be used to create nodes in this document.  The root node will be assigned "baseUri", and flags
     /// can be passed to indicate that names should be atomized by the builder and/or a fragment should be created.
     /// </summary>
-    internal void LoadFromReader(XmlReader reader, XmlSpace space)
+    internal void LoadFromReader(FastXmlReader reader, XmlSpace space)
     {
       XPathDocumentBuilder builder;
       IXmlLineInfo lineInfo;

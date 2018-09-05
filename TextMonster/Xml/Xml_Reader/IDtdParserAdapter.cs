@@ -1,5 +1,5 @@
 ﻿using System;
-using BufferBuilder = System.Text.StringBuilder;
+using System.Text;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -24,10 +24,10 @@ namespace TextMonster.Xml.Xml_Reader
 
     void OnNewLine(int pos);
 
-    int ParseNumericCharRef(BufferBuilder internalSubsetBuilder);
-    int ParseNamedCharRef(bool expand, BufferBuilder internalSubsetBuilder);
-    void ParsePI(BufferBuilder sb);
-    void ParseComment(BufferBuilder sb);
+    int ParseNumericCharRef(StringBuilder internalSubsetBuilder);
+    int ParseNamedCharRef(bool expand, StringBuilder internalSubsetBuilder);
+    void ParsePI(StringBuilder sb);
+    void ParseComment(StringBuilder sb);
 
     bool PushEntity(IDtdEntityInfo entity, out int entityId);
 

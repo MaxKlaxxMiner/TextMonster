@@ -701,7 +701,7 @@
     <Compile Include="Xml\Xml_Reader\XmlNameTable.cs" />
     <Compile Include="Xml\Xml_Reader\XmlNodeType.cs" />
     <Compile Include="Xml\Xml_Reader\XmlReaderSettings.cs" />
-    <Compile Include="Xml\Xml_Reader\XmlReader.cs" />
+    <Compile Include="Xml\FastXmlReader.cs" />
     <Compile Include="Xml\Xml_Reader\XsdDateTimeFlags.cs" />
     <Compile Include="Xml\X_Comment.cs" />
     <Compile Include="Xml\X_ProcessingInstruction.cs" />

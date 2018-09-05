@@ -6,7 +6,7 @@ using System.Text;
 
 namespace TextMonster.Xml.Xml_Reader
 {
-  internal sealed partial class XmlSqlBinaryReader : XmlReader, IXmlNamespaceResolver
+  internal sealed partial class XmlSqlBinaryReader : FastXmlReader, IXmlNamespaceResolver
   {
     internal static readonly Type TypeOfObject = typeof(System.Object);
     internal static readonly Type TypeOfString = typeof(System.String);
@@ -316,7 +316,7 @@ namespace TextMonster.Xml.Xml_Reader
     // linked list of pushed nametables (to support nested binary-xml documents)
     NestedBinXml prevNameInfo;
     // XmlTextReader to handle embeded text blocks
-    XmlReader textXmlReader;
+    FastXmlReader textXmlReader;
     // close input flag
     bool closeInput;
 
@@ -382,8 +382,8 @@ namespace TextMonster.Xml.Xml_Reader
       }
       else
       {
-        this.data = new byte[XmlReader.DefaultBufferSize];
-        this.end = stream.Read(this.data, 0, XmlReader.DefaultBufferSize);
+        this.data = new byte[FastXmlReader.DefaultBufferSize];
+        this.end = stream.Read(this.data, 0, FastXmlReader.DefaultBufferSize);
         this.pos = 0;
         this.sniffed = false;
       }
@@ -481,7 +481,7 @@ namespace TextMonster.Xml.Xml_Reader
         if (ScanState.XmlText == this.state)
           return this.textXmlReader.HasValue;
         else
-          return XmlReader.HasValueInternal(this.nodetype);
+          return FastXmlReader.HasValueInternal(this.nodetype);
       }
     }
 
@@ -3215,7 +3215,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     void UpdateFromTextReader()
     {
-      XmlReader r = this.textXmlReader;
+      FastXmlReader r = this.textXmlReader;
       this.nodetype = r.NodeType;
       this.qnameOther.prefix = r.Prefix;
       this.qnameOther.localname = r.LocalName;

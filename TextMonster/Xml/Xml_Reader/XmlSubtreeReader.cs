@@ -84,7 +84,7 @@ namespace TextMonster.Xml.Xml_Reader
     // 
     // Constructor
     //
-    internal XmlSubtreeReader(XmlReader reader)
+    internal XmlSubtreeReader(FastXmlReader reader)
       : base(reader)
     {
       initialDepth = reader.Depth;

@@ -8,7 +8,7 @@ namespace TextMonster.Xml.Xml_Reader
 {
   [PermissionSet(SecurityAction.InheritanceDemand, Name = "FullTrust")]
   [Obsolete("Use XmlReader created by XmlReader.Create() method using appropriate XmlReaderSettings instead. http://go.microsoft.com/fwlink/?linkid=14202")]
-  public class XmlValidatingReader : XmlReader, IXmlLineInfo, IXmlNamespaceResolver
+  public class XmlValidatingReader : FastXmlReader, IXmlLineInfo, IXmlNamespaceResolver
   {
     //
     // Member fields
@@ -17,7 +17,7 @@ namespace TextMonster.Xml.Xml_Reader
     //
     // Constructors
     //
-    public XmlValidatingReader(XmlReader reader)
+    public XmlValidatingReader(FastXmlReader reader)
     {
       impl = new XmlValidatingReaderImpl(reader);
       impl.OuterReader = this;
@@ -290,7 +290,7 @@ namespace TextMonster.Xml.Xml_Reader
       get { return impl.SchemaType; }
     }
 
-    public XmlReader Reader
+    public FastXmlReader Reader
     {
       get { return impl.Reader; }
     }

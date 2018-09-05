@@ -39,7 +39,7 @@ namespace TextMonster.Xml.Xml_Reader
     //
     // Constructor
     //
-    internal XmlCharCheckingReader(XmlReader reader, bool checkCharacters, bool ignoreWhitespace, bool ignoreComments, bool ignorePis, DtdProcessing dtdProcessing)
+    internal XmlCharCheckingReader(FastXmlReader reader, bool checkCharacters, bool ignoreWhitespace, bool ignoreComments, bool ignorePis, DtdProcessing dtdProcessing)
       : base(reader)
     {
 

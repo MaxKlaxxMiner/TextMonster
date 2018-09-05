@@ -574,7 +574,7 @@ namespace TextMonster.Xml.Xml_Reader
     private void LoadSchemaFromLocation(string uri, string url)
     {
 
-      XmlReader reader = null;
+      FastXmlReader reader = null;
       SchemaInfo schemaInfo = null;
 
       try

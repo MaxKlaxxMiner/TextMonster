@@ -347,22 +347,22 @@ namespace TextMonster.Xml.Xml_Reader
             }
             else
             {
-              XmlReader reader = null;
+              FastXmlReader reader = null;
               if (returnType.IsSubclassOf(typeof(Stream)))
               {
                 readerSettings.CloseInput = true;
                 readerSettings.XmlResolver = xmlResolver;
-                reader = XmlReader.Create((Stream)obj, readerSettings, ruri.ToString());
+                reader = FastXmlReader.Create((Stream)obj, readerSettings, ruri.ToString());
               }
-              else if (returnType.IsSubclassOf(typeof(XmlReader)))
+              else if (returnType.IsSubclassOf(typeof(FastXmlReader)))
               {
-                reader = (XmlReader)obj;
+                reader = (FastXmlReader)obj;
               }
               else if (returnType.IsSubclassOf(typeof(TextReader)))
               {
                 readerSettings.CloseInput = true;
                 readerSettings.XmlResolver = xmlResolver;
-                reader = XmlReader.Create((TextReader)obj, readerSettings, ruri.ToString());
+                reader = FastXmlReader.Create((TextReader)obj, readerSettings, ruri.ToString());
               }
               if (reader == null)
               {

@@ -2,7 +2,7 @@
 
 namespace TextMonster.Xml.Xml_Reader
 {
-  internal partial class XsdCachingReader : XmlReader, IXmlLineInfo
+  internal partial class XsdCachingReader : FastXmlReader, IXmlLineInfo
   {
 
     private enum CachingReaderState
@@ -15,7 +15,7 @@ namespace TextMonster.Xml.Xml_Reader
       Error = 5,
     }
 
-    private XmlReader coreReader;
+    private FastXmlReader coreReader;
     private XmlNameTable coreReaderNameTable;
 
     private ValidatingReaderNodeData[] contentEvents;
@@ -47,7 +47,7 @@ namespace TextMonster.Xml.Xml_Reader
     private const int InitialContentCount = 4;
 
     //Constructor
-    internal XsdCachingReader(XmlReader reader, IXmlLineInfo lineInfo, CachingEventHandler handlerMethod)
+    internal XsdCachingReader(FastXmlReader reader, IXmlLineInfo lineInfo, CachingEventHandler handlerMethod)
     {
       this.coreReader = reader;
       this.lineInfo = lineInfo;
@@ -77,7 +77,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal void Reset(XmlReader reader)
+    internal void Reset(FastXmlReader reader)
     {
       this.coreReader = reader;
       Init();
@@ -144,7 +144,7 @@ namespace TextMonster.Xml.Xml_Reader
     {
       get
       {
-        return XmlReader.HasValueInternal(cachedNode.NodeType);
+        return FastXmlReader.HasValueInternal(cachedNode.NodeType);
       }
     }
 
@@ -623,7 +623,7 @@ namespace TextMonster.Xml.Xml_Reader
       Read(); //Position on first node recorded to begin replaying
     }
 
-    internal XmlReader GetCoreReader()
+    internal FastXmlReader GetCoreReader()
     {
       return coreReader;
     }

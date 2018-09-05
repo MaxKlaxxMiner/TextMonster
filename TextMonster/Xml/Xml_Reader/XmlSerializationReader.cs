@@ -10,7 +10,7 @@ namespace TextMonster.Xml.Xml_Reader
   ///<internalonly/>
   public abstract class XmlSerializationReader : XmlSerializationGeneratedCode
   {
-    XmlReader r;
+    FastXmlReader r;
     XmlCountingReader countingReader;
     XmlDocument d;
     Hashtable callbacks;
@@ -110,7 +110,7 @@ namespace TextMonster.Xml.Xml_Reader
     protected abstract void InitIDs();
 
     // this method must be called before any generated deserialization methods are called
-    internal void Init(XmlReader r, XmlDeserializationEvents events, string encodingStyle, TempAssembly tempAssembly)
+    internal void Init(FastXmlReader r, XmlDeserializationEvents events, string encodingStyle, TempAssembly tempAssembly)
     {
       this.events = events;
       if (checkDeserializeAdvances)
@@ -161,7 +161,7 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     /// <include file='doc\XmlSerializationReader.uex' path='docs/doc[@for="XmlSerializationReader.Reader"]/*' />
-    protected XmlReader Reader
+    protected FastXmlReader Reader
     {
       get
       {

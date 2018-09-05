@@ -9,7 +9,7 @@ namespace TextMonster.Xml.Xml_Reader
 {
   [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
   [PermissionSet(SecurityAction.InheritanceDemand, Name = "FullTrust")]
-  public class XmlTextReader : XmlReader, IXmlLineInfo, IXmlNamespaceResolver
+  public class XmlTextReader : FastXmlReader, IXmlLineInfo, IXmlNamespaceResolver
   {
     //
     // Member fields

@@ -4,12 +4,12 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.Versioning;
 using System.Text;
-using BufferBuilder = System.Text.StringBuilder;
+using TextMonster.Xml.Xml_Reader;
 
-namespace TextMonster.Xml.Xml_Reader
+namespace TextMonster.Xml
 {
   // ReSharper disable once InconsistentNaming
-  public abstract partial class XmlReader : IDisposable
+  public abstract partial class FastXmlReader : IDisposable
   {
 
     static private uint IsTextualNodeBitmap = 0x6018; // 00 0110 0000 0001 1000
@@ -1379,7 +1379,7 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // Returns an XmlReader that will read only the current element and its descendants and then go to EOF state.
-    public virtual XmlReader ReadSubtree()
+    public virtual FastXmlReader ReadSubtree()
     {
       if (NodeType != XmlNodeType.Element)
       {
@@ -1528,7 +1528,7 @@ namespace TextMonster.Xml.Xml_Reader
     internal string InternalReadContentAsString()
     {
       string value = string.Empty;
-      BufferBuilder sb = null;
+      StringBuilder sb = null;
       do
       {
         switch (this.NodeType)
@@ -1548,7 +1548,7 @@ namespace TextMonster.Xml.Xml_Reader
           {
             if (sb == null)
             {
-              sb = new BufferBuilder();
+              sb = new StringBuilder();
               sb.Append(value);
             }
             sb.Append(this.Value);
@@ -1640,19 +1640,19 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal static Encoding GetEncoding(XmlReader reader)
+    internal static Encoding GetEncoding(FastXmlReader reader)
     {
       XmlTextReaderImpl tri = GetXmlTextReaderImpl(reader);
       return tri != null ? tri.Encoding : null;
     }
 
-    internal static ConformanceLevel GetV1ConformanceLevel(XmlReader reader)
+    internal static ConformanceLevel GetV1ConformanceLevel(FastXmlReader reader)
     {
       XmlTextReaderImpl tri = GetXmlTextReaderImpl(reader);
       return tri != null ? tri.V1ComformanceLevel : ConformanceLevel.Document;
     }
 
-    private static XmlTextReaderImpl GetXmlTextReaderImpl(XmlReader reader)
+    private static XmlTextReaderImpl GetXmlTextReaderImpl(FastXmlReader reader)
     {
       XmlTextReaderImpl tri = reader as XmlTextReaderImpl;
       if (tri != null)
@@ -1688,23 +1688,23 @@ namespace TextMonster.Xml.Xml_Reader
     // Creates an XmlReader for parsing XML from the given Uri.
     [ResourceConsumption(ResourceScope.Machine)]
     [ResourceExposure(ResourceScope.Machine)]
-    public static XmlReader Create(string inputUri)
+    public static FastXmlReader Create(string inputUri)
     {
-      return XmlReader.Create(inputUri, (XmlReaderSettings)null, (XmlParserContext)null);
+      return FastXmlReader.Create(inputUri, (XmlReaderSettings)null, (XmlParserContext)null);
     }
 
     // Creates an XmlReader according to the settings for parsing XML from the given Uri.
     [ResourceConsumption(ResourceScope.Machine)]
     [ResourceExposure(ResourceScope.Machine)]
-    public static XmlReader Create(string inputUri, XmlReaderSettings settings)
+    public static FastXmlReader Create(string inputUri, XmlReaderSettings settings)
     {
-      return XmlReader.Create(inputUri, settings, (XmlParserContext)null);
+      return FastXmlReader.Create(inputUri, settings, (XmlParserContext)null);
     }
 
     // Creates an XmlReader according to the settings and parser context for parsing XML from the given Uri.
     [ResourceConsumption(ResourceScope.Machine)]
     [ResourceExposure(ResourceScope.Machine)]
-    public static XmlReader Create(String inputUri, XmlReaderSettings settings, XmlParserContext inputContext)
+    public static FastXmlReader Create(String inputUri, XmlReaderSettings settings, XmlParserContext inputContext)
     {
       if (settings == null)
       {
@@ -1714,19 +1714,19 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // Creates an XmlReader according for parsing XML from the given stream.
-    public static XmlReader Create(Stream input)
+    public static FastXmlReader Create(Stream input)
     {
       return Create(input, (XmlReaderSettings)null, (string)string.Empty);
     }
 
     // Creates an XmlReader according to the settings for parsing XML from the given stream.
-    public static XmlReader Create(Stream input, XmlReaderSettings settings)
+    public static FastXmlReader Create(Stream input, XmlReaderSettings settings)
     {
       return Create(input, settings, string.Empty);
     }
 
     // Creates an XmlReader according to the settings and base Uri for parsing XML from the given stream.
-    public static XmlReader Create(Stream input, XmlReaderSettings settings, String baseUri)
+    public static FastXmlReader Create(Stream input, XmlReaderSettings settings, String baseUri)
     {
       if (settings == null)
       {
@@ -1736,7 +1736,7 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // Creates an XmlReader according to the settings and parser context for parsing XML from the given stream.
-    public static XmlReader Create(Stream input, XmlReaderSettings settings, XmlParserContext inputContext)
+    public static FastXmlReader Create(Stream input, XmlReaderSettings settings, XmlParserContext inputContext)
     {
       if (settings == null)
       {
@@ -1746,19 +1746,19 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // Creates an XmlReader according for parsing XML from the given TextReader.
-    public static XmlReader Create(TextReader input)
+    public static FastXmlReader Create(TextReader input)
     {
       return Create(input, (XmlReaderSettings)null, (string)string.Empty);
     }
 
     // Creates an XmlReader according to the settings for parsing XML from the given TextReader.
-    public static XmlReader Create(TextReader input, XmlReaderSettings settings)
+    public static FastXmlReader Create(TextReader input, XmlReaderSettings settings)
     {
       return Create(input, settings, string.Empty);
     }
 
     // Creates an XmlReader according to the settings and baseUri for parsing XML from the given TextReader.
-    public static XmlReader Create(TextReader input, XmlReaderSettings settings, String baseUri)
+    public static FastXmlReader Create(TextReader input, XmlReaderSettings settings, String baseUri)
     {
       if (settings == null)
       {
@@ -1768,7 +1768,7 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // Creates an XmlReader according to the settings and parser context for parsing XML from the given TextReader.
-    public static XmlReader Create(TextReader input, XmlReaderSettings settings, XmlParserContext inputContext)
+    public static FastXmlReader Create(TextReader input, XmlReaderSettings settings, XmlParserContext inputContext)
     {
       if (settings == null)
       {
@@ -1778,7 +1778,7 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // Creates an XmlReader according to the settings wrapped over the given reader.
-    public static XmlReader Create(XmlReader reader, XmlReaderSettings settings)
+    public static FastXmlReader Create(FastXmlReader reader, XmlReaderSettings settings)
     {
       if (settings == null)
       {
@@ -1791,7 +1791,7 @@ namespace TextMonster.Xml.Xml_Reader
     // NOTE: This method is called via reflection from System.Data.dll and from Analysis Services in Yukon. 
     // Do not change its signature without notifying the appropriate teams!
     // !!!!!!
-    internal static XmlReader CreateSqlReader(Stream input, XmlReaderSettings settings, XmlParserContext inputContext)
+    internal static FastXmlReader CreateSqlReader(Stream input, XmlReaderSettings settings, XmlParserContext inputContext)
     {
       if (input == null)
       {
@@ -1802,7 +1802,7 @@ namespace TextMonster.Xml.Xml_Reader
         settings = new XmlReaderSettings();
       }
 
-      XmlReader reader;
+      FastXmlReader reader;
 
       // allocate byte buffer
       byte[] bytes = new byte[CalcBufferSize(input)];
@@ -1862,9 +1862,9 @@ namespace TextMonster.Xml.Xml_Reader
     [DebuggerDisplay("{ToString()}")]
     struct XmlReaderDebuggerDisplayProxy
     {
-      XmlReader reader;
+      FastXmlReader reader;
 
-      internal XmlReaderDebuggerDisplayProxy(XmlReader reader)
+      internal XmlReaderDebuggerDisplayProxy(FastXmlReader reader)
       {
         this.reader = reader;
       }

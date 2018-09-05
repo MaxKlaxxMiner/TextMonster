@@ -7,11 +7,10 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading;
-using BufferBuilder = System.Text.StringBuilder;
 
 namespace TextMonster.Xml.Xml_Reader
 {
-  internal partial class XmlTextReaderImpl : XmlReader, IXmlLineInfo, IXmlNamespaceResolver
+  internal partial class XmlTextReaderImpl : FastXmlReader, IXmlLineInfo, IXmlNamespaceResolver
   {
     //
     // Private helper types
@@ -264,7 +263,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     // misc
     bool addDefaultAttributesAndNormalize;
-    BufferBuilder stringBuilder;
+    StringBuilder stringBuilder;
     bool rootElementParsed;
     bool standalone;
     int nextEntityId = 1;
@@ -292,7 +291,7 @@ namespace TextMonster.Xml.Xml_Reader
     // Outer XmlReader exposed to the user - either XmlTextReader or XmlTextReaderImpl (when created via XmlReader.Create).
     // Virtual methods called from within XmlTextReaderImpl must be called on the outer reader so in case the user overrides
     // some of the XmlTextReader methods we will call the overriden version.
-    XmlReader outerReader;
+    FastXmlReader outerReader;
 
 #if !SILVERLIGHT
     //indicate if the XmlResolver is explicit set
@@ -358,7 +357,7 @@ namespace TextMonster.Xml.Xml_Reader
       nodes[0] = new NodeData();
       curNode = nodes[0];
 
-      stringBuilder = new BufferBuilder();
+      stringBuilder = new StringBuilder();
       xmlContext = new XmlContext();
 
       parsingFunction = ParsingFunction.SwitchToInteractiveXmlDecl;
@@ -423,7 +422,7 @@ namespace TextMonster.Xml.Xml_Reader
       nodes[0] = new NodeData();
       curNode = nodes[0];
 
-      stringBuilder = new BufferBuilder();
+      stringBuilder = new StringBuilder();
 
 #if !SILVERLIGHT
       // Needed only for XmlTextReader (reporting of entities)
@@ -1614,7 +1613,7 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
 #if !SILVERLIGHT // Needed only for XmlTextReader or XmlValidatingReader
-    internal XmlReader OuterReader
+    internal FastXmlReader OuterReader
     {
       get
       {
@@ -1695,7 +1694,7 @@ namespace TextMonster.Xml.Xml_Reader
         {
           throw new InvalidOperationException(Res.GetString(Res.Xml_MixingBinaryContentMethods));
         }
-        if (!XmlReader.CanReadContentAs(curNode.type))
+        if (!FastXmlReader.CanReadContentAs(curNode.type))
         {
           throw CreateReadContentAsException("ReadContentAsBase64");
         }
@@ -1755,7 +1754,7 @@ namespace TextMonster.Xml.Xml_Reader
         {
           throw new InvalidOperationException(Res.GetString(Res.Xml_MixingBinaryContentMethods));
         }
-        if (!XmlReader.CanReadContentAs(curNode.type))
+        if (!FastXmlReader.CanReadContentAs(curNode.type))
         {
           throw CreateReadContentAsException("ReadContentAsBinHex");
         }
@@ -1904,7 +1903,7 @@ namespace TextMonster.Xml.Xml_Reader
     public override int ReadValueChunk(char[] buffer, int index, int count)
     {
       // throw on elements
-      if (!XmlReader.HasValueInternal(curNode.type))
+      if (!FastXmlReader.HasValueInternal(curNode.type))
       {
         throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidReadValueChunk, curNode.type));
       }
@@ -2581,18 +2580,18 @@ namespace TextMonster.Xml.Xml_Reader
       return this.ReadData();
     }
 
-    internal int DtdParserProxy_ParseNumericCharRef(BufferBuilder internalSubsetBuilder)
+    internal int DtdParserProxy_ParseNumericCharRef(StringBuilder internalSubsetBuilder)
     {
       EntityType entType;
       return this.ParseNumericCharRef(true, internalSubsetBuilder, out entType);
     }
 
-    internal int DtdParserProxy_ParseNamedCharRef(bool expand, BufferBuilder internalSubsetBuilder)
+    internal int DtdParserProxy_ParseNamedCharRef(bool expand, StringBuilder internalSubsetBuilder)
     {
       return this.ParseNamedCharRef(expand, internalSubsetBuilder);
     }
 
-    internal void DtdParserProxy_ParsePI(BufferBuilder sb)
+    internal void DtdParserProxy_ParsePI(StringBuilder sb)
     {
       if (sb == null)
       {
@@ -2607,7 +2606,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal void DtdParserProxy_ParseComment(BufferBuilder sb)
+    internal void DtdParserProxy_ParseComment(StringBuilder sb)
     {
       try
       {
@@ -2963,7 +2962,7 @@ namespace TextMonster.Xml.Xml_Reader
       {
         // allocate the byte buffer 
 #if !ASYNC
-        bufferSize = XmlReader.CalcBufferSize(stream);
+        bufferSize = FastXmlReader.CalcBufferSize(stream);
 #else
                 if (laterInitParam != null && laterInitParam.useAsync) {
                     bufferSize = AsyncBufferSize;
@@ -3043,7 +3042,7 @@ namespace TextMonster.Xml.Xml_Reader
       if (ps.chars == null)
       {
 #if !ASYNC
-        ps.chars = new char[XmlReader.DefaultBufferSize + 1];
+        ps.chars = new char[FastXmlReader.DefaultBufferSize + 1];
 #else
                 if (laterInitParam != null && laterInitParam.useAsync) {
                     ps.chars = new char[XmlReader.AsyncBufferSize + 1];
@@ -3710,7 +3709,7 @@ namespace TextMonster.Xml.Xml_Reader
       ps.charPos += 5;
 
       // parsing of text declarations cannot change global stringBuidler or curNode as we may be in the middle of a text node
-      BufferBuilder sb = isTextDecl ? new BufferBuilder() : stringBuilder;
+      StringBuilder sb = isTextDecl ? new StringBuilder() : stringBuilder;
 
       // parse version, encoding & standalone attributes
       int xmlDeclState = 0;   // <?xml (0) version='1.0' (1) encoding='__' (2) standalone='__' (3) ?>
@@ -6440,7 +6439,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     // Parses processing instruction; if piInDtdStringBuilder != null, the processing instruction is in DTD and
     // it will be saved in the passed string builder (target, whitespace & value).
-    private bool ParsePI(BufferBuilder piInDtdStringBuilder)
+    private bool ParsePI(StringBuilder piInDtdStringBuilder)
     {
       if (parsingMode == ParsingMode.Full)
       {
@@ -6505,7 +6504,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
       else
       {
-        BufferBuilder sb;
+        StringBuilder sb;
         if (piInDtdStringBuilder == null)
         {
           if (ignorePIs || parsingMode != ParsingMode.Full)
@@ -7321,7 +7320,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    private int EatWhitespaces(BufferBuilder sb)
+    private int EatWhitespaces(StringBuilder sb)
     {
       int pos = ps.charPos;
       int wsCount = 0;
@@ -7439,7 +7438,7 @@ namespace TextMonster.Xml.Xml_Reader
     //        character or surrogates pair (if expand == true)
     //      - returns position of the end of the character reference, that is of the character next to the original ';'
     //      - if (expand == true) then ps.charPos is changed to point to the replaced character
-    private int ParseNumericCharRef(bool expand, BufferBuilder internalSubsetBuilder, out EntityType entityType)
+    private int ParseNumericCharRef(bool expand, StringBuilder internalSubsetBuilder, out EntityType entityType)
     {
       for (; ; )
       {
@@ -7470,7 +7469,7 @@ namespace TextMonster.Xml.Xml_Reader
     //      - replaces the last one or two character of the entity reference (';' and the character before) with the referenced 
     //        character or surrogates pair (if expand == true)
     //      - returns position of the end of the character reference, that is of the character next to the original ';'
-    private int ParseNumericCharRefInline(int startPos, bool expand, BufferBuilder internalSubsetBuilder, out int charCount, out EntityType entityType)
+    private int ParseNumericCharRefInline(int startPos, bool expand, StringBuilder internalSubsetBuilder, out int charCount, out EntityType entityType)
     {
       int val;
       int pos;
@@ -7603,7 +7602,7 @@ namespace TextMonster.Xml.Xml_Reader
     //      - replaces the last character of the entity reference (';') with the referenced character (if expand == true)
     //      - returns position of the end of the character reference, that is of the character next to the original ';'
     //      - if (expand == true) then ps.charPos is changed to point to the replaced character
-    private int ParseNamedCharRef(bool expand, BufferBuilder internalSubsetBuilder)
+    private int ParseNamedCharRef(bool expand, StringBuilder internalSubsetBuilder)
     {
       for (; ; )
       {
@@ -7635,7 +7634,7 @@ namespace TextMonster.Xml.Xml_Reader
     // Otherwise 
     //      - replaces the last character of the entity reference (';') with the referenced character (if expand == true)
     //      - returns position of the end of the character reference, that is of the character next to the original ';'
-    private int ParseNamedCharRefInline(int startPos, bool expand, BufferBuilder internalSubsetBuilder)
+    private int ParseNamedCharRefInline(int startPos, bool expand, StringBuilder internalSubsetBuilder)
     {
       int pos = startPos + 1;
       char[] chars = ps.chars;
@@ -9137,7 +9136,7 @@ namespace TextMonster.Xml.Xml_Reader
         throw new InvalidOperationException(Res.GetString(Res.Xml_MixingV1StreamingWithV2Binary));
       }
 
-      if (!XmlReader.IsTextualNode(curNode.type))
+      if (!FastXmlReader.IsTextualNode(curNode.type))
       {
         if (!MoveToNextContentNode(false))
         {
@@ -10315,7 +10314,7 @@ namespace TextMonster.Xml.Xml_Reader
         valueStartPos = -1;
       }
 
-      internal void CopyTo(int valueOffset, BufferBuilder sb)
+      internal void CopyTo(int valueOffset, StringBuilder sb)
       {
         if (value == null)
         {

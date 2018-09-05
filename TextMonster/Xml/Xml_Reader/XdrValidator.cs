@@ -332,7 +332,7 @@ namespace TextMonster.Xml.Xml_Reader
         return;
       }
       string url = uri.Substring(x_schema.Length);
-      XmlReader reader = null;
+      FastXmlReader reader = null;
       SchemaInfo xdrSchema = null;
       try
       {

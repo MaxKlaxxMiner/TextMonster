@@ -355,7 +355,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     private SchemaInfo _SchemaInfo;
     private string _TargetNamespace;
-    private XmlReader _reader;
+    private FastXmlReader _reader;
     private PositionInfo positionInfo;
     private ParticleContentValidator _contentValidator;
 
@@ -388,7 +388,7 @@ namespace TextMonster.Xml.Xml_Reader
     private XmlResolver xmlResolver = null;
 
     internal XdrBuilder(
-                       XmlReader reader,
+                       FastXmlReader reader,
                        XmlNamespaceManager curmgr,
                        SchemaInfo sinfo,
                        string targetNamspace,
@@ -516,7 +516,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
       SchemaInfo schemaInfo = null;
       Uri _baseUri = xmlResolver.ResolveUri(null, _reader.BaseURI);
-      XmlReader reader = null;
+      FastXmlReader reader = null;
       try
       {
         Uri ruri = xmlResolver.ResolveUri(_baseUri, uri.Substring(x_schema.Length));

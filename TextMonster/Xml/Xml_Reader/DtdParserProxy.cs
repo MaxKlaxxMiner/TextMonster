@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.Versioning;
-using BufferBuilder = System.Text.StringBuilder;
+using System.Text;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -92,22 +92,22 @@ namespace TextMonster.Xml.Xml_Reader
       return reader.DtdParserProxy_ReadData();
     }
 
-    int IDtdParserAdapter.ParseNumericCharRef(BufferBuilder internalSubsetBuilder)
+    int IDtdParserAdapter.ParseNumericCharRef(StringBuilder internalSubsetBuilder)
     {
       return reader.DtdParserProxy_ParseNumericCharRef(internalSubsetBuilder);
     }
 
-    int IDtdParserAdapter.ParseNamedCharRef(bool expand, BufferBuilder internalSubsetBuilder)
+    int IDtdParserAdapter.ParseNamedCharRef(bool expand, StringBuilder internalSubsetBuilder)
     {
       return reader.DtdParserProxy_ParseNamedCharRef(expand, internalSubsetBuilder);
     }
 
-    void IDtdParserAdapter.ParsePI(BufferBuilder sb)
+    void IDtdParserAdapter.ParsePI(StringBuilder sb)
     {
       reader.DtdParserProxy_ParsePI(sb);
     }
 
-    void IDtdParserAdapter.ParseComment(BufferBuilder sb)
+    void IDtdParserAdapter.ParseComment(StringBuilder sb)
     {
       reader.DtdParserProxy_ParseComment(sb);
     }

@@ -239,7 +239,7 @@ namespace TextMonster.Xml.Xml_Reader
       return type;
     }
 
-    internal bool CanRead(XmlMapping mapping, XmlReader xmlReader)
+    internal bool CanRead(XmlMapping mapping, FastXmlReader xmlReader)
     {
       if (mapping == null)
         return false;
@@ -288,7 +288,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal object InvokeReader(XmlMapping mapping, XmlReader xmlReader, XmlDeserializationEvents events, string encodingStyle)
+    internal object InvokeReader(XmlMapping mapping, FastXmlReader xmlReader, XmlDeserializationEvents events, string encodingStyle)
     {
       XmlSerializationReader reader = null;
       try

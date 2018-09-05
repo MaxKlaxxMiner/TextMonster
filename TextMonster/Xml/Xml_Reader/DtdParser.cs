@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using BufferBuilder = System.Text.StringBuilder;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -176,7 +175,7 @@ namespace TextMonster.Xml.Xml_Reader
     int colonPos;
 
     // value of the internal subset
-    BufferBuilder internalSubsetValueSb = null;
+    StringBuilder internalSubsetValueSb = null;
 
     // entities
     int externalEntitiesDepth = 0;
@@ -187,7 +186,7 @@ namespace TextMonster.Xml.Xml_Reader
     bool hasFreeFloatingInternalSubset = false;
 
     // misc
-    BufferBuilder stringBuilder;
+    StringBuilder stringBuilder;
     int condSectionDepth = 0;
     LineInfo literalLineInfo = new LineInfo(0, 0);
     char literalQuoteChar = '"';
@@ -263,7 +262,7 @@ namespace TextMonster.Xml.Xml_Reader
       schemaInfo.SchemaType = SchemaType.DTD;
 #endif
 
-      stringBuilder = new BufferBuilder();
+      stringBuilder = new StringBuilder();
 
       Uri baseUri = readerAdapter.BaseUri;
       if (baseUri != null)
@@ -477,7 +476,7 @@ namespace TextMonster.Xml.Xml_Reader
         if (saveInternalSubset)
         {
           SaveParsingBuffer(); // this will cause saving the internal subset right from the point after '['
-          internalSubsetValueSb = new BufferBuilder();
+          internalSubsetValueSb = new StringBuilder();
         }
         ParseInternalSubset();
         break;
@@ -3848,7 +3847,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
 
       int startPos = 0;
-      BufferBuilder norValue = null;
+      StringBuilder norValue = null;
 
       while (value[startPos] == 0x20)
       {

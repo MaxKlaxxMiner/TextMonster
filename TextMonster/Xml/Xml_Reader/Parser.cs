@@ -10,7 +10,7 @@ namespace TextMonster.Xml.Xml_Reader
     SchemaNames schemaNames;
     ValidationEventHandler eventHandler;
     XmlNamespaceManager namespaceManager;
-    XmlReader reader;
+    FastXmlReader reader;
     PositionInfo positionInfo;
     bool isProcessNamespaces;
     int schemaXmlDepth = 0;
@@ -41,14 +41,14 @@ namespace TextMonster.Xml.Xml_Reader
       dummyDocument = new XmlDocument();
     }
 
-    public SchemaType Parse(XmlReader reader, string targetNamespace)
+    public SchemaType Parse(FastXmlReader reader, string targetNamespace)
     {
       StartParsing(reader, targetNamespace);
       while (ParseReaderNode() && reader.Read()) { }
       return FinishParsing();
     }
 
-    public void StartParsing(XmlReader reader, string targetNamespace)
+    public void StartParsing(FastXmlReader reader, string targetNamespace)
     {
       this.reader = reader;
       positionInfo = PositionInfo.GetPositionInfo(reader);
@@ -320,7 +320,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     private XmlElement LoadElementNode(bool root)
     {
-      XmlReader r = reader;
+      FastXmlReader r = reader;
       bool fEmptyElement = r.IsEmptyElement;
 
       XmlElement element = dummyDocument.CreateElement(r.Prefix, r.LocalName, r.NamespaceURI);
@@ -403,7 +403,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     private XmlAttribute LoadAttributeNode()
     {
-      XmlReader r = reader;
+      FastXmlReader r = reader;
 
       XmlAttribute attr = dummyDocument.CreateAttribute(r.Prefix, r.LocalName, r.NamespaceURI);
 

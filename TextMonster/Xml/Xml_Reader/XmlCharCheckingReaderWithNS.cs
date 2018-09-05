@@ -8,7 +8,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal IXmlNamespaceResolver readerAsNSResolver;
 
-    internal XmlCharCheckingReaderWithNS(XmlReader reader, IXmlNamespaceResolver readerAsNSResolver, bool checkCharacters, bool ignoreWhitespace, bool ignoreComments, bool ignorePis, DtdProcessing dtdProcessing)
+    internal XmlCharCheckingReaderWithNS(FastXmlReader reader, IXmlNamespaceResolver readerAsNSResolver, bool checkCharacters, bool ignoreWhitespace, bool ignoreComments, bool ignorePis, DtdProcessing dtdProcessing)
       : base(reader, checkCharacters, ignoreWhitespace, ignoreComments, ignorePis, dtdProcessing)
     {
       Debug.Assert(readerAsNSResolver != null);

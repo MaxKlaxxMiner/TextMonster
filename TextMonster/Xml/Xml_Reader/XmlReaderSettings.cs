@@ -388,7 +388,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     [ResourceConsumption(ResourceScope.Machine)]
     [ResourceExposure(ResourceScope.Machine)]
-    internal XmlReader CreateReader(String inputUri, XmlParserContext inputContext)
+    internal FastXmlReader CreateReader(String inputUri, XmlParserContext inputContext)
     {
       if (inputUri == null)
       {
@@ -407,7 +407,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
 
       // create text XML reader
-      XmlReader reader = new XmlTextReaderImpl(inputUri, this, inputContext, tmpResolver);
+      FastXmlReader reader = new XmlTextReaderImpl(inputUri, this, inputContext, tmpResolver);
 
       // wrap with validating reader
       if (this.ValidationType != ValidationType.None)
@@ -418,7 +418,7 @@ namespace TextMonster.Xml.Xml_Reader
       return reader;
     }
 
-    internal XmlReader CreateReader(Stream input, Uri baseUri, string baseUriString, XmlParserContext inputContext)
+    internal FastXmlReader CreateReader(Stream input, Uri baseUri, string baseUriString, XmlParserContext inputContext)
     {
       if (input == null)
       {
@@ -437,7 +437,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
 
       // create text XML reader
-      XmlReader reader = new XmlTextReaderImpl(input, null, 0, this, baseUri, baseUriString, inputContext, closeInput);
+      FastXmlReader reader = new XmlTextReaderImpl(input, null, 0, this, baseUri, baseUriString, inputContext, closeInput);
 
       // wrap with validating reader
       if (this.ValidationType != ValidationType.None)
@@ -448,7 +448,7 @@ namespace TextMonster.Xml.Xml_Reader
       return reader;
     }
 
-    internal XmlReader CreateReader(TextReader input, string baseUriString, XmlParserContext inputContext)
+    internal FastXmlReader CreateReader(TextReader input, string baseUriString, XmlParserContext inputContext)
     {
       if (input == null)
       {
@@ -460,7 +460,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
 
       // create xml text reader
-      XmlReader reader = new XmlTextReaderImpl(input, this, baseUriString, inputContext);
+      FastXmlReader reader = new XmlTextReaderImpl(input, this, baseUriString, inputContext);
 
       // wrap with validating reader
       if (this.ValidationType != ValidationType.None)
@@ -471,7 +471,7 @@ namespace TextMonster.Xml.Xml_Reader
       return reader;
     }
 
-    internal XmlReader CreateReader(XmlReader reader)
+    internal FastXmlReader CreateReader(FastXmlReader reader)
     {
       if (reader == null)
       {
@@ -551,7 +551,7 @@ namespace TextMonster.Xml.Xml_Reader
       return new XmlUrlResolver();
     }
 
-    internal XmlReader AddValidation(XmlReader reader)
+    internal FastXmlReader AddValidation(FastXmlReader reader)
     {
       if (this.validationType == ValidationType.Schema)
       {
@@ -572,7 +572,7 @@ namespace TextMonster.Xml.Xml_Reader
       return reader;
     }
 
-    private XmlReader AddValidationAndConformanceWrapper(XmlReader reader)
+    private FastXmlReader AddValidationAndConformanceWrapper(FastXmlReader reader)
     {
       // wrap with DTD validating reader
       if (this.validationType == ValidationType.DTD)
@@ -590,12 +590,12 @@ namespace TextMonster.Xml.Xml_Reader
       return reader;
     }
 
-    private XmlValidatingReaderImpl CreateDtdValidatingReader(XmlReader baseReader)
+    private XmlValidatingReaderImpl CreateDtdValidatingReader(FastXmlReader baseReader)
     {
       return new XmlValidatingReaderImpl(baseReader, this.GetEventHandler(), (this.ValidationFlags & XmlSchemaValidationFlags.ProcessIdentityConstraints) != 0);
     }
 
-    internal XmlReader AddConformanceWrapper(XmlReader baseReader)
+    internal FastXmlReader AddConformanceWrapper(FastXmlReader baseReader)
     {
       XmlReaderSettings baseReaderSettings = baseReader.Settings;
       bool checkChars = false;
@@ -610,7 +610,7 @@ namespace TextMonster.Xml.Xml_Reader
 
 #pragma warning disable 618
 
-        if (this.conformanceLevel != ConformanceLevel.Auto && this.conformanceLevel != XmlReader.GetV1ConformanceLevel(baseReader))
+        if (this.conformanceLevel != ConformanceLevel.Auto && this.conformanceLevel != FastXmlReader.GetV1ConformanceLevel(baseReader))
         {
           throw new InvalidOperationException(Res.GetString(Res.Xml_IncompatibleConformanceLevel, this.conformanceLevel.ToString()));
         }

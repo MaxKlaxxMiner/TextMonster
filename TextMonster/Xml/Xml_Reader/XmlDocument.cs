@@ -1118,7 +1118,7 @@ namespace TextMonster.Xml.Xml_Reader
     // Creates an XmlNode object based on the information in the XmlReader.
     // The reader must be positioned on a node or attribute.
     [PermissionSetAttribute(SecurityAction.InheritanceDemand, Name = "FullTrust")]
-    public virtual XmlNode ReadNode(XmlReader reader)
+    public virtual XmlNode ReadNode(FastXmlReader reader)
     {
       XmlNode node = null;
       try
@@ -1249,7 +1249,7 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // Loads the XML document from the specified XmlReader.
-    public virtual void Load(XmlReader reader)
+    public virtual void Load(FastXmlReader reader)
     {
       try
       {

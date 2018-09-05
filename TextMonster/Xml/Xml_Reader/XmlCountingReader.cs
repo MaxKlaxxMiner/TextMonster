@@ -2,12 +2,12 @@ using System;
 
 namespace TextMonster.Xml.Xml_Reader
 {
-  internal class XmlCountingReader : XmlReader, IXmlTextParser, IXmlLineInfo
+  internal class XmlCountingReader : FastXmlReader, IXmlTextParser, IXmlLineInfo
   {
-    XmlReader innerReader;
+    FastXmlReader innerReader;
     int advanceCount;
 
-    internal XmlCountingReader(XmlReader xmlReader)
+    internal XmlCountingReader(FastXmlReader xmlReader)
     {
       if (xmlReader == null)
         throw new ArgumentNullException("xmlReader");
@@ -73,7 +73,7 @@ namespace TextMonster.Xml.Xml_Reader
     public override bool IsStartElement() { return innerReader.IsStartElement(); }
     public override bool IsStartElement(string name) { return innerReader.IsStartElement(name); }
     public override bool IsStartElement(string localname, string ns) { return innerReader.IsStartElement(localname, ns); }
-    public override XmlReader ReadSubtree() { return innerReader.ReadSubtree(); }
+    public override FastXmlReader ReadSubtree() { return innerReader.ReadSubtree(); }
     public override XmlNodeType MoveToContent() { return innerReader.MoveToContent(); }
 
     // Methods (advancing)

@@ -14,7 +14,7 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // Fields 
-    XmlReader reader;
+    FastXmlReader reader;
     State state;
     int valueOffset;
     bool isEnd;
@@ -31,7 +31,7 @@ namespace TextMonster.Xml.Xml_Reader
     const int ChunkSize = 256;
 
     // Constructor
-    internal ReadContentAsBinaryHelper(XmlReader reader)
+    internal ReadContentAsBinaryHelper(FastXmlReader reader)
     {
       this.reader = reader;
       this.canReadValueChunk = reader.CanReadValueChunk;
@@ -43,7 +43,7 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // Static methods 
-    internal static ReadContentAsBinaryHelper CreateOrReset(ReadContentAsBinaryHelper helper, XmlReader reader)
+    internal static ReadContentAsBinaryHelper CreateOrReset(ReadContentAsBinaryHelper helper, FastXmlReader reader)
     {
       if (helper == null)
       {

@@ -180,12 +180,12 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // Copying to XmlRawWriter is not currently supported.
-    public override void WriteAttributes(XmlReader reader, bool defattr)
+    public override void WriteAttributes(FastXmlReader reader, bool defattr)
     {
       throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
     }
 
-    public override void WriteNode(XmlReader reader, bool defattr)
+    public override void WriteNode(FastXmlReader reader, bool defattr)
     {
       throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
     }

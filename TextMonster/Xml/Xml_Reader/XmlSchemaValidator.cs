@@ -1790,7 +1790,7 @@ namespace TextMonster.Xml.Xml_Reader
     [ResourceExposure(ResourceScope.Machine)]
     private void LoadSchema(string uri, string url)
     {
-      XmlReader Reader = null;
+      FastXmlReader Reader = null;
       try
       {
         Uri ruri = xmlResolver.ResolveUri(sourceUri, url);
@@ -1798,7 +1798,7 @@ namespace TextMonster.Xml.Xml_Reader
         XmlReaderSettings readerSettings = schemaSet.ReaderSettings;
         readerSettings.CloseInput = true;
         readerSettings.XmlResolver = xmlResolver;
-        Reader = XmlReader.Create(stm, readerSettings, ruri.ToString());
+        Reader = FastXmlReader.Create(stm, readerSettings, ruri.ToString());
         schemaSet.Add(uri, Reader, validatedNamespaces);
         while (Reader.Read()) ;// wellformness check
       }

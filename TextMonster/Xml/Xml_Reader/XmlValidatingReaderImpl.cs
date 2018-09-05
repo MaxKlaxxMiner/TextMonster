@@ -6,7 +6,7 @@ using System.Text;
 
 namespace TextMonster.Xml.Xml_Reader
 {
-  internal sealed partial class XmlValidatingReaderImpl : XmlReader, IXmlLineInfo, IXmlNamespaceResolver
+  internal sealed partial class XmlValidatingReaderImpl : FastXmlReader, IXmlLineInfo, IXmlNamespaceResolver
   {
 
     //
@@ -73,7 +73,7 @@ namespace TextMonster.Xml.Xml_Reader
     // Fields
     //
     // core text reader
-    XmlReader coreReader;
+    FastXmlReader coreReader;
     XmlTextReaderImpl coreReaderImpl;
     IXmlNamespaceResolver coreReaderNSResolver;
 
@@ -101,14 +101,14 @@ namespace TextMonster.Xml.Xml_Reader
     // Outer XmlReader exposed to the user - either XmlValidatingReader or XmlValidatingReaderImpl (when created via XmlReader.Create).
     // Virtual methods called from within XmlValidatingReaderImpl must be called on the outer reader so in case the user overrides
     // some of the XmlValidatingReader methods we will call the overriden version.
-    XmlReader outerReader;
+    FastXmlReader outerReader;
 
     //
     // Constructors
     //
     // Initializes a new instance of XmlValidatingReaderImpl class with the specified XmlReader.
     // This constructor is used when creating XmlValidatingReaderImpl for V1 XmlValidatingReader
-    internal XmlValidatingReaderImpl(XmlReader reader)
+    internal XmlValidatingReaderImpl(FastXmlReader reader)
     {
       outerReader = this;
       coreReader = reader;
@@ -186,7 +186,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     // Initializes a new instance of XmlValidatingReaderImpl class with the specified arguments.
     // This constructor is used when creating XmlValidatingReaderImpl reader via "XmlReader.Create(..)"
-    internal XmlValidatingReaderImpl(XmlReader reader, ValidationEventHandler settingsEventHandler, bool processIdentityConstraints)
+    internal XmlValidatingReaderImpl(FastXmlReader reader, ValidationEventHandler settingsEventHandler, bool processIdentityConstraints)
     {
       outerReader = this;
       coreReader = reader;
@@ -712,7 +712,7 @@ namespace TextMonster.Xml.Xml_Reader
       coreReader.ResolveEntity();
     }
 
-    internal XmlReader OuterReader
+    internal FastXmlReader OuterReader
     {
       get
       {
@@ -832,11 +832,11 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // returns the underlying XmlTextReader or XmlTextReaderImpl
-    internal XmlReader Reader
+    internal FastXmlReader Reader
     {
       get
       {
-        return (XmlReader)coreReader;
+        return (FastXmlReader)coreReader;
       }
     }
 

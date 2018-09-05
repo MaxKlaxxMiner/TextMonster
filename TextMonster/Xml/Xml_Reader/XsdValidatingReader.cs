@@ -5,7 +5,7 @@ using System.Runtime.Versioning;
 
 namespace TextMonster.Xml.Xml_Reader
 {
-  internal partial class XsdValidatingReader : XmlReader, IXmlSchemaInfo, IXmlLineInfo, IXmlNamespaceResolver
+  internal partial class XsdValidatingReader : FastXmlReader, IXmlSchemaInfo, IXmlLineInfo, IXmlNamespaceResolver
   {
 
     private enum ValidatingReaderState
@@ -25,7 +25,7 @@ namespace TextMonster.Xml.Xml_Reader
       Error = 10,
     }
     //Validation
-    private XmlReader coreReader;
+    private FastXmlReader coreReader;
     private IXmlNamespaceResolver coreReaderNSResolver;
     private IXmlNamespaceResolver thisNSResolver;
     private XmlSchemaValidator validator;
@@ -94,7 +94,7 @@ namespace TextMonster.Xml.Xml_Reader
     static volatile Type TypeOfString;
 
     //Constructor
-    internal XsdValidatingReader(XmlReader reader, XmlResolver xmlResolver, XmlReaderSettings readerSettings, XmlSchemaObject partialValidationType)
+    internal XsdValidatingReader(FastXmlReader reader, XmlResolver xmlResolver, XmlReaderSettings readerSettings, XmlSchemaObject partialValidationType)
     {
       this.coreReader = reader;
       this.coreReaderNSResolver = reader as IXmlNamespaceResolver;
@@ -113,7 +113,7 @@ namespace TextMonster.Xml.Xml_Reader
       validationEvent = readerSettings.GetEventHandler();
     }
 
-    internal XsdValidatingReader(XmlReader reader, XmlResolver xmlResolver, XmlReaderSettings readerSettings)
+    internal XsdValidatingReader(FastXmlReader reader, XmlResolver xmlResolver, XmlReaderSettings readerSettings)
       :
   this(reader, xmlResolver, readerSettings, null) { }
 
@@ -138,7 +138,7 @@ namespace TextMonster.Xml.Xml_Reader
       XsdSchema = coreReaderNameTable.Add("schema");
     }
 
-    private void SetupValidator(XmlReaderSettings readerSettings, XmlReader reader, XmlSchemaObject partialValidationType)
+    private void SetupValidator(XmlReaderSettings readerSettings, FastXmlReader reader, XmlSchemaObject partialValidationType)
     {
       validator = new XmlSchemaValidator(coreReaderNameTable, readerSettings.Schemas, thisNSResolver, readerSettings.ValidationFlags);
       validator.XmlResolver = this.xmlResolver;
