@@ -13,64 +13,6 @@ namespace TextMonster.Xml.Xml_Reader
     private object value;
 
     /// <devdoc>
-    /// <para>Initializes a new instance of the <see cref='System.ComponentModel.DefaultValueAttribute'/> class using a Unicode
-    ///    character.</para>
-    /// </devdoc>
-    public DefaultValueAttribute(char value)
-    {
-      this.value = value;
-    }
-    /// <devdoc>
-    /// <para>Initializes a new instance of the <see cref='System.ComponentModel.DefaultValueAttribute'/> class using an 8-bit unsigned
-    ///    integer.</para>
-    /// </devdoc>
-    public DefaultValueAttribute(byte value)
-    {
-      this.value = value;
-    }
-    /// <devdoc>
-    /// <para>Initializes a new instance of the <see cref='System.ComponentModel.DefaultValueAttribute'/> class using a 16-bit signed
-    ///    integer.</para>
-    /// </devdoc>
-    public DefaultValueAttribute(short value)
-    {
-      this.value = value;
-    }
-    /// <devdoc>
-    /// <para>Initializes a new instance of the <see cref='System.ComponentModel.DefaultValueAttribute'/> class using a 32-bit signed
-    ///    integer.</para>
-    /// </devdoc>
-    public DefaultValueAttribute(int value)
-    {
-      this.value = value;
-    }
-    /// <devdoc>
-    /// <para>Initializes a new instance of the <see cref='System.ComponentModel.DefaultValueAttribute'/> class using a 64-bit signed
-    ///    integer.</para>
-    /// </devdoc>
-    public DefaultValueAttribute(long value)
-    {
-      this.value = value;
-    }
-    /// <devdoc>
-    /// <para>Initializes a new instance of the <see cref='System.ComponentModel.DefaultValueAttribute'/> class using a
-    ///    single-precision floating point
-    ///    number.</para>
-    /// </devdoc>
-    public DefaultValueAttribute(float value)
-    {
-      this.value = value;
-    }
-    /// <devdoc>
-    /// <para>Initializes a new instance of the <see cref='System.ComponentModel.DefaultValueAttribute'/> class using a
-    ///    double-precision floating point
-    ///    number.</para>
-    /// </devdoc>
-    public DefaultValueAttribute(double value)
-    {
-      this.value = value;
-    }
-    /// <devdoc>
     /// <para>Initializes a new instance of the <see cref='System.ComponentModel.DefaultValueAttribute'/> class using a <see cref='System.Boolean'/>
     /// value.</para>
     /// </devdoc>

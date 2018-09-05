@@ -14,14 +14,6 @@ namespace TextMonster.Xml.Xml_Reader
     string ns;
     string typeName;
 
-    /// <include file='doc\XmlTypeAttribute.uex' path='docs/doc[@for="XmlTypeAttribute.XmlTypeAttribute"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlTypeAttribute()
-    {
-    }
-
     /// <include file='doc\XmlTypeAttribute.uex' path='docs/doc[@for="XmlTypeAttribute.XmlTypeAttribute1"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>

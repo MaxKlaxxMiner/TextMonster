@@ -9,14 +9,6 @@ namespace TextMonster.Xml.Xml_Reader
   [Flags]
   public enum CodeGenerationOptions
   {
-    /// <include file='doc\CodeGenerationOptions.uex' path='docs/doc[@for="CodeGenerationOptions.None"]/*' />
-    /// <devdoc>
-    ///    <para>
-    ///       Default: use clr primitives for xsd primitives, generate fields and arrays.
-    ///    </para>
-    /// </devdoc>
-    [XmlIgnore]
-    None = 0,
     /// <include file='doc\CodeGenerationOptions.uex' path='docs/doc[@for="CodeGenerationOptions.GenerateProperties"]/*' />
     /// <devdoc>
     ///    <para>
@@ -25,15 +17,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// </devdoc>
     [XmlEnum("properties")]
     GenerateProperties = 0x1,
-
-    /// <include file='doc\CodeGenerationOptions.uex' path='docs/doc[@for="CodeGenerationOptions.GenerateNewAsync"]/*' />
-    /// <devdoc>
-    ///    <para>
-    ///       Generate new RAD asynchronous pattern. The feature allows customers to use an event-based model for invoking Web services asynchronously.
-    ///    </para>
-    /// </devdoc>
-    [XmlEnum("newAsync")]
-    GenerateNewAsync = 0x2,
 
     /// <include file='doc\CodeGenerationOptions.uex' path='docs/doc[@for="CodeGenerationOptions.GenerateOldAsync"]/*' />
     /// <devdoc>

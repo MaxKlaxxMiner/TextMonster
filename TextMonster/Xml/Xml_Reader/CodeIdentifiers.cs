@@ -33,20 +33,12 @@ namespace TextMonster.Xml.Xml_Reader
       list = new ArrayList();
     }
 
-    /// <include file='doc\CodeIdentifiers.uex' path='docs/doc[@for="CodeIdentifiers.Clear"]/*' />
-    public void Clear()
-    {
-      identifiers.Clear();
-      list.Clear();
-    }
-
     /// <include file='doc\CodeIdentifiers.uex' path='docs/doc[@for="CodeIdentifiers.UseCamelCasing"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
     public bool UseCamelCasing
     {
-      get { return camelCase; }
       set { camelCase = value; }
     }
 

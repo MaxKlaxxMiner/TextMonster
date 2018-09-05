@@ -13,14 +13,6 @@ namespace TextMonster.Xml.Xml_Reader
     string ns;
     string dataType;
 
-    /// <include file='doc\SoapAttributeAttribute.uex' path='docs/doc[@for="SoapAttributeAttribute.SoapAttributeAttribute"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public SoapAttributeAttribute()
-    {
-    }
-
     /// <include file='doc\SoapAttributeAttribute.uex' path='docs/doc[@for="SoapAttributeAttribute.SoapAttributeAttribute1"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>

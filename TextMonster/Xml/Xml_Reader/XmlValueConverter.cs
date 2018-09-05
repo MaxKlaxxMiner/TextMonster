@@ -20,12 +20,8 @@ namespace TextMonster.Xml.Xml_Reader
 
     public abstract long ToInt64(bool value);
     public abstract long ToInt64(int value);
-    public abstract long ToInt64(long value);
-    public abstract long ToInt64(decimal value);
-    public abstract long ToInt64(float value);
     public abstract long ToInt64(double value);
     public abstract long ToInt64(DateTime value);
-    public abstract long ToInt64(DateTimeOffset value);
     public abstract long ToInt64(string value);
     public abstract long ToInt64(object value);
 

@@ -25,13 +25,5 @@ namespace TextMonster.Xml.Xml_Reader
     public XmlNodeChangedAction Action { get { return action; } }
 
     public XmlNode Node { get { return node; } }
-
-    public XmlNode OldParent { get { return oldParent; } }
-
-    public XmlNode NewParent { get { return newParent; } }
-
-    public string OldValue { get { return oldValue; } }
-
-    public string NewValue { get { return newValue; } }
   }
 }

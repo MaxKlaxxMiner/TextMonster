@@ -166,12 +166,12 @@ namespace TextMonster.Xml.Xml_Reader
 
     public override long ToInt64(bool value) { return (long)ChangeType((object)value, Int64Type, null); }
     public override long ToInt64(DateTime value) { return (long)ChangeType((object)value, Int64Type, null); }
-    public override long ToInt64(DateTimeOffset value) { return (long)ChangeType((object)value, Int64Type, null); }
-    public override long ToInt64(decimal value) { return (long)ChangeType((object)value, Int64Type, null); }
+    public virtual long ToInt64(DateTimeOffset value) { return (long)ChangeType((object)value, Int64Type, null); }
+    public virtual long ToInt64(decimal value) { return (long)ChangeType((object)value, Int64Type, null); }
     public override long ToInt64(double value) { return (long)ChangeType((object)value, Int64Type, null); }
     public override long ToInt64(int value) { return (long)ChangeType((object)value, Int64Type, null); }
-    public override long ToInt64(long value) { return (long)ChangeType((object)value, Int64Type, null); }
-    public override long ToInt64(float value) { return (long)ChangeType((object)value, Int64Type, null); }
+    public virtual long ToInt64(long value) { return (long)ChangeType((object)value, Int64Type, null); }
+    public virtual long ToInt64(float value) { return (long)ChangeType((object)value, Int64Type, null); }
     public override long ToInt64(string value) { return (long)ChangeType((object)value, Int64Type, null); }
     public override long ToInt64(object value) { return (long)ChangeType((object)value, Int64Type, null); }
 

@@ -30,10 +30,5 @@ namespace TextMonster.Xml.Xml_Reader
       }
       return expr;
     }
-
-    private void PrintQuery(XmlWriter w)
-    {
-      ((CompiledXpathExpr)this).QueryTree.PrintQuery(w);
-    }
   }
 }

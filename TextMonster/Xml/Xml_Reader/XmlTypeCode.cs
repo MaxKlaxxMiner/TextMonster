@@ -13,27 +13,6 @@
     /// <include file='doc\XmlTypeCode.uex' path='docs/doc[@for="XmlTypeCode.Node"]/*' />
     Node,
 
-    /// <include file='doc\XmlTypeCode.uex' path='docs/doc[@for="XmlTypeCode.Document"]/*' />
-    Document,
-
-    /// <include file='doc\XmlTypeCode.uex' path='docs/doc[@for="XmlTypeCode.Element"]/*' />
-    Element,
-
-    /// <include file='doc\XmlTypeCode.uex' path='docs/doc[@for="XmlTypeCode.Attribute"]/*' />
-    Attribute,
-
-    /// <include file='doc\XmlTypeCode.uex' path='docs/doc[@for="XmlTypeCode.Namespace"]/*' />
-    Namespace,
-
-    /// <include file='doc\XmlTypeCode.uex' path='docs/doc[@for="XmlTypeCode.ProcessingInstruction"]/*' />
-    ProcessingInstruction,
-
-    /// <include file='doc\XmlTypeCode.uex' path='docs/doc[@for="XmlTypeCode.Comment"]/*' />
-    Comment,
-
-    /// <include file='doc\XmlTypeCode.uex' path='docs/doc[@for="XmlTypeCode.Text"]/*' />
-    Text,
-
     /// <include file='doc\XmlTypeCode.uex' path='docs/doc[@for="XmlTypeCode.AnyAtomicType"]/*' />
     AnyAtomicType,
 

@@ -16,7 +16,6 @@ namespace TextMonster.Xml.Xml_Reader
     public XmlAnyElementAttribute this[int index]
     {
       get { return (XmlAnyElementAttribute)List[index]; }
-      set { List[index] = value; }
     }
 
     /// <include file='doc\XmlAnyElementAttributes.uex' path='docs/doc[@for="XmlAnyElementAttributes.Add"]/*' />

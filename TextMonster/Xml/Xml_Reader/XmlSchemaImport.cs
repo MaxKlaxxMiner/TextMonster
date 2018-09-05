@@ -23,14 +23,6 @@
       set { ns = value; }
     }
 
-    /// <include file='doc\XmlSchemaImport.uex' path='docs/doc[@for="XmlSchemaImport.Annotation"]/*' />
-    [XmlElement("annotation", typeof(XmlSchemaAnnotation))]
-    public XmlSchemaAnnotation Annotation
-    {
-      get { return annotation; }
-      set { annotation = value; }
-    }
-
     internal override void AddAnnotation(XmlSchemaAnnotation annotation)
     {
       this.annotation = annotation;

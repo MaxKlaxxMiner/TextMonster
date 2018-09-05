@@ -40,12 +40,6 @@ namespace TextMonster.Xml.Xml_Reader
       set { Data = value; } //use Data instead of data so that event will be fired
     }
 
-    // Gets the target of the processing instruction.
-    public String Target
-    {
-      get { return target; }
-    }
-
     // Gets or sets the content of processing instruction,
     // excluding the target.
     public String Data

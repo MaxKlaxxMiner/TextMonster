@@ -19,15 +19,5 @@ namespace TextMonster.Xml.Xml_Reader
     {
       this.name = name;
     }
-
-    /// <include file='doc\SoapEnumAttribute.uex' path='docs/doc[@for="SoapEnumAttribute.Name"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public string Name
-    {
-      get { return name == null ? string.Empty : name; }
-      set { name = value; }
-    }
   }
 }

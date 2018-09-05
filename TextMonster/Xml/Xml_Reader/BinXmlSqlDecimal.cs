@@ -27,7 +27,6 @@ namespace TextMonster.Xml.Xml_Reader
     private static readonly int x_cNumeMax = 4;
     private static readonly long x_lInt32Base = ((long)1) << 32;      // 2**32
     private static readonly ulong x_ulInt32Base = ((ulong)1) << 32;     // 2**32
-    private static readonly ulong x_ulInt32BaseForMod = x_ulInt32Base - 1;    // 2**32 - 1 (0xFFF...FF)
     internal static readonly ulong x_llMax = Int64.MaxValue;   // Max of Int64
     //private static readonly uint x_ulBase10 = 10;
     private static readonly double DUINT_BASE = (double)x_lInt32Base;     // 2**32

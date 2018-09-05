@@ -23,7 +23,6 @@ namespace TextMonster.Xml.Xml_Reader
     public Type MemberType
     {
       get { return type; }
-      set { type = value; }
     }
 
     /// <include file='doc\XmlReflectionMember.uex' path='docs/doc[@for="XmlReflectionMember.XmlAttributes"]/*' />

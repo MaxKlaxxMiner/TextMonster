@@ -22,7 +22,6 @@ namespace TextMonster.Xml.Xml_Reader
       NMTOKENS = XmlTokenizedType.NMTOKENS,    // == 7
       NOTATION = XmlTokenizedType.NOTATION,    // == 8
       None,
-      PERef,
       AttlistDecl,
       ElementDecl,
       EntityDecl,
@@ -38,7 +37,6 @@ namespace TextMonster.Xml.Xml_Reader
       QName,
       Name,
       Nmtoken,
-      Quote,
       LeftParen,
       RightParen,
       GreaterThan,

@@ -27,7 +27,6 @@ namespace TextMonster.Xml.Xml_Reader
     public Type Type
     {
       get { return type; }
-      set { type = value; }
     }
 
     /// <include file='doc\XmlTextAttribute.uex' path='docs/doc[@for="XmlTextAttribute.DataType"]/*' />

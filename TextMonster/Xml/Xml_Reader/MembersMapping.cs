@@ -25,17 +25,5 @@ namespace TextMonster.Xml.Xml_Reader
       get { return hasWrapperElement; }
       set { hasWrapperElement = value; }
     }
-
-    internal bool ValidateRpcWrapperElement
-    {
-      get { return validateRpcWrapperElement; }
-      set { validateRpcWrapperElement = value; }
-    }
-
-    internal bool WriteAccessors
-    {
-      get { return writeAccessors; }
-      set { writeAccessors = value; }
-    }
   }
 }

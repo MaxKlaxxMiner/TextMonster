@@ -30,11 +30,6 @@ namespace TextMonster.Xml.Xml_Reader
       this.ignore = mapping.ignore;
     }
 
-    internal bool IsAttribute
-    {
-      get { return attribute != null; }
-    }
-
     internal bool IsText
     {
       get { return text != null && (elements == null || elements.Length == 0); }

@@ -26,15 +26,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
     }
 
-    /// <include file='doc\XmlArrayItemAttribute.uex' path='docs/doc[@for="XmlArrayItemAttribute.XmlArrayItemAttribute1"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlArrayItemAttribute(string elementName)
-    {
-      this.elementName = elementName;
-    }
-
     /// <include file='doc\XmlArrayItemAttribute.uex' path='docs/doc[@for="XmlArrayItemAttribute.XmlArrayItemAttribute2"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>

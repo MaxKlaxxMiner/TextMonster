@@ -19,7 +19,6 @@ namespace TextMonster.Xml.Xml_Reader
     [XmlAttribute("namespace")]
     public string Namespace
     {
-      get { return ns; }
       set { ns = value; }
     }
 

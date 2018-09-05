@@ -19,12 +19,6 @@ namespace TextMonster.Xml.Xml_Reader
       impl.OuterReader = this;
     }
 
-    public XmlTextReader(string url, Stream input)
-    {
-      impl = new XmlTextReaderImpl(url, input);
-      impl.OuterReader = this;
-    }
-
     public XmlTextReader(Stream input, XmlNameTable nt)
     {
       impl = new XmlTextReaderImpl(input, nt);

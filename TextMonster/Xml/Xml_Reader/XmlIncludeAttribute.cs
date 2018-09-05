@@ -27,7 +27,6 @@ namespace TextMonster.Xml.Xml_Reader
     public Type Type
     {
       get { return type; }
-      set { type = value; }
     }
   }
 }

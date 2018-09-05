@@ -22,8 +22,6 @@ namespace TextMonster.Xml.Xml_Reader
     CompiledIdentityConstraint[] constraints;
     XmlSchemaElement schemaElement;
 
-    internal static readonly SchemaElementDecl Empty = new SchemaElementDecl();
-
     //
     // Constructor
     //

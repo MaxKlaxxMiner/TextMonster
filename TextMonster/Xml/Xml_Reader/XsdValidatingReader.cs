@@ -21,7 +21,6 @@ namespace TextMonster.Xml.Xml_Reader
       OnReadBinaryContent = 7,
       ReaderClosed = 8,
       EOF = 9,
-      Error = 10,
     }
     //Validation
     private FastXmlReader coreReader;

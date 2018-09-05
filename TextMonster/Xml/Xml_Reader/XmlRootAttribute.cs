@@ -15,14 +15,6 @@ namespace TextMonster.Xml.Xml_Reader
     bool nullable = true;
     bool nullableSpecified;
 
-    /// <include file='doc\XmlRootAttribute.uex' path='docs/doc[@for="XmlRootAttribute.XmlRootAttribute"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlRootAttribute()
-    {
-    }
-
     /// <include file='doc\XmlRootAttribute.uex' path='docs/doc[@for="XmlRootAttribute.XmlRootAttribute1"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>

@@ -30,11 +30,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return last + 1; }
     }
 
-    public int CountOfNames
-    {
-      get { return names.Count; }
-    }
-
     /// <summary>
     /// True is particle can be deterministically attributed from the symbol and conversion to DFA is possible.
     /// </summary>

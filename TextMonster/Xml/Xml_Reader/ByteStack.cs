@@ -43,25 +43,5 @@ namespace TextMonster.Xml.Xml_Reader
         return 0;
       }
     }
-
-    public byte Peek()
-    {
-      if (top > 0)
-      {
-        return stack[top - 1];
-      }
-      else
-      {
-        return 0;
-      }
-    }
-
-    public int Length
-    {
-      get
-      {
-        return top;
-      }
-    }
   }
 }

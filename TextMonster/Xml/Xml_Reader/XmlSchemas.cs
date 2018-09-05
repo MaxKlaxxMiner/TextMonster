@@ -30,7 +30,6 @@ namespace TextMonster.Xml.Xml_Reader
     public XmlSchema this[int index]
     {
       get { return (XmlSchema)List[index]; }
-      set { List[index] = value; }
     }
 
     /// <include file='doc\XmlSchemas.uex' path='docs/doc[@for="XmlSchemas.this1"]/*' />

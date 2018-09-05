@@ -1,6 +1,3 @@
-using System;
-using System.Reflection;
-
 namespace TextMonster.Xml.Xml_Reader
 {
   /// <include file='doc\SoapAttributes.uex' path='docs/doc[@for="SoapAttributes"]/*' />
@@ -22,94 +19,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// </devdoc>
     public SoapAttributes()
     {
-    }
-
-    /// <include file='doc\SoapAttributes.uex' path='docs/doc[@for="SoapAttributes.SoapAttributes1"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public SoapAttributes(ICustomAttributeProvider provider)
-    {
-      object[] attrs = provider.GetCustomAttributes(false);
-      for (int i = 0; i < attrs.Length; i++)
-      {
-        if (attrs[i] is SoapIgnoreAttribute || attrs[i] is ObsoleteAttribute)
-        {
-          this.soapIgnore = true;
-          break;
-        }
-        else if (attrs[i] is SoapElementAttribute)
-        {
-          this.soapElement = (SoapElementAttribute)attrs[i];
-        }
-        else if (attrs[i] is SoapAttributeAttribute)
-        {
-          this.soapAttribute = (SoapAttributeAttribute)attrs[i];
-        }
-        else if (attrs[i] is SoapTypeAttribute)
-        {
-          this.soapType = (SoapTypeAttribute)attrs[i];
-        }
-        else if (attrs[i] is SoapEnumAttribute)
-        {
-          this.soapEnum = (SoapEnumAttribute)attrs[i];
-        }
-        else if (attrs[i] is DefaultValueAttribute)
-        {
-          this.soapDefaultValue = ((DefaultValueAttribute)attrs[i]).Value;
-        }
-      }
-      if (soapIgnore)
-      {
-        this.soapElement = null;
-        this.soapAttribute = null;
-        this.soapType = null;
-        this.soapEnum = null;
-        this.soapDefaultValue = null;
-      }
-    }
-
-    internal SoapAttributeFlags SoapFlags
-    {
-      get
-      {
-        SoapAttributeFlags flags = 0;
-        if (soapElement != null) flags |= SoapAttributeFlags.Element;
-        if (soapAttribute != null) flags |= SoapAttributeFlags.Attribute;
-        if (soapEnum != null) flags |= SoapAttributeFlags.Enum;
-        if (soapType != null) flags |= SoapAttributeFlags.Type;
-        return flags;
-      }
-    }
-
-    /// <include file='doc\SoapAttributes.uex' path='docs/doc[@for="SoapAttributes.SoapType"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public SoapTypeAttribute SoapType
-    {
-      get { return soapType; }
-      set { soapType = value; }
-    }
-
-    /// <include file='doc\SoapAttributes.uex' path='docs/doc[@for="SoapAttributes.SoapEnum"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public SoapEnumAttribute SoapEnum
-    {
-      get { return soapEnum; }
-      set { soapEnum = value; }
-    }
-
-    /// <include file='doc\SoapAttributes.uex' path='docs/doc[@for="SoapAttributes.SoapIgnore"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public bool SoapIgnore
-    {
-      get { return soapIgnore; }
-      set { soapIgnore = value; }
     }
 
     /// <include file='doc\SoapAttributes.uex' path='docs/doc[@for="SoapAttributes.SoapElement"]/*' />

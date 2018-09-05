@@ -98,11 +98,9 @@
     <Compile Include="Xml\Xml_Reader\RecursionLimiter.cs" />
     <Compile Include="Xml\Xml_Reader\SafeAsciiDecoder.cs" />
     <Compile Include="Xml\Xml_Reader\SoapAttributeAttribute.cs" />
-    <Compile Include="Xml\Xml_Reader\SoapAttributeFlags.cs" />
     <Compile Include="Xml\Xml_Reader\SoapAttributes.cs" />
     <Compile Include="Xml\Xml_Reader\SoapElementAttribute.cs" />
     <Compile Include="Xml\Xml_Reader\SoapEnumAttribute.cs" />
-    <Compile Include="Xml\Xml_Reader\SoapIgnoreAttribute.cs" />
     <Compile Include="Xml\Xml_Reader\SoapTypeAttribute.cs" />
     <Compile Include="Xml\Xml_Reader\SpecialModel.cs" />
     <Compile Include="Xml\Xml_Reader\StructModel.cs" />

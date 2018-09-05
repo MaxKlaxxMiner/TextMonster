@@ -28,13 +28,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return this.poscol; }
     }
 
-    public KeySequence(TypedObject[] ks)
-    {
-      this.ks = ks;
-      this.dim = ks.Length;
-      this.posline = this.poscol = 0;
-    }
-
     public object this[int index]
     {
       get

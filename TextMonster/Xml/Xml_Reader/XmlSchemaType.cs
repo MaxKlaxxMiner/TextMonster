@@ -26,19 +26,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public static XmlSchemaSimpleType GetBuiltInSimpleType(XmlQualifiedName qualifiedName)
-    {
-      if (qualifiedName == null)
-      {
-        throw new ArgumentNullException("qualifiedName");
-      }
-      return DatatypeImplementation.GetSimpleTypeFromXsdType(qualifiedName);
-    }
-
-    /// <include file='doc\XmlSchemaType.uex' path='docs/doc[@for="XmlSchemaType.GetXsdSimpleType"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
     public static XmlSchemaSimpleType GetBuiltInSimpleType(XmlTypeCode typeCode)
     {
       return DatatypeImplementation.GetSimpleTypeFromTypeCode(typeCode);

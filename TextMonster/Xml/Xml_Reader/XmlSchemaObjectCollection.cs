@@ -18,15 +18,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
     }
 
-    /// <include file='doc\XmlSchemaObjectCollection.uex' path='docs/doc[@for="XmlSchemaObjectCollection.XmlSchemaObjectCollection1"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlSchemaObjectCollection(XmlSchemaObject parent)
-    {
-      this.parent = parent;
-    }
-
     /// <include file='doc\XmlSchemaObjectCollection.uex' path='docs/doc[@for="XmlSchemaObjectCollection.this"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>

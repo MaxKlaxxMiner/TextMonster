@@ -11,8 +11,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Xml_DefaultException = "Xml_DefaultException";
     internal const string Xml_InvalidOperation = "Xml_InvalidOperation";
     internal const string Xml_StackOverflow = "Xml_StackOverflow";
-    internal const string Xml_AsyncIsRunningException = "Xml_AsyncIsRunningException";
-    internal const string Xml_ReaderAsyncNotSetException = "Xml_ReaderAsyncNotSetException";
     internal const string Xml_UnclosedQuote = "Xml_UnclosedQuote";
     internal const string Xml_UnexpectedEOF = "Xml_UnexpectedEOF";
     internal const string Xml_UnexpectedEOF1 = "Xml_UnexpectedEOF1";

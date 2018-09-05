@@ -28,7 +28,6 @@ namespace TextMonster.Xml.Xml_Reader
       this.extension = extension;
     }
 
-    internal SchemaImporterExtension Extension { get { return extension; } }
     internal string Name { get { return clrType; } }
 
     internal StringCollection ReferencedAssemblies

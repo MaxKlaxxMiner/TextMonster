@@ -25,11 +25,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public IList AsList
-    {
-      get { return this.list; }
-    }
-
     public override XPathNodeIterator Clone()
     {
       return new XPathArrayIterator(this);

@@ -14,10 +14,7 @@ namespace TextMonster.Xml.Xml_Reader
     {
       NCNames = 0x1,              // Validate that each non-empty prefix and localName is a valid NCName
       CheckLocalName = 0x2,       // Validate the local-name
-      CheckPrefixMapping = 0x4,   // Validate the prefix --> namespace mapping
-      All = 0x7,
-      AllExceptNCNames = 0x6,
-      AllExceptPrefixMapping = 0x3,
+      CheckPrefixMapping = 0x4,
     };
 
     static XmlCharType xmlCharType = XmlCharType.Instance;
