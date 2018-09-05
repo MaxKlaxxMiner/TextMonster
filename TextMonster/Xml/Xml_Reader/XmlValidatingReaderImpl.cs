@@ -1,4 +1,10 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Versioning;
+using System.Text;
+
+namespace TextMonster.Xml.Xml_Reader
 {
   internal sealed partial class XmlValidatingReaderImpl : XmlReader, IXmlLineInfo, IXmlNamespaceResolver
   {

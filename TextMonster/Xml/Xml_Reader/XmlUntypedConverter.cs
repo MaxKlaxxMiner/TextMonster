@@ -1,4 +1,6 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿using System;
+
+namespace TextMonster.Xml.Xml_Reader
 {
   internal class XmlUntypedConverter : XmlListConverter
   {
