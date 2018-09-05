@@ -339,7 +339,7 @@ namespace TextMonster.Xml.Xml_Reader
       nameTable = nt;
       nt.Add(string.Empty);
 
-      if (!System.Xml.XmlReaderSettings.EnableLegacyXmlSettings())
+      if (!XmlReaderSettings.EnableLegacyXmlSettings())
       {
         xmlResolver = null;
       }
@@ -904,7 +904,7 @@ namespace TextMonster.Xml.Xml_Reader
         settings.MaxCharactersFromEntities = maxCharactersFromEntities;
 
 #if !SILVERLIGHT
-        if (!System.Xml.XmlReaderSettings.EnableLegacyXmlSettings())
+        if (!XmlReaderSettings.EnableLegacyXmlSettings())
         {
           settings.XmlResolver = xmlResolver;
         }
@@ -2699,7 +2699,7 @@ namespace TextMonster.Xml.Xml_Reader
 #if SILVERLIGHT 
                 return xmlResolver == null;
 #else
-        return xmlResolver == null || (System.Xml.XmlConfiguration.XmlReaderSection.ProhibitDefaultUrlResolver && !xmlResolverIsSet);
+        return xmlResolver == null || (XmlConfiguration.XmlReaderSection.ProhibitDefaultUrlResolver && !xmlResolverIsSet);
 #endif
       }
     }
@@ -3254,7 +3254,7 @@ namespace TextMonster.Xml.Xml_Reader
       XmlResolver tmpResolver = GetTempResolver();
       if (ps.baseUri != null)
       {
-        Debug.Assert(xmlResolver != null || !System.Xml.XmlReaderSettings.EnableLegacyXmlSettings());
+        Debug.Assert(xmlResolver != null || !XmlReaderSettings.EnableLegacyXmlSettings());
       }
       else
       {

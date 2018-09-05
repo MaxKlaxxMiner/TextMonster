@@ -1,5 +1,13 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections;
+using System.Globalization;
+using System.IO;
+using System.Reflection;
+using System.Runtime.Versioning;
+using System.Security.Permissions;
+using System.Security.Policy;
+using System.Threading;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -653,11 +661,7 @@ namespace TextMonster.Xml.Xml_Reader
     [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
     public static string GetXmlSerializerAssemblyName(Type type, string defaultNamespace)
     {
-      if (type == null)
-      {
-        throw new ArgumentNullException("type");
-      }
-      return Compiler.GetTempAssemblyName(type.Assembly.GetName(), defaultNamespace);
+      return null;
     }
 
     /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.UnknownNode"]/*' />
@@ -894,10 +898,6 @@ namespace TextMonster.Xml.Xml_Reader
         else if (primitiveType == typeof(Guid))
         {
           o = reader.Read_guid();
-        }
-        else if (primitiveType == typeof(TimeSpan) && LocalAppContextSwitches.EnableTimeSpanSerialization)
-        {
-          o = reader.Read_TimeSpan();
         }
         else
         {

@@ -19,7 +19,7 @@ namespace TextMonster.Xml.Xml_Reader
     {
       this.doc = doc;
       // perf: unwrap XmlTextReader if no one derived from it
-      if (reader.GetType() == typeof(System.Xml.XmlTextReader))
+      if (reader.GetType() == typeof(XmlTextReader))
       {
         this.reader = ((XmlTextReader)reader).Impl;
       }

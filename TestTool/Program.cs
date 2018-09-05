@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-using System.Xml.Linq;
+using Linq;
 using TextMonster;
 using TextMonster.Xml;
 #endregion
@@ -259,7 +259,7 @@ namespace TestTool
       //SpeedCheckXmlParser();
 
       //XmlReader
-      //System.Xml.XmlException
+      //XmlException
     }
   }
 }

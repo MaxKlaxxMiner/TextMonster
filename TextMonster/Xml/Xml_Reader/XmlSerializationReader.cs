@@ -1,4 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Globalization;
+using System.Reflection;
+using System.Threading;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -99,8 +103,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     static XmlSerializationReader()
     {
-      XmlSerializerSection configSection = ConfigurationManager.GetSection(ConfigurationStrings.XmlSerializerSectionPath) as XmlSerializerSection;
-      checkDeserializeAdvances = (configSection == null) ? false : configSection.CheckDeserializeAdvances;
+      checkDeserializeAdvances = false;
     }
 
     /// <include file='doc\XmlSerializationReader.uex' path='docs/doc[@for="XmlSerializationReader.InitIDs"]/*' />
@@ -225,10 +228,6 @@ namespace TextMonster.Xml.Xml_Reader
       oldTimeInstantID = r.NameTable.Add("timeInstant");
       charID = r.NameTable.Add("char");
       guidID = r.NameTable.Add("guid");
-      if (LocalAppContextSwitches.EnableTimeSpanSerialization)
-      {
-        timeSpanID = r.NameTable.Add("TimeSpan");
-      }
       base64ID = r.NameTable.Add("base64");
 
       anyURIID = r.NameTable.Add("anyURI");
@@ -681,8 +680,6 @@ namespace TextMonster.Xml.Xml_Reader
           value = ToChar(ReadStringValue());
         else if ((object)type.Name == (object)guidID)
           value = new Guid(CollapseWhitespace(ReadStringValue()));
-        else if ((object)type.Name == (object)timeSpanID && LocalAppContextSwitches.EnableTimeSpanSerialization)
-          value = XmlConvert.ToTimeSpan(ReadStringValue());
         else
           value = ReadXmlNodes(elementCanBeType);
       }
@@ -779,8 +776,6 @@ namespace TextMonster.Xml.Xml_Reader
           value = default(Nullable<char>);
         else if ((object)type.Name == (object)guidID)
           value = default(Nullable<Guid>);
-        else if ((object)type.Name == (object)timeSpanID && LocalAppContextSwitches.EnableTimeSpanSerialization)
-          value = default(Nullable<TimeSpan>);
         else
           value = null;
       }
@@ -2037,7 +2032,7 @@ namespace TextMonster.Xml.Xml_Reader
         Reader.MoveToContent();
         int whileIterations = 0;
         int readerCount = ReaderCount;
-        while (Reader.NodeType != System.Xml.XmlNodeType.EndElement)
+        while (Reader.NodeType != XmlNodeType.EndElement)
         {
           XmlNode xmlNode = Document.ReadNode(r);
           xmlNodeList.Add(xmlNode);
@@ -2150,4 +2145,16 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
   }
+
+  /// <include file='doc\XmlSerializationReader.uex' path='docs/doc[@for="XmlSerializationFixupCallback"]/*' />
+  ///<internalonly/>
+  public delegate void XmlSerializationFixupCallback(object fixup);
+
+  /// <include file='doc\XmlSerializationReader.uex' path='docs/doc[@for="XmlSerializationCollectionFixupCallback"]/*' />
+  ///<internalonly/>
+  public delegate void XmlSerializationCollectionFixupCallback(object collection, object collectionItems);
+
+  /// <include file='doc\XmlSerializationReader.uex' path='docs/doc[@for="XmlSerializationReadCallback"]/*' />
+  ///<internalonly/>
+  public delegate object XmlSerializationReadCallback();
 }

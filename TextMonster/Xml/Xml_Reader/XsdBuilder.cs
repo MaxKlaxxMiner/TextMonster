@@ -787,7 +787,7 @@ namespace TextMonster.Xml.Xml_Reader
         }
         if (this.unhandledAttributes.Count != 0)
         {
-          this.xso.SetUnhandledAttributes((XmlAttribute[])this.unhandledAttributes.ToArray(typeof(System.Xml.XmlAttribute)));
+          this.xso.SetUnhandledAttributes((XmlAttribute[])this.unhandledAttributes.ToArray(typeof(XmlAttribute)));
           this.unhandledAttributes.Clear();
         }
       }

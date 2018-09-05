@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Reflection;
 using System.Text;
-using System.Xml.Serialization;
 
 namespace TextMonster.Xml.Xml_Reader
 {

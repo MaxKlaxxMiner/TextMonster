@@ -437,7 +437,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    // This method is copied from System.Xml.Linq.ElementWriter.WriteElement but adapted to DOM
+    // This method is copied from Linq.ElementWriter.WriteElement but adapted to DOM
     private static void WriteElementTo(XmlWriter writer, XmlElement e)
     {
       XmlNode root = e;

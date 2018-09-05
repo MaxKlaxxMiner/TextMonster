@@ -5,10 +5,10 @@ namespace TextMonster.Xml.Xml_Reader
   internal interface IValidationEventHandling
   {
 
-    // This is a ValidationEventHandler, but it is not strongly typed due to dependencies on System.Xml.Schema
+    // This is a ValidationEventHandler, but it is not strongly typed due to dependencies on Schema
     object EventHandler { get; }
 
-    // The exception is XmlSchemaException, but it is not strongly typed due to dependencies on System.Xml.Schema
+    // The exception is XmlSchemaException, but it is not strongly typed due to dependencies on Schema
     void SendEvent(Exception exception, XmlSeverityType severity);
   }
 }

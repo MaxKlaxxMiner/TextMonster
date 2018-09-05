@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Text;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -371,7 +375,6 @@ namespace TextMonster.Xml.Xml_Reader
       this.inStrm = stream;
       if (data != null)
       {
-        Debug.Assert(len >= 2 && (data[0] == 0xdf && data[1] == 0xff));
         this.data = data;
         this.end = len;
         this.pos = 2;
@@ -812,8 +815,6 @@ namespace TextMonster.Xml.Xml_Reader
           this.token = BinXmlToken.XmlDecl;
         else if (XmlNodeType.DocumentType == this.parentNodeType)
           this.token = BinXmlToken.DocType;
-        else
-          Debug.Fail("Unexpected parent NodeType");
         this.nodetype = this.parentNodeType;
         this.state = ScanState.Doc;
         this.pos = this.posAfterAttrs;
@@ -908,7 +909,6 @@ namespace TextMonster.Xml.Xml_Reader
       NamespaceDecl decl;
       if (prefix != null && this.namespaces.TryGetValue(prefix, out decl))
       {
-        Debug.Assert(decl != null);
         return decl.uri;
       }
       return null;
@@ -1118,7 +1118,6 @@ namespace TextMonster.Xml.Xml_Reader
               return XmlConvert.ToBoolean(String.Empty);
 
               default:
-              Debug.Fail("should never happen");
               goto Fallback;
             }
           }
@@ -1208,7 +1207,6 @@ namespace TextMonster.Xml.Xml_Reader
               return XmlConvert.ToDateTime(String.Empty, XmlDateTimeSerializationMode.RoundtripKind);
 
               default:
-              Debug.Fail("should never happen");
               goto Fallback;
             }
           }
@@ -1303,7 +1301,6 @@ namespace TextMonster.Xml.Xml_Reader
               return XmlConvert.ToDouble(String.Empty);
 
               default:
-              Debug.Fail("should never happen");
               goto Fallback;
             }
           }
@@ -1398,7 +1395,6 @@ namespace TextMonster.Xml.Xml_Reader
               return XmlConvert.ToSingle(String.Empty);
 
               default:
-              Debug.Fail("should never happen");
               goto Fallback;
             }
           }
@@ -1493,7 +1489,6 @@ namespace TextMonster.Xml.Xml_Reader
               return XmlConvert.ToDecimal(String.Empty);
 
               default:
-              Debug.Fail("should never happen");
               goto Fallback;
             }
           }
@@ -1588,7 +1583,6 @@ namespace TextMonster.Xml.Xml_Reader
               return XmlConvert.ToInt32(String.Empty);
 
               default:
-              Debug.Fail("should never happen");
               goto Fallback;
             }
           }
@@ -1683,7 +1677,6 @@ namespace TextMonster.Xml.Xml_Reader
               return XmlConvert.ToInt64(String.Empty);
 
               default:
-              Debug.Fail("should never happen");
               goto Fallback;
             }
           }
@@ -1998,8 +1991,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
       if (mark >= 0 && mark < end)
       {
-        Debug.Assert(this.mark <= this.end, "Mark should never be past End");
-        Debug.Assert(this.mark <= this.pos, "Mark should never be after Pos");
         int cbKeep = end - mark;
         if (cbKeep > 7 * (data.Length / 8))
         {
@@ -2018,8 +2009,6 @@ namespace TextMonster.Xml.Xml_Reader
         for (int i = 0; i < this.attrCount; i++)
         {
           this.attributes[i].AdjustPosition(-mark);
-          // make sure it is still a valid range
-          Debug.Assert((this.attributes[i].contentPos >= 0) && (this.attributes[i].contentPos <= (end)));
         }
         this.pos = pos;
         this.mark = 0;
@@ -2027,7 +2016,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
       else
       {
-        Debug.Assert(this.attrCount == 0);
         this.pos -= end;
         this.mark -= end;
         this.offset += end;
@@ -2045,7 +2033,6 @@ namespace TextMonster.Xml.Xml_Reader
     // grab that much data
     void Fill_(int require)
     {
-      Debug.Assert((this.pos + require) >= this.end);
       while (FillAllowEOF() && ((this.pos + require) >= this.end))
         ;
       if ((this.pos + require) >= this.end)
@@ -2085,7 +2072,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
       uint u, t;
       u = (uint)b & (uint)0x7F;
-      Debug.Assert(0 != (b & 0x80));
       b = ReadByte();
       t = (uint)b & (uint)0x7F;
       u = u + (t << 7);
@@ -2318,7 +2304,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     string GetString(int pos, int cch)
     {
-      Debug.Assert(pos >= 0 && cch >= 0);
       if (checked(pos + (cch * 2)) > this.end)
         throw new XmlException(Res.Xml_UnexpectedEOF1, (string[])null);
       if (cch == 0)
@@ -2335,7 +2320,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     unsafe String GetStringAligned(byte[] data, int offset, int cch)
     {
-      Debug.Assert((offset & 1) == 0);
       fixed (byte* pb = data)
       {
         char* p = (char*)(pb + offset);
@@ -2755,8 +2739,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     string CDATAValue()
     {
-      Debug.Assert(this.stringValue == null, "this.stringValue == null");
-      Debug.Assert(this.token == BinXmlToken.CData, "this.token == BinXmlToken.CData");
       String value = GetString(this.tokDataPos, this.tokLen);
       StringBuilder sb = null;
       while (PeekToken() == BinXmlToken.CData)
@@ -2954,7 +2936,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     void ImplReadData(BinXmlToken tokenType)
     {
-      Debug.Assert(this.mark < 0);
       this.mark = this.pos;
 
       switch (tokenType)
@@ -3079,18 +3060,15 @@ namespace TextMonster.Xml.Xml_Reader
         {
           if (BinXmlToken.EndElem != (BinXmlToken)ReadByte())
           {
-            Debug.Assert(this.pos >= 3);
             this.pos -= 3; // jump back to start of NVarChar token
           }
           else
           {
-            Debug.Assert(this.pos >= 1);
             this.pos -= 1; // jump back to EndElem token
           }
         }
         else
         {
-          Debug.Assert(this.pos >= 2);
           this.pos -= 2; // jump back to start of NVarChar token
         }
       }
@@ -3488,9 +3466,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     unsafe XmlNodeType CheckText(bool attr)
     {
-      Debug.Assert(this.checkCharacters, "this.checkCharacters");
-      // assert that size is an even number
-      Debug.Assert(0 == ((this.pos - this.tokDataPos) & 1), "Data size should not be odd");
       // grab local copy (perf)
       XmlCharType xmlCharType = this.xmlCharType;
 
@@ -3550,10 +3525,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     XmlNodeType CheckTextIsWS()
     {
-      Debug.Assert(!this.checkCharacters, "!this.checkCharacters");
       byte[] data = this.data;
-      // assert that size is an even number
-      Debug.Assert(0 == ((this.pos - this.tokDataPos) & 1), "Data size should not be odd");
       for (int pos = this.tokDataPos; pos < this.pos; pos += 2)
       {
         if (0 != data[pos + 1])

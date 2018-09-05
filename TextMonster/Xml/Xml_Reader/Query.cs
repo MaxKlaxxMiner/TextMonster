@@ -168,7 +168,7 @@ namespace TextMonster.Xml.Xml_Reader
     private void AssertDOD(List<XPathNavigator> buffer, XPathNavigator nav, int pos)
     {
       if (nav.GetType().ToString() == "Microsoft.VisualStudio.Modeling.StoreNavigator") return;
-      if (nav.GetType().ToString() == "System.Xml.DataDocumentXPathNavigator") return;
+      if (nav.GetType().ToString() == "DataDocumentXPathNavigator") return;
       Debug.Assert(0 <= pos && pos <= buffer.Count, "Algorithm error: Insert()");
       XmlNodeOrder cmp;
       if (0 < pos)
@@ -196,7 +196,7 @@ namespace TextMonster.Xml.Xml_Reader
       while ((curr = query.Advance()) != null)
       {
         if (curr.GetType().ToString() == "Microsoft.VisualStudio.Modeling.StoreNavigator") return;
-        if (curr.GetType().ToString() == "System.Xml.DataDocumentXPathNavigator") return;
+        if (curr.GetType().ToString() == "DataDocumentXPathNavigator") return;
         Debug.Assert(curr == query.Current, "AssertQuery(): query.Advance() != query.Current");
         if (last != null)
         {

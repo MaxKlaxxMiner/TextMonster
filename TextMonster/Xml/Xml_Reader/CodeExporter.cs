@@ -36,8 +36,8 @@ namespace TextMonster.Xml.Xml_Reader
       {
         if (!codeCompileUnit.ReferencedAssemblies.Contains("System.dll"))
           codeCompileUnit.ReferencedAssemblies.Add("System.dll");
-        if (!codeCompileUnit.ReferencedAssemblies.Contains("System.Xml.dll"))
-          codeCompileUnit.ReferencedAssemblies.Add("System.Xml.dll");
+        if (!codeCompileUnit.ReferencedAssemblies.Contains("dll"))
+          codeCompileUnit.ReferencedAssemblies.Add("dll");
       }
       this.codeCompileUnit = codeCompileUnit;
       this.options = options;
