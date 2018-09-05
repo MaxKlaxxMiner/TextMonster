@@ -129,7 +129,6 @@ namespace TextMonster.Xml.Xml_Reader
         return false;
 
         default:
-        Debug.Assert(false);
         break;
       }
       return true;
@@ -234,7 +233,6 @@ namespace TextMonster.Xml.Xml_Reader
         {
           if (processMarkup)
           {
-            Debug.Assert(parentNode != null);
             XmlNodeList list = parentNode.ChildNodes;
             XmlNode[] markup = new XmlNode[list.Count];
             for (int i = 0; i < list.Count; i++)
@@ -315,8 +313,6 @@ namespace TextMonster.Xml.Xml_Reader
         break;
 
         default: //other possible node types: Document/DocType/DocumentFrag/Entity/Notation/Xmldecl cannot appear as children of xs:appInfo or xs:doc
-        Debug.Assert(currentNode != null);
-        Debug.Assert(parentNode != null);
         parentNode.AppendChild(currentNode);
         break;
       }
@@ -324,8 +320,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private XmlElement LoadElementNode(bool root)
     {
-      Debug.Assert(reader.NodeType == XmlNodeType.Element);
-
       XmlReader r = reader;
       bool fEmptyElement = r.IsEmptyElement;
 
@@ -409,8 +403,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private XmlAttribute LoadAttributeNode()
     {
-      Debug.Assert(reader.NodeType == XmlNodeType.Attribute);
-
       XmlReader r = reader;
 
       XmlAttribute attr = dummyDocument.CreateAttribute(r.Prefix, r.LocalName, r.NamespaceURI);
@@ -435,8 +427,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private XmlEntityReference LoadEntityReferenceInAttribute()
     {
-      Debug.Assert(reader.NodeType == XmlNodeType.EntityReference);
-
       XmlEntityReference eref = dummyDocument.CreateEntityReference(reader.LocalName);
       if (!reader.CanResolveEntity)
       {

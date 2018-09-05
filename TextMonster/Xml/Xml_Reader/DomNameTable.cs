@@ -16,7 +16,6 @@
       nameTable = document.NameTable;
       entries = new XmlName[InitialSize];
       mask = InitialSize - 1;
-      Debug.Assert((entries.Length & mask) == 0);  // entries.Length must be a power of two
     }
 
     public XmlName GetName(string prefix, string localName, string ns, IXmlSchemaInfo schemaInfo)

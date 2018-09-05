@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Versioning;
 using System.Threading;
 
@@ -291,7 +293,6 @@ namespace TextMonster.Xml.Xml_Reader
         if (include.Compositor == Compositor.Import)
         {
           XmlSchemaImport import = include as XmlSchemaImport;
-          Debug.Assert(import != null);
           string importNS = import.Namespace != null ? import.Namespace : string.Empty;
           if (!schema.ImportedNamespaces.Contains(importNS))
           {
@@ -698,7 +699,6 @@ namespace TextMonster.Xml.Xml_Reader
             break;
 
             default:
-            Debug.Assert(false);
             break;
           }
         }
@@ -824,7 +824,6 @@ namespace TextMonster.Xml.Xml_Reader
       XmlSchema originalSchema = redefine.Schema;
 
       currentSchema = GetParentSchema(redefine); //Set this for correct schema context in ValidateIdAttribute & ValidateQNameAttribute for redefines
-      Debug.Assert(currentSchema != null);
       SetSchemaDefaults(currentSchema);
 
       if (originalSchema.IsRedefined)
@@ -981,7 +980,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal static XmlSchema GetParentSchema(XmlSchemaObject currentSchemaObject)
     {
       XmlSchema parentSchema = null;
-      Debug.Assert((currentSchemaObject as XmlSchema) == null); //The current object should not be schema
       while (parentSchema == null && currentSchemaObject != null)
       {
         currentSchemaObject = currentSchemaObject.Parent;
