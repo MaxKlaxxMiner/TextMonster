@@ -1,4 +1,7 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿using System;
+using System.ComponentModel;
+
+namespace TextMonster.Xml.Xml_Reader
 {
   /// <include file='doc\XmlSchemaType.uex' path='docs/doc[@for="XmlSchemaType"]/*' />
   /// <devdoc>
