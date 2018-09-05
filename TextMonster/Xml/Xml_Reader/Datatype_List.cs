@@ -1,4 +1,7 @@
-﻿namespace TextMonster.Xml.Xml_Reader
+﻿using System;
+using System.Collections;
+
+namespace TextMonster.Xml.Xml_Reader
 {
   //List type
   internal class Datatype_List : Datatype_anySimpleType
@@ -66,7 +69,6 @@
       System.Array arr1 = (System.Array)value1;
       System.Array arr2 = (System.Array)value2;
 
-      Debug.Assert(arr1 != null && arr2 != null);
       int length = arr1.Length;
       if (length != arr2.Length)
       {
@@ -76,7 +78,6 @@
       if (atomicValues1 != null)
       {
         XmlAtomicValue[] atomicValues2 = arr2 as XmlAtomicValue[];
-        Debug.Assert(atomicValues2 != null);
         XmlSchemaType xmlType1;
         for (int i = 0; i < atomicValues1.Length; i++)
         {
@@ -144,7 +145,6 @@
       {
         object valueToCheck = this.ValueConverter.ChangeType(value, this.ValueType, namespaceResolver);
         Array valuesToCheck = valueToCheck as Array;
-        Debug.Assert(valuesToCheck != null);
 
         bool checkItemLexical = itemType.HasLexicalFacets;
         bool checkItemValue = itemType.HasValueFacets;
@@ -241,7 +241,6 @@
           values.Add(typedValue);
         }
         array = values.ToArray(itemType.ValueType);
-        Debug.Assert(array.GetType() == ListValueType);
       }
       if (values.Count < minListSize)
       {

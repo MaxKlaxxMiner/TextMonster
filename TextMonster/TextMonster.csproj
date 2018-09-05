@@ -62,6 +62,8 @@
     <Compile Include="Xml\Xml_Reader\AxisStack.cs" />
     <Compile Include="Xml\Xml_Reader\AxisElement.cs" />
     <Compile Include="Xml\Xml_Reader\BinaryFacetsChecker.cs" />
+    <Compile Include="Xml\Xml_Reader\XmlListConverter.cs" />
+    <Compile Include="Xml\Xml_Reader\XmlAnyListConverter.cs" />
     <Compile Include="Xml\Xml_Reader\XmlSchemaValidator.cs" />
     <Compile Include="Xml\Xml_Reader\ValidatorState.cs" />
     <Compile Include="Xml\Xml_Reader\IdRefNode.cs" />
