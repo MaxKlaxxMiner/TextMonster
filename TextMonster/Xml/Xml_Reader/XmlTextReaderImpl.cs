@@ -10249,5 +10249,6 @@ namespace TextMonster.Xml.Xml_Reader
 #endif
     }
 
+    internal delegate void OnDefaultAttributeUseDelegate(IDtdDefaultAttributeInfo defaultAttribute, XmlTextReaderImpl coreReader);
   }
 }

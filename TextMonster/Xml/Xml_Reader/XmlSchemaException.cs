@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Resources;
+using System.Runtime.Serialization;
+using System.Security.Permissions;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -53,7 +56,7 @@ namespace TextMonster.Xml.Xml_Reader
 
 
     /// <include file='doc\XmlSchemaException.uex' path='docs/doc[@for="XmlSchemaException.GetObjectData"]/*' />
-    [SecurityPermissionAttribute(SecurityAction.LinkDemand, SerializationFormatter = true)]
+    [SecurityPermission(SecurityAction.LinkDemand, SerializationFormatter = true)]
     public override void GetObjectData(SerializationInfo info, StreamingContext context)
     {
       base.GetObjectData(info, context);
@@ -121,7 +124,7 @@ namespace TextMonster.Xml.Xml_Reader
       base(CreateMessage(res, args), innerException)
     {
 
-      HResult = HResults.XmlSchema;
+      HResult = unchecked((int)0x80131941);
       this.res = res;
       this.args = args;
       this.sourceUri = sourceUri;

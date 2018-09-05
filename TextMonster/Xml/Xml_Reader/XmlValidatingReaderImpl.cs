@@ -110,11 +110,6 @@ namespace TextMonster.Xml.Xml_Reader
     // This constructor is used when creating XmlValidatingReaderImpl for V1 XmlValidatingReader
     internal XmlValidatingReaderImpl(XmlReader reader)
     {
-      XmlAsyncCheckReader asyncCheckReader = reader as XmlAsyncCheckReader;
-      if (asyncCheckReader != null)
-      {
-        reader = asyncCheckReader.CoreReader;
-      }
       outerReader = this;
       coreReader = reader;
       coreReaderNSResolver = reader as IXmlNamespaceResolver;
@@ -193,11 +188,6 @@ namespace TextMonster.Xml.Xml_Reader
     // This constructor is used when creating XmlValidatingReaderImpl reader via "XmlReader.Create(..)"
     internal XmlValidatingReaderImpl(XmlReader reader, ValidationEventHandler settingsEventHandler, bool processIdentityConstraints)
     {
-      XmlAsyncCheckReader asyncCheckReader = reader as XmlAsyncCheckReader;
-      if (asyncCheckReader != null)
-      {
-        reader = asyncCheckReader.CoreReader;
-      }
       outerReader = this;
       coreReader = reader;
       coreReaderImpl = reader as XmlTextReaderImpl;
@@ -566,7 +556,6 @@ namespace TextMonster.Xml.Xml_Reader
         readBinaryHelper.Finish();
         goto case ParsingFunction.Read;
         default:
-        Debug.Assert(false);
         return false;
       }
     }
@@ -731,9 +720,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
       set
       {
-#pragma warning disable 618
-        Debug.Assert(value is XmlValidatingReader);
-#pragma warning restore 618
         outerReader = value;
       }
     }
@@ -995,16 +981,13 @@ namespace TextMonster.Xml.Xml_Reader
 
     private void ParseDtdFromParserContext()
     {
-      Debug.Assert(parserContext != null);
-      Debug.Assert(coreReaderImpl.DtdInfo == null);
-
       if (parserContext.DocTypeName == null || parserContext.DocTypeName.Length == 0)
       {
         return;
       }
 
       IDtdParser dtdParser = DtdParser.Create();
-      XmlTextReaderImpl.DtdParserProxy proxy = new XmlTextReaderImpl.DtdParserProxy(coreReaderImpl);
+      DtdParserProxy proxy = new DtdParserProxy(coreReaderImpl);
       IDtdInfo dtdInfo = dtdParser.ParseFreeFloatingDtd(parserContext.BaseURI, parserContext.DocTypeName, parserContext.PublicId,
                                                         parserContext.SystemId, parserContext.InternalSubset, proxy);
       coreReaderImpl.SetDtdInfo(dtdInfo);
@@ -1034,7 +1017,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private void ResolveEntityInternally()
     {
-      Debug.Assert(coreReader.NodeType == XmlNodeType.EntityReference);
       int initialDepth = coreReader.Depth;
       outerReader.ResolveEntity();
       while (outerReader.Read() && coreReader.Depth > initialDepth) ;
@@ -1065,7 +1047,7 @@ namespace TextMonster.Xml.Xml_Reader
       XmlResolver tempResolver = coreReaderImpl.GetResolver();
 
       if (tempResolver == null && !coreReaderImpl.IsResolverSet &&
-          !System.Xml.XmlReaderSettings.EnableLegacyXmlSettings())
+          !XmlReaderSettings.EnableLegacyXmlSettings())
       {
         // it is safe to return valid resolver as it'll be used in the schema validation 
         if (s_tempResolver == null)
