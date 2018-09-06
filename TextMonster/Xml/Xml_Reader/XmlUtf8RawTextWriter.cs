@@ -55,7 +55,6 @@ namespace TextMonster.Xml.Xml_Reader
     //
     private const int BUFSIZE = 2048 * 3;       // Should be greater than default FileStream size (4096), otherwise the FileStream will try to cache the data
     private const int OVERFLOW = 32;            // Allow overflow in order to reduce checks when writing out constant size markup
-    private const int INIT_MARKS_COUNT = 64;
 
     //
     // Constructors

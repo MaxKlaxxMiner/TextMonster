@@ -81,7 +81,6 @@ namespace TextMonster.Xml.Xml_Reader
     public string DataType
     {
       get { return dataType == null ? string.Empty : dataType; }
-      set { dataType = value; }
     }
 
     /// <include file='doc\XmlElementAttribute.uex' path='docs/doc[@for="XmlElementAttribute.IsNullable"]/*' />

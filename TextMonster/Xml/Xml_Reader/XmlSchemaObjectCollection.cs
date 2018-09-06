@@ -64,15 +64,6 @@ namespace TextMonster.Xml.Xml_Reader
       List.Remove(item);
     }
 
-    /// <include file='doc\XmlSchemaObjectCollection.uex' path='docs/doc[@for="XmlSchemaObjectCollection.CopyTo"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public void CopyTo(XmlSchemaObject[] array, int index)
-    {
-      List.CopyTo(array, index);
-    }
-
     /// <include file='doc\XmlSchemaObjectCollection.uex' path='docs/doc[@for="XmlSchemaObjectCollection.OnInsert"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>

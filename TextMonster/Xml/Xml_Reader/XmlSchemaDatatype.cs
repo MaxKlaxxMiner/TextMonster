@@ -58,11 +58,9 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal abstract XmlValueConverter ValueConverter { get; }
 
-    internal abstract RestrictionFacets Restriction { get; set; }
+    internal abstract RestrictionFacets Restriction { get; }
 
     internal abstract int Compare(object value1, object value2);
-
-    internal abstract object ParseValue(string s, Type typDest, XmlNameTable nameTable, IXmlNamespaceResolver nsmgr);
 
     internal abstract object ParseValue(string s, XmlNameTable nameTable, IXmlNamespaceResolver nsmgr, bool createAtomicValue);
 
@@ -74,11 +72,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal abstract XmlSchemaWhiteSpace BuiltInWhitespaceFacet { get; }
 
-    internal abstract XmlSchemaDatatype DeriveByRestriction(XmlSchemaObjectCollection facets, XmlNameTable nameTable, XmlSchemaType schemaType);
-
     internal abstract XmlSchemaDatatype DeriveByList(XmlSchemaType schemaType);
-
-    internal abstract void VerifySchemaValid(XmlSchemaObjectTable notations, XmlSchemaObject caller);
 
     internal abstract bool IsEqual(object o1, object o2);
 

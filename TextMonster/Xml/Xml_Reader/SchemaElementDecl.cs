@@ -122,13 +122,11 @@ namespace TextMonster.Xml.Xml_Reader
     internal bool IsAbstract
     {
       get { return isAbstract; }
-      set { isAbstract = value; }
     }
 
     internal bool IsNillable
     {
       get { return isNillable; }
-      set { isNillable = value; }
     }
 
     internal XmlSchemaDerivationMethod Block

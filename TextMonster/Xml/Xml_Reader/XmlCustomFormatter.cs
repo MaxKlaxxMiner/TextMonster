@@ -115,15 +115,6 @@ namespace TextMonster.Xml.Xml_Reader
       writer.WriteBase64(inData, start, count);
     }
 
-    internal static string FromByteArrayHex(byte[] value)
-    {
-      if (value == null)
-        return null;
-      if (value.Length == 0)
-        return "";
-      return XmlConvert.ToBinHexString(value);
-    }
-
     internal static string FromEnum(long val, string[] vals, long[] ids, string typeName)
     {
       long originalValue = val;

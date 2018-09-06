@@ -83,14 +83,6 @@ namespace TextMonster.Xml.Xml_Reader
 
 
     /// <summary>
-    /// Constructs an XsdDateTime from a string trying all possible formats.
-    /// </summary>
-    public XsdDateTime(string text)
-      : this(text, XsdDateTimeFlags.AllXsd)
-    {
-    }
-
-    /// <summary>
     /// Constructs an XsdDateTime from a string using specific format.
     /// </summary>
     public XsdDateTime(string text, XsdDateTimeFlags kinds)

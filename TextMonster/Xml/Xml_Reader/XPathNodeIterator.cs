@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Diagnostics;
-using System.Text;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -92,36 +91,6 @@ namespace TextMonster.Xml.Xml_Reader
       public virtual void Reset()
       {
         this.iterationStarted = false;
-      }
-    }
-
-    private struct DebuggerDisplayProxy
-    {
-      private XPathNodeIterator nodeIterator;
-
-      public DebuggerDisplayProxy(XPathNodeIterator nodeIterator)
-      {
-        this.nodeIterator = nodeIterator;
-      }
-
-      public override string ToString()
-      {
-        // Position={CurrentPosition}, Current={Current == null ? null : (object) new XPathNavigator.DebuggerDisplayProxy(Current)}
-        StringBuilder sb = new StringBuilder();
-        sb.Append("Position=");
-        sb.Append(nodeIterator.CurrentPosition);
-        sb.Append(", Current=");
-        if (nodeIterator.Current == null)
-        {
-          sb.Append("null");
-        }
-        else
-        {
-          sb.Append('{');
-          sb.Append(new XPathNavigator.DebuggerDisplayProxy(nodeIterator.Current).ToString());
-          sb.Append('}');
-        }
-        return sb.ToString();
       }
     }
   }

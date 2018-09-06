@@ -99,27 +99,6 @@ namespace TextMonster.Xml.Xml_Reader
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
     [XmlIgnore]
-    [Obsolete("This property has been deprecated. Please use BaseXmlSchemaType property that returns a strongly typed base schema type. http://go.microsoft.com/fwlink/?linkid=14202")]
-    public object BaseSchemaType
-    {
-      get
-      {
-        if (baseSchemaType == null)
-          return null;
-
-        if (baseSchemaType.QualifiedName.Namespace == XmlReservedNs.NsXs)
-        {
-          return baseSchemaType.Datatype;
-        }
-        return baseSchemaType;
-      }
-    }
-
-    /// <include file='doc\XmlSchemaType.uex' path='docs/doc[@for="XmlSchemaType.BaseSchemaType"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    [XmlIgnore]
     public XmlSchemaType BaseXmlSchemaType
     {
       get { return baseSchemaType; }

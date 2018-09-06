@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Specialized;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -73,15 +72,6 @@ namespace TextMonster.Xml.Xml_Reader
     public bool ShareTypes
     {
       get { return shareTypes; }
-    }
-
-    /// <include file='doc\ImportContext.uex' path='docs/doc[@for="ImportContext.Warnings"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public StringCollection Warnings
-    {
-      get { return Cache.Warnings; }
     }
   }
 }

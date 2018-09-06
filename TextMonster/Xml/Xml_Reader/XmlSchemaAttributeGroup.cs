@@ -68,20 +68,6 @@
     }
 
     [XmlIgnore]
-    internal XmlSchemaAnyAttribute AttributeWildcard
-    {
-      get { return attributeWildcard; }
-      set { attributeWildcard = value; }
-    }
-
-    /// <include file='doc\XmlSchemaAttributeGroup.uex' path='docs/doc[@for="XmlSchemaAttributeGroup.RedefinedAttributeGroup"]/*' />
-    [XmlIgnore]
-    public XmlSchemaAttributeGroup RedefinedAttributeGroup
-    {
-      get { return redefined; }
-    }
-
-    [XmlIgnore]
     internal XmlSchemaAttributeGroup Redefined
     {
       get { return redefined; }
@@ -91,7 +77,6 @@
     [XmlIgnore]
     internal int SelfReferenceCount
     {
-      get { return selfReferenceCount; }
       set { selfReferenceCount = value; }
     }
 

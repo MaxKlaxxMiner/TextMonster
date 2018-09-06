@@ -74,15 +74,6 @@ namespace TextMonster.Xml.Xml_Reader
       return builder.ToString();
     }
 
-    internal static string MakeValidInternal(string identifier)
-    {
-      if (identifier.Length > 30)
-      {
-        return "Item";
-      }
-      return MakeValid(identifier);
-    }
-
     static bool IsValidStart(char c)
     {
       // First char cannot be a number

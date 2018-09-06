@@ -76,9 +76,6 @@ namespace TextMonster.Xml.Xml_Reader
     private string XsiSchemaLocation;
     private string XsiNoNamespaceSchemaLocation;
 
-    //XmlCharType instance
-    private XmlCharType xmlCharType = XmlCharType.Instance;
-
     //Underlying reader's IXmlLineInfo
     IXmlLineInfo lineInfo;
 

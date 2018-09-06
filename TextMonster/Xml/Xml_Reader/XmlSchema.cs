@@ -75,15 +75,6 @@ namespace TextMonster.Xml.Xml_Reader
       return Read(new XmlTextReader(reader), validationEventHandler);
     }
 
-    /// <include file='doc\XmlSchema.uex' path='docs/doc[@for="XmlSchema.Read1"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public static XmlSchema Read(Stream stream, ValidationEventHandler validationEventHandler)
-    {
-      return Read(new XmlTextReader(stream), validationEventHandler);
-    }
-
     /// <include file='doc\XmlSchema.uex' path='docs/doc[@for="XmlSchema.Read2"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>

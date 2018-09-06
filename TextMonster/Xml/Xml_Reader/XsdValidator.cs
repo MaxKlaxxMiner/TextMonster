@@ -107,22 +107,9 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-
     public override void CompleteValidation()
     {
       CheckForwardRefs();
-    }
-
-    //for frag validation
-    public ValidationState Context
-    {
-      set { context = value; }
-    }
-
-    //share for frag validation
-    public static XmlSchemaDatatype DtQName
-    {
-      get { return dtQName; }
     }
 
     private bool IsInlineSchemaStarted

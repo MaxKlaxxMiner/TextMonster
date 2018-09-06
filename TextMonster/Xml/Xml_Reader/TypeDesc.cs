@@ -79,11 +79,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return extendedType != null; }
     }
 
-    internal MappedTypeDesc ExtendedType
-    {
-      get { return extendedType; }
-    }
-
     internal string Name
     {
       get { return name; }
@@ -92,18 +87,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal string FullName
     {
       get { return fullName; }
-    }
-
-    internal string CSharpName
-    {
-      get
-      {
-        if (cSharpName == null)
-        {
-          cSharpName = type == null ? CodeIdentifier.GetCSharpName(fullName) : CodeIdentifier.GetCSharpName(type);
-        }
-        return cSharpName;
-      }
     }
 
     internal XmlSchemaType DataType
@@ -134,11 +117,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal bool CanBeAttributeValue
     {
       get { return (flags & TypeFlags.CanBeAttributeValue) != 0; }
-    }
-
-    internal bool XmlEncodingNotRequired
-    {
-      get { return (flags & TypeFlags.XmlEncodingNotRequired) != 0; }
     }
 
     internal bool CanBeElementValue
@@ -172,19 +150,9 @@ namespace TextMonster.Xml.Xml_Reader
       get { return (flags & TypeFlags.HasCustomFormatter) != 0; }
     }
 
-    internal bool HasDefaultSupport
-    {
-      get { return (flags & TypeFlags.IgnoreDefault) == 0; }
-    }
-
     internal bool HasIsEmpty
     {
       get { return (flags & TypeFlags.HasIsEmpty) != 0; }
-    }
-
-    internal bool CollapseWhitespace
-    {
-      get { return (flags & TypeFlags.CollapseWhitespace) != 0; }
     }
 
     internal bool HasDefaultConstructor

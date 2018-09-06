@@ -75,10 +75,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         return _nt;
       }
-      set
-      {
-        _nt = value;
-      }
     }
 
     public XmlNamespaceManager NamespaceManager
@@ -86,10 +82,6 @@ namespace TextMonster.Xml.Xml_Reader
       get
       {
         return _nsMgr;
-      }
-      set
-      {
-        _nsMgr = value;
       }
     }
 
@@ -99,10 +91,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         return _docTypeName;
       }
-      set
-      {
-        _docTypeName = (null == value ? String.Empty : value);
-      }
     }
 
     public String PublicId
@@ -110,10 +98,6 @@ namespace TextMonster.Xml.Xml_Reader
       get
       {
         return _pubId;
-      }
-      set
-      {
-        _pubId = (null == value ? String.Empty : value);
       }
     }
 
@@ -123,10 +107,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         return _sysId;
       }
-      set
-      {
-        _sysId = (null == value ? String.Empty : value);
-      }
     }
 
     public String BaseURI
@@ -134,10 +114,6 @@ namespace TextMonster.Xml.Xml_Reader
       get
       {
         return _baseURI;
-      }
-      set
-      {
-        _baseURI = (null == value ? String.Empty : value);
       }
     }
 
@@ -147,10 +123,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         return _internalSubset;
       }
-      set
-      {
-        _internalSubset = (null == value ? String.Empty : value);
-      }
     }
 
     public String XmlLang
@@ -158,10 +130,6 @@ namespace TextMonster.Xml.Xml_Reader
       get
       {
         return _xmlLang;
-      }
-      set
-      {
-        _xmlLang = (null == value ? String.Empty : value);
       }
     }
 
@@ -171,10 +139,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         return _xmlSpace;
       }
-      set
-      {
-        _xmlSpace = value;
-      }
     }
 
     public Encoding Encoding
@@ -182,10 +146,6 @@ namespace TextMonster.Xml.Xml_Reader
       get
       {
         return _encoding;
-      }
-      set
-      {
-        _encoding = value;
       }
     }
 

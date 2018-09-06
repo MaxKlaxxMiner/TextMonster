@@ -44,10 +44,7 @@ namespace TextMonster.Xml.Xml_Reader
     internal static XmlSchemaSimpleType AnySimpleType { get { return anySimpleType; } }
 
     // Additional built-in XQuery simple types
-    internal static XmlSchemaSimpleType AnyAtomicType { get { return anyAtomicType; } }
     internal static XmlSchemaSimpleType UntypedAtomicType { get { return untypedAtomicType; } }
-    internal static XmlSchemaSimpleType YearMonthDurationType { get { return yearMonthDurationType; } }
-    internal static XmlSchemaSimpleType DayTimeDurationType { get { return dayTimeDurationType; } }
 
     internal new static DatatypeImplementation FromXmlTokenizedType(XmlTokenizedType token)
     {
@@ -269,7 +266,7 @@ namespace TextMonster.Xml.Xml_Reader
       return currentType.TypeCode;
     }
 
-    internal override XmlSchemaDatatype DeriveByRestriction(XmlSchemaObjectCollection facets, XmlNameTable nameTable, XmlSchemaType schemaType)
+    internal virtual XmlSchemaDatatype DeriveByRestriction(XmlSchemaObjectCollection facets, XmlNameTable nameTable, XmlSchemaType schemaType)
     {
       DatatypeImplementation dt = (DatatypeImplementation)MemberwiseClone();
       dt.restriction = this.FacetsChecker.ConstructRestriction(this, facets, nameTable);
@@ -311,7 +308,7 @@ namespace TextMonster.Xml.Xml_Reader
       return dt;
     }
 
-    internal override void VerifySchemaValid(XmlSchemaObjectTable notations, XmlSchemaObject caller) {/*noop*/}
+    internal virtual void VerifySchemaValid(XmlSchemaObjectTable notations, XmlSchemaObject caller) {/*noop*/}
 
     public override bool IsDerivedFrom(XmlSchemaDatatype datatype)
     {
@@ -401,10 +398,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         return restriction;
       }
-      set
-      {
-        restriction = value;
-      }
     }
     internal override bool HasLexicalFacets
     {
@@ -439,7 +432,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal override XmlSchemaWhiteSpace BuiltInWhitespaceFacet { get { return XmlSchemaWhiteSpace.Preserve; } }
 
-    internal override object ParseValue(string s, Type typDest, XmlNameTable nameTable, IXmlNamespaceResolver nsmgr)
+    internal virtual object ParseValue(string s, Type typDest, XmlNameTable nameTable, IXmlNamespaceResolver nsmgr)
     {
       return ValueConverter.ChangeType(ParseValue(s, nameTable, nsmgr), typDest, nsmgr);
     }

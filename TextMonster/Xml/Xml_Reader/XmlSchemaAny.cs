@@ -90,23 +90,5 @@ namespace TextMonster.Xml.Xml_Reader
         namespaceList = new NamespaceList();
       }
     }
-
-    internal void BuildNamespaceListV1Compat(string targetNamespace)
-    {
-      if (ns != null)
-      {
-        namespaceList = new NamespaceListV1Compat(ns, targetNamespace);
-      }
-      else
-      {
-        namespaceList = new NamespaceList(); //This is only ##any, hence base class is sufficient
-      }
-    }
-
-    internal bool Allows(XmlQualifiedName qname)
-    {
-      return namespaceList.Allows(qname.Namespace);
-    }
-
   }
 }

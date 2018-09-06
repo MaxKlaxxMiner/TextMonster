@@ -73,42 +73,6 @@ namespace TextMonster.Xml.Xml_Reader
       return XmlCustomFormatter.FromChar(value);
     }
 
-    /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.FromEnum"]/*' />
-    protected static string FromEnum(long value, string[] values, long[] ids)
-    {
-      return XmlCustomFormatter.FromEnum(value, values, ids, null);
-    }
-
-    /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.FromEnum1"]/*' />
-    protected static string FromEnum(long value, string[] values, long[] ids, string typeName)
-    {
-      return XmlCustomFormatter.FromEnum(value, values, ids, typeName);
-    }
-
-    /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.FromXmlName"]/*' />
-    protected static string FromXmlName(string name)
-    {
-      return XmlCustomFormatter.FromXmlName(name);
-    }
-
-    /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.FromXmlNCName"]/*' />
-    protected static string FromXmlNCName(string ncName)
-    {
-      return XmlCustomFormatter.FromXmlNCName(ncName);
-    }
-
-    /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.FromXmlNmToken"]/*' />
-    protected static string FromXmlNmToken(string nmToken)
-    {
-      return XmlCustomFormatter.FromXmlNmToken(nmToken);
-    }
-
-    /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.FromXmlNmTokens"]/*' />
-    protected static string FromXmlNmTokens(string nmTokens)
-    {
-      return XmlCustomFormatter.FromXmlNmTokens(nmTokens);
-    }
-
     /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.WriteXsiType"]/*' />
     protected void WriteXsiType(string name, string ns)
     {

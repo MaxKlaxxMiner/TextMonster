@@ -89,15 +89,6 @@ namespace TextMonster.Xml.Xml_Reader
       reservedIdentifiers.Add(identifier, identifier);
     }
 
-    /// <include file='doc\CodeIdentifiers.uex' path='docs/doc[@for="CodeIdentifiers.RemoveReserved"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public void RemoveReserved(string identifier)
-    {
-      reservedIdentifiers.Remove(identifier);
-    }
-
     /// <include file='doc\CodeIdentifiers.uex' path='docs/doc[@for="CodeIdentifiers.AddUnique"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>

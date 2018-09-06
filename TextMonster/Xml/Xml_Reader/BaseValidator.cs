@@ -109,18 +109,10 @@ namespace TextMonster.Xml.Xml_Reader
       {
         return schemaInfo;
       }
-      set
-      {
-        schemaInfo = value;
-      }
     }
 
     public IDtdInfo DtdInfo
     {
-      get
-      {
-        return schemaInfo;
-      }
       set
       {
         SchemaInfo tmpSchemaInfo = value as SchemaInfo;

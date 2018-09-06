@@ -57,8 +57,6 @@ namespace TextMonster.Xml.Xml_Reader
     public abstract object ChangeType(float value, Type destinationType);
     public abstract object ChangeType(double value, Type destinationType);
     public abstract object ChangeType(DateTime value, Type destinationType);
-    public abstract object ChangeType(DateTimeOffset value, Type destinationType);
-    public abstract object ChangeType(string value, Type destinationType);
     public abstract object ChangeType(string value, Type destinationType, IXmlNamespaceResolver nsResolver);
     public abstract object ChangeType(object value, Type destinationType);
     public abstract object ChangeType(object value, Type destinationType, IXmlNamespaceResolver nsResolver);

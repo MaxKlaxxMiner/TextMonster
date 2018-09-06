@@ -29,23 +29,5 @@ namespace TextMonster.Xml.Xml_Reader
       }
       SetKeyInternal(key.ToString());
     }
-
-    /// <include file='doc\XmlMembersMapping.uex' path='docs/doc[@for="XmlMembersMapping.this"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlMemberMapping this[int index]
-    {
-      get { return mappings[index]; }
-    }
-
-    /// <include file='doc\XmlMembersMapping.uex' path='docs/doc[@for="XmlMembersMapping.Count"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public int Count
-    {
-      get { return mappings.Length; }
-    }
   }
 }

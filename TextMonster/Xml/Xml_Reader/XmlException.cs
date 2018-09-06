@@ -75,12 +75,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     //provided to meet the ECMA standards
-    public XmlException()
-      : this(null)
-    {
-    }
-
-    //provided to meet the ECMA standards
     public XmlException(String message)
       : this(message, ((Exception)null), 0, 0)
     {
@@ -112,9 +106,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal XmlException(string res, string[] args) :
       this(res, args, null, 0, 0, null) { }
-
-    internal XmlException(string res, string[] args, string sourceUri) :
-      this(res, args, null, 0, 0, sourceUri) { }
 
     internal XmlException(string res, string arg) :
       this(res, new string[] { arg }, null, 0, 0, null) { }

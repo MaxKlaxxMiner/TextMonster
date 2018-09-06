@@ -203,7 +203,6 @@
     <Compile Include="Xml\Xml_Reader\SchemaObjectWriter.cs" />
     <Compile Include="Xml\Xml_Reader\SerializableMapping.cs" />
     <Compile Include="Xml\Xml_Reader\Soap.cs" />
-    <Compile Include="Xml\Xml_Reader\SoapSchemaMember.cs" />
     <Compile Include="Xml\Xml_Reader\SpecialMapping.cs" />
     <Compile Include="Xml\Xml_Reader\SpecifiedAccessor.cs" />
     <Compile Include="Xml\Xml_Reader\StructMapping.cs" />
@@ -496,7 +495,6 @@
     <Compile Include="Xml\Xml_Reader\XsdDateTime.cs" />
     <Compile Include="Xml\Xml_Reader\XmlAtomicValue.cs" />
     <Compile Include="Xml\Xml_Reader\XmlBaseConverter.cs" />
-    <Compile Include="Xml\Xml_Reader\NamespaceListV1Compat.cs" />
     <Compile Include="Xml\Xml_Reader\NamespaceList.cs" />
     <Compile Include="Xml\Xml_Reader\XmlSchemaAny.cs" />
     <Compile Include="Xml\Xml_Reader\XmlSchemaKeyref.cs" />

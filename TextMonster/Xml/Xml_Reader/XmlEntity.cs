@@ -108,23 +108,10 @@ namespace TextMonster.Xml.Xml_Reader
       get { return XmlNodeType.Entity; }
     }
 
-    // Gets the value of the public identifier on the entity declaration.
-    public String PublicId
-    {
-      get { return publicId; }
-    }
-
     // Gets the value of the system identifier on the entity declaration.
     public String SystemId
     {
       get { return systemId; }
-    }
-
-    // Gets the name of the optional NDATA attribute on the
-    // entity declaration.
-    public String NotationName
-    {
-      get { return notationName; }
     }
 
     //Without override these two functions, we can't guarantee that WriteTo()/WriteContent() functions will never be called

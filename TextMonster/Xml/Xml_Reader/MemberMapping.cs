@@ -1,4 +1,3 @@
-using System.CodeDom.Compiler;
 using System.Reflection;
 
 namespace TextMonster.Xml.Xml_Reader
@@ -87,30 +86,9 @@ namespace TextMonster.Xml.Xml_Reader
       set { sequenceId = value; }
     }
 
-    string GetNullableType(TypeDesc td)
-    {
-      // SOAP encoded arrays not mapped to Nullable<T> since they always derive from soapenc:Array
-      if (td.IsMappedType || (!td.IsValueType && (Elements[0].IsSoap || td.ArrayElementTypeDesc == null)))
-        return td.FullName;
-      if (td.ArrayElementTypeDesc != null)
-      {
-        return GetNullableType(td.ArrayElementTypeDesc) + "[]";
-      }
-      return "System.Nullable`1[" + td.FullName + "]";
-    }
-
     internal MemberMapping Clone()
     {
       return new MemberMapping(this);
-    }
-
-    internal string GetTypeName(CodeDomProvider codeProvider)
-    {
-      if (IsNeedNullable && codeProvider.Supports(GeneratorSupport.GenericTypeReference))
-      {
-        return GetNullableType(TypeDesc);
-      }
-      return TypeDesc.FullName;
     }
   }
 }

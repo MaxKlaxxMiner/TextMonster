@@ -76,7 +76,6 @@ namespace TextMonster.Xml.Xml_Reader
     public XmlSchemaForm Form
     {
       get { return form; }
-      set { form = value; }
     }
   }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -73,35 +72,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         TrimTrailingZeros();
       }
-    }
-
-    public void Write(Stream strm)
-    {
-      strm.WriteByte((byte)(this.m_bLen * 4 + 3));
-      strm.WriteByte(this.m_bPrec);
-      strm.WriteByte(this.m_bScale);
-      strm.WriteByte(0 == this.m_bSign ? (byte)1 : (byte)0);
-      WriteUI4(this.m_data1, strm);
-      if (this.m_bLen > 1)
-      {
-        WriteUI4(this.m_data2, strm);
-        if (this.m_bLen > 2)
-        {
-          WriteUI4(this.m_data3, strm);
-          if (this.m_bLen > 3)
-          {
-            WriteUI4(this.m_data4, strm);
-          }
-        }
-      }
-    }
-
-    private void WriteUI4(uint val, Stream strm)
-    {
-      strm.WriteByte((byte)(val & 0xFF));
-      strm.WriteByte((byte)((val >> 8) & 0xFF));
-      strm.WriteByte((byte)((val >> 16) & 0xFF));
-      strm.WriteByte((byte)((val >> 24) & 0xFF));
     }
 
     private static uint UIntFromByteArray(byte[] data, int offset)

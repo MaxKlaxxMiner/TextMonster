@@ -129,10 +129,6 @@
       {
         return contentType;
       }
-      set
-      {
-        contentType = value;
-      }
     }
 
     internal XmlSchemaType XmlType

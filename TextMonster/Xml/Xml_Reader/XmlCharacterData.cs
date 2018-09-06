@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -58,88 +57,6 @@ namespace TextMonster.Xml.Xml_Reader
         if (args != null)
           AfterEvent(args);
       }
-    }
-
-    // Gets the length of the data, in characters.
-    public virtual int Length
-    {
-      get
-      {
-        if (data != null)
-        {
-          return data.Length;
-        }
-        return 0;
-      }
-    }
-
-    // Retrieves a substring of the full string from the specified range.
-    public virtual String Substring(int offset, int count)
-    {
-      int len = data != null ? data.Length : 0;
-      if (len > 0)
-      {
-        if (len < (offset + count))
-        {
-          count = len - offset;
-        }
-        return data.Substring(offset, count);
-      }
-      return String.Empty;
-    }
-
-    public virtual void DeleteData(int offset, int count)
-    {
-      int len = data != null ? data.Length : 0;
-      if (len > 0)
-      {
-        if (len < (offset + count))
-        {
-          count = Math.Max(len - offset, 0);
-        }
-      }
-
-      string newValue = new StringBuilder(data).Remove(offset, count).ToString();
-      XmlNode parent = ParentNode;
-      XmlNodeChangedEventArgs args = GetEventArgs(this, parent, parent, data, newValue, XmlNodeChangedAction.Change);
-
-      if (args != null)
-        BeforeEvent(args);
-
-      this.data = newValue;
-
-      if (args != null)
-        AfterEvent(args);
-    }
-
-    // Replace the specified number of characters starting at the specified offset with the
-    // specified string.
-    public virtual void ReplaceData(int offset, int count, String strData)
-    {
-      //Debug.Assert(offset >= 0 && offset <= Length);
-
-      int len = data != null ? data.Length : 0;
-      if (len > 0)
-      {
-        if (len < (offset + count))
-        {
-          count = Math.Max(len - offset, 0);
-        }
-      }
-
-      StringBuilder temp = new StringBuilder(data).Remove(offset, count);
-      string newValue = temp.Insert(offset, strData).ToString();
-
-      XmlNode parent = ParentNode;
-      XmlNodeChangedEventArgs args = GetEventArgs(this, parent, parent, data, newValue, XmlNodeChangedAction.Change);
-
-      if (args != null)
-        BeforeEvent(args);
-
-      this.data = newValue;
-
-      if (args != null)
-        AfterEvent(args);
     }
 
     internal bool CheckOnData(string data)

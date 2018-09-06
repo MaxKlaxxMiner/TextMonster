@@ -35,11 +35,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
     }
 
-    public override ICredentials Credentials
-    {
-      set { _credentials = value; }
-    }
-
     // Resource resolution
 
     // Maps a URI to an Object containing the actual resource.

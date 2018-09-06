@@ -135,30 +135,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return options; }
     }
 
-    internal void MakeDerived(StructMapping structMapping, Type baseType, bool baseTypeCanBeIndirect)
-    {
-      structMapping.ReferencedByTopLevelElement = true;
-      TypeDesc baseTypeDesc;
-      if (baseType != null)
-      {
-        baseTypeDesc = Scope.GetTypeDesc(baseType);
-        if (baseTypeDesc != null)
-        {
-          TypeDesc typeDescToChange = structMapping.TypeDesc;
-          if (baseTypeCanBeIndirect)
-          {
-            // if baseTypeCanBeIndirect is true, we apply the supplied baseType to the top of the
-            // inheritance chain, not necessarily directly to the imported type.
-            while (typeDescToChange.BaseTypeDesc != null && typeDescToChange.BaseTypeDesc != baseTypeDesc)
-              typeDescToChange = typeDescToChange.BaseTypeDesc;
-          }
-          if (typeDescToChange.BaseTypeDesc != null && typeDescToChange.BaseTypeDesc != baseTypeDesc)
-            throw new InvalidOperationException(Res.GetString(Res.XmlInvalidBaseType, structMapping.TypeDesc.FullName, baseType.FullName, typeDescToChange.BaseTypeDesc.FullName));
-          typeDescToChange.BaseTypeDesc = baseTypeDesc;
-        }
-      }
-    }
-
     internal string GenerateUniqueTypeName(string typeName)
     {
       typeName = CodeIdentifier.MakeValid(typeName);

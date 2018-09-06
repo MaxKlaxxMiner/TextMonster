@@ -91,23 +91,7 @@ namespace TextMonster.Xml.Xml_Reader
       WriteEndAttribute();
     }
 
-    // Writes the start of an attribute.
-    public void WriteStartAttribute(string localName, string ns)
-    {
-      WriteStartAttribute(null, localName, ns);
-    }
-
-    // Writes the start of an attribute.
-
     public abstract void WriteStartAttribute(string prefix, string localName, string ns);
-
-    // Writes the start of an attribute.
-    public void WriteStartAttribute(string localName)
-    {
-      WriteStartAttribute(null, localName, (string)null);
-    }
-
-    // Closes the attribute opened by WriteStartAttribute call.
 
     public abstract void WriteEndAttribute();
 

@@ -80,12 +80,6 @@ namespace TextMonster.Xml.Xml_Reader
       set { topLevelInSchema = value; }
     }
 
-    internal static string EscapeName(string name)
-    {
-      if (name == null || name.Length == 0) return name;
-      return XmlConvert.EncodeLocalName(name);
-    }
-
     internal static string EscapeQName(string name)
     {
       if (name == null || name.Length == 0) return name;

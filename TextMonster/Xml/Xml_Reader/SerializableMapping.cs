@@ -101,22 +101,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal SerializableMapping DerivedMappings
-    {
-      get
-      {
-        return derivedMappings;
-      }
-    }
-
-    internal SerializableMapping NextDerivedMapping
-    {
-      get
-      {
-        return nextDerivedMapping;
-      }
-    }
-
     internal SerializableMapping Next
     {
       get { return next; }

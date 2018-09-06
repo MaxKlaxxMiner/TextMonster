@@ -95,15 +95,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    /// <include file='doc\XmlSchemaObjectTable.uex' path='docs/doc[@for="XmlSchemaObjectTable.Names"]/*' />
-    public ICollection Names
-    {
-      get
-      {
-        return new NamesCollection(entries, table.Count);
-      }
-    }
-
     /// <include file='doc\XmlSchemaObjectTable.uex' path='docs/doc[@for="XmlSchemaObjectTable.Values"]/*' />
     public ICollection Values
     {
@@ -111,12 +102,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         return new ValuesCollection(entries, table.Count);
       }
-    }
-
-    /// <include file='doc\XmlSchemaObjectTable.uex' path='docs/doc[@for="XmlSchemaObjectTable.GetEnumerator"]/*' />
-    public IDictionaryEnumerator GetEnumerator()
-    {
-      return new XSODictionaryEnumerator(this.entries, table.Count, EnumeratorType.DictionaryEntry);
     }
 
     internal enum EnumeratorType
@@ -135,73 +120,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         qname = name;
         xso = value;
-      }
-
-      public XmlSchemaObject IsMatch(string localName, string ns)
-      {
-        if (localName == qname.Name && ns == qname.Namespace)
-        {
-          return xso;
-        }
-        return null;
-      }
-
-      public void Reset()
-      {
-        qname = null;
-        xso = null;
-      }
-    }
-
-    internal class NamesCollection : ICollection
-    {
-      private List<XmlSchemaObjectEntry> entries;
-      int size;
-
-      internal NamesCollection(List<XmlSchemaObjectEntry> entries, int size)
-      {
-        this.entries = entries;
-        this.size = size;
-      }
-
-      public int Count
-      {
-        get { return size; }
-      }
-
-      public Object SyncRoot
-      {
-        get
-        {
-          return ((ICollection)entries).SyncRoot;
-        }
-      }
-
-      public bool IsSynchronized
-      {
-        get
-        {
-          return ((ICollection)entries).IsSynchronized;
-        }
-      }
-
-      public void CopyTo(Array array, int arrayIndex)
-      {
-        if (array == null)
-          throw new ArgumentNullException("array");
-
-        if (arrayIndex < 0)
-          throw new ArgumentOutOfRangeException("arrayIndex");
-
-        for (int i = 0; i < size; i++)
-        {
-          array.SetValue(entries[i].qname, arrayIndex++);
-        }
-      }
-
-      public IEnumerator GetEnumerator()
-      {
-        return new XSOEnumerator(this.entries, this.size, EnumeratorType.Keys);
       }
     }
 

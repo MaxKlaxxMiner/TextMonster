@@ -69,18 +69,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
 
-    /// <include file='doc\XmlSchemaException.uex' path='docs/doc[@for="XmlSchemaException.XmlSchemaException1"]/*' />
-    public XmlSchemaException()
-      : this(null)
-    {
-    }
-
-    /// <include file='doc\XmlSchemaException.uex' path='docs/doc[@for="XmlSchemaException.XmlSchemaException2"]/*' />
-    public XmlSchemaException(String message)
-      : this(message, ((Exception)null), 0, 0)
-    {
-    }
-
     /// <include file='doc\XmlSchemaException.uex' path='docs/doc[@for="XmlSchemaException.XmlSchemaException0"]/*' />
     public XmlSchemaException(String message, Exception innerException)
       : this(message, innerException, 0, 0)

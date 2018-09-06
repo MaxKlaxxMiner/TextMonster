@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Net;
 using System.Runtime.Versioning;
 
 namespace TextMonster.Xml.Xml_Reader
@@ -55,16 +54,6 @@ namespace TextMonster.Xml.Xml_Reader
         }
         return new Uri(baseUri, relativeUri);
       }
-    }
-
-    //UE attension
-    /// <include file='doc\XmlResolver.uex' path='docs/doc[@for="XmlResolver.Credentials"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public virtual ICredentials Credentials
-    {
-      set { }
     }
 
     public virtual bool SupportsType(Uri absoluteUri, Type type)

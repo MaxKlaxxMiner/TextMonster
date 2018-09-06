@@ -102,13 +102,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public XmlSerializer(Type type, XmlAttributeOverrides overrides, Type[] extraTypes, XmlRootAttribute root, string defaultNamespace, string location)
-#pragma warning disable 618 // Passing through null evidence to keep the .ctor code centralized
-      : this(type, overrides, extraTypes, root, defaultNamespace, location, null)
-    {
-#pragma warning restore 618
-    }
-
     /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.XmlSerializer7"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>

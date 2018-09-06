@@ -4,14 +4,12 @@ namespace TextMonster.Xml.Xml_Reader
 {
   internal sealed class XmlSchemaCollectionNode
   {
-    private String namespaceUri;
     private SchemaInfo schemaInfo;
     private XmlSchema schema;
 
     internal String NamespaceURI
     {
-      get { return namespaceUri; }
-      set { namespaceUri = value; }
+      set { }
     }
 
     internal SchemaInfo SchemaInfo

@@ -90,37 +90,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    static bool IsNeedNullableMember(ElementAccessor element)
-    {
-      if (element.Mapping is ArrayMapping)
-      {
-        ArrayMapping arrayMapping = (ArrayMapping)element.Mapping;
-        if (arrayMapping.Elements != null && arrayMapping.Elements.Length == 1)
-        {
-          return IsNeedNullableMember(arrayMapping.Elements[0]);
-        }
-        return false;
-      }
-      else
-      {
-        return element.IsNullable && element.Mapping.TypeDesc.IsValueType;
-      }
-    }
-
-    internal bool IsNeedNullable
-    {
-      get
-      {
-        if (xmlns != null) return false;
-        if (attribute != null) return false;
-        if (elements != null && elements.Length == 1)
-        {
-          return IsNeedNullableMember(elements[0]);
-        }
-        return false;
-      }
-    }
-
     internal static bool ElementsMatch(ElementAccessor[] a, ElementAccessor[] b)
     {
       if (a == null)

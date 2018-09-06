@@ -95,42 +95,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public virtual void SetTypedValue(object typedValue)
-    {
-      if (typedValue == null)
-      {
-        throw new ArgumentNullException("typedValue");
-      }
-      switch (NodeType)
-      {
-        case XPathNodeType.Element:
-        case XPathNodeType.Attribute:
-        break;
-        default:
-        throw new InvalidOperationException(Res.GetString(Res.Xpn_BadPosition));
-      }
-      string value = null;
-      IXmlSchemaInfo schemaInfo = SchemaInfo;
-      if (schemaInfo != null)
-      {
-        XmlSchemaType schemaType = schemaInfo.SchemaType;
-        if (schemaType != null)
-        {
-          value = schemaType.ValueConverter.ToString(typedValue, this);
-          XmlSchemaDatatype datatype = schemaType.Datatype;
-          if (datatype != null)
-          {
-            datatype.ParseValue(value, NameTable, this);
-          }
-        }
-      }
-      if (value == null)
-      {
-        value = XmlUntypedConverter.Untyped.ToString(typedValue, this);
-      }
-      SetValue(value);
-    }
-
     public override Type ValueType
     {
       get

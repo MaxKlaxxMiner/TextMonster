@@ -94,26 +94,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    // Splits the node into two nodes at the specified offset, keeping
-    // both in the tree as siblings.
-    public virtual XmlText SplitText(int offset)
-    {
-      XmlNode parentNode = this.ParentNode;
-      int length = this.Length;
-      if (offset > length)
-        throw new ArgumentOutOfRangeException("offset");
-      //if the text node is out of the living tree, throw exception.
-      if (parentNode == null)
-        throw new InvalidOperationException(Res.GetString(Res.Xdom_TextNode_SplitText));
-
-      int count = length - offset;
-      String splitData = Substring(offset, count);
-      DeleteData(offset, count);
-      XmlText newTextNode = OwnerDocument.CreateTextNode(splitData);
-      parentNode.InsertAfter(newTextNode, this);
-      return newTextNode;
-    }
-
     // Saves the node to the specified XmlWriter.
     public override void WriteTo(XmlWriter w)
     {

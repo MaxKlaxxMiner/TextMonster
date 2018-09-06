@@ -68,7 +68,6 @@ namespace TextMonster.Xml.Xml_Reader
     public bool IsNullable
     {
       get { return nullable; }
-      set { nullable = value; nullableSpecified = true; }
     }
 
     internal bool IsNullableSpecified
@@ -83,7 +82,6 @@ namespace TextMonster.Xml.Xml_Reader
     public XmlSchemaForm Form
     {
       get { return form; }
-      set { form = value; }
     }
   }
 }

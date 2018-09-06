@@ -57,15 +57,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
     }
 
-    /// <include file='doc\XmlReflectionImporter.uex' path='docs/doc[@for="XmlReflectionImporter.XmlReflectionImporter2"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlReflectionImporter(XmlAttributeOverrides attributeOverrides)
-      : this(attributeOverrides, null)
-    {
-    }
-
     /// <include file='doc\XmlReflectionImporter.uex' path='docs/doc[@for="XmlReflectionImporter.XmlReflectionImporter3"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>

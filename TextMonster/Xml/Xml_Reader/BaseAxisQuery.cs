@@ -101,26 +101,6 @@
       return this;
     }
 
-    public virtual double XsltDefaultPriority
-    {
-      get
-      {
-        if (qyInput.GetType() != typeof(ContextQuery))
-        {
-          return 0.5;   // a/b a[b] id('s')/a
-        }
-        if (name.Length != 0)
-        {
-          return 0; // p:foo, foo, processing-instruction("foo")
-        }
-        if (prefix.Length != 0)
-        {
-          return -0.25; // p:*
-        }
-        return -0.5; // *, text(), node()
-      }
-    }
-
     public override XPathResultType StaticType { get { return XPathResultType.NodeSet; } }
 
     public override void PrintQuery(XmlWriter w)

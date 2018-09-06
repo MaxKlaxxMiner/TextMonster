@@ -84,10 +84,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
       public override bool Whitespace { get { return false; } }
       public override bool PreserveWhitespace(XPathNavigator node) { return false; }
-      public virtual int CompareDocument(string baseUri, string nextbaseUri)
-      {
-        return string.CompareOrdinal(baseUri, nextbaseUri);
-      }
     }
   }
 }

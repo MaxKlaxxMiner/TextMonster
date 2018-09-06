@@ -119,7 +119,6 @@
     internal bool ParseWithNamespaces
     {
       get { return namespaces; }
-      set { namespaces = value; }
     }
 
     // Saves the node to the specified XmlWriter.

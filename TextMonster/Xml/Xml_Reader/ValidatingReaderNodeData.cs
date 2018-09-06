@@ -166,13 +166,6 @@
       linePos = 0;
     }
 
-    internal void ClearName()
-    {
-      localName = string.Empty;
-      prefix = string.Empty;
-      namespaceUri = string.Empty;
-    }
-
     internal void SetLineInfo(int lineNo, int linePos)
     {
       this.lineNo = lineNo;
@@ -186,14 +179,6 @@
         this.lineNo = lineInfo.LineNumber;
         this.linePos = lineInfo.LinePosition;
       }
-    }
-
-    internal void SetItemData(string localName, string prefix, string ns, string value)
-    {
-      this.localName = localName;
-      this.prefix = prefix;
-      namespaceUri = ns;
-      rawValue = value;
     }
 
     internal void SetItemData(string localName, string prefix, string ns, int depth)

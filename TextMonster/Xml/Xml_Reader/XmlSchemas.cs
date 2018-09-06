@@ -118,31 +118,6 @@ namespace TextMonster.Xml.Xml_Reader
       return List.Add(schema);
     }
 
-    /// <include file='doc\XmlSchemas.uex' path='docs/doc[@for="XmlSchemas.Add"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public int Add(XmlSchema schema, Uri baseUri)
-    {
-      if (List.Contains(schema))
-        return List.IndexOf(schema);
-      if (baseUri != null)
-        schema.BaseUri = baseUri;
-      return List.Add(schema);
-    }
-
-    /// <include file='doc\XmlSchemas.uex' path='docs/doc[@for="XmlSchemas.Add1"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public void Add(XmlSchemas schemas)
-    {
-      foreach (XmlSchema schema in schemas)
-      {
-        Add(schema);
-      }
-    }
-
     /// <include file='doc\XmlSchemas.uex' path='docs/doc[@for="XmlSchemas.AddReference"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
@@ -150,33 +125,6 @@ namespace TextMonster.Xml.Xml_Reader
     public void AddReference(XmlSchema schema)
     {
       References[schema] = schema;
-    }
-
-    /// <include file='doc\XmlSchemas.uex' path='docs/doc[@for="XmlSchemas.Insert"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public void Insert(int index, XmlSchema schema)
-    {
-      List.Insert(index, schema);
-    }
-
-    /// <include file='doc\XmlSchemas.uex' path='docs/doc[@for="XmlSchemas.IndexOf"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public int IndexOf(XmlSchema schema)
-    {
-      return List.IndexOf(schema);
-    }
-
-    /// <include file='doc\XmlSchemas.uex' path='docs/doc[@for="XmlSchemas.Contains"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public bool Contains(XmlSchema schema)
-    {
-      return List.Contains(schema);
     }
 
     /// <include file='doc\XmlSchemas.uex' path='docs/doc[@for="XmlSchemas.Contains1"]/*' />

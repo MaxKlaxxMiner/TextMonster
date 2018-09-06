@@ -6,11 +6,6 @@ namespace TextMonster.Xml.Xml_Reader
     bool isSoap;
     bool unbounded = false;
 
-    internal bool IsSoap
-    {
-      get { return isSoap; }
-    }
-
     internal bool IsNullable
     {
       get { return nullable; }

@@ -87,12 +87,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal TempAssembly(XmlSerializerImplementation contract)
-    {
-      this.contract = contract;
-      pregeneratedAssmbly = true;
-    }
-
     internal XmlSerializerImplementation Contract
     {
       get
