@@ -17,14 +17,7 @@ namespace TextMonster.Xml.Xml_Reader
       this.node = node;
     }
 
-    public object this[int index]
-    {
-      get { return this.keys[index]; }
-      set { this.keys[index] = value; }
-    }
-
     public int NumKeys { get { return this.numKeys; } }
     public int OriginalPosition { get { return this.originalPosition; } }
-    public XPathNavigator Node { get { return this.node; } }
   }
 }

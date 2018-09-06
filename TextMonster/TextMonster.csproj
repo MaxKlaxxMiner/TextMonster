@@ -260,7 +260,6 @@
     <Compile Include="Xml\Xml_Reader\XPathSelectionIterator.cs" />
     <Compile Include="Xml\Xml_Reader\XPathSelfQuery.cs" />
     <Compile Include="Xml\Xml_Reader\XPathSingletonIterator.cs" />
-    <Compile Include="Xml\Xml_Reader\XPathSortComparer.cs" />
     <Compile Include="Xml\Xml_Reader\XsltContext.cs" />
     <Compile Include="Xml\Xml_Reader\IXsltContextFunction.cs" />
     <Compile Include="Xml\Xml_Reader\IXsltContextVariable.cs" />
@@ -268,10 +267,7 @@
     <Compile Include="Xml\Xml_Reader\ResetableIterator.cs" />
     <Compile Include="Xml\Xml_Reader\Function.cs" />
     <Compile Include="Xml\Xml_Reader\QueryProps.cs" />
-    <Compile Include="Xml\Xml_Reader\XmlCaseOrder.cs" />
-    <Compile Include="Xml\Xml_Reader\XmlDataType.cs" />
     <Compile Include="Xml\Xml_Reader\XmlSchemaValidationException.cs" />
-    <Compile Include="Xml\Xml_Reader\XmlSortOrder.cs" />
     <Compile Include="Xml\Xml_Reader\XPathNavigatorReader.cs" />
     <Compile Include="Xml\Xml_Reader\XmlEmptyNavigator.cs" />
     <Compile Include="Xml\Xml_Reader\XPathNavigatorReaderWithSI.cs" />
@@ -663,7 +659,6 @@
     <Compile Include="Xml\Xml_Reader\IncrementalReadDecoder.cs" />
     <Compile Include="Xml\Xml_Reader\XmlCharType.cs" />
     <Compile Include="Xml\Xml_Reader\ValidationType.cs" />
-    <Compile Include="Xml\Xml_Reader\XmlSqlBinaryReader.cs" />
     <Compile Include="Xml\Xml_Reader\XmlParserContext.cs" />
     <Compile Include="Xml\Xml_Reader\XmlValidatingReaderImpl.cs" />
     <Compile Include="Xml\Xml_Reader\ConformanceLevel.cs" />

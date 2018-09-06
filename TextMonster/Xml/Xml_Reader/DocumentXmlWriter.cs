@@ -80,11 +80,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal void SetSettings(XmlWriterSettings value)
-    {
-      settings = value;
-    }
-
     public DocumentXPathNavigator Navigator
     {
       set

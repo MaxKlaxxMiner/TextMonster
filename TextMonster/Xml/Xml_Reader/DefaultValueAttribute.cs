@@ -79,10 +79,5 @@ namespace TextMonster.Xml.Xml_Reader
     {
       return base.GetHashCode();
     }
-
-    protected void SetValue(object value)
-    {
-      this.value = value;
-    }
   }
 }
