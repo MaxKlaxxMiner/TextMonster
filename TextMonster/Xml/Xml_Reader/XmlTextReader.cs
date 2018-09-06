@@ -13,12 +13,6 @@ namespace TextMonster.Xml.Xml_Reader
   {
     XmlTextReaderImpl impl;
 
-    public XmlTextReader(Stream input)
-    {
-      impl = new XmlTextReaderImpl(input);
-      impl.OuterReader = this;
-    }
-
     public XmlTextReader(Stream input, XmlNameTable nt)
     {
       impl = new XmlTextReaderImpl(input, nt);
@@ -324,7 +318,6 @@ namespace TextMonster.Xml.Xml_Reader
     public bool Namespaces
     {
       get { return impl.Namespaces; }
-      set { impl.Namespaces = value; }
     }
 
     public bool Normalization
@@ -368,30 +361,6 @@ namespace TextMonster.Xml.Xml_Reader
       set { impl.XmlResolver = value; }
     }
 
-    public void ResetState()
-    {
-      impl.ResetState();
-    }
-
-    public TextReader GetRemainder()
-    {
-      return impl.GetRemainder();
-    }
-
-    public int ReadChars(char[] buffer, int index, int count)
-    {
-      return impl.ReadChars(buffer, index, count);
-    }
-
-    public int ReadBase64(byte[] array, int offset, int len)
-    {
-      return impl.ReadBase64(array, offset, len);
-    }
-
-    public int ReadBinHex(byte[] array, int offset, int len)
-    {
-      return impl.ReadBinHex(array, offset, len);
-    }
     //
     // Internal helper methods
     //

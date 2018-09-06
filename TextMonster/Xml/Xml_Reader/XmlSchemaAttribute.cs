@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -125,27 +124,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return qualifiedName; }
     }
 
-    /// <include file='doc\XmlSchemaAttribute.uex' path='docs/doc[@for="XmlSchemaAttribute.AttributeType"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    [XmlIgnore]
-    [Obsolete("This property has been deprecated. Please use AttributeSchemaType property that returns a strongly typed attribute type. http://go.microsoft.com/fwlink/?linkid=14202")]
-    public object AttributeType
-    {
-      get
-      {
-        if (attributeType == null)
-          return null;
-
-        if (attributeType.QualifiedName.Namespace == XmlReservedNs.NsXs)
-        {
-          return attributeType.Datatype;
-        }
-        return attributeType;
-      }
-    }
-
     /// <include file='doc\XmlSchemaAttribute.uex' path='docs/doc[@for="XmlSchemaAttribute.AttributeSchemaType"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
@@ -195,7 +173,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal SchemaAttDef AttDef
     {
       get { return attDef; }
-      set { attDef = value; }
     }
 
     internal bool HasDefault

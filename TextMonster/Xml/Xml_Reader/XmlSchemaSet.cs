@@ -119,17 +119,6 @@ namespace TextMonster.Xml.Xml_Reader
       compileAll = true;
     }
 
-
-    //Public Properties       
-    /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.NameTable"]/*' />
-    /// <devdoc>
-    ///    <para>The default XmlNameTable used by the XmlSchemaSet when loading new schemas.</para>
-    /// </devdoc>
-    public XmlNameTable NameTable
-    {
-      get { return nameTable; }
-    }
-
     /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.ValidationEventHandler"]/*' />
     public event ValidationEventHandler ValidationEventHandler
     {

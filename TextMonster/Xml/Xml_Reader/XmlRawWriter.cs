@@ -187,17 +187,9 @@ namespace TextMonster.Xml.Xml_Reader
       throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
     }
 
-    //
-    // XmlRawWriter methods and properties
-    //
-
     // Get and set the namespace resolver that's used by this RawWriter to resolve prefixes.
     internal virtual IXmlNamespaceResolver NamespaceResolver
     {
-      get
-      {
-        return resolver;
-      }
       set
       {
         resolver = value;

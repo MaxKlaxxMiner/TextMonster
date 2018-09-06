@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Globalization;
-using System.Reflection;
 using System.Threading;
 
 namespace TextMonster.Xml.Xml_Reader
@@ -154,10 +153,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         return decodeName;
       }
-      set
-      {
-        decodeName = value;
-      }
     }
 
     /// <include file='doc\XmlSerializationReader.uex' path='docs/doc[@for="XmlSerializationReader.Reader"]/*' />
@@ -190,13 +185,6 @@ namespace TextMonster.Xml.Xml_Reader
         }
         return d;
       }
-    }
-
-    /// <include file='doc\XmlSerializationReader.uex' path='docs/doc[@for="XmlSerializationReader.ResolveDynamicAssembly"]/*' />
-    ///<internalonly/>
-    protected static Assembly ResolveDynamicAssembly(string assemblyFullName)
-    {
-      return DynamicAssemblies.Get(assemblyFullName);
     }
 
     void InitPrimitiveIDs()

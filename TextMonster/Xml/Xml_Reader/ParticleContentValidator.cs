@@ -150,18 +150,6 @@ namespace TextMonster.Xml.Xml_Reader
       Closure(new QmarkNode());
     }
 
-    public void AddLeafRange(decimal min, decimal max)
-    {
-      LeafRangeNode rNode = new LeafRangeNode(min, max);
-      int pos = positions.Add(-2, rNode);
-      rNode.Pos = pos;
-
-      InteriorNode sequence = new SequenceNode();
-      sequence.RightChild = rNode;
-      Closure(sequence);
-      minMaxNodesCount++;
-    }
-
     private void Closure(InteriorNode node)
     {
       if (stack.Count > 0)
@@ -189,11 +177,6 @@ namespace TextMonster.Xml.Xml_Reader
         node.LeftChild = contentNode;
         contentNode = node;
       }
-    }
-
-    public ContentValidator Finish()
-    {
-      return Finish(true);
     }
 
     public ContentValidator Finish(bool useDFA)

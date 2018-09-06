@@ -8,7 +8,6 @@ namespace TextMonster.Xml.Xml_Reader
 {
   internal static class DynamicAssemblies
   {
-    static volatile Hashtable nameToAssemblyMap = new Hashtable();
     static Hashtable tableIsTypeDynamic = Hashtable.Synchronized(new Hashtable());
     static volatile FileIOPermission fileIOPermission;
     static FileIOPermission UnrestrictedFileIOPermission
@@ -62,11 +61,6 @@ namespace TextMonster.Xml.Xml_Reader
         tableIsTypeDynamic[type] = oIsTypeDynamic = isTypeDynamic;
       }
       return (bool)oIsTypeDynamic;
-    }
-
-    internal static Assembly Get(string fullName)
-    {
-      return nameToAssemblyMap != null ? (Assembly)nameToAssemblyMap[fullName] : null;
     }
   }
 }

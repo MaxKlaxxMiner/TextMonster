@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Permissions;
-using System.Text;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -255,65 +254,16 @@ namespace TextMonster.Xml.Xml_Reader
       return impl.LookupPrefix(namespaceName);
     }
 
-    //
-    // XmlValidatingReader 
-    //
-    public event ValidationEventHandler ValidationEventHandler
-    {
-      add { impl.ValidationEventHandler += value; }
-      remove { impl.ValidationEventHandler -= value; }
-    }
-
-    public object SchemaType
-    {
-      get { return impl.SchemaType; }
-    }
-
     public FastXmlReader Reader
     {
       get { return impl.Reader; }
     }
 
-    public ValidationType ValidationType
-    {
-      get { return impl.ValidationType; }
-      set { impl.ValidationType = value; }
-    }
-
-    public XmlSchemaCollection Schemas
-    {
-      get { return impl.Schemas; }
-    }
-
-    public EntityHandling EntityHandling
-    {
-      get { return impl.EntityHandling; }
-      set { impl.EntityHandling = value; }
-    }
-
-    public XmlResolver XmlResolver
-    {
-      set { impl.XmlResolver = value; }
-    }
-
     public bool Namespaces
     {
       get { return impl.Namespaces; }
-      set { impl.Namespaces = value; }
     }
 
-    public object ReadTypedValue()
-    {
-      return impl.ReadTypedValue();
-    }
-
-    public Encoding Encoding
-    {
-      get { return impl.Encoding; }
-    }
-    //
-    // Internal helper methods
-    //
     internal XmlValidatingReaderImpl Impl
     {
       get { return impl; }

@@ -142,26 +142,6 @@ namespace TextMonster.Xml.Xml_Reader
       return null;
     }
 
-    internal XmlSchemaAttribute GetAttribute(XmlQualifiedName qname)
-    {
-      SchemaAttDef attdef = (SchemaAttDef)attributeDecls[qname];
-      if (attdef != null)
-      {
-        return attdef.SchemaAttribute;
-      }
-      return null;
-    }
-
-    internal XmlSchemaElement GetType(XmlQualifiedName qname)
-    {
-      SchemaElementDecl ed = GetElementDecl(qname);
-      if (ed != null)
-      {
-        return ed.SchemaElement;
-      }
-      return null;
-    }
-
     internal bool HasSchema(string ns)
     {
       return targetNamespaces.ContainsKey(ns);

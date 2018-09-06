@@ -20,10 +20,6 @@ namespace TextMonster.Xml.Xml_Reader
     // ToBoolean
     //-----------------------------------------------
 
-    public override bool ToBoolean(bool value)
-    {
-      return ((bool)value);
-    }
     public override bool ToBoolean(string value)
     {
       if (value == null) throw new ArgumentNullException("value");
@@ -94,12 +90,7 @@ namespace TextMonster.Xml.Xml_Reader
     {
       return XmlConvert.ToString((bool)value);
     }
-    public override string ToString(string value, IXmlNamespaceResolver nsResolver)
-    {
-      if (value == null) throw new ArgumentNullException("value");
 
-      return ((string)value);
-    }
     public override string ToString(object value, IXmlNamespaceResolver nsResolver)
     {
       if (value == null) throw new ArgumentNullException("value");

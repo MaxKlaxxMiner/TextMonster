@@ -262,30 +262,6 @@ namespace TextMonster.Xml.Xml_Reader
       return String.Empty;
     }
 
-    // Sets the value of the attribute
-    // with the specified name.
-    public virtual void SetAttribute(string name, string value)
-    {
-      XmlAttribute attr = GetAttributeNode(name);
-      if (attr == null)
-      {
-        attr = OwnerDocument.CreateAttribute(name);
-        attr.Value = value;
-        Attributes.InternalAppendAttribute(attr);
-      }
-      else
-      {
-        attr.Value = value;
-      }
-    }
-
-    // Removes an attribute by name.
-    public virtual void RemoveAttribute(string name)
-    {
-      if (HasAttributes)
-        Attributes.RemoveNamedItem(name);
-    }
-
     // Returns the XmlAttribute with the specified name.
     public virtual XmlAttribute GetAttributeNode(string name)
     {

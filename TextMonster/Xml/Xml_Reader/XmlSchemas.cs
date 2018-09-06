@@ -136,24 +136,6 @@ namespace TextMonster.Xml.Xml_Reader
       return SchemaSet.Contains(targetNamespace);
     }
 
-    /// <include file='doc\XmlSchemas.uex' path='docs/doc[@for="XmlSchemas.Remove"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public void Remove(XmlSchema schema)
-    {
-      List.Remove(schema);
-    }
-
-    /// <include file='doc\XmlSchemas.uex' path='docs/doc[@for="XmlSchemas.CopyTo"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public void CopyTo(XmlSchema[] array, int index)
-    {
-      List.CopyTo(array, index);
-    }
-
     /// <include file='doc\XmlSchemas.uex' path='docs/doc[@for="XmlSchemas.OnInsert"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>

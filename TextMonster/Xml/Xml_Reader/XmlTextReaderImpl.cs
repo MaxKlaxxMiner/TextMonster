@@ -274,7 +274,6 @@ namespace TextMonster.Xml.Xml_Reader
     private const int MaxBytesToMove = 128;
     private const int ApproxXmlDeclLength = 80;
     private const int NodesInitialSize = 8;
-    private const int InitialAttributesCount = 4;
     private const int InitialParsingStateStackSize = 2;
     private const int InitialParsingStatesDepth = 2;
     private const int DtdChidrenInitialSize = 2;
@@ -9943,7 +9942,7 @@ namespace TextMonster.Xml.Xml_Reader
       public override void PushScope() { }
       public override bool PopScope() { return false; }
       public override void AddNamespace(string prefix, string uri) { }
-      public override void RemoveNamespace(string prefix, string uri) { }
+      public virtual void RemoveNamespace(string prefix, string uri) { }
       public override IEnumerator GetEnumerator() { return null; }
       public override IDictionary<string, string> GetNamespacesInScope(XmlNamespaceScope scope) { return null; }
       public override string LookupNamespace(string prefix) { return string.Empty; }

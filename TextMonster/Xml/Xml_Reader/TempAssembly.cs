@@ -1,13 +1,11 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 using System.Collections;
-using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.Versioning;
 using System.Security;
 using System.Security.Permissions;
 using System.Security.Policy;
-using System.Text;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -137,58 +135,9 @@ namespace TextMonster.Xml.Xml_Reader
       return null;
     }
 
-    static void Log(string message, EventLogEntryType type)
-    {
-      new EventLogPermission(PermissionState.Unrestricted).Assert();
-      EventLog.WriteEntry("XmlSerializer", message, type);
-    }
-
-    static AssemblyName GetName(Assembly assembly, bool copyName)
-    {
-      PermissionSet perms = new PermissionSet(PermissionState.None);
-      perms.AddPermission(new FileIOPermission(PermissionState.Unrestricted));
-      perms.Assert();
-      return assembly.GetName(copyName);
-    }
-
-
-    static bool IsSerializerVersionMatch(Assembly serializer, Type type, string defaultNamespace, string location)
-    {
-      if (serializer == null)
-        return false;
-      object[] attrs = serializer.GetCustomAttributes(typeof(XmlSerializerVersionAttribute), false);
-      if (attrs.Length != 1)
-        return false;
-
-      XmlSerializerVersionAttribute assemblyInfo = (XmlSerializerVersionAttribute)attrs[0];
-      // we found out dated pre-generate assembly
-      // 
-      if (assemblyInfo.ParentAssemblyId == GenerateAssemblyId(type) && assemblyInfo.Namespace == defaultNamespace)
-        return true;
-      return false;
-    }
 
     // SxS: This method does not take any resource name and does not expose any resources to the caller.
     // It's OK to suppress the SxS warning.
-    [ResourceConsumption(ResourceScope.Machine, ResourceScope.Machine)]
-    [ResourceExposure(ResourceScope.None)]
-    static string GenerateAssemblyId(Type type)
-    {
-      Module[] modules = type.Assembly.GetModules();
-      ArrayList list = new ArrayList();
-      for (int i = 0; i < modules.Length; i++)
-      {
-        list.Add(modules[i].ModuleVersionId.ToString());
-      }
-      list.Sort();
-      StringBuilder sb = new StringBuilder();
-      for (int i = 0; i < list.Count; i++)
-      {
-        sb.Append(list[i].ToString());
-        sb.Append(",");
-      }
-      return sb.ToString();
-    }
 
     internal static Assembly GenerateAssembly(XmlMapping[] xmlMappings, Type[] types, string defaultNamespace, Evidence evidence, XmlSerializerCompilerParameters parameters, Assembly assembly, Hashtable assemblies)
     {
@@ -225,19 +174,6 @@ namespace TextMonster.Xml.Xml_Reader
       Type type = assembly.GetType(typeName);
       if (type == null) throw new InvalidOperationException(Res.GetString(Res.XmlMissingType, typeName, assembly.FullName));
       return type;
-    }
-
-    internal bool CanRead(XmlMapping mapping, FastXmlReader xmlReader)
-    {
-      if (mapping == null)
-        return false;
-
-      if (mapping.Accessor.Any)
-      {
-        return true;
-      }
-      TempMethod method = methods[mapping.Key];
-      return xmlReader.IsStartElement(method.name, method.ns);
     }
 
     string ValidateEncodingStyle(string encodingStyle, string methodKey)

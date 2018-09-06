@@ -9,8 +9,6 @@
     decimal max;
     BitSet nextIteration;
 
-    public LeafRangeNode(decimal min, decimal max) : this(-1, min, max) { }
-
     public LeafRangeNode(int pos, decimal min, decimal max)
       : base(pos)
     {

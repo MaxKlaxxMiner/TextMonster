@@ -34,19 +34,7 @@ namespace TextMonster.Xml.Xml_Reader
     // ToDecimal
     //-----------------------------------------------
 
-    public override decimal ToDecimal(decimal value)
-    {
-      return ((decimal)value);
-    }
-    public override decimal ToDecimal(int value)
-    {
-      return ((decimal)(int)value);
-    }
-    public override decimal ToDecimal(long value)
-    {
-      return ((decimal)(long)value);
-    }
-    public override decimal ToDecimal(string value)
+    public virtual decimal ToDecimal(string value)
     {
       if (value == null) throw new ArgumentNullException("value");
 
@@ -80,14 +68,6 @@ namespace TextMonster.Xml.Xml_Reader
     // ToInt32
     //-----------------------------------------------
 
-    public override int ToInt32(decimal value)
-    {
-      return DecimalToInt32((decimal)value);
-    }
-    public override int ToInt32(int value)
-    {
-      return ((int)value);
-    }
     public override int ToInt32(long value)
     {
       return Int64ToInt32((long)value);
@@ -119,18 +99,11 @@ namespace TextMonster.Xml.Xml_Reader
     // ToInt64
     //-----------------------------------------------
 
-    public override long ToInt64(decimal value)
-    {
-      return DecimalToInt64((decimal)value);
-    }
     public override long ToInt64(int value)
     {
       return ((long)(int)value);
     }
-    public override long ToInt64(long value)
-    {
-      return ((long)value);
-    }
+
     public override long ToInt64(string value)
     {
       if (value == null) throw new ArgumentNullException("value");
@@ -165,7 +138,7 @@ namespace TextMonster.Xml.Xml_Reader
     // ToString
     //-----------------------------------------------
 
-    public override string ToString(decimal value)
+    public virtual string ToString(decimal value)
     {
       if (TypeCode == XmlTypeCode.Decimal) return XmlConvert.ToString((decimal)value);
       return XmlConvert.ToString(decimal.Truncate((decimal)value));
@@ -178,12 +151,7 @@ namespace TextMonster.Xml.Xml_Reader
     {
       return XmlConvert.ToString((long)value);
     }
-    public override string ToString(string value, IXmlNamespaceResolver nsResolver)
-    {
-      if (value == null) throw new ArgumentNullException("value");
 
-      return ((string)value);
-    }
     public override string ToString(object value, IXmlNamespaceResolver nsResolver)
     {
       if (value == null) throw new ArgumentNullException("value");
@@ -204,7 +172,7 @@ namespace TextMonster.Xml.Xml_Reader
     // ChangeType
     //-----------------------------------------------
 
-    public override object ChangeType(decimal value, Type destinationType)
+    public virtual object ChangeType(decimal value, Type destinationType)
     {
       if (destinationType == null) throw new ArgumentNullException("destinationType");
 

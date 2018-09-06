@@ -69,12 +69,6 @@ namespace TextMonster.Xml.Xml_Reader
     // ToString
     //-----------------------------------------------
 
-    public override string ToString(string value, IXmlNamespaceResolver nsResolver)
-    {
-      if (value == null) throw new ArgumentNullException("value");
-
-      return ((string)value);
-    }
     public override string ToString(object value, IXmlNamespaceResolver nsResolver)
     {
       if (value == null) throw new ArgumentNullException("value");

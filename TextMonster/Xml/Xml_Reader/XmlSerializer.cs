@@ -1,8 +1,6 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 using System.Collections;
-using System.Globalization;
-using System.IO;
 using System.Reflection;
 using System.Runtime.Versioning;
 using System.Security.Permissions;
@@ -102,101 +100,11 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.XmlSerializer7"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    [Obsolete("This method is obsolete and will be removed in a future release of the .NET Framework. Please use a XmlSerializer constructor overload which does not take an Evidence parameter. See http://go2.microsoft.com/fwlink/?LinkId=131738 for more information.")]
-    public XmlSerializer(Type type, XmlAttributeOverrides overrides, Type[] extraTypes, XmlRootAttribute root, string defaultNamespace, string location, Evidence evidence)
-    {
-      if (type == null)
-        throw new ArgumentNullException("type");
-      XmlReflectionImporter importer = new XmlReflectionImporter(overrides, defaultNamespace);
-      if (extraTypes != null)
-      {
-        for (int i = 0; i < extraTypes.Length; i++)
-          importer.IncludeType(extraTypes[i]);
-      }
-      this.mapping = importer.ImportTypeMapping(type, root, defaultNamespace);
-      if (location != null || evidence != null)
-      {
-        DemandForUserLocationOrEvidence();
-      }
-      tempAssembly = GenerateTempAssembly(this.mapping, type, defaultNamespace, location, evidence);
-    }
-
-    [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
-    void DemandForUserLocationOrEvidence()
-    {
-      // Ensure full trust before asserting full file access to the user-provided location or evidence
-    }
-
-    internal static TempAssembly GenerateTempAssembly(XmlMapping xmlMapping)
-    {
-      return GenerateTempAssembly(xmlMapping, null, null);
-    }
-
     internal static TempAssembly GenerateTempAssembly(XmlMapping xmlMapping, Type type, string defaultNamespace)
     {
       if (xmlMapping == null)
         throw new ArgumentNullException("xmlMapping");
       return new TempAssembly(new XmlMapping[] { xmlMapping }, new Type[] { type }, defaultNamespace, null, null);
-    }
-
-    internal static TempAssembly GenerateTempAssembly(XmlMapping xmlMapping, Type type, string defaultNamespace, string location, Evidence evidence)
-    {
-      return new TempAssembly(new XmlMapping[] { xmlMapping }, new Type[] { type }, defaultNamespace, location, evidence);
-    }
-
-    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.Serialize"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public void Serialize(TextWriter textWriter, object o)
-    {
-      Serialize(textWriter, o, null);
-    }
-
-    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.Serialize1"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public void Serialize(TextWriter textWriter, object o, XmlSerializerNamespaces namespaces)
-    {
-      XmlTextWriter xmlWriter = new XmlTextWriter(textWriter);
-      xmlWriter.Formatting = Formatting.Indented;
-      xmlWriter.Indentation = 2;
-      Serialize(xmlWriter, o, namespaces);
-    }
-
-    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.Serialize2"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public void Serialize(Stream stream, object o)
-    {
-      Serialize(stream, o, null);
-    }
-
-    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.Serialize3"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public void Serialize(Stream stream, object o, XmlSerializerNamespaces namespaces)
-    {
-      XmlTextWriter xmlWriter = new XmlTextWriter(stream, null);
-      xmlWriter.Formatting = Formatting.Indented;
-      xmlWriter.Indentation = 2;
-      Serialize(xmlWriter, o, namespaces);
-    }
-
-    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.Serialize4"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public void Serialize(XmlWriter xmlWriter, object o)
-    {
-      Serialize(xmlWriter, o, null);
     }
 
     /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.Serialize5"]/*' />
@@ -253,127 +161,6 @@ namespace TextMonster.Xml.Xml_Reader
         throw new InvalidOperationException(Res.GetString(Res.XmlGenError), e);
       }
       xmlWriter.Flush();
-    }
-
-    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.Deserialize"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public object Deserialize(Stream stream)
-    {
-      XmlTextReader xmlReader = new XmlTextReader(stream);
-      xmlReader.WhitespaceHandling = WhitespaceHandling.Significant;
-      xmlReader.Normalization = true;
-      xmlReader.XmlResolver = null;
-      return Deserialize(xmlReader, null);
-    }
-
-    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.Deserialize1"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public object Deserialize(TextReader textReader)
-    {
-      XmlTextReader xmlReader = new XmlTextReader(textReader);
-      xmlReader.WhitespaceHandling = WhitespaceHandling.Significant;
-      xmlReader.Normalization = true;
-      xmlReader.XmlResolver = null;
-      return Deserialize(xmlReader, null);
-    }
-
-    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.Deserialize2"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public object Deserialize(FastXmlReader xmlReader)
-    {
-      return Deserialize(xmlReader, null);
-    }
-
-    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.Deserialize3"]/*' />
-    public object Deserialize(FastXmlReader xmlReader, XmlDeserializationEvents events)
-    {
-      return Deserialize(xmlReader, null, events);
-    }
-
-    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.Deserialize4"]/*' />
-    public object Deserialize(FastXmlReader xmlReader, string encodingStyle)
-    {
-      return Deserialize(xmlReader, encodingStyle, this.events);
-    }
-
-    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.Deserialize5"]/*' />
-    public object Deserialize(FastXmlReader xmlReader, string encodingStyle, XmlDeserializationEvents events)
-    {
-      events.sender = this;
-      try
-      {
-        if (primitiveType != null)
-        {
-          if (encodingStyle != null && encodingStyle.Length > 0)
-          {
-            throw new InvalidOperationException(Res.GetString(Res.XmlInvalidEncodingNotEncoded1, encodingStyle));
-          }
-          return DeserializePrimitive(xmlReader, events);
-        }
-        else if (tempAssembly == null || typedSerializer)
-        {
-          XmlSerializationReader reader = CreateReader();
-          reader.Init(xmlReader, events, encodingStyle, tempAssembly);
-          try
-          {
-            return Deserialize(reader);
-          }
-          finally
-          {
-            reader.Dispose();
-          }
-        }
-        else
-        {
-          return tempAssembly.InvokeReader(mapping, xmlReader, events, encodingStyle);
-        }
-      }
-      catch (Exception e)
-      {
-        if (e is ThreadAbortException || e is StackOverflowException || e is OutOfMemoryException)
-        {
-          throw;
-        }
-        if (e is TargetInvocationException)
-          e = e.InnerException;
-
-        if (xmlReader is IXmlLineInfo)
-        {
-          IXmlLineInfo lineInfo = (IXmlLineInfo)xmlReader;
-          throw new InvalidOperationException(Res.GetString(Res.XmlSerializeErrorDetails, lineInfo.LineNumber.ToString(CultureInfo.InvariantCulture), lineInfo.LinePosition.ToString(CultureInfo.InvariantCulture)), e);
-        }
-        else
-        {
-          throw new InvalidOperationException(Res.GetString(Res.XmlSerializeError), e);
-        }
-      }
-    }
-
-    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.CanDeserialize"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public virtual bool CanDeserialize(FastXmlReader xmlReader)
-    {
-      if (primitiveType != null)
-      {
-        TypeDesc typeDesc = (TypeDesc)TypeScope.PrimtiveTypes[primitiveType];
-        return xmlReader.IsStartElement(typeDesc.DataType.Name, string.Empty);
-      }
-      else if (tempAssembly != null)
-      {
-        return tempAssembly.CanRead(mapping, xmlReader);
-      }
-      else
-      {
-        return false;
-      }
     }
 
     /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializer.FromMappings"]/*' />

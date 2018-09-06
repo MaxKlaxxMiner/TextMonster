@@ -165,21 +165,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return (flags & TypeFlags.Unsupported) != 0; }
     }
 
-    internal bool IsGenericInterface
-    {
-      get { return (flags & TypeFlags.GenericInterface) != 0; }
-    }
-
-    internal bool IsPrivateImplementation
-    {
-      get { return (flags & TypeFlags.UsePrivateImplementation) != 0; }
-    }
-
-    internal bool CannotNew
-    {
-      get { return !HasDefaultConstructor || ConstructorInaccessible; }
-    }
-
     internal bool IsAbstract
     {
       get { return (flags & TypeFlags.Abstract) != 0; }
@@ -188,11 +173,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal bool IsOptionalValue
     {
       get { return (flags & TypeFlags.OptionalValue) != 0; }
-    }
-
-    internal bool UseReflection
-    {
-      get { return (flags & TypeFlags.UseReflection) != 0; }
     }
 
     internal bool IsVoid
@@ -225,11 +205,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return kind == TypeKind.Enumerable; }
     }
 
-    internal bool IsArray
-    {
-      get { return kind == TypeKind.Array; }
-    }
-
     internal bool IsPrimitive
     {
       get { return kind == TypeKind.Primitive; }
@@ -248,11 +223,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal bool IsRoot
     {
       get { return kind == TypeKind.Root; }
-    }
-
-    internal bool ConstructorInaccessible
-    {
-      get { return (flags & TypeFlags.CtorInaccessible) != 0; }
     }
 
     internal Exception Exception
@@ -300,11 +270,6 @@ namespace TextMonster.Xml.Xml_Reader
         flags |= TypeFlags.Unsupported;
         this.exception = new InvalidOperationException(Res.GetString(Res.XmlConstructorInaccessible, FullName));
       }
-    }
-
-    internal string ArrayLengthName
-    {
-      get { return kind == TypeKind.Array ? "Length" : "Count"; }
     }
 
     internal TypeDesc ArrayElementTypeDesc

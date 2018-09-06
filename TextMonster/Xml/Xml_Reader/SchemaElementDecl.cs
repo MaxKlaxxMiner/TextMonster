@@ -149,7 +149,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal bool HasRequiredAttribute
     {
       get { return hasRequiredAttribute; }
-      set { hasRequiredAttribute = value; }
     }
 
     internal ContentValidator ContentValidator
@@ -173,7 +172,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal XmlSchemaElement SchemaElement
     {
       get { return schemaElement; }
-      set { schemaElement = value; }
     }
     // add a new SchemaAttDef to the SchemaElementDecl
     internal void AddAttDef(SchemaAttDef attdef)

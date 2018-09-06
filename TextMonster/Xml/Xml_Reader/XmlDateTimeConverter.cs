@@ -27,12 +27,7 @@ namespace TextMonster.Xml.Xml_Reader
     // ToDateTime
     //-----------------------------------------------
 
-    public override DateTime ToDateTime(DateTime value)
-    {
-      return ((DateTime)value);
-    }
-
-    public override DateTime ToDateTime(DateTimeOffset value)
+    public virtual DateTime ToDateTime(DateTimeOffset value)
     {
       return DateTimeOffsetToDateTime(value);
     }
@@ -71,17 +66,12 @@ namespace TextMonster.Xml.Xml_Reader
     // ToDateTimeOffset
     //-----------------------------------------------
 
-    public override DateTimeOffset ToDateTimeOffset(DateTime value)
+    public virtual DateTimeOffset ToDateTimeOffset(DateTime value)
     {
       return new DateTimeOffset(value);
     }
 
-    public override DateTimeOffset ToDateTimeOffset(DateTimeOffset value)
-    {
-      return ((DateTimeOffset)value);
-    }
-
-    public override DateTimeOffset ToDateTimeOffset(string value)
+    public virtual DateTimeOffset ToDateTimeOffset(string value)
     {
       if (value == null) throw new ArgumentNullException("value");
 
@@ -98,7 +88,7 @@ namespace TextMonster.Xml.Xml_Reader
       return StringToDateTimeOffset((string)value);
     }
 
-    public override DateTimeOffset ToDateTimeOffset(object value)
+    public virtual DateTimeOffset ToDateTimeOffset(object value)
     {
       if (value == null) throw new ArgumentNullException("value");
 
@@ -166,7 +156,7 @@ namespace TextMonster.Xml.Xml_Reader
       return DateTimeToString((DateTime)value);
     }
 
-    public override string ToString(DateTimeOffset value)
+    public virtual string ToString(DateTimeOffset value)
     {
       switch (TypeCode)
       {
@@ -181,12 +171,6 @@ namespace TextMonster.Xml.Xml_Reader
       return DateTimeOffsetToString((DateTimeOffset)value);
     }
 
-    public override string ToString(string value, IXmlNamespaceResolver nsResolver)
-    {
-      if (value == null) throw new ArgumentNullException("value");
-
-      return ((string)value);
-    }
     public override string ToString(object value, IXmlNamespaceResolver nsResolver)
     {
       if (value == null) throw new ArgumentNullException("value");
@@ -220,7 +204,7 @@ namespace TextMonster.Xml.Xml_Reader
       return ChangeListType(value, destinationType, null);
     }
 
-    public override object ChangeType(DateTimeOffset value, Type destinationType)
+    public virtual object ChangeType(DateTimeOffset value, Type destinationType)
     {
       if (destinationType == null) throw new ArgumentNullException("destinationType");
 

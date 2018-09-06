@@ -234,20 +234,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    [Obsolete("Use XmlReaderSettings.DtdProcessing property instead.")]
-    public bool ProhibitDtd
-    {
-      get
-      {
-        return dtdProcessing == DtdProcessing.Prohibit;
-      }
-      set
-      {
-        CheckReadOnly("ProhibitDtd");
-        dtdProcessing = value ? DtdProcessing.Prohibit : DtdProcessing.Parse;
-      }
-    }
-
     public DtdProcessing DtdProcessing
     {
       get
@@ -346,15 +332,6 @@ namespace TextMonster.Xml.Xml_Reader
         CheckReadOnly("ValidationEventHandler");
         valEventHandler -= value;
       }
-    }
-
-    //
-    // Public methods
-    //
-    public void Reset()
-    {
-      CheckReadOnly("Reset");
-      Initialize();
     }
 
     public XmlReaderSettings Clone()

@@ -109,21 +109,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    // Inserts the specified node as the first node in the collection.
-    public XmlAttribute Prepend(XmlAttribute node)
-    {
-      if (node.OwnerDocument != null && node.OwnerDocument != parent.OwnerDocument)
-        throw new ArgumentException(Res.GetString(Res.Xdom_NamedNode_Context));
-
-      if (node.OwnerElement != null)
-        Detach(node);
-
-      RemoveDuplicateAttribute(node);
-
-      InsertNodeAt(0, node);
-      return node;
-    }
-
     // Inserts the specified node as the last node in the collection.
     public XmlAttribute Append(XmlAttribute node)
     {
@@ -146,62 +131,6 @@ namespace TextMonster.Xml.Xml_Reader
         InsertParentIntoElementIdAttrMap(node);
       }
       return node;
-    }
-
-    // Inserts the specified attribute immediately before the specified reference attribute.
-    public XmlAttribute InsertBefore(XmlAttribute newNode, XmlAttribute refNode)
-    {
-      if (newNode == refNode)
-        return newNode;
-
-      if (refNode == null)
-        return Append(newNode);
-
-      if (refNode.OwnerElement != parent)
-        throw new ArgumentException(Res.GetString(Res.Xdom_AttrCol_Insert));
-
-      if (newNode.OwnerDocument != null && newNode.OwnerDocument != parent.OwnerDocument)
-        throw new ArgumentException(Res.GetString(Res.Xdom_NamedNode_Context));
-
-      if (newNode.OwnerElement != null)
-        Detach(newNode);
-
-      int offset = FindNodeOffset(refNode.LocalName, refNode.NamespaceURI);
-
-      int dupoff = RemoveDuplicateAttribute(newNode);
-      if (dupoff >= 0 && dupoff < offset)
-        offset--;
-      InsertNodeAt(offset, newNode);
-
-      return newNode;
-    }
-
-    // Inserts the specified attribute immediately after the specified reference attribute.
-    public XmlAttribute InsertAfter(XmlAttribute newNode, XmlAttribute refNode)
-    {
-      if (newNode == refNode)
-        return newNode;
-
-      if (refNode == null)
-        return Prepend(newNode);
-
-      if (refNode.OwnerElement != parent)
-        throw new ArgumentException(Res.GetString(Res.Xdom_AttrCol_Insert));
-
-      if (newNode.OwnerDocument != null && newNode.OwnerDocument != parent.OwnerDocument)
-        throw new ArgumentException(Res.GetString(Res.Xdom_NamedNode_Context));
-
-      if (newNode.OwnerElement != null)
-        Detach(newNode);
-
-      int offset = FindNodeOffset(refNode.LocalName, refNode.NamespaceURI);
-
-      int dupoff = RemoveDuplicateAttribute(newNode);
-      if (dupoff >= 0 && dupoff < offset)
-        offset--;
-      InsertNodeAt(offset + 1, newNode);
-
-      return newNode;
     }
 
     // Removes the specified attribute node from the map.
@@ -258,12 +187,6 @@ namespace TextMonster.Xml.Xml_Reader
     int ICollection.Count
     {
       get { return base.Count; }
-    }
-
-    public void CopyTo(XmlAttribute[] array, int index)
-    {
-      for (int i = 0, max = Count; i < max; i++, index++)
-        array[index] = (XmlAttribute)(((XmlNode)nodes[i]).CloneNode(true));
     }
 
     internal override XmlNode AddNode(XmlNode node)

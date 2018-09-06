@@ -166,16 +166,9 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal bool HasEntityRef
-    {
-      get { return hasEntityRef; }
-      set { hasEntityRef = value; }
-    }
-
     internal XmlSchemaAttribute SchemaAttribute
     {
       get { return schemaAttribute; }
-      set { schemaAttribute = value; }
     }
 
     internal void CheckXmlSpace(IValidationEventHandling validationEventHandling)

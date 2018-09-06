@@ -219,27 +219,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     /// <summary>
-    /// Returns whether object represent local, UTC or unspecified time
-    /// </summary>
-    public DateTimeKind Kind
-    {
-      get
-      {
-        switch (InternalKind)
-        {
-          case XsdDateTimeKind.Unspecified:
-          return DateTimeKind.Unspecified;
-          case XsdDateTimeKind.Zulu:
-          return DateTimeKind.Utc;
-          default:
-          // XsdDateTimeKind.LocalEastOfZulu:
-          // XsdDateTimeKind.LocalWestOfZulu:
-          return DateTimeKind.Local;
-        }
-      }
-    }
-
-    /// <summary>
     /// Returns the year part of XsdDateTime
     /// The returned value is integer between 1 and 9999
     /// </summary>

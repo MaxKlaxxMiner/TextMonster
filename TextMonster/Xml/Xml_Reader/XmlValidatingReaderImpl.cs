@@ -143,29 +143,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     }
 
-    // Initializes a new instance of XmlValidatingReaderImpl class for parsing fragments with the specified string, fragment type and parser context
-    // This constructor is used when creating XmlValidatingReaderImpl for V1 XmlValidatingReader
-    // SxS: This method resolves an Uri but does not expose it to the caller. It's OK to suppress the SxS warning.
-    [ResourceConsumption(ResourceScope.Machine, ResourceScope.Machine)]
-    [ResourceExposure(ResourceScope.None)]
-    internal XmlValidatingReaderImpl(string xmlFragment, XmlNodeType fragType, XmlParserContext context)
-      : this(new XmlTextReader(xmlFragment, fragType, context))
-    {
-      if (coreReader.BaseURI.Length > 0)
-      {
-        validator.BaseUri = GetResolver().ResolveUri(null, coreReader.BaseURI);
-      }
-
-      if (context != null)
-      {
-        parsingFunction = ParsingFunction.ParseDtdFromContext;
-        parserContext = context;
-      }
-    }
-
-    // Initializes a new instance of XmlValidatingReaderImpl class for parsing fragments with the specified stream, fragment type and parser context
-    // This constructor is used when creating XmlValidatingReaderImpl for V1 XmlValidatingReader
-    // SxS: This method resolves an Uri but does not expose it to the caller. It's OK to suppress the SxS warning.
     [ResourceConsumption(ResourceScope.Machine, ResourceScope.Machine)]
     [ResourceExposure(ResourceScope.None)]
     internal XmlValidatingReaderImpl(Stream xmlFragment, XmlNodeType fragType, XmlParserContext context)

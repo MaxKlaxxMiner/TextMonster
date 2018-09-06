@@ -140,26 +140,6 @@ namespace TextMonster.Xml.Xml_Reader
       return null;
     }
 
-    void ExportMapping(Mapping mapping, string ns, bool isAny)
-    {
-      if (mapping is ArrayMapping)
-        ExportArrayMapping((ArrayMapping)mapping, ns, null);
-      else if (mapping is PrimitiveMapping)
-      {
-        ExportPrimitiveMapping((PrimitiveMapping)mapping, ns);
-      }
-      else if (mapping is StructMapping)
-        ExportStructMapping((StructMapping)mapping, ns, null);
-      else if (mapping is MembersMapping)
-        ExportMembersMapping((MembersMapping)mapping, ns);
-      else if (mapping is SpecialMapping)
-        ExportSpecialMapping((SpecialMapping)mapping, ns, isAny, null);
-      else if (mapping is NullableMapping)
-        ExportMapping(((NullableMapping)mapping).BaseMapping, ns, isAny);
-      else
-        throw new ArgumentException(Res.GetString(Res.XmlInternalError), "mapping");
-    }
-
     void ExportElementMapping(XmlSchemaElement element, Mapping mapping, string ns, bool isAny)
     {
       if (mapping is ArrayMapping)

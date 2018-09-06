@@ -69,34 +69,10 @@ namespace TextMonster.Xml.Xml_Reader
     // ToDateTimeOffset
     //-----------------------------------------------
 
-    public override DateTimeOffset ToDateTimeOffset(string value)
-    {
-      if (value == null) throw new ArgumentNullException("value");
-
-      return UntypedAtomicToDateTimeOffset((string)value);
-    }
-
-    public override DateTimeOffset ToDateTimeOffset(object value)
-    {
-      if (value == null) throw new ArgumentNullException("value");
-
-      Type sourceType = value.GetType();
-
-      if (sourceType == StringType) return UntypedAtomicToDateTimeOffset((string)value);
-
-      return (DateTimeOffset)ChangeTypeWildcardDestination(value, DateTimeOffsetType, null);
-    }
-
     //-----------------------------------------------
     // ToDecimal
     //-----------------------------------------------
 
-    public override decimal ToDecimal(string value)
-    {
-      if (value == null) throw new ArgumentNullException("value");
-
-      return XmlConvert.ToDecimal((string)value);
-    }
     public override decimal ToDecimal(object value)
     {
       if (value == null) throw new ArgumentNullException("value");
@@ -179,12 +155,6 @@ namespace TextMonster.Xml.Xml_Reader
     // ToSingle
     //-----------------------------------------------
 
-    public override float ToSingle(string value)
-    {
-      if (value == null) throw new ArgumentNullException("value");
-
-      return XmlConvert.ToSingle((string)value);
-    }
     public override float ToSingle(object value)
     {
       if (value == null) throw new ArgumentNullException("value");
@@ -209,14 +179,7 @@ namespace TextMonster.Xml.Xml_Reader
     {
       return DateTimeToString((DateTime)value);
     }
-    public override string ToString(DateTimeOffset value)
-    {
-      return DateTimeOffsetToString((DateTimeOffset)value);
-    }
-    public override string ToString(decimal value)
-    {
-      return XmlConvert.ToString((decimal)value);
-    }
+
     public override string ToString(double value)
     {
       return XmlConvert.ToString((double)value);
@@ -229,16 +192,7 @@ namespace TextMonster.Xml.Xml_Reader
     {
       return XmlConvert.ToString((long)value);
     }
-    public override string ToString(float value)
-    {
-      return XmlConvert.ToString((float)value);
-    }
-    public override string ToString(string value, IXmlNamespaceResolver nsResolver)
-    {
-      if (value == null) throw new ArgumentNullException("value");
 
-      return ((string)value);
-    }
     public override string ToString(object value, IXmlNamespaceResolver nsResolver)
     {
       if (value == null) throw new ArgumentNullException("value");
@@ -294,7 +248,7 @@ namespace TextMonster.Xml.Xml_Reader
       return ChangeTypeWildcardSource(value, destinationType, null);
     }
 
-    public override object ChangeType(DateTimeOffset value, Type destinationType)
+    public virtual object ChangeType(DateTimeOffset value, Type destinationType)
     {
       if (destinationType == null) throw new ArgumentNullException("destinationType");
 
@@ -304,7 +258,7 @@ namespace TextMonster.Xml.Xml_Reader
       return ChangeTypeWildcardSource(value, destinationType, null);
     }
 
-    public override object ChangeType(decimal value, Type destinationType)
+    public virtual object ChangeType(decimal value, Type destinationType)
     {
       if (destinationType == null) throw new ArgumentNullException("destinationType");
 

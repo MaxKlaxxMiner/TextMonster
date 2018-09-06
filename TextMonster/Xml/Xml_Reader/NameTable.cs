@@ -146,44 +146,6 @@ namespace TextMonster.Xml.Xml_Reader
       return null;
     }
 
-    /// <include file='doc\NameTable.uex' path='docs/doc[@for="NameTable.Get1"]/*' />
-    /// <devdoc>
-    ///      Find the matching string atom given a range of
-    ///      characters.
-    /// </devdoc>
-    public virtual string Get(char[] key, int start, int len)
-    {
-      if (len == 0)
-      {
-        return string.Empty;
-      }
-
-      // Compatibility check to ensure same exception as previous versions
-      // independently of any exceptions throw by the hashing function.
-      // note that NullReferenceException is the first one if key is null.
-      if (start >= key.Length || start < 0 || (long)start + len > (long)key.Length)
-      {
-        throw new IndexOutOfRangeException();
-      }
-
-      // Compatibility check for len < 0, just return null
-      if (len < 0)
-      {
-        return null;
-      }
-
-      int hashCode = ComputeHash32(key, start, len);
-
-      for (Entry e = entries[hashCode & mask]; e != null; e = e.next)
-      {
-        if (e.hashCode == hashCode && TextEquals(e.str, key, start, len))
-        {
-          return e.str;
-        }
-      }
-      return null;
-    }
-
     //
     // Private methods
     //

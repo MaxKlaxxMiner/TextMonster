@@ -330,14 +330,10 @@ namespace TextMonster.Xml.Xml_Reader
       Gt = '>',
       Bang = '!',
       Dollar = '$',
-      Apos = '\'',
-      Quote = '"',
       Union = '|',
       Ne = 'N',   // !=
       Le = 'L',   // <=
-      Ge = 'G',   // >=
-      And = 'A',   // &&
-      Or = 'O',   // ||
+      Ge = 'G',   // ||
       DotDot = 'D',   // ..
       SlashSlash = 'S',   // //
       Name = 'n',   // XML _Name

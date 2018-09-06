@@ -41,14 +41,6 @@ namespace TextMonster.Xml.Xml_Reader
     // ToDouble
     //-----------------------------------------------
 
-    public override double ToDouble(double value)
-    {
-      return ((double)value);
-    }
-    public override double ToDouble(float value)
-    {
-      return ((double)(float)value);
-    }
     public override double ToDouble(string value)
     {
       if (value == null) throw new ArgumentNullException("value");
@@ -89,15 +81,12 @@ namespace TextMonster.Xml.Xml_Reader
     // ToSingle
     //-----------------------------------------------
 
-    public override float ToSingle(double value)
+    public virtual float ToSingle(double value)
     {
       return ((float)(double)value);
     }
-    public override float ToSingle(float value)
-    {
-      return ((float)value);
-    }
-    public override float ToSingle(string value)
+
+    public virtual float ToSingle(string value)
     {
       if (value == null) throw new ArgumentNullException("value");
 
@@ -128,17 +117,12 @@ namespace TextMonster.Xml.Xml_Reader
       if (TypeCode == XmlTypeCode.Float) return XmlConvert.ToString(ToSingle((double)value));
       return XmlConvert.ToString((double)value);
     }
-    public override string ToString(float value)
+    public virtual string ToString(float value)
     {
       if (TypeCode == XmlTypeCode.Float) return XmlConvert.ToString((float)value);
       return XmlConvert.ToString((double)(float)value);
     }
-    public override string ToString(string value, IXmlNamespaceResolver nsResolver)
-    {
-      if (value == null) throw new ArgumentNullException("value");
 
-      return ((string)value);
-    }
     public override string ToString(object value, IXmlNamespaceResolver nsResolver)
     {
       if (value == null) throw new ArgumentNullException("value");

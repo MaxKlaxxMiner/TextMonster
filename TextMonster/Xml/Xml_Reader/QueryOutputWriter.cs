@@ -75,10 +75,6 @@ namespace TextMonster.Xml.Xml_Reader
     /// </summary>
     internal override IXmlNamespaceResolver NamespaceResolver
     {
-      get
-      {
-        return this.resolver;
-      }
       set
       {
         this.resolver = value;

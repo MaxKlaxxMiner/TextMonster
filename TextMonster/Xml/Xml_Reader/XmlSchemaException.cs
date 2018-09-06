@@ -185,19 +185,6 @@ namespace TextMonster.Xml.Xml_Reader
       this.sourceSchemaObject = source;
     }
 
-    internal void SetSource(XmlSchemaObject source)
-    {
-      this.sourceSchemaObject = source;
-      this.sourceUri = source.SourceUri;
-      this.lineNumber = source.LineNumber;
-      this.linePosition = source.LinePosition;
-    }
-
-    internal void SetResourceId(string resourceId)
-    {
-      this.res = resourceId;
-    }
-
     public override string Message
     {
       get

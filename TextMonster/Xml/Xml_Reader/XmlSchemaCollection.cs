@@ -116,30 +116,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollection.CopyTo"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public void CopyTo(XmlSchema[] array, int index)
-    {
-      if (array == null)
-        throw new ArgumentNullException("array");
-      if (index < 0)
-        throw new ArgumentOutOfRangeException("index");
-      for (XmlSchemaCollectionEnumerator e = this.GetEnumerator(); e.MoveNext(); )
-      {
-        XmlSchema schema = e.Current;
-        if (schema != null)
-        {
-          if (index == array.Length)
-          {
-            throw new ArgumentOutOfRangeException("index");
-          }
-          array[index++] = e.Current;
-        }
-      }
-    }
-
     /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollection.ICollection.IsSynchronized"]/*' />
     /// <internalonly/>
     bool ICollection.IsSynchronized

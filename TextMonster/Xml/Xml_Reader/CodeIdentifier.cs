@@ -133,13 +133,6 @@ namespace TextMonster.Xml.Xml_Reader
         throw new ArgumentException(Res.GetString(Res.XmlInvalidIdentifier, ident), "ident");
     }
 
-    internal static string GetCSharpName(string name)
-    {
-      //
-
-      return EscapeKeywords(name.Replace('+', '.'), csharp);
-    }
-
     static int GetCSharpName(Type t, Type[] parameters, int index, StringBuilder sb)
     {
       if (t.DeclaringType != null && t.DeclaringType != t)

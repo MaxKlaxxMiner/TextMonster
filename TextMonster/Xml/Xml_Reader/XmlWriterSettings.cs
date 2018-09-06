@@ -265,15 +265,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    //
-    // Public methods
-    //
-    public void Reset()
-    {
-      CheckReadOnly("Reset");
-      Initialize();
-    }
-
     // Deep clone all settings (except read-only, which is always set to false).  The original and new objects
     // can now be set independently of each other.
     public XmlWriterSettings Clone()
@@ -305,11 +296,6 @@ namespace TextMonster.Xml.Xml_Reader
       get
       {
         return doNotEscapeUriAttributes;
-      }
-      set
-      {
-        CheckReadOnly("DoNotEscapeUriAttributes");
-        doNotEscapeUriAttributes = value;
       }
     }
 

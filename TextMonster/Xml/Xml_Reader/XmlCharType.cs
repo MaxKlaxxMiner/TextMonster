@@ -166,11 +166,6 @@ namespace TextMonster.Xml.Xml_Reader
     const string s_CharData =
         "\u0009\u000a\u000d\u000d\u0020\ud7ff\ue000\ufffd";
 
-    const string s_PublicID =
-        "\u000a\u000a\u000d\u000d\u0020\u0021\u0023\u0025" +
-        "\u0027\u003b\u003d\u003d\u003f\u005a\u005f\u005f" +
-        "\u0061\u007a";
-
     const string s_Text = // TextChar = CharData - { 0xA | 0xD | '<' | '&' | 0x9 | ']' | 0xDC00 - 0xDFFF }
         "\u0020\u0025\u0027\u003b\u003d\u005c\u005e\ud7ff\ue000\ufffd";
 

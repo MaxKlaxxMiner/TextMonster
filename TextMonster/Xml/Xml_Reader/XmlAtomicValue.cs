@@ -155,14 +155,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    /// <summary>
-    /// Since XmlAtomicValue is immutable, clone simply returns this.
-    /// </summary>
-    public XmlAtomicValue Clone()
-    {
-      return this;
-    }
-
 
     //-----------------------------------------------
     // ICloneable methods

@@ -199,11 +199,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal bool HasElements
-    {
-      get { return elements != null && elements.Values.Count > 0; }
-    }
-
     internal bool HasExplicitSequence()
     {
       if (members != null)

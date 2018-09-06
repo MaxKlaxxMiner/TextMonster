@@ -55,9 +55,6 @@
     <Compile Include="Xml\Xml_Reader\BinHexDecoder.cs" />
     <Compile Include="Xml\Xml_Reader\BinHexEncoder.cs" />
     <Compile Include="Xml\Xml_Reader\Base64Encoder.cs" />
-    <Compile Include="Xml\Xml_Reader\BinXmlDateTime.cs" />
-    <Compile Include="Xml\Xml_Reader\BinXmlSqlMoney.cs" />
-    <Compile Include="Xml\Xml_Reader\BinXmlToken.cs" />
     <Compile Include="Xml\Xml_Reader\BitStack.cs" />
     <Compile Include="Xml\Xml_Reader\AttrName.cs" />
     <Compile Include="Xml\Xml_Reader\AttributeValueCache.cs" />
@@ -83,7 +80,6 @@
     <Compile Include="Xml\Xml_Reader\AutoValidator.cs" />
     <Compile Include="Xml\Xml_Reader\CacheOutputQuery.cs" />
     <Compile Include="Xml\Xml_Reader\AbsoluteQuery.cs" />
-    <Compile Include="Xml\Xml_Reader\BinXmlSqlDecimal.cs" />
     <Compile Include="Xml\Xml_Reader\Root.cs" />
     <Compile Include="Xml\Xml_Reader\XmlTextEncoder.cs" />
     <Compile Include="Xml\Xml_Reader\IncrementalReadCharsDecoder.cs" />
@@ -216,7 +212,6 @@
     <Compile Include="Xml\Xml_Reader\UrtTypes.cs" />
     <Compile Include="Xml\Xml_Reader\ValueQuery.cs" />
     <Compile Include="Xml\Xml_Reader\CompiledXpathExpr.cs" />
-    <Compile Include="Xml\Xml_Reader\SortKey.cs" />
     <Compile Include="Xml\Xml_Reader\StringFunctions.cs" />
     <Compile Include="Xml\Xml_Reader\Variable.cs" />
     <Compile Include="Xml\Xml_Reader\VariableQuery.cs" />
@@ -234,8 +229,6 @@
     <Compile Include="Xml\Xml_Reader\XmlElementAttributes.cs" />
     <Compile Include="Xml\Xml_Reader\XmlMapping.cs" />
     <Compile Include="Xml\Xml_Reader\XmlMappingAccess.cs" />
-    <Compile Include="Xml\Xml_Reader\XmlMemberMapping.cs" />
-    <Compile Include="Xml\Xml_Reader\XmlMembersMapping.cs" />
     <Compile Include="Xml\Xml_Reader\XmlNodeChangedEventHandler.cs" />
     <Compile Include="Xml\Xml_Reader\XmlnsAccessor.cs" />
     <Compile Include="Xml\Xml_Reader\XmlSchemaEnumerator.cs" />

@@ -81,12 +81,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     //provided to meet ECMA standards
-    public XmlException(String message, Exception innerException)
-      : this(message, innerException, 0, 0)
-    {
-    }
-
-    //provided to meet ECMA standards
     public XmlException(String message, Exception innerException, int lineNumber, int linePosition) :
       this(message, innerException, lineNumber, linePosition, null)
     {
@@ -119,9 +113,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal XmlException(string res, String arg, Exception innerException, IXmlLineInfo lineInfo) :
       this(res, new string[] { arg }, innerException, (lineInfo == null ? 0 : lineInfo.LineNumber), (lineInfo == null ? 0 : lineInfo.LinePosition), null) { }
 
-    internal XmlException(string res, String arg, IXmlLineInfo lineInfo, string sourceUri) :
-      this(res, new string[] { arg }, lineInfo, sourceUri) { }
-
     internal XmlException(string res, string[] args, IXmlLineInfo lineInfo) :
       this(res, args, lineInfo, null) { }
 
@@ -129,9 +120,6 @@ namespace TextMonster.Xml.Xml_Reader
       this(res, args, null, (lineInfo == null ? 0 : lineInfo.LineNumber), (lineInfo == null ? 0 : lineInfo.LinePosition), sourceUri)
     {
     }
-
-    internal XmlException(string res, int lineNumber, int linePosition) :
-      this(res, (string[])null, null, lineNumber, linePosition) { }
 
     internal XmlException(string res, string arg, int lineNumber, int linePosition) :
       this(res, new string[] { arg }, null, lineNumber, linePosition, null) { }
@@ -211,11 +199,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal static string[] BuildCharExceptionArgs(string data, int invCharIndex)
     {
       return BuildCharExceptionArgs(data[invCharIndex], invCharIndex + 1 < data.Length ? data[invCharIndex + 1] : '\0');
-    }
-
-    internal static string[] BuildCharExceptionArgs(char[] data, int invCharIndex)
-    {
-      return BuildCharExceptionArgs(data, data.Length, invCharIndex);
     }
 
     internal static string[] BuildCharExceptionArgs(char[] data, int length, int invCharIndex)

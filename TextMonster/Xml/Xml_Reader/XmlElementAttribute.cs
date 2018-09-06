@@ -119,12 +119,6 @@ namespace TextMonster.Xml.Xml_Reader
     public int Order
     {
       get { return order; }
-      set
-      {
-        if (value < 0)
-          throw new ArgumentException(Res.GetString(Res.XmlDisallowNegativeValues), "Order");
-        order = value;
-      }
     }
   }
 }

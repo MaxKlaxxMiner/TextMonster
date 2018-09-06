@@ -49,17 +49,6 @@ namespace TextMonster.Xml.Xml_Reader
     // ToDateTimeOffset
     //-----------------------------------------------
 
-    public override DateTimeOffset ToDateTimeOffset(object value)
-    {
-      if (value == null) throw new ArgumentNullException("value");
-
-      Type sourceType = value.GetType();
-
-      if (sourceType == XmlAtomicValueType) return (DateTimeOffset)((XmlAtomicValue)value).ValueAs(DateTimeOffsetType);
-
-      return (DateTimeOffset)ChangeTypeWildcardDestination(value, DateTimeOffsetType, null);
-    }
-
 
     //-----------------------------------------------
     // ToDecimal
@@ -168,26 +157,6 @@ namespace TextMonster.Xml.Xml_Reader
 
       if (destinationType == ObjectType) destinationType = DefaultClrType;
       if (destinationType == XmlAtomicValueType) return (new XmlAtomicValue(XmlSchemaType.GetBuiltInSimpleType(XmlTypeCode.DateTime), (DateTime)value));
-
-      return ChangeTypeWildcardSource(value, destinationType, null);
-    }
-
-    public override object ChangeType(DateTimeOffset value, Type destinationType)
-    {
-      if (destinationType == null) throw new ArgumentNullException("destinationType");
-
-      if (destinationType == ObjectType) destinationType = DefaultClrType;
-      if (destinationType == XmlAtomicValueType) return (new XmlAtomicValue(XmlSchemaType.GetBuiltInSimpleType(XmlTypeCode.DateTime), (DateTimeOffset)value));
-
-      return ChangeTypeWildcardSource(value, destinationType, null);
-    }
-
-    public override object ChangeType(decimal value, Type destinationType)
-    {
-      if (destinationType == null) throw new ArgumentNullException("destinationType");
-
-      if (destinationType == ObjectType) destinationType = DefaultClrType;
-      if (destinationType == XmlAtomicValueType) return (new XmlAtomicValue(XmlSchemaType.GetBuiltInSimpleType(XmlTypeCode.Decimal), value));
 
       return ChangeTypeWildcardSource(value, destinationType, null);
     }

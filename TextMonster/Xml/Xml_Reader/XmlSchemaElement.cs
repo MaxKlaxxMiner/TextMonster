@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -212,27 +211,6 @@ namespace TextMonster.Xml.Xml_Reader
     public XmlQualifiedName QualifiedName
     {
       get { return qualifiedName; }
-    }
-
-    /// <include file='doc\XmlSchemaElement.uex' path='docs/doc[@for="XmlSchemaElement.ElementType"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    [XmlIgnore]
-    [Obsolete("This property has been deprecated. Please use ElementSchemaType property that returns a strongly typed element type. http://go.microsoft.com/fwlink/?linkid=14202")]
-    public object ElementType
-    {
-      get
-      {
-        if (elementType == null)
-          return null;
-
-        if (elementType.QualifiedName.Namespace == XmlReservedNs.NsXs)
-        {
-          return elementType.Datatype; //returns XmlSchemaDatatype;
-        }
-        return elementType;
-      }
     }
 
     /// <include file='doc\XmlSchemaElement.uex' path='docs/doc[@for="XmlSchemaElement.ElementType"]/*' />

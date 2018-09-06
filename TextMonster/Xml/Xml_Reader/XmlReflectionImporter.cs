@@ -92,15 +92,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    /// <include file='doc\XmlReflectionImporter.uex' path='docs/doc[@for="XmlReflectionImporter.IncludeType"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public void IncludeType(Type type)
-    {
-      IncludeType(type, new RecursionLimiter());
-    }
-
     void IncludeType(Type type, RecursionLimiter limiter)
     {
       int previousNestingLevel = arrayNestingLevel;
@@ -130,24 +121,6 @@ namespace TextMonster.Xml.Xml_Reader
       return ImportTypeMapping(type, null, null);
     }
 
-    /// <include file='doc\XmlReflectionImporter.uex' path='docs/doc[@for="XmlReflectionImporter.ImportTypeMapping1"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlTypeMapping ImportTypeMapping(Type type, string defaultNamespace)
-    {
-      return ImportTypeMapping(type, null, defaultNamespace);
-    }
-
-    /// <include file='doc\XmlReflectionImporter.uex' path='docs/doc[@for="XmlReflectionImporter.ImportTypeMapping2"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlTypeMapping ImportTypeMapping(Type type, XmlRootAttribute root)
-    {
-      return ImportTypeMapping(type, root, null);
-    }
-
     /// <include file='doc\XmlReflectionImporter.uex' path='docs/doc[@for="XmlReflectionImporter.ImportTypeMapping3"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
@@ -158,68 +131,6 @@ namespace TextMonster.Xml.Xml_Reader
         throw new ArgumentNullException("type");
       XmlTypeMapping xmlMapping = new XmlTypeMapping(typeScope, ImportElement(modelScope.GetTypeModel(type), root, defaultNamespace, new RecursionLimiter()));
       xmlMapping.SetKeyInternal(XmlMapping.GenerateKey(type, root, defaultNamespace));
-      xmlMapping.GenerateSerializer = true;
-      return xmlMapping;
-    }
-
-    /// <include file='doc\XmlReflectionImporter.uex' path='docs/doc[@for="XmlReflectionImporter.ImportMembersMapping"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlMembersMapping ImportMembersMapping(string elementName, string ns, XmlReflectionMember[] members, bool hasWrapperElement)
-    {
-      return ImportMembersMapping(elementName, ns, members, hasWrapperElement, false);
-    }
-
-    /// <include file='doc\XmlReflectionImporter.uex' path='docs/doc[@for="XmlReflectionImporter.ImportMembersMapping1"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlMembersMapping ImportMembersMapping(string elementName, string ns, XmlReflectionMember[] members, bool hasWrapperElement, bool rpc)
-    {
-      return ImportMembersMapping(elementName, ns, members, hasWrapperElement, rpc, false);
-    }
-
-    /// <include file='doc\XmlReflectionImporter.uex' path='docs/doc[@for="XmlReflectionImporter.ImportMembersMapping2"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    /// 
-    public XmlMembersMapping ImportMembersMapping(string elementName, string ns, XmlReflectionMember[] members, bool hasWrapperElement, bool rpc, bool openModel)
-    {
-      return ImportMembersMapping(elementName, ns, members, hasWrapperElement, rpc, openModel, XmlMappingAccess.Read | XmlMappingAccess.Write);
-    }
-
-    /// <include file='doc\XmlReflectionImporter.uex' path='docs/doc[@for="XmlReflectionImporter.ImportMembersMapping3"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    /// 
-    public XmlMembersMapping ImportMembersMapping(string elementName, string ns, XmlReflectionMember[] members, bool hasWrapperElement, bool rpc, bool openModel, XmlMappingAccess access)
-    {
-      ElementAccessor element = new ElementAccessor();
-      element.Name = elementName == null || elementName.Length == 0 ? elementName : XmlConvert.EncodeLocalName(elementName);
-      element.Namespace = ns;
-
-      MembersMapping membersMapping = ImportMembersMapping(members, ns, hasWrapperElement, rpc, openModel, new RecursionLimiter());
-      element.Mapping = membersMapping;
-      element.Form = XmlSchemaForm.Qualified;   // elements within soap:body are always qualified
-      if (!rpc)
-      {
-        if (hasWrapperElement)
-          element = (ElementAccessor)ReconcileAccessor(element, this.elements);
-        else
-        {
-          foreach (MemberMapping mapping in membersMapping.Members)
-          {
-            if (mapping.Elements != null && mapping.Elements.Length > 0)
-            {
-              mapping.Elements[0] = (ElementAccessor)ReconcileAccessor(mapping.Elements[0], this.elements);
-            }
-          }
-        }
-      }
-      XmlMembersMapping xmlMapping = new XmlMembersMapping(typeScope, element, access);
       xmlMapping.GenerateSerializer = true;
       return xmlMapping;
     }

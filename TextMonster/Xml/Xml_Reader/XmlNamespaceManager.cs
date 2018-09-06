@@ -173,28 +173,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public virtual void RemoveNamespace(string prefix, string uri)
-    {
-      if (uri == null)
-      {
-        throw new ArgumentNullException("uri");
-      }
-      if (prefix == null)
-      {
-        throw new ArgumentNullException("prefix");
-      }
-
-      int declIndex = LookupNamespaceDecl(prefix);
-      while (declIndex != -1)
-      {
-        if (String.Equals(nsdecls[declIndex].uri, uri) && nsdecls[declIndex].scopeId == scopeId)
-        {
-          nsdecls[declIndex].uri = null;
-        }
-        declIndex = nsdecls[declIndex].previousNsIndex;
-      }
-    }
-
     public virtual IEnumerator GetEnumerator()
     {
       Dictionary<string, string> prefixes = new Dictionary<string, string>(lastDecl + 1);
