@@ -43,7 +43,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     public override bool Equals(object obj)
     {
-      if (Ref.ReferenceEquals(this, obj))
+      if (ReferenceEquals(this, obj))
       {
         return true;
       }
@@ -54,8 +54,8 @@ namespace TextMonster.Xml.Xml_Reader
         // If the location is empty (but only then) we also want to compare the original schema instance.
         // As noted above the originalSchema is null if the chameleonLocation is non-empty. As a result we
         // can simply compare the reference to the original schema always (regardless of the schemalocation).
-        return this.targetNS.Equals(cKey.targetNS) && this.chameleonLocation.Equals(cKey.chameleonLocation) &&
-               Ref.ReferenceEquals(originalSchema, cKey.originalSchema);
+        return targetNS.Equals(cKey.targetNS) && chameleonLocation.Equals(cKey.chameleonLocation) &&
+               ReferenceEquals(originalSchema, cKey.originalSchema);
       }
       return false;
     }

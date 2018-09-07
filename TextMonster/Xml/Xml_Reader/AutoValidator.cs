@@ -52,7 +52,7 @@
           SchemaInfo schemaInfo = node.SchemaInfo;
           if (schemaInfo.SchemaType == SchemaType.XSD)
             return ValidationType.Schema;
-          else if (schemaInfo.SchemaType == SchemaType.XDR)
+          if (schemaInfo.SchemaType == SchemaType.XDR)
             return ValidationType.XDR;
         }
       }
@@ -64,42 +64,39 @@
         {
           return ValidationType.Schema;
         }
-        else if (schemaType == SchemaType.XDR)
+        if (schemaType == SchemaType.XDR)
         {
           return ValidationType.XDR;
         }
-        else
+        int count = reader.AttributeCount;
+        for (int i = 0; i < count; i++)
         {
-          int count = reader.AttributeCount;
-          for (int i = 0; i < count; i++)
+          reader.MoveToAttribute(i);
+          string objectNs = reader.NamespaceURI;
+          string objectName = reader.LocalName;
+          if (Ref.Equal(objectNs, SchemaNames.NsXmlNs))
           {
-            reader.MoveToAttribute(i);
-            string objectNs = reader.NamespaceURI;
-            string objectName = reader.LocalName;
-            if (Ref.Equal(objectNs, SchemaNames.NsXmlNs))
+            if (XdrBuilder.IsXdrSchema(reader.Value))
             {
-              if (XdrBuilder.IsXdrSchema(reader.Value))
-              {
-                reader.MoveToElement();
-                return ValidationType.XDR;
-              }
-            }
-            else if (Ref.Equal(objectNs, SchemaNames.NsXsi))
-            {
-              reader.MoveToElement();
-              return ValidationType.Schema;
-            }
-            else if (Ref.Equal(objectNs, SchemaNames.QnDtDt.Namespace) && Ref.Equal(objectName, SchemaNames.QnDtDt.Name))
-            {
-              reader.SchemaTypeObject = XmlSchemaDatatype.FromXdrName(reader.Value);
               reader.MoveToElement();
               return ValidationType.XDR;
             }
-          } //end of for
-          if (count > 0)
+          }
+          else if (Ref.Equal(objectNs, SchemaNames.NsXsi))
           {
             reader.MoveToElement();
+            return ValidationType.Schema;
           }
+          else if (Ref.Equal(objectNs, SchemaNames.QnDtDt.Namespace) && Ref.Equal(objectName, SchemaNames.QnDtDt.Name))
+          {
+            reader.SchemaTypeObject = XmlSchemaDatatype.FromXdrName(reader.Value);
+            reader.MoveToElement();
+            return ValidationType.XDR;
+          }
+        } //end of for
+        if (count > 0)
+        {
+          reader.MoveToElement();
         }
       }
       return ValidationType.Auto;

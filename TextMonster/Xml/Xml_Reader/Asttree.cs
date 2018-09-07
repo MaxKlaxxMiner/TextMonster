@@ -19,11 +19,11 @@ namespace TextMonster.Xml.Xml_Reader
     // when making a new instance for Asttree, we do the compiling, and create the static tree instance
     public Asttree(string xPath, bool isField, XmlNamespaceManager nsmgr)
     {
-      this.xpathexpr = xPath;
+      xpathexpr = xPath;
       this.isField = isField;
       this.nsmgr = nsmgr;
       // checking grammar... and build fAxisArray
-      this.CompileXPath(xPath, isField, nsmgr);          // might throw exception in the middle
+      CompileXPath(xPath, isField, nsmgr);          // might throw exception in the middle
     }
 
     // this part is for parsing restricted xpath from grammar
@@ -62,7 +62,7 @@ namespace TextMonster.Xml.Xml_Reader
       // can't new ForwardAxis right away
       string[] xpath = xPath.Split('|');
       ArrayList AstArray = new ArrayList(xpath.Length);
-      this.fAxisArray = new ArrayList(xpath.Length);
+      fAxisArray = new ArrayList(xpath.Length);
 
       // throw compile exceptions
       // can i only new one builder here then run compile several times??
@@ -103,17 +103,14 @@ namespace TextMonster.Xml.Xml_Reader
           {
             throw new XmlSchemaException(Res.Sch_SelectorAttr, xPath);
           }
-          else
+          SetURN(stepAst, nsmgr);
+          try
           {
-            SetURN(stepAst, nsmgr);
-            try
-            {
-              stepAst = (Axis)(stepAst.Input);
-            }
-            catch
-            {
-              throw new XmlSchemaException(Res.Sch_ICXpathError, xPath);
-            }
+            stepAst = (Axis)(stepAst.Input);
+          }
+          catch
+          {
+            throw new XmlSchemaException(Res.Sch_ICXpathError, xPath);
           }
         }
 
@@ -151,11 +148,11 @@ namespace TextMonster.Xml.Xml_Reader
         {      // top "." and has other element beneath, trim this "." node too
           if (IsSelf(ast) && (ast.Input != null))
           {
-            this.fAxisArray.Add(new ForwardAxis(DoubleLinkAxis.ConvertTree((Axis)(ast.Input)), false));
+            fAxisArray.Add(new ForwardAxis(DoubleLinkAxis.ConvertTree((Axis)(ast.Input)), false));
           }
           else
           {
-            this.fAxisArray.Add(new ForwardAxis(DoubleLinkAxis.ConvertTree(ast), false));
+            fAxisArray.Add(new ForwardAxis(DoubleLinkAxis.ConvertTree(ast), false));
           }
           continue;
         }
@@ -179,11 +176,11 @@ namespace TextMonster.Xml.Xml_Reader
         // trim top "." if it's not the only node
         if (IsSelf(ast) && (ast.Input != null))
         {
-          this.fAxisArray.Add(new ForwardAxis(DoubleLinkAxis.ConvertTree((Axis)(ast.Input)), true));
+          fAxisArray.Add(new ForwardAxis(DoubleLinkAxis.ConvertTree((Axis)(ast.Input)), true));
         }
         else
         {
-          this.fAxisArray.Add(new ForwardAxis(DoubleLinkAxis.ConvertTree(ast), true));
+          fAxisArray.Add(new ForwardAxis(DoubleLinkAxis.ConvertTree(ast), true));
         }
       }
     }

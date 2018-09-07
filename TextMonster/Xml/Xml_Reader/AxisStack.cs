@@ -7,31 +7,29 @@ namespace TextMonster.Xml.Xml_Reader
     // property
     private ArrayList stack;                            // of AxisElement
     private ForwardAxis subtree;                        // reference to the corresponding subtree
-    private ActiveAxis parent;
 
     internal ForwardAxis Subtree
     {
-      get { return this.subtree; }
+      get { return subtree; }
     }
 
     internal int Length
     {                               // stack length
-      get { return this.stack.Count; }
+      get { return stack.Count; }
     }
 
     // instructor
     public AxisStack(ForwardAxis faxis, ActiveAxis parent)
     {
-      this.subtree = faxis;
-      this.stack = new ArrayList();
-      this.parent = parent;       // need to use its contextdepth each time....
+      subtree = faxis;
+      stack = new ArrayList();
 
       // improvement:
       // if ! isDss, there has nothing to do with Push/Pop, only one copy each time will be kept
       // if isDss, push and pop each time....
       if (!faxis.IsDss)
       {                // keep an instance
-        this.Push(1);              // context depth + 1
+        Push(1);              // context depth + 1
       }
       // else just keep stack empty
     }
@@ -39,13 +37,13 @@ namespace TextMonster.Xml.Xml_Reader
     // method
     internal void Push(int depth)
     {
-      AxisElement eaxis = new AxisElement(this.subtree.RootNode, depth);
-      this.stack.Add(eaxis);
+      AxisElement eaxis = new AxisElement(subtree.RootNode, depth);
+      stack.Add(eaxis);
     }
 
     internal void Pop()
     {
-      this.stack.RemoveAt(Length - 1);
+      stack.RemoveAt(Length - 1);
     }
 
     // used in the beginning of .//  and MoveToChild
@@ -77,18 +75,18 @@ namespace TextMonster.Xml.Xml_Reader
     // needn't change even tree structure changes
     internal void MoveToParent(string name, string URN, int depth)
     {
-      if (this.subtree.IsSelfAxis)
+      if (subtree.IsSelfAxis)
       {
         return;
       }
 
-      for (int i = 0; i < this.stack.Count; ++i)
+      for (int i = 0; i < stack.Count; ++i)
       {
-        ((AxisElement)stack[i]).MoveToParent(depth, this.subtree);
+        ((AxisElement)stack[i]).MoveToParent(depth, subtree);
       }
 
       // in ".//"'s case, since each time you push one new element while match, why not pop one too while match?
-      if (this.subtree.IsDss && Equal(this.subtree.RootNode.Name, this.subtree.RootNode.Urn, name, URN))
+      if (subtree.IsDss && Equal(subtree.RootNode.Name, subtree.RootNode.Urn, name, URN))
       {
         Pop();
       }   // only the last one
@@ -100,13 +98,13 @@ namespace TextMonster.Xml.Xml_Reader
     {
       bool result = false;
       // push first
-      if (this.subtree.IsDss && Equal(this.subtree.RootNode.Name, this.subtree.RootNode.Urn, name, URN))
+      if (subtree.IsDss && Equal(subtree.RootNode.Name, subtree.RootNode.Urn, name, URN))
       {
         Push(-1);
       }
-      for (int i = 0; i < this.stack.Count; ++i)
+      for (int i = 0; i < stack.Count; ++i)
       {
-        if (((AxisElement)stack[i]).MoveToChild(name, URN, depth, this.subtree))
+        if (((AxisElement)stack[i]).MoveToChild(name, URN, depth, subtree))
         {
           result = true;
         }
@@ -119,11 +117,11 @@ namespace TextMonster.Xml.Xml_Reader
     // stack element only deal with moving the pointer around elements
     internal bool MoveToAttribute(string name, string URN, int depth)
     {
-      if (!this.subtree.IsAttribute)
+      if (!subtree.IsAttribute)
       {
         return false;
       }
-      if (!Equal(this.subtree.TopNode.Name, this.subtree.TopNode.Urn, name, URN))
+      if (!Equal(subtree.TopNode.Name, subtree.TopNode.Urn, name, URN))
       {
         return false;
       }
@@ -131,15 +129,15 @@ namespace TextMonster.Xml.Xml_Reader
       bool result = false;
 
       // no stack element for single attribute, so dealing with it seperately
-      if (this.subtree.TopNode.Input == null)
+      if (subtree.TopNode.Input == null)
       {
-        return (this.subtree.IsDss || (depth == 1));
+        return (subtree.IsDss || (depth == 1));
       }
 
-      for (int i = 0; i < this.stack.Count; ++i)
+      for (int i = 0; i < stack.Count; ++i)
       {
-        AxisElement eaxis = (AxisElement)this.stack[i];
-        if ((eaxis.isMatch) && (eaxis.CurNode == this.subtree.TopNode.Input))
+        AxisElement eaxis = (AxisElement)stack[i];
+        if ((eaxis.isMatch) && (eaxis.CurNode == subtree.TopNode.Input))
         {
           result = true;
         }

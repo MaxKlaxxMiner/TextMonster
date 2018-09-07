@@ -12,7 +12,7 @@
       this.prefix = prefix;
       this.namespaceUri = namespaceUri;
       this.localName = localName;
-      this.prev = 0;
+      prev = 0;
     }
 
     internal bool IsDuplicate(string prefix, string localName, string namespaceUri)

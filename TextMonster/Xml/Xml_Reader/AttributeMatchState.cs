@@ -11,6 +11,6 @@
     ProhibitedAnyAttribute,
     ProhibitedAttribute,
     AttributeNameMismatch,
-    ValidateAttributeInvalidCall,
+    ValidateAttributeInvalidCall
   }
 }

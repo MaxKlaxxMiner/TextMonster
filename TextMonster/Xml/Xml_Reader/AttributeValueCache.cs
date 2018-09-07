@@ -3,7 +3,7 @@ using System.Text;
 
 namespace TextMonster.Xml.Xml_Reader
 {
-  partial class AttributeValueCache
+  class AttributeValueCache
   {
 
     enum ItemType
@@ -16,7 +16,7 @@ namespace TextMonster.Xml.Xml_Reader
       StringChars,
       Raw,
       RawChars,
-      ValueString,
+      ValueString
     }
 
     class Item
@@ -59,10 +59,7 @@ namespace TextMonster.Xml.Xml_Reader
         {
           return singleStringValue;
         }
-        else
-        {
-          return stringValue.ToString();
-        }
+        return stringValue.ToString();
       }
     }
 
@@ -118,7 +115,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
       stringValue.Append(highChar);
       stringValue.Append(lowChar);
-      AddItem(ItemType.SurrogateCharEntity, new char[] { lowChar, highChar });
+      AddItem(ItemType.SurrogateCharEntity, new[] { lowChar, highChar });
     }
 
     internal void WriteWhitespace(string ws)

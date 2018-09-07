@@ -33,14 +33,14 @@
       this.input = input;
       this.prefix = prefix;
       this.name = name;
-      this.nodeType = nodetype;
+      nodeType = nodetype;
     }
 
     // constructor
     public Axis(AxisType axisType, AstNode input)
       : this(axisType, input, string.Empty, string.Empty, XPathNodeType.All)
     {
-      this.abbrAxis = true;
+      abbrAxis = true;
     }
 
     public override AstType Type { get { return AstType.Axis; } }

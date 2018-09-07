@@ -30,10 +30,9 @@ namespace TextMonster.Xml.Xml_Reader
       identifier = MakeValid(identifier);
       if (identifier.Length <= 2)
         return identifier.ToUpper(CultureInfo.InvariantCulture);
-      else if (char.IsLower(identifier[0]))
+      if (char.IsLower(identifier[0]))
         return char.ToUpper(identifier[0], CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture) + identifier.Substring(1);
-      else
-        return identifier;
+      return identifier;
     }
 
     /// <include file='doc\CodeIdentifier.uex' path='docs/doc[@for="CodeIdentifier.MakeCamel"]/*' />
@@ -45,10 +44,9 @@ namespace TextMonster.Xml.Xml_Reader
       identifier = MakeValid(identifier);
       if (identifier.Length <= 2)
         return identifier.ToLower(CultureInfo.InvariantCulture);
-      else if (char.IsUpper(identifier[0]))
+      if (char.IsUpper(identifier[0]))
         return char.ToLower(identifier[0], CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture) + identifier.Substring(1);
-      else
-        return identifier;
+      return identifier;
     }
 
     /// <include file='doc\CodeIdentifier.uex' path='docs/doc[@for="CodeIdentifier.MakeValid"]/*' />
@@ -181,7 +179,7 @@ namespace TextMonster.Xml.Xml_Reader
       string ns = t.Namespace;
       if (ns != null && ns.Length > 0)
       {
-        string[] parts = ns.Split(new char[] { '.' });
+        string[] parts = ns.Split('.');
         for (int i = 0; i < parts.Length; i++)
         {
           EscapeKeywords(parts[i], csharp, sb);

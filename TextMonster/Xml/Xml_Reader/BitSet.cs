@@ -81,7 +81,7 @@ namespace TextMonster.Xml.Xml_Reader
         offset = 0;
         word = bits[nBitSlot];
       }
-      while ((word & (uint)1) == 0)
+      while ((word & 1) == 0)
       {
         word >>= 1;
         offset++;
@@ -137,7 +137,7 @@ namespace TextMonster.Xml.Xml_Reader
       {
         h ^= (int)bits[i] * (i + 1);
       }
-      return (int)((h >> 32) ^ h);
+      return (h >> 32) ^ h;
     }
 
 
@@ -211,10 +211,10 @@ namespace TextMonster.Xml.Xml_Reader
 
     public bool Intersects(BitSet other)
     {
-      int i = Math.Min(this.bits.Length, other.bits.Length);
+      int i = Math.Min(bits.Length, other.bits.Length);
       while (--i >= 0)
       {
-        if ((this.bits[i] & other.bits[i]) != 0)
+        if ((bits[i] & other.bits[i]) != 0)
         {
           return true;
         }

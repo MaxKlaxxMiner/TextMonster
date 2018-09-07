@@ -27,16 +27,13 @@ namespace TextMonster.Xml.Xml_Reader
       if (parent.CanReplaceAt(index))
       {
         // Create the replacement character entity
-        charEntity = string.Format(CultureInfo.InvariantCulture, "&#x{0:X};", new object[] { (int)charUnknown });
+        charEntity = string.Format(CultureInfo.InvariantCulture, "&#x{0:X};", (int)charUnknown);
         charEntityIndex = 0;
         return true;
       }
-      else
-      {
-        EncoderFallbackBuffer errorFallbackBuffer = (new EncoderExceptionFallback()).CreateFallbackBuffer();
-        errorFallbackBuffer.Fallback(charUnknown, index);
-        return false;
-      }
+      EncoderFallbackBuffer errorFallbackBuffer = (new EncoderExceptionFallback()).CreateFallbackBuffer();
+      errorFallbackBuffer.Fallback(charUnknown, index);
+      return false;
     }
 
     public override bool Fallback(char charUnknownHigh, char charUnknownLow, int index)
@@ -56,16 +53,13 @@ namespace TextMonster.Xml.Xml_Reader
       if (parent.CanReplaceAt(index))
       {
         // Create the replacement character entity
-        charEntity = string.Format(CultureInfo.InvariantCulture, "&#x{0:X};", new object[] { SurrogateCharToUtf32(charUnknownHigh, charUnknownLow) });
+        charEntity = string.Format(CultureInfo.InvariantCulture, "&#x{0:X};", SurrogateCharToUtf32(charUnknownHigh, charUnknownLow));
         charEntityIndex = 0;
         return true;
       }
-      else
-      {
-        EncoderFallbackBuffer errorFallbackBuffer = (new EncoderExceptionFallback()).CreateFallbackBuffer();
-        errorFallbackBuffer.Fallback(charUnknownHigh, charUnknownLow, index);
-        return false;
-      }
+      EncoderFallbackBuffer errorFallbackBuffer = (new EncoderExceptionFallback()).CreateFallbackBuffer();
+      errorFallbackBuffer.Fallback(charUnknownHigh, charUnknownLow, index);
+      return false;
     }
 
     public override char GetNextChar()
@@ -82,11 +76,8 @@ namespace TextMonster.Xml.Xml_Reader
       {
         return (char)0;
       }
-      else
-      {
-        char ch = charEntity[charEntityIndex++];
-        return ch;
-      }
+      char ch = charEntity[charEntityIndex++];
+      return ch;
     }
 
     public override bool MovePrevious()
@@ -95,19 +86,13 @@ namespace TextMonster.Xml.Xml_Reader
       {
         return false;
       }
-      else
+      // Could be == length if just read the last character
+      if (charEntityIndex > 0)
       {
-        // Could be == length if just read the last character
-        if (charEntityIndex > 0)
-        {
-          charEntityIndex--;
-          return true;
-        }
-        else
-        {
-          return false;
-        }
+        charEntityIndex--;
+        return true;
       }
+      return false;
     }
 
 
@@ -119,10 +104,7 @@ namespace TextMonster.Xml.Xml_Reader
         {
           return 0;
         }
-        else
-        {
-          return charEntity.Length - charEntityIndex;
-        }
+        return charEntity.Length - charEntityIndex;
       }
     }
 

@@ -38,10 +38,7 @@ namespace TextMonster.Xml.Xml_Reader
       {
         return stack[--top];
       }
-      else
-      {
-        return 0;
-      }
+      return 0;
     }
   }
 }

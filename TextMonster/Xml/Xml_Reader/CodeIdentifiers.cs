@@ -50,8 +50,7 @@ namespace TextMonster.Xml.Xml_Reader
     {
       if (camelCase)
         return CodeIdentifier.MakeCamel(identifier);
-      else
-        return CodeIdentifier.MakePascal(identifier);
+      return CodeIdentifier.MakePascal(identifier);
     }
 
     /// <include file='doc\CodeIdentifiers.uex' path='docs/doc[@for="CodeIdentifiers.MakeUnique"]/*' />
@@ -145,10 +144,10 @@ namespace TextMonster.Xml.Xml_Reader
     internal CodeIdentifiers Clone()
     {
       CodeIdentifiers newIdentifiers = new CodeIdentifiers();
-      newIdentifiers.identifiers = (Hashtable)this.identifiers.Clone();
-      newIdentifiers.reservedIdentifiers = (Hashtable)this.reservedIdentifiers.Clone();
-      newIdentifiers.list = (ArrayList)this.list.Clone();
-      newIdentifiers.camelCase = this.camelCase;
+      newIdentifiers.identifiers = (Hashtable)identifiers.Clone();
+      newIdentifiers.reservedIdentifiers = (Hashtable)reservedIdentifiers.Clone();
+      newIdentifiers.list = (ArrayList)list.Clone();
+      newIdentifiers.camelCase = camelCase;
 
       return newIdentifiers;
     }

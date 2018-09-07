@@ -19,7 +19,7 @@ namespace TextMonster.Xml.Xml_Reader
       // Set sentinel bit in 1st position.  As bits are shifted onto this.curr, this sentinel
       // bit shifts to the left.  When it's about to overflow, this.curr will be pushed
       // onto an unsigned int stack and the sentinel bit will be reset to 0x1.
-      this.curr = 0x1;
+      curr = 0x1;
     }
 
     /// <summary>
@@ -27,14 +27,14 @@ namespace TextMonster.Xml.Xml_Reader
     /// </summary>
     public void PushBit(bool bit)
     {
-      if ((this.curr & 0x80000000) != 0)
+      if ((curr & 0x80000000) != 0)
       {
         // If sentinel bit has reached the last position, push this.curr
         PushCurr();
       }
 
       // Shift new bit onto this.curr (which must have at least one open position)
-      this.curr = (this.curr << 1) | (bit ? 1u : 0u);
+      curr = (curr << 1) | (bit ? 1u : 0u);
     }
 
     /// <summary>
@@ -45,11 +45,11 @@ namespace TextMonster.Xml.Xml_Reader
       bool bit;
 
       // Shift rightmost bit from this.curr
-      bit = (this.curr & 0x1) != 0;
+      bit = (curr & 0x1) != 0;
 
-      this.curr >>= 1;
+      curr >>= 1;
 
-      if (this.curr == 0x1)
+      if (curr == 0x1)
       {
         // If sentinel bit has reached the rightmost position, pop this.curr
         PopCurr();
@@ -63,7 +63,7 @@ namespace TextMonster.Xml.Xml_Reader
     /// </summary>
     public bool PeekBit()
     {
-      return (this.curr & 0x1) != 0;
+      return (curr & 0x1) != 0;
     }
 
     /// <summary>
@@ -74,23 +74,23 @@ namespace TextMonster.Xml.Xml_Reader
     {
       int len;
 
-      if (this.bitStack == null)
+      if (bitStack == null)
       {
-        this.bitStack = new uint[16];
+        bitStack = new uint[16];
       }
 
       // Push current unsigned int (which has been filled) onto a stack
       // and initialize this.curr to be used for future pushes.
-      this.bitStack[this.stackPos++] = this.curr;
-      this.curr = 0x1;
+      bitStack[stackPos++] = curr;
+      curr = 0x1;
 
       // Resize stack if necessary
-      len = this.bitStack.Length;
-      if (this.stackPos >= len)
+      len = bitStack.Length;
+      if (stackPos >= len)
       {
         uint[] bitStackNew = new uint[2 * len];
-        Array.Copy(this.bitStack, bitStackNew, len);
-        this.bitStack = bitStackNew;
+        Array.Copy(bitStack, bitStackNew, len);
+        bitStack = bitStackNew;
       }
     }
 
@@ -100,8 +100,8 @@ namespace TextMonster.Xml.Xml_Reader
     /// </summary>
     private void PopCurr()
     {
-      if (this.stackPos > 0)
-        this.curr = this.bitStack[--this.stackPos];
+      if (stackPos > 0)
+        curr = bitStack[--stackPos];
     }
   }
 }

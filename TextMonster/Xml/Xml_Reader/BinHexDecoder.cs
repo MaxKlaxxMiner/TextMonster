@@ -62,7 +62,7 @@ namespace TextMonster.Xml.Xml_Reader
         fixed (byte* pBytes = &buffer[curIndex])
         {
           Decode(pChars, pChars + len, pBytes, pBytes + (endIndex - curIndex),
-                  ref this.hasHalfByteCached, ref this.cachedHalfByte, out charsDecoded, out bytesDecoded);
+                  ref hasHalfByteCached, ref cachedHalfByte, out charsDecoded, out bytesDecoded);
         }
       }
       curIndex += bytesDecoded;
@@ -98,7 +98,7 @@ namespace TextMonster.Xml.Xml_Reader
         fixed (byte* pBytes = &buffer[curIndex])
         {
           Decode(pChars + startPos, pChars + startPos + len, pBytes, pBytes + (endIndex - curIndex),
-                  ref this.hasHalfByteCached, ref this.cachedHalfByte, out charsDecoded, out bytesDecoded);
+                  ref hasHalfByteCached, ref cachedHalfByte, out charsDecoded, out bytesDecoded);
         }
       }
       curIndex += bytesDecoded;
@@ -107,16 +107,16 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal override void Reset()
     {
-      this.hasHalfByteCached = false;
-      this.cachedHalfByte = 0;
+      hasHalfByteCached = false;
+      cachedHalfByte = 0;
     }
 
     internal override void SetNextOutputBuffer(Array buffer, int index, int count)
     {
       this.buffer = (byte[])buffer;
-      this.startIndex = index;
-      this.curIndex = index;
-      this.endIndex = index + count;
+      startIndex = index;
+      curIndex = index;
+      endIndex = index + count;
     }
 
     //

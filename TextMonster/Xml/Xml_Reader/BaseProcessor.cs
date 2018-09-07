@@ -8,7 +8,7 @@ namespace TextMonster.Xml.Xml_Reader
     SchemaNames schemaNames;
     ValidationEventHandler eventHandler;
     XmlSchemaCompilationSettings compilationSettings;
-    int errorCount = 0;
+    int errorCount;
     string NsXml;
 
     public BaseProcessor(XmlNameTable nameTable, SchemaNames schemaNames, ValidationEventHandler eventHandler, XmlSchemaCompilationSettings compilationSettings)
@@ -53,7 +53,7 @@ namespace TextMonster.Xml.Xml_Reader
       {
         return;
       }
-      XmlSchemaObject existingObject = (XmlSchemaObject)table[qname];
+      XmlSchemaObject existingObject = table[qname];
 
       if (existingObject != null)
       {
@@ -69,12 +69,12 @@ namespace TextMonster.Xml.Xml_Reader
           { //Check for xml namespace
             XmlSchema schemaForXmlNS = Preprocessor.GetBuildInSchema();
             XmlSchemaObject builtInAttributeGroup = schemaForXmlNS.AttributeGroups[qname];
-            if ((object)existingObject == (object)builtInAttributeGroup)
+            if (existingObject == builtInAttributeGroup)
             {
               table.Insert(qname, item);
               return;
             }
-            else if ((object)item == (object)builtInAttributeGroup)
+            if (item == builtInAttributeGroup)
             { //trying to overwrite customer's component with built-in, ignore built-in
               return;
             }
@@ -92,12 +92,12 @@ namespace TextMonster.Xml.Xml_Reader
           {
             XmlSchema schemaForXmlNS = Preprocessor.GetBuildInSchema();
             XmlSchemaObject builtInAttribute = schemaForXmlNS.Attributes[qname];
-            if ((object)existingObject == (object)builtInAttribute)
+            if (existingObject == builtInAttribute)
             { //replace built-in one
               table.Insert(qname, item);
               return;
             }
-            else if ((object)item == (object)builtInAttribute)
+            if (item == builtInAttribute)
             { //trying to overwrite customer's component with built-in, ignore built-in
               return;
             }
@@ -213,7 +213,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     protected void SendValidationEvent(string code, string msg1, string msg2, XmlSchemaObject source)
     {
-      SendValidationEvent(new XmlSchemaException(code, new string[] { msg1, msg2 }, source), XmlSeverityType.Error);
+      SendValidationEvent(new XmlSchemaException(code, new[] { msg1, msg2 }, source), XmlSeverityType.Error);
     }
 
     protected void SendValidationEvent(string code, string[] args, Exception innerException, XmlSchemaObject source)
@@ -223,7 +223,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     protected void SendValidationEvent(string code, string msg1, string msg2, string sourceUri, int lineNumber, int linePosition)
     {
-      SendValidationEvent(new XmlSchemaException(code, new string[] { msg1, msg2 }, sourceUri, lineNumber, linePosition), XmlSeverityType.Error);
+      SendValidationEvent(new XmlSchemaException(code, new[] { msg1, msg2 }, sourceUri, lineNumber, linePosition), XmlSeverityType.Error);
     }
 
     protected void SendValidationEvent(string code, XmlSchemaObject source, XmlSeverityType severity)

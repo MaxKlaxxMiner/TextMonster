@@ -19,7 +19,7 @@ namespace TextMonster.Xml.Xml_Reader
     public ContentValidator(XmlSchemaContentType contentType)
     {
       this.contentType = contentType;
-      this.isEmptiable = true;
+      isEmptiable = true;
     }
 
     protected ContentValidator(XmlSchemaContentType contentType, bool isOpen, bool isEmptiable)
@@ -45,8 +45,7 @@ namespace TextMonster.Xml.Xml_Reader
       {
         if (contentType == XmlSchemaContentType.TextOnly || contentType == XmlSchemaContentType.Empty)
           return false;
-        else
-          return isOpen;
+        return isOpen;
       }
       set { isOpen = value; }
     }

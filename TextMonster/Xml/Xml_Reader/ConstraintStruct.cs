@@ -14,18 +14,18 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal int TableDim
     {
-      get { return this.tableDim; }
+      get { return tableDim; }
     }
 
     internal ConstraintStruct(CompiledIdentityConstraint constraint)
     {
       this.constraint = constraint;
-      this.tableDim = constraint.Fields.Length;
-      this.axisFields = new ArrayList();              // empty fields
-      this.axisSelector = new SelectorActiveAxis(constraint.Selector, this);
+      tableDim = constraint.Fields.Length;
+      axisFields = new ArrayList();              // empty fields
+      axisSelector = new SelectorActiveAxis(constraint.Selector, this);
       if (this.constraint.Role != CompiledIdentityConstraint.ConstraintRole.Keyref)
       {
-        this.qualifiedTable = new Hashtable();
+        qualifiedTable = new Hashtable();
       }
     }
 

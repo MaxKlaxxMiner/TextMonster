@@ -38,8 +38,6 @@ namespace TextMonster.Xml.Xml_Reader
           XmlDocumentType documentType = (XmlDocumentType)node;
           result += ", Name=\"" + documentType.Name + "\", SYSTEM=\"" + documentType.SystemId + "\", PUBLIC=\"" + documentType.PublicId + "\", Value=\"" + XmlConvert.EscapeValueForDebuggerDisplay(documentType.InternalSubset) + "\"";
           break;
-        default:
-          break;
       }
       return result;
     }

@@ -9,6 +9,6 @@ namespace TextMonster.Xml.Xml_Reader
     GenerateOrder = 0x08,
 
     [XmlEnum("enableDataBinding")]
-    EnableDataBinding = 0x10,
+    EnableDataBinding = 0x10
   }
 }

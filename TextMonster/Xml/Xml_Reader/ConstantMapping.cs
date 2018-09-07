@@ -15,7 +15,7 @@ namespace TextMonster.Xml.Xml_Reader
     internal string Name
     {
       get { return name == null ? string.Empty : name; }
-      set { this.name = value; }
+      set { name = value; }
     }
 
     internal long Value

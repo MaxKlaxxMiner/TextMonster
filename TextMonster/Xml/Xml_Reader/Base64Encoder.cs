@@ -2,7 +2,7 @@
 
 namespace TextMonster.Xml.Xml_Reader
 {
-  internal abstract partial class Base64Encoder
+  internal abstract class Base64Encoder
   {
 
     byte[] leftOverBytes;

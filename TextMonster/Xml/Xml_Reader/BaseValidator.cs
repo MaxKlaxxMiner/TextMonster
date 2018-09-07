@@ -120,7 +120,7 @@ namespace TextMonster.Xml.Xml_Reader
         {
           throw new XmlException(Res.Xml_InternalError, string.Empty);
         }
-        this.schemaInfo = tmpSchemaInfo;
+        schemaInfo = tmpSchemaInfo;
       }
     }
 
@@ -165,7 +165,7 @@ namespace TextMonster.Xml.Xml_Reader
           }
           else
           {
-            SendValidationEvent(Res.Sch_InvalidTextInElementExpecting, new string[] { XmlSchemaValidator.BuildElementName(context.LocalName, context.Namespace), XmlSchemaValidator.PrintExpectedElements(names, false) });
+            SendValidationEvent(Res.Sch_InvalidTextInElementExpecting, new[] { XmlSchemaValidator.BuildElementName(context.LocalName, context.Namespace), XmlSchemaValidator.PrintExpectedElements(names, false) });
           }
         }
         else if (contentType == XmlSchemaContentType.Empty)

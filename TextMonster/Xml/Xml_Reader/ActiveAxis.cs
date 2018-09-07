@@ -16,30 +16,30 @@ namespace TextMonster.Xml.Xml_Reader
 
     public int CurrentDepth
     {
-      get { return this.currentDepth; }
+      get { return currentDepth; }
     }
 
     // if an instance is !IsActive, then it can be reactive and reuse
     // still need thinking.....
     internal void Reactivate()
     {
-      this.isActive = true;
-      this.currentDepth = -1;
+      isActive = true;
+      currentDepth = -1;
     }
 
     internal ActiveAxis(Asttree axisTree)
     {
       this.axisTree = axisTree;                                               // only a pointer.  do i need it?
-      this.currentDepth = -1;                                                 // context depth is 0 -- enforce moveToChild for the context node
+      currentDepth = -1;                                                 // context depth is 0 -- enforce moveToChild for the context node
       // otherwise can't deal with "." node
-      this.axisStack = new ArrayList(axisTree.SubtreeArray.Count);            // defined length
+      axisStack = new ArrayList(axisTree.SubtreeArray.Count);            // defined length
       // new one stack element for each one
       for (int i = 0; i < axisTree.SubtreeArray.Count; ++i)
       {
         AxisStack stack = new AxisStack((ForwardAxis)axisTree.SubtreeArray[i], this);
         axisStack.Add(stack);
       }
-      this.isActive = true;
+      isActive = true;
     }
 
     public bool MoveToStartElement(string localname, string URN)
@@ -50,23 +50,23 @@ namespace TextMonster.Xml.Xml_Reader
       }
 
       // for each:
-      this.currentDepth++;
+      currentDepth++;
       bool result = false;
-      for (int i = 0; i < this.axisStack.Count; ++i)
+      for (int i = 0; i < axisStack.Count; ++i)
       {
-        AxisStack stack = (AxisStack)this.axisStack[i];
+        AxisStack stack = (AxisStack)axisStack[i];
         // special case for self tree   "." | ".//."
         if (stack.Subtree.IsSelfAxis)
         {
-          if (stack.Subtree.IsDss || (this.CurrentDepth == 0))
+          if (stack.Subtree.IsDss || (CurrentDepth == 0))
             result = true;
           continue;
         }
 
         // otherwise if it's context node then return false
-        if (this.CurrentDepth == 0) continue;
+        if (CurrentDepth == 0) continue;
 
-        if (stack.MoveToChild(localname, URN, this.currentDepth))
+        if (stack.MoveToChild(localname, URN, currentDepth))
         {
           result = true;
           // even already know the last result is true, still need to continue...
@@ -80,34 +80,34 @@ namespace TextMonster.Xml.Xml_Reader
     public virtual bool EndElement(string localname, string URN)
     {
       // need to think if the early quitting will affect reactivating....
-      if (this.currentDepth == 0)
+      if (currentDepth == 0)
       {          // leave context node
-        this.isActive = false;
-        this.currentDepth--;
+        isActive = false;
+        currentDepth--;
       }
-      if (!this.isActive)
+      if (!isActive)
       {
         return false;
       }
-      for (int i = 0; i < this.axisStack.Count; ++i)
+      for (int i = 0; i < axisStack.Count; ++i)
       {
-        ((AxisStack)axisStack[i]).MoveToParent(localname, URN, this.currentDepth);
+        ((AxisStack)axisStack[i]).MoveToParent(localname, URN, currentDepth);
       }
-      this.currentDepth--;
+      currentDepth--;
       return false;
     }
 
     // Secondly field interface 
     public bool MoveToAttribute(string localname, string URN)
     {
-      if (!this.isActive)
+      if (!isActive)
       {
         return false;
       }
       bool result = false;
-      for (int i = 0; i < this.axisStack.Count; ++i)
+      for (int i = 0; i < axisStack.Count; ++i)
       {
-        if (((AxisStack)axisStack[i]).MoveToAttribute(localname, URN, this.currentDepth + 1))
+        if (((AxisStack)axisStack[i]).MoveToAttribute(localname, URN, currentDepth + 1))
         {  // don't change depth for attribute, but depth is add 1 
           result = true;
         }

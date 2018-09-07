@@ -2,7 +2,7 @@
 
 namespace TextMonster.Xml.Xml_Reader
 {
-  internal static partial class BinHexEncoder
+  internal static class BinHexEncoder
   {
 
     private const string s_hexDigits = "0123456789ABCDEF";

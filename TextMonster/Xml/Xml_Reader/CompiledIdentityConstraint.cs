@@ -17,17 +17,17 @@
 
     public ConstraintRole Role
     {
-      get { return this.role; }
+      get { return role; }
     }
 
     public Asttree Selector
     {
-      get { return this.selector; }
+      get { return selector; }
     }
 
     public Asttree[] Fields
     {
-      get { return this.fields; }
+      get { return fields; }
     }
 
     private CompiledIdentityConstraint() { }

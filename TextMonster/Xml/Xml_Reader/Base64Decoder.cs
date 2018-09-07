@@ -17,7 +17,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     private static readonly String CharsBase64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
     private static readonly byte[] MapBase64 = ConstructMapBase64();
-    private const int MaxValidChar = (int)'z';
+    private const int MaxValidChar = 'z';
     private const byte Invalid = unchecked((byte)-1);
 
     //
@@ -118,9 +118,9 @@ namespace TextMonster.Xml.Xml_Reader
     internal override void SetNextOutputBuffer(Array buffer, int index, int count)
     {
       this.buffer = (byte[])buffer;
-      this.startIndex = index;
-      this.curIndex = index;
-      this.endIndex = index + count;
+      startIndex = index;
+      curIndex = index;
+      endIndex = index + count;
     }
 
     //
@@ -135,7 +135,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
       for (int i = 0; i < CharsBase64.Length; i++)
       {
-        mapBase64[(int)CharsBase64[i]] = (byte)i;
+        mapBase64[CharsBase64[i]] = (byte)i;
       }
       return mapBase64;
     }

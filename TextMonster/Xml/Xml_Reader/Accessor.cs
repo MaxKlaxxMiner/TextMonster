@@ -5,7 +5,7 @@ namespace TextMonster.Xml.Xml_Reader
   internal abstract class Accessor
   {
     string name;
-    object defaultValue = null;
+    object defaultValue;
     string ns;
     TypeMapping mapping;
     bool any;
@@ -81,10 +81,7 @@ namespace TextMonster.Xml.Xml_Reader
       {
         return (Namespace == null ? "##any" : Namespace) + ":" + Name;
       }
-      else
-      {
-        return Namespace == defaultNs ? Name : Namespace + ":" + Name;
-      }
+      return Namespace == defaultNs ? Name : Namespace + ":" + Name;
     }
   }
 }

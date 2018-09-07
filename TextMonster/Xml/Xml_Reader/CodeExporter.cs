@@ -63,7 +63,7 @@ namespace TextMonster.Xml.Xml_Reader
         propertyChangedEvent.Attributes = MemberAttributes.Public;
         propertyChangedEvent.Name = "PropertyChanged";
         propertyChangedEvent.Type = new CodeTypeReference(typeof(PropertyChangedEventHandler));
-        propertyChangedEvent.ImplementationTypes.Add(typeof(System.ComponentModel.INotifyPropertyChanged));
+        propertyChangedEvent.ImplementationTypes.Add(typeof(INotifyPropertyChanged));
         return propertyChangedEvent;
       }
     }
