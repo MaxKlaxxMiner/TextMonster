@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 
 namespace TextMonster.Xml.Xml_Reader
@@ -57,16 +56,6 @@ namespace TextMonster.Xml.Xml_Reader
         if (cache == null)
           cache = new SchemaObjectCache();
         return cache;
-      }
-    }
-
-    internal Hashtable MergedSchemas
-    {
-      get
-      {
-        if (mergedSchemas == null)
-          mergedSchemas = new Hashtable();
-        return mergedSchemas;
       }
     }
 
@@ -324,120 +313,6 @@ namespace TextMonster.Xml.Xml_Reader
       return false;
     }
 
-    void Merge(XmlSchema schema)
-    {
-      if (MergedSchemas[schema] != null)
-        return;
-      IList originals = (IList)SchemaSet.Schemas(schema.TargetNamespace);
-      if (originals != null && originals.Count > 0)
-      {
-        MergedSchemas.Add(schema, schema);
-        Merge(originals, schema);
-      }
-      else
-      {
-        Add(schema);
-        MergedSchemas.Add(schema, schema);
-      }
-    }
-
-    void AddImport(IList schemas, string ns)
-    {
-      foreach (XmlSchema s in schemas)
-      {
-        bool add = true;
-        foreach (XmlSchemaExternal external in s.Includes)
-        {
-          if (external is XmlSchemaImport && ((XmlSchemaImport)external).Namespace == ns)
-          {
-            add = false;
-            break;
-          }
-        }
-        if (add)
-        {
-          XmlSchemaImport import = new XmlSchemaImport();
-          import.Namespace = ns;
-          s.Includes.Add(import);
-        }
-      }
-    }
-
-    void Merge(IList originals, XmlSchema schema)
-    {
-      foreach (XmlSchema s in originals)
-      {
-        if (schema == s)
-        {
-          return;
-        }
-      }
-
-      foreach (XmlSchemaExternal external in schema.Includes)
-      {
-        if (external is XmlSchemaImport)
-        {
-          external.SchemaLocation = null;
-          if (external.Schema != null)
-          {
-            Merge(external.Schema);
-          }
-          else
-          {
-            AddImport(originals, ((XmlSchemaImport)external).Namespace);
-          }
-        }
-        else
-        {
-          if (external.Schema == null)
-          {
-            // we do not process includes or redefines by the schemaLocation
-            if (external.SchemaLocation != null)
-            {
-              throw new InvalidOperationException(Res.GetString(Res.XmlSchemaIncludeLocation, this.GetType().Name, external.SchemaLocation));
-            }
-          }
-          else
-          {
-            external.SchemaLocation = null;
-            Merge(originals, external.Schema);
-          }
-        }
-      }
-
-      // bring all included items to the parent schema;
-      bool[] matchedItems = new bool[schema.Items.Count];
-      int count = 0;
-      for (int i = 0; i < schema.Items.Count; i++)
-      {
-        XmlSchemaObject o = schema.Items[i];
-        XmlSchemaObject dest = Find(o, originals);
-        if (dest != null)
-        {
-          if (!Cache.Match(dest, o, shareTypes))
-          {
-            // 
-            throw new InvalidOperationException(MergeFailedMessage(o, dest, schema.TargetNamespace));
-          }
-          matchedItems[i] = true;
-          count++;
-        }
-      }
-      if (count != schema.Items.Count)
-      {
-        XmlSchema destination = (XmlSchema)originals[0];
-        for (int i = 0; i < schema.Items.Count; i++)
-        {
-          if (!matchedItems[i])
-          {
-            destination.Items.Add(schema.Items[i]);
-          }
-        }
-        destination.IsPreprocessed = false;
-        Preprocess(destination);
-      }
-    }
-
     static string ItemName(XmlSchemaObject o)
     {
       if (o is XmlSchemaNotation)
@@ -575,48 +450,6 @@ namespace TextMonster.Xml.Xml_Reader
       return item;
     }
 
-    static string Dump(XmlSchemaObject o)
-    {
-      XmlWriterSettings settings = new XmlWriterSettings();
-      settings.OmitXmlDeclaration = true;
-      settings.Indent = true;
-      XmlSerializer s = new XmlSerializer(o.GetType());
-      StringWriter sw = new StringWriter(CultureInfo.InvariantCulture);
-      XmlWriter xmlWriter = XmlWriter.Create(sw, settings);
-      XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-      ns.Add("xs", XmlSchema.Namespace);
-      s.Serialize(xmlWriter, o, ns);
-      return sw.ToString();
-    }
-    static string MergeFailedMessage(XmlSchemaObject src, XmlSchemaObject dest, string ns)
-    {
-      string err = Res.GetString(Res.XmlSerializableMergeItem, ns, GetSchemaItem(src, ns, null));
-      err += "\r\n" + Dump(src);
-      err += "\r\n" + Dump(dest);
-      return err;
-    }
-
-    internal XmlSchemaObject Find(XmlSchemaObject o, IList originals)
-    {
-      string name = ItemName(o);
-      if (name == null)
-        return null;
-
-      Type type = o.GetType();
-
-      foreach (XmlSchema s in originals)
-      {
-        foreach (XmlSchemaObject item in s.Items)
-        {
-          if (item.GetType() == type && name == ItemName(item))
-          {
-            return item;
-          }
-        }
-      }
-      return null;
-    }
-
     /// <include file='doc\XmlSchemas.uex' path='docs/doc[@for="XmlSchemas.IsCompiled"]/*' />
     public bool IsCompiled
     {
@@ -629,8 +462,6 @@ namespace TextMonster.Xml.Xml_Reader
       if (isCompiled)
         return;
 
-      foreach (XmlSchema s in delayedSchemas.Values)
-        Merge(s);
       delayedSchemas.Clear();
 
       if (fullCompile)

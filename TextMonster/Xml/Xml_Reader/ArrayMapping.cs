@@ -17,7 +17,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal ArrayMapping Next
     {
       get { return next; }
-      set { next = value; }
     }
 
     internal StructMapping TopLevelMapping

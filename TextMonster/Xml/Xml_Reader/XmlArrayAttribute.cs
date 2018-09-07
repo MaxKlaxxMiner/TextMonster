@@ -10,33 +10,5 @@ namespace TextMonster.Xml.Xml_Reader
     bool nullable;
     XmlSchemaForm form = XmlSchemaForm.None;
     int order = -1;
-
-    public string ElementName
-    {
-      get { return elementName == null ? string.Empty : elementName; }
-      set { elementName = value; }
-    }
-
-    public string Namespace
-    {
-      get { return ns; }
-      set { ns = value; }
-    }
-
-    public bool IsNullable
-    {
-      get { return nullable; }
-    }
-
-    public XmlSchemaForm Form
-    {
-      get { return form; }
-      set { form = value; }
-    }
-
-    public int Order
-    {
-      get { return order; }
-    }
   }
 }

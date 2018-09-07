@@ -24,15 +24,6 @@ namespace TextMonster.Xml.Xml_Reader
     SerializableMapping nextDerivedMapping;
     SerializableMapping next; // all mappings with the same qname
 
-    internal SerializableMapping() { }
-    internal SerializableMapping(MethodInfo getSchemaMethod, bool any, string ns)
-    {
-      this.getSchemaMethod = getSchemaMethod;
-      this.any = any;
-      this.Namespace = ns;
-      needSchema = getSchemaMethod != null;
-    }
-
     internal SerializableMapping(XmlQualifiedName xsiType, XmlSchemaSet schemas)
     {
       this.xsiType = xsiType;
@@ -40,20 +31,6 @@ namespace TextMonster.Xml.Xml_Reader
       this.TypeName = xsiType.Name;
       this.Namespace = xsiType.Namespace;
       needSchema = false;
-    }
-
-    internal void SetBaseMapping(SerializableMapping mapping)
-    {
-      baseMapping = mapping;
-      if (baseMapping != null)
-      {
-        nextDerivedMapping = baseMapping.derivedMappings;
-        baseMapping.derivedMappings = this;
-        if (this == nextDerivedMapping)
-        {
-          throw new InvalidOperationException(Res.GetString(Res.XmlCircularDerivation, TypeDesc.FullName));
-        }
-      }
     }
 
     internal bool IsAny

@@ -4,9 +4,5 @@ namespace TextMonster.Xml.Xml_Reader
   {
     /// <include file='doc\IXmlSerializable.uex' path='docs/doc[@for="IXmlSerializable.GetSchema"]/*' />
     XmlSchema GetSchema();
-    /// <include file='doc\IXmlSerializable.uex' path='docs/doc[@for="IXmlSerializable.ReadXml"]/*' />
-    void ReadXml(FastXmlReader reader);
-    /// <include file='doc\IXmlSerializable.uex' path='docs/doc[@for="IXmlSerializable.WriteXml"]/*' />
-    void WriteXml(XmlWriter writer);
   }
 }

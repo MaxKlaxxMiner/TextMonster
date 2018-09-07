@@ -14,11 +14,6 @@ namespace TextMonster.Xml.Xml_Reader
       this.typeScope = typeScope;
     }
 
-    internal TypeScope TypeScope
-    {
-      get { return typeScope; }
-    }
-
     internal TypeModel GetTypeModel(Type type)
     {
       return GetTypeModel(type, true);

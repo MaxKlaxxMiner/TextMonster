@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
@@ -12,20 +11,10 @@ namespace TextMonster.Xml.Xml_Reader
   [DebuggerDisplay("{debuggerDisplayProxy}")]
   public abstract class XPathNavigator : XPathItem, ICloneable, IXPathNavigable, IXmlNamespaceResolver
   {
-    internal static readonly XPathNavigatorKeyComparer comparer = new XPathNavigatorKeyComparer();
-
-    //-----------------------------------------------
-    // Object
-    //-----------------------------------------------
-
     public override string ToString()
     {
       return Value;
     }
-
-    //-----------------------------------------------
-    // XPathItem
-    //-----------------------------------------------
 
     public override XmlSchemaType XmlType
     {
@@ -500,18 +489,6 @@ namespace TextMonster.Xml.Xml_Reader
       return dict;
     }
 
-    //-----------------------------------------------
-    // XPathNavigator
-    //-----------------------------------------------
-
-    // Returns an object of type IKeyComparer. Using this the navigators can be hashed
-    // on the basis of actual position it represents rather than the clr reference of 
-    // the navigator object.
-    public static IEqualityComparer NavigatorComparer
-    {
-      get { return comparer; }
-    }
-
     public abstract XPathNavigator Clone();
 
     public abstract XPathNodeType NodeType { get; }
@@ -544,54 +521,9 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public virtual FastXmlReader ReadSubtree()
-    {
-      switch (NodeType)
-      {
-        case XPathNodeType.Root:
-        case XPathNodeType.Element:
-        break;
-        default:
-        throw new InvalidOperationException(Res.GetString(Res.Xpn_BadPosition));
-      }
-      return CreateReader();
-    }
-
-    public virtual void WriteSubtree(XmlWriter writer)
-    {
-      if (null == writer)
-        throw new ArgumentNullException("writer");
-      writer.WriteNode(this, true);
-    }
-
     public virtual object UnderlyingObject
     {
       get { return null; }
-    }
-
-    public virtual bool HasAttributes
-    {
-      get
-      {
-        if (!MoveToFirstAttribute())
-          return false;
-
-        MoveToParent();
-        return true;
-      }
-    }
-
-    public virtual string GetAttribute(string localName, string namespaceURI)
-    {
-      string value;
-
-      if (!MoveToAttribute(localName, namespaceURI))
-        return "";
-
-      value = Value;
-      MoveToParent();
-
-      return value;
     }
 
     public virtual bool MoveToAttribute(string localName, string namespaceURI)

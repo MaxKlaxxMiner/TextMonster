@@ -79,10 +79,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     // Initializes a new instance
     // of the XmlDocument class with the specified XmlNameTable.
-    public XmlDocument(XmlNameTable nt)
-      : this(new XmlImplementation(nt))
-    {
-    }
 
     protected internal XmlDocument(XmlImplementation imp)
       : base()
@@ -502,20 +498,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
 
       return false;
-    }
-
-    // Creates an XmlAttribute with the specified name.
-    public XmlAttribute CreateAttribute(String name)
-    {
-      String prefix = String.Empty;
-      String localName = String.Empty;
-      String namespaceURI = String.Empty;
-
-      SplitName(name, out prefix, out localName);
-
-      SetDefaultNamespace(prefix, localName, ref namespaceURI);
-
-      return CreateAttribute(prefix, localName, namespaceURI);
     }
 
     internal void SetDefaultNamespace(String prefix, String localName, ref String namespaceURI)

@@ -255,33 +255,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public override bool HasAttributes
-    {
-      get
-      {
-        XmlElement element = source as XmlElement;
-        if (element != null
-            && element.HasAttributes)
-        {
-          XmlAttributeCollection attributes = element.Attributes;
-          for (int i = 0; i < attributes.Count; i++)
-          {
-            XmlAttribute attribute = attributes[i];
-            if (!attribute.IsNamespace)
-            {
-              return true;
-            }
-          }
-        }
-        return false;
-      }
-    }
-
-    public override string GetAttribute(string localName, string namespaceURI)
-    {
-      return source.GetXPAttribute(localName, namespaceURI);
-    }
-
     public override bool MoveToAttribute(string localName, string namespaceURI)
     {
       XmlElement element = source as XmlElement;

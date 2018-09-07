@@ -18,11 +18,6 @@ namespace TextMonster.Xml.Xml_Reader
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
     public const string Namespace = XmlReservedNs.NsXs;
-    /// <include file='doc\XmlSchema.uex' path='docs/doc[@for="XmlSchema.InstanceNamespace"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public const string InstanceNamespace = XmlReservedNs.NsXsi;
 
     XmlSchemaForm attributeFormDefault = XmlSchemaForm.None;
     XmlSchemaForm elementFormDefault = XmlSchemaForm.None;
@@ -445,11 +440,6 @@ namespace TextMonster.Xml.Xml_Reader
       set { Id = value; }
     }
 
-    internal void SetIsCompiled(bool isCompiled)
-    {
-      this.isCompiled = isCompiled;
-    }
-
     internal override void SetUnhandledAttributes(XmlAttribute[] moreAttributes)
     {
       this.moreAttributes = moreAttributes;
@@ -457,11 +447,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal override void AddAnnotation(XmlSchemaAnnotation annotation)
     {
       items.Add(annotation);
-    }
-
-    internal XmlNameTable NameTable
-    {
-      get { if (nameTable == null) nameTable = new NameTable(); return nameTable; }
     }
 
     internal ArrayList ImportedSchemas

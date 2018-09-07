@@ -20,23 +20,5 @@ namespace TextMonster.Xml.Xml_Reader
     {
       this.methodName = methodName;
     }
-
-    /// <include file='doc\XmlSchemaProviderAttribute.uex' path='docs/doc[@for="XmlSchemaProviderAttribute.MethodName"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public string MethodName
-    {
-      get { return methodName; }
-    }
-
-    /// <include file='doc\XmlSchemaProviderAttribute.uex' path='docs/doc[@for="XmlSchemaProviderAttribute.IsAny"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public bool IsAny
-    {
-      get { return any; }
-    }
   }
 }

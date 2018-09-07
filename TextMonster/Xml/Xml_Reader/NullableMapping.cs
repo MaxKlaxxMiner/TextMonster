@@ -7,7 +7,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal TypeMapping BaseMapping
     {
       get { return baseMapping; }
-      set { baseMapping = value; }
     }
 
     internal override string DefaultElementName

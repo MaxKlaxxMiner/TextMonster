@@ -384,34 +384,6 @@
     }
 
     /// <summary>
-    /// Get the next non-virtual (not collapsed text, not namespaces) node that follows the specified node in document order.
-    /// If no such node exists, then do not set pageNode or idxNode and return false.
-    /// </summary>
-    public static bool GetFollowing(ref XPathNode[] pageNode, ref int idxNode)
-    {
-      XPathNode[] page = pageNode;
-      int idx = idxNode;
-
-      do
-      {
-        // Next non-virtual node is in next slot within the page
-        if (++idx < page[0].PageInfo.NodeCount)
-        {
-          pageNode = page;
-          idxNode = idx;
-          return true;
-        }
-
-        // Otherwise, start at the beginning of the next page
-        page = page[0].PageInfo.NextPage;
-        idx = 0;
-      }
-      while (page != null);
-
-      return false;
-    }
-
-    /// <summary>
     /// Get the next element node that:
     ///   1. Follows the current node in document order (includes descendants, unlike XPath following axis)
     ///   2. Precedes the ending node in document order (if pageEnd is null, then all following nodes in the document are considered)

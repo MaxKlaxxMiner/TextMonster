@@ -255,11 +255,6 @@ namespace TextMonster.Xml.Xml_Reader
       return DateTime.ParseExact(value, allTimeFormats, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.AllowLeadingWhite | DateTimeStyles.AllowTrailingWhite | DateTimeStyles.NoCurrentDateDefault | DateTimeStyles.RoundtripKind);
     }
 
-    internal static char ToChar(string value)
-    {
-      return (char)XmlConvert.ToUInt16(value);
-    }
-
     internal static string ToXmlName(string value)
     {
       return XmlConvert.DecodeName(CollapseWhitespace(value));
@@ -278,21 +273,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal static string ToXmlNmTokens(string value)
     {
       return XmlConvert.DecodeName(CollapseWhitespace(value));
-    }
-
-    internal static byte[] ToByteArrayBase64(string value)
-    {
-      if (value == null) return null;
-      value = value.Trim();
-      if (value.Length == 0)
-        return new byte[0];
-      return Convert.FromBase64String(value);
-    }
-    internal static byte[] ToByteArrayHex(string value)
-    {
-      if (value == null) return null;
-      value = value.Trim();
-      return XmlConvert.FromBinHexString(value);
     }
 
     internal static long ToEnum(string val, Hashtable vals, string typeName, bool validate)

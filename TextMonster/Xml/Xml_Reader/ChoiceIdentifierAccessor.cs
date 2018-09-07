@@ -23,7 +23,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal MemberInfo MemberInfo
     {
       get { return memberInfo; }
-      set { memberInfo = value; }
     }
   }
 }

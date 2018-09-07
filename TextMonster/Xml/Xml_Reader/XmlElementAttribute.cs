@@ -18,14 +18,6 @@ namespace TextMonster.Xml.Xml_Reader
     XmlSchemaForm form = XmlSchemaForm.None;
     int order = -1;
 
-    /// <include file='doc\XmlElementAttribute.uex' path='docs/doc[@for="XmlElementAttribute.XmlElementAttribute"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlElementAttribute()
-    {
-    }
-
     /// <include file='doc\XmlElementAttribute.uex' path='docs/doc[@for="XmlElementAttribute.XmlElementAttribute1"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
@@ -43,15 +35,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
       this.elementName = elementName;
       this.type = type;
-    }
-
-    /// <include file='doc\XmlElementAttribute.uex' path='docs/doc[@for="XmlElementAttribute.Type"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public Type Type
-    {
-      get { return type; }
     }
 
     /// <include file='doc\XmlElementAttribute.uex' path='docs/doc[@for="XmlElementAttribute.ElementName"]/*' />

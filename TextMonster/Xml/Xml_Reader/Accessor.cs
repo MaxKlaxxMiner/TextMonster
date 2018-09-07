@@ -46,12 +46,6 @@ namespace TextMonster.Xml.Xml_Reader
       set { any = value; }
     }
 
-    internal string AnyNamespaces
-    {
-      get { return anyNs; }
-      set { anyNs = value; }
-    }
-
     internal string Namespace
     {
       get { return ns; }
@@ -78,20 +72,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
       get { return topLevelInSchema; }
       set { topLevelInSchema = value; }
-    }
-
-    internal static string EscapeQName(string name)
-    {
-      if (name == null || name.Length == 0) return name;
-      int colon = name.LastIndexOf(':');
-      if (colon < 0)
-        return XmlConvert.EncodeLocalName(name);
-      else
-      {
-        if (colon == 0 || colon == name.Length - 1)
-          throw new ArgumentException(Res.GetString(Res.Xml_InvalidNameChars, name), "name");
-        return new XmlQualifiedName(XmlConvert.EncodeLocalName(name.Substring(colon + 1)), XmlConvert.EncodeLocalName(name.Substring(0, colon))).ToString();
-      }
     }
 
     internal static string UnescapeName(string name)

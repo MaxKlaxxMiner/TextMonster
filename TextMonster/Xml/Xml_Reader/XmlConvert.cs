@@ -301,11 +301,6 @@ namespace TextMonster.Xml.Xml_Reader
          + 10);
     }
 
-    internal static byte[] FromBinHexString(string s)
-    {
-      return FromBinHexString(s, true);
-    }
-
     internal static byte[] FromBinHexString(string s, bool allowOddCount)
     {
       if (s == null)
@@ -506,15 +501,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
 
-    internal static string VerifyNormalizedString(string str)
-    {
-      if (str.IndexOfAny(crt) != -1)
-      {
-        throw new XmlSchemaException(Res.Sch_NotNormalizedString, str);
-      }
-      return str;
-    }
-
     internal static Exception TryVerifyNormalizedString(string str)
     {
       if (str.IndexOfAny(crt) != -1)
@@ -524,39 +510,6 @@ namespace TextMonster.Xml.Xml_Reader
       return null;
     }
 
-    // Verification method for XML characters as defined in XML spec production [2] Char.
-    // Throws XmlException if invalid character is found, otherwise returns the input string.
-    public static string VerifyXmlChars(string content)
-    {
-      if (content == null)
-      {
-        throw new ArgumentNullException("content");
-      }
-      VerifyCharData(content, ExceptionType.XmlException);
-      return content;
-    }
-
-    // Verification method for XML public ID characters as defined in XML spec production [13] PubidChar.
-    // Throws XmlException if invalid character is found, otherwise returns the input string.
-    public static string VerifyPublicId(string publicId)
-    {
-      if (publicId == null)
-      {
-        throw new ArgumentNullException("publicId");
-      }
-
-      // returns the position of invalid character or -1
-      int pos = xmlCharType.IsPublicId(publicId);
-      if (pos != -1)
-      {
-        throw CreateInvalidCharException(publicId, pos, ExceptionType.XmlException);
-      }
-
-      return publicId;
-    }
-
-    // Verification method for XML whitespace characters as defined in XML spec production [3] S.
-    // Throws XmlException if invalid character is found, otherwise returns the input string.
     public static string VerifyWhitespace(string content)
     {
       if (content == null)

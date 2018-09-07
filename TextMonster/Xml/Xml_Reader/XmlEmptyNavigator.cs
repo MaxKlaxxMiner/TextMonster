@@ -72,11 +72,6 @@
       get { return string.Empty; }
     }
 
-    public override bool HasAttributes
-    {
-      get { return false; }
-    }
-
     public override bool HasChildren
     {
       get { return false; }
@@ -131,11 +126,6 @@
     public override bool MoveToId(string id)
     {
       return false;
-    }
-
-    public override string GetAttribute(string localName, string namespaceName)
-    {
-      return null;
     }
 
     public override bool MoveToAttribute(string localName, string namespaceName)

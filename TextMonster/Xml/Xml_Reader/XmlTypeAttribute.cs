@@ -22,41 +22,5 @@ namespace TextMonster.Xml.Xml_Reader
     {
       this.typeName = typeName;
     }
-
-    /// <include file='doc\XmlTypeAttribute.uex' path='docs/doc[@for="XmlTypeAttribute.AnonymousType"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public bool AnonymousType
-    {
-      get { return anonymousType; }
-    }
-
-    /// <include file='doc\XmlTypeAttribute.uex' path='docs/doc[@for="XmlTypeAttribute.IncludeInSchema"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public bool IncludeInSchema
-    {
-      get { return includeInSchema; }
-    }
-
-    /// <include file='doc\XmlTypeAttribute.uex' path='docs/doc[@for="XmlTypeAttribute.TypeName"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public string TypeName
-    {
-      get { return typeName == null ? string.Empty : typeName; }
-    }
-
-    /// <include file='doc\XmlTypeAttribute.uex' path='docs/doc[@for="XmlTypeAttribute.Namespace"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public string Namespace
-    {
-      get { return ns; }
-    }
   }
 }

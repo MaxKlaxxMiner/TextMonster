@@ -11,7 +11,6 @@ namespace TextMonster.Xml.Xml_Reader
       this.mapping = mapping;
     }
 
-    internal StructModel Model { get { return model; } }
     internal StructMapping Mapping { get { return mapping; } }
   }
 }

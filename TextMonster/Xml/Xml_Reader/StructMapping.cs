@@ -46,11 +46,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return derivedMappings; }
     }
 
-    internal bool IsFullyInitialized
-    {
-      get { return baseMapping != null && Members != null; }
-    }
-
     internal NameTableScope LocalElements
     {
       get
@@ -60,15 +55,7 @@ namespace TextMonster.Xml.Xml_Reader
         return elements;
       }
     }
-    internal NameTableScope LocalAttributes
-    {
-      get
-      {
-        if (attributes == null)
-          attributes = new NameTableScope();
-        return attributes;
-      }
-    }
+
     object INameScope.this[string name, string ns]
     {
       get

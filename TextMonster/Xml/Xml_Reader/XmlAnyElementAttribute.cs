@@ -20,11 +20,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return ns; }
     }
 
-    public int Order
-    {
-      get { return order; }
-    }
-
     internal bool NamespaceSpecified
     {
       get { return nsSpecified; }

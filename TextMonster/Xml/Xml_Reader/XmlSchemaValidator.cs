@@ -337,15 +337,6 @@ namespace TextMonster.Xml.Xml_Reader
       this.partialValidationType = partialValidationType;
     }
 
-    // SxS: This method passes null as resource names and does not expose any resources to the caller.
-    // It's OK to suppress the SxS warning.
-    [ResourceConsumption(ResourceScope.Machine, ResourceScope.Machine)]
-    [ResourceExposure(ResourceScope.None)]
-    public void ValidateElement(string localName, string namespaceUri, XmlSchemaInfo schemaInfo)
-    {
-      ValidateElement(localName, namespaceUri, schemaInfo, null, null, null, null);
-    }
-
     [ResourceConsumption(ResourceScope.Machine)]
     [ResourceExposure(ResourceScope.Machine)]
     public void ValidateElement(string localName, string namespaceUri, XmlSchemaInfo schemaInfo, string xsiType, string xsiNil, string xsiSchemaLocation, string xsiNoNamespaceSchemaLocation)

@@ -450,19 +450,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    // Compares this DateTime to a given object. This method provides an
-    // implementation of the IComparable interface. The object
-    // argument must be another DateTime, or otherwise an exception
-    // occurs.  Null is considered less than any instance.
-    //
-    // Returns a value less than zero if this  object
-    /// <include file='doc\DateTime.uex' path='docs/doc[@for="DateTime.CompareTo"]/*' />
-    public int CompareTo(Object value)
-    {
-      if (value == null) return 1;
-      return Compare(this, (XsdDateTime)value);
-    }
-
     /// <summary>
     /// Serialization to a string
     /// </summary>

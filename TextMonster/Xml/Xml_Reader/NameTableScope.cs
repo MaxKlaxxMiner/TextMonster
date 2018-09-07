@@ -7,11 +7,6 @@ namespace TextMonster.Xml.Xml_Reader
   {
     Hashtable table = new Hashtable();
 
-    internal void Add(XmlQualifiedName qname, object value)
-    {
-      Add(qname.Name, qname.Namespace, value);
-    }
-
     internal void Add(string name, string ns, object value)
     {
       NameKey key = new NameKey(name, ns);
@@ -50,11 +45,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         table[new NameKey(name, ns)] = value;
       }
-    }
-
-    internal ICollection Values
-    {
-      get { return table.Values; }
     }
 
     internal Array ToArray(Type type)

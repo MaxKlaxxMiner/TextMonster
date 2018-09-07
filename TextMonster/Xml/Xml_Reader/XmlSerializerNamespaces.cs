@@ -39,15 +39,6 @@ namespace TextMonster.Xml.Xml_Reader
       Namespaces[prefix] = ns;
     }
 
-    /// <include file='doc\XmlSerializerNamespaces.uex' path='docs/doc[@for="XmlSerializerNamespaces.Count"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public int Count
-    {
-      get { return Namespaces.Count; }
-    }
-
     internal Hashtable Namespaces
     {
       get

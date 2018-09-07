@@ -21,20 +21,5 @@ namespace TextMonster.Xml.Xml_Reader
     {
       this.name = name;
     }
-
-    /// <include file='doc\XmlChoiceIdentifierAttribute.uex' path='docs/doc[@for="XmlChoiceIdentifierAttribute.Name"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public string MemberName
-    {
-      get { return name == null ? string.Empty : name; }
-    }
-
-    internal MemberInfo MemberInfo
-    {
-      get { return memberInfo; }
-      set { memberInfo = value; }
-    }
   }
 }

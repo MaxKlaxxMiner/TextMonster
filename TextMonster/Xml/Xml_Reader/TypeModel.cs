@@ -14,20 +14,5 @@ namespace TextMonster.Xml.Xml_Reader
       this.type = type;
       this.typeDesc = typeDesc;
     }
-
-    internal Type Type
-    {
-      get { return type; }
-    }
-
-    internal ModelScope ModelScope
-    {
-      get { return scope; }
-    }
-
-    internal TypeDesc TypeDesc
-    {
-      get { return typeDesc; }
-    }
   }
 }

@@ -12,20 +12,5 @@ namespace TextMonster.Xml.Xml_Reader
       this.fieldInfo = fieldInfo;
       this.value = value;
     }
-
-    internal string Name
-    {
-      get { return fieldInfo.Name; }
-    }
-
-    internal long Value
-    {
-      get { return value; }
-    }
-
-    internal FieldInfo FieldInfo
-    {
-      get { return fieldInfo; }
-    }
   }
 }

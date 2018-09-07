@@ -25,36 +25,6 @@ namespace TextMonster.Xml.Xml_Reader
     XmlChoiceIdentifierAttribute xmlChoiceIdentifier;
     static volatile Type ignoreAttributeType;
 
-
-    /// <include file='doc\XmlAttributes.uex' path='docs/doc[@for="XmlAttributes.XmlAttributes"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlAttributes()
-    {
-    }
-
-    internal XmlAttributeFlags XmlFlags
-    {
-      get
-      {
-        XmlAttributeFlags flags = 0;
-        if (xmlElements.Count > 0) flags |= XmlAttributeFlags.Elements;
-        if (xmlArrayItems.Count > 0) flags |= XmlAttributeFlags.ArrayItems;
-        if (xmlAnyElements.Count > 0) flags |= XmlAttributeFlags.AnyElements;
-        if (xmlArray != null) flags |= XmlAttributeFlags.Array;
-        if (xmlAttribute != null) flags |= XmlAttributeFlags.Attribute;
-        if (xmlText != null) flags |= XmlAttributeFlags.Text;
-        if (xmlEnum != null) flags |= XmlAttributeFlags.Enum;
-        if (xmlRoot != null) flags |= XmlAttributeFlags.Root;
-        if (xmlType != null) flags |= XmlAttributeFlags.Type;
-        if (xmlAnyAttribute != null) flags |= XmlAttributeFlags.AnyAttribute;
-        if (xmlChoiceIdentifier != null) flags |= XmlAttributeFlags.ChoiceIdentifier;
-        if (xmlns) flags |= XmlAttributeFlags.XmlnsDeclarations;
-        return flags;
-      }
-    }
-
     private static Type IgnoreAttribute
     {
       get

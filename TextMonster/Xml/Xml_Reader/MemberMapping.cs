@@ -33,7 +33,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal bool CheckShouldPersist
     {
       get { return checkShouldPersist; }
-      set { checkShouldPersist = value; }
     }
 
     internal SpecifiedAccessor CheckSpecified

@@ -170,12 +170,9 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Xml_InvalidNameChars = "Xml_InvalidNameChars";
     internal const string Xml_Closed = "Xml_Closed";
     internal const string Xml_InvalidPrefix = "Xml_InvalidPrefix";
-    internal const string Xml_InvalidIndentation = "Xml_InvalidIndentation";
     internal const string Xml_NotInWriteState = "Xml_NotInWriteState";
     internal const string Xml_SurrogatePairSplit = "Xml_SurrogatePairSplit";
     internal const string Xml_NoMultipleRoots = "Xml_NoMultipleRoots";
-    internal const string XmlBadName = "XmlBadName";
-    internal const string XmlNoNameAllowed = "XmlNoNameAllowed";
     internal const string XmlConvert_BadUri = "XmlConvert_BadUri";
     internal const string XmlConvert_BadFormat = "XmlConvert_BadFormat";
     internal const string XmlConvert_Overflow = "XmlConvert_Overflow";
@@ -191,7 +188,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Sch_ParEntityRefNesting = "Sch_ParEntityRefNesting";
     internal const string Sch_NotTokenString = "Sch_NotTokenString";
     internal const string Sch_XsdDateTimeCompare = "Sch_XsdDateTimeCompare";
-    internal const string Sch_InvalidNullCast = "Sch_InvalidNullCast";
     internal const string Sch_InvalidDateTimeOption = "Sch_InvalidDateTimeOption";
     internal const string Sch_StandAloneNormalization = "Sch_StandAloneNormalization";
     internal const string Sch_UnSpecifiedDefaultAttributeInExternalStandalone = "Sch_UnSpecifiedDefaultAttributeInExternalStandalone";

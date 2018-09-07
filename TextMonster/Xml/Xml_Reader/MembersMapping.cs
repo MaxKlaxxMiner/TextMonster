@@ -17,7 +17,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal MemberMapping XmlnsMember
     {
       get { return xmlnsMember; }
-      set { xmlnsMember = value; }
     }
 
     internal bool HasWrapperElement

@@ -27,11 +27,6 @@ namespace TextMonster.Xml.Xml_Reader
       this.ignore = mapping.ignore;
     }
 
-    internal bool IsText
-    {
-      get { return text != null && (elements == null || elements.Length == 0); }
-    }
-
     internal bool IsParticle
     {
       get { return (elements != null && elements.Length > 0); }

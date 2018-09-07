@@ -596,10 +596,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal bool ReadOnly
     {
-      get
-      {
-        return isReadOnly;
-      }
       set
       {
         isReadOnly = value;

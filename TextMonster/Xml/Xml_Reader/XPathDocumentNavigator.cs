@@ -246,14 +246,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     /// <summary>
-    /// True if the current node has one or more attributes.
-    /// </summary>
-    public override bool HasAttributes
-    {
-      get { return this.pageCurrent[this.idxCurrent].HasAttribute; }
-    }
-
-    /// <summary>
     /// Position the navigator on the attribute with the specified name and return true.  If no matching
     /// attribute can be found, return false.  Don't assume the name parts are atomized with respect
     /// to this document.

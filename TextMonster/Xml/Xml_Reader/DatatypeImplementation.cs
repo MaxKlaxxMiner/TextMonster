@@ -370,18 +370,11 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    protected DatatypeImplementation Base { get { return baseType; } }
-
     internal abstract Type ListValueType { get; }
 
     internal abstract RestrictionFlags ValidRestrictionFlags { get; }
 
     internal override XmlSchemaWhiteSpace BuiltInWhitespaceFacet { get { return XmlSchemaWhiteSpace.Preserve; } }
-
-    internal virtual object ParseValue(string s, Type typDest, XmlNameTable nameTable, IXmlNamespaceResolver nsmgr)
-    {
-      return ValueConverter.ChangeType(ParseValue(s, nameTable, nsmgr), typDest, nsmgr);
-    }
 
     public override object ParseValue(string s, XmlNameTable nameTable, IXmlNamespaceResolver nsmgr)
     {
