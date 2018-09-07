@@ -8,21 +8,18 @@ namespace TextMonster.Xml.Xml_Reader
     public abstract bool ToBoolean(int value);
     public abstract bool ToBoolean(double value);
     public abstract bool ToBoolean(DateTime value);
-    public abstract bool ToBoolean(string value);
     public abstract bool ToBoolean(object value);
 
     public abstract int ToInt32(bool value);
     public abstract int ToInt32(long value);
     public abstract int ToInt32(double value);
     public abstract int ToInt32(DateTime value);
-    public abstract int ToInt32(string value);
     public abstract int ToInt32(object value);
 
     public abstract long ToInt64(bool value);
     public abstract long ToInt64(int value);
     public abstract long ToInt64(double value);
     public abstract long ToInt64(DateTime value);
-    public abstract long ToInt64(string value);
     public abstract long ToInt64(object value);
 
     public abstract decimal ToDecimal(object value);
@@ -31,16 +28,12 @@ namespace TextMonster.Xml.Xml_Reader
     public abstract double ToDouble(int value);
     public abstract double ToDouble(long value);
     public abstract double ToDouble(DateTime value);
-    public abstract double ToDouble(string value);
     public abstract double ToDouble(object value);
-
-    public abstract float ToSingle(object value);
 
     public abstract DateTime ToDateTime(bool value);
     public abstract DateTime ToDateTime(int value);
     public abstract DateTime ToDateTime(long value);
     public abstract DateTime ToDateTime(double value);
-    public abstract DateTime ToDateTime(string value);
     public abstract DateTime ToDateTime(object value);
 
     public abstract string ToString(bool value);

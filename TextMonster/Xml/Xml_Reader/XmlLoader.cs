@@ -10,54 +10,6 @@ namespace TextMonster.Xml.Xml_Reader
     FastXmlReader reader;
     bool preserveWhitespace;
 
-
-    public XmlLoader()
-    {
-    }
-
-    internal void Load(XmlDocument doc, FastXmlReader reader, bool preserveWhitespace)
-    {
-      this.doc = doc;
-      // perf: unwrap XmlTextReader if no one derived from it
-      if (reader.GetType() == typeof(XmlTextReader))
-      {
-        this.reader = ((XmlTextReader)reader).Impl;
-      }
-      else
-      {
-        this.reader = reader;
-      }
-      this.preserveWhitespace = preserveWhitespace;
-      if (doc == null)
-        throw new ArgumentException(Res.GetString(Res.Xdom_Load_NoDocument));
-      if (reader == null)
-        throw new ArgumentException(Res.GetString(Res.Xdom_Load_NoReader));
-      doc.SetBaseURI(reader.BaseURI);
-      if (reader.Settings != null
-          && reader.Settings.ValidationType == ValidationType.Schema)
-      {
-        doc.Schemas = reader.Settings.Schemas;
-      }
-      if (this.reader.ReadState != ReadState.Interactive)
-      {
-        if (!this.reader.Read())
-          return;
-      }
-      LoadDocSequence(doc);
-    }
-
-    //The function will start loading the document from where current XmlReader is pointing at.
-    private void LoadDocSequence(XmlDocument parentDoc)
-    {
-      XmlNode node = null;
-      while ((node = LoadNode(true)) != null)
-      {
-        parentDoc.AppendChildForLoad(node, parentDoc);
-        if (!this.reader.Read())
-          return;
-      }
-    }
-
     private XmlNode LoadNode(bool skipOverWhitespace)
     {
       FastXmlReader r = this.reader;
@@ -731,78 +683,9 @@ namespace TextMonster.Xml.Xml_Reader
       return pc.NamespaceManager;
     }
 
-    internal void LoadInnerXmlElement(XmlElement node, string innerxmltext)
-    {
-      //construct a tree underneth the node
-      XmlNamespaceManager mgr = ParsePartialContent(node, innerxmltext, XmlNodeType.Element);
-      //remove the duplicate namesapce
-      if (node.ChildNodes.Count > 0)
-        RemoveDuplicateNamespace((XmlElement)node, mgr, false);
-    }
-
     internal void LoadInnerXmlAttribute(XmlAttribute node, string innerxmltext)
     {
       ParsePartialContent(node, innerxmltext, XmlNodeType.Attribute);
-    }
-
-
-    private void RemoveDuplicateNamespace(XmlElement elem, XmlNamespaceManager mgr, bool fCheckElemAttrs)
-    {
-      //remove the duplicate attributes on current node first
-      mgr.PushScope();
-      XmlAttributeCollection attrs = elem.Attributes;
-      int cAttrs = attrs.Count;
-      if (fCheckElemAttrs && cAttrs > 0)
-      {
-        for (int i = cAttrs - 1; i >= 0; --i)
-        {
-          XmlAttribute attr = attrs[i];
-          if (attr.Prefix == doc.strXmlns)
-          {
-            string nsUri = mgr.LookupNamespace(attr.LocalName);
-            if (nsUri != null)
-            {
-              if (attr.Value == nsUri)
-                elem.Attributes.RemoveNodeAt(i);
-            }
-            else
-            {
-              // Add this namespace, so it we will behave corectly when setting "<bar xmlns:p="BAR"><foo2 xmlns:p="FOO"/></bar>" as
-              // InnerXml on this foo elem where foo is like this "<foo xmlns:p="FOO"></foo>"
-              // If do not do this, then we will remove the inner p prefix definition and will let the 1st p to be in scope for
-              // the subsequent InnerXml_set or setting an EntRef inside.
-              mgr.AddNamespace(attr.LocalName, attr.Value);
-            }
-          }
-          else if (attr.Prefix.Length == 0 && attr.LocalName == doc.strXmlns)
-          {
-            string nsUri = mgr.DefaultNamespace;
-            if (nsUri != null)
-            {
-              if (attr.Value == nsUri)
-                elem.Attributes.RemoveNodeAt(i);
-            }
-            else
-            {
-              // Add this namespace, so it we will behave corectly when setting "<bar xmlns:p="BAR"><foo2 xmlns:p="FOO"/></bar>" as
-              // InnerXml on this foo elem where foo is like this "<foo xmlns:p="FOO"></foo>"
-              // If do not do this, then we will remove the inner p prefix definition and will let the 1st p to be in scope for
-              // the subsequent InnerXml_set or setting an EntRef inside.
-              mgr.AddNamespace(attr.LocalName, attr.Value);
-            }
-          }
-        }
-      }
-      //now recursively remove the duplicate attributes on the children
-      XmlNode child = elem.FirstChild;
-      while (child != null)
-      {
-        XmlElement childElem = child as XmlElement;
-        if (childElem != null)
-          RemoveDuplicateNamespace(childElem, mgr, true);
-        child = child.NextSibling;
-      }
-      mgr.PopScope();
     }
 
     private String EntitizeName(String name)

@@ -25,7 +25,6 @@
 
     //additional info for Partial validation
     byte pvFlags;
-    const byte wildCardMask = 0x01;
     const byte isMixedMask = 0x02;
     const byte isAbstractMask = 0x04;
     //const byte dupDeclMask = 0x08;
@@ -86,15 +85,6 @@
       return localAnyType;
     }
 
-    /// <include file='doc\XmlSchemaComplexType.uex' path='docs/doc[@for="XmlSchemaComplexType.XmlSchemaComplexType"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlSchemaComplexType()
-    {
-    }
-
-
     [XmlIgnore]
     internal static XmlSchemaComplexType AnyType
     {
@@ -105,12 +95,6 @@
     internal static XmlSchemaComplexType UntypedAnyType
     {
       get { return untypedAnyType; }
-    }
-
-    [XmlIgnore]
-    internal static XmlSchemaComplexType AnyTypeSkip
-    {
-      get { return anyTypeSkip; }
     }
 
     internal static ContentValidator AnyTypeContentValidator
@@ -273,16 +257,6 @@
       }
     }
 
-    /// <include file='doc\XmlSchemaComplexType.uex' path='docs/doc[@for="XmlSchemaComplexType.AttributeWildcard"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    [XmlIgnore]
-    public XmlSchemaAnyAttribute AttributeWildcard
-    {
-      get { return attributeWildcard; }
-    }
-
     internal void SetContentTypeParticle(XmlSchemaParticle value)
     {
       contentTypeParticle = value;
@@ -296,14 +270,6 @@
     internal void SetAttributeWildcard(XmlSchemaAnyAttribute value)
     {
       attributeWildcard = value;
-    }
-
-    internal bool HasWildCard
-    {
-      get
-      {
-        return (pvFlags & wildCardMask) != 0;
-      }
     }
 
     internal override XmlQualifiedName DerivedFrom

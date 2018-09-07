@@ -423,24 +423,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    // Gets or sets the markup representing just
-    // the children of this node.
-    public override string InnerXml
-    {
-      get
-      {
-        return base.InnerXml;
-      }
-      set
-      {
-        RemoveAllChildren();
-        XmlLoader loader = new XmlLoader();
-        loader.LoadInnerXmlElement(this, value);
-      }
-    }
-
-    // Gets or sets the concatenated values of the
-    // node and all its children.
     public override string InnerText
     {
       get

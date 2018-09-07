@@ -611,23 +611,6 @@ namespace TextMonster.Xml.Xml_Reader
       coreReader.ResolveEntity();
     }
 
-    internal void MoveOffEntityReference()
-    {
-      if (outerReader.NodeType == XmlNodeType.EntityReference && parsingFunction != ParsingFunction.ResolveEntityInternally)
-      {
-        if (!outerReader.Read())
-        {
-          throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
-        }
-      }
-    }
-
-    public override string ReadString()
-    {
-      MoveOffEntityReference();
-      return base.ReadString();
-    }
-
     //
     // IXmlLineInfo members
     //

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Runtime.Versioning;
 using System.Text;
 
 namespace TextMonster.Xml.Xml_Reader
@@ -241,29 +240,6 @@ namespace TextMonster.Xml.Xml_Reader
       lastToken = Token.Empty;
     }
 
-    // Creates an instance of the XmlTextWriter class using the specified stream.
-    public XmlTextWriter(Stream w, Encoding encoding)
-      : this()
-    {
-      this.encoding = encoding;
-      if (encoding != null)
-        textWriter = new StreamWriter(w, encoding);
-      else
-        textWriter = new StreamWriter(w);
-      xmlEncoder = new XmlTextEncoder(textWriter);
-      xmlEncoder.QuoteChar = this.quoteChar;
-    }
-
-    // Creates an instance of the XmlTextWriter class using the specified file.
-    [ResourceConsumption(ResourceScope.Machine)]
-    [ResourceExposure(ResourceScope.Machine)]
-    public XmlTextWriter(String filename, Encoding encoding)
-      : this(new FileStream(filename, FileMode.Create,
-                            FileAccess.Write, FileShare.Read), encoding)
-    {
-    }
-
-    // Creates an instance of the XmlTextWriter class using the specified TextWriter.
     public XmlTextWriter(TextWriter w)
       : this()
     {
@@ -1382,21 +1358,6 @@ namespace TextMonster.Xml.Xml_Reader
       return null;
     }
 
-    // There are three kind of strings we write out - Name, LocalName and Prefix.
-    // Both LocalName and Prefix can be represented with NCName == false and Name
-    // can be represented as NCName == true
-
-    void InternalWriteName(string name, bool isNCName)
-    {
-      ValidateName(name, isNCName);
-      textWriter.Write(name);
-    }
-
-    // This method is used for validation of the DOCTYPE, processing instruction and entity names plus names 
-    // written out by the user via WriteName and WriteQualifiedName.
-    // Unfortunatelly the names of elements and attributes are not validated by the XmlTextWriter.
-    // Also this method does not check wheather the character after ':' is a valid start name character. It accepts
-    // all valid name characters at that position. This can't be changed because of backwards compatibility.
     private unsafe void ValidateName(string name, bool isNCName)
     {
       if (name == null || name.Length == 0)

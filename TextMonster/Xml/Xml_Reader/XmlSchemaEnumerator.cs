@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace TextMonster.Xml.Xml_Reader
 {
-  public class XmlSchemaEnumerator : IEnumerator<XmlSchema>, System.Collections.IEnumerator
+  public class XmlSchemaEnumerator : IEnumerator<XmlSchema>
   {
     private XmlSchemas list;
     private int idx, end;

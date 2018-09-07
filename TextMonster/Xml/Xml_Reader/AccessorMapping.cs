@@ -11,9 +11,6 @@ namespace TextMonster.Xml.Xml_Reader
     XmlnsAccessor xmlns;
     bool ignore;
 
-    internal AccessorMapping()
-    { }
-
     internal TypeDesc TypeDesc
     {
       get { return typeDesc; }

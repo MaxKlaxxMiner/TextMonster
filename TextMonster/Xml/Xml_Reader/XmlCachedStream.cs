@@ -13,7 +13,6 @@ namespace TextMonster.Xml.Xml_Reader
     private Uri uri;
 
     internal XmlCachedStream(Uri uri, Stream stream)
-      : base()
     {
 
       this.uri = uri;

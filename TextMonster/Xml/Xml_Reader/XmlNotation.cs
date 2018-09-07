@@ -55,12 +55,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return String.Empty; }
     }
 
-    public override String InnerXml
-    {
-      get { return String.Empty; }
-      set { throw new InvalidOperationException(Res.GetString(Res.Xdom_Set_InnerXml)); }
-    }
-
     public override void WriteTo(XmlWriter w)
     {
     }

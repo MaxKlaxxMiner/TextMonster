@@ -8,15 +8,6 @@
   {
     XmlSchemaSimpleTypeContent content;
 
-    /// <include file='doc\XmlSchemaSimpleType.uex' path='docs/doc[@for="XmlSchemaSimpleType.Content"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-
-    public XmlSchemaSimpleType()
-    {
-    }
-
     /// <include file='doc\XmlSchemaSimpleType.uex' path='docs/doc[@for="XmlSchemaSimpleType.Content1"]/*' />
     [XmlElement("restriction", typeof(XmlSchemaSimpleTypeRestriction)),
     XmlElement("list", typeof(XmlSchemaSimpleTypeList)),

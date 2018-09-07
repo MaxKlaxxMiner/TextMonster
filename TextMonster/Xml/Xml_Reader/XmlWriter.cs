@@ -231,7 +231,7 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // Dispose the underline stream objects (calls Close on the XmlWriter)
-    protected virtual void Dispose(bool disposing)
+    protected void Dispose(bool disposing)
     {
       if (disposing && WriteState != WriteState.Closed)
       {

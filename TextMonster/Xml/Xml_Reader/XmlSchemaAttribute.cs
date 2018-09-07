@@ -152,11 +152,6 @@ namespace TextMonster.Xml.Xml_Reader
       qualifiedName = value;
     }
 
-    internal void SetAttributeType(XmlSchemaSimpleType value)
-    {
-      attributeType = value;
-    }
-
     internal SchemaAttDef AttDef
     {
       get { return attDef; }

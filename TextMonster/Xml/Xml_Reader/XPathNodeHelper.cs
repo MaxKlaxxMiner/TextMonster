@@ -55,25 +55,6 @@
     }
 
     /// <summary>
-    /// Return the next attribute sibling of the specified node.  If the node is not itself an
-    /// attribute, or if there are no siblings, then do not set pageNode or idxNode and return false.
-    /// </summary>
-    public static bool GetNextAttribute(ref XPathNode[] pageNode, ref int idxNode)
-    {
-      XPathNode[] page;
-      int idx;
-
-      idx = pageNode[idxNode].GetSibling(out page);
-      if (idx != 0 && page[idx].NodeType == XPathNodeType.Attribute)
-      {
-        pageNode = page;
-        idxNode = idx;
-        return true;
-      }
-      return false;
-    }
-
-    /// <summary>
     /// Return the first content-typed child of the specified node.  If the node has no children, or
     /// if the node is not content-typed, then do not set pageNode or idxNode and return false.
     /// </summary>
@@ -202,74 +183,6 @@
             break;
 
           if (page[idx].ElementMatch(localName, namespaceName))
-          {
-            pageNode = page;
-            idxNode = idx;
-            return true;
-          }
-        }
-      }
-
-      return false;
-    }
-
-    /// <summary>
-    /// Return the first child of the specified node that has the specified type (must be a content type).  If no such
-    /// child exists, then do not set pageNode or idxNode and return false.
-    /// </summary>
-    public static bool GetContentChild(ref XPathNode[] pageNode, ref int idxNode, XPathNodeType typ)
-    {
-      XPathNode[] page = pageNode;
-      int idx = idxNode;
-      int mask;
-
-      // Only check children if at least one content-typed child exists
-      if (page[idx].HasContentChild)
-      {
-        mask = XPathNavigator.GetContentKindMask(typ);
-
-        GetChild(ref page, ref idx);
-        do
-        {
-          if (((1 << (int)page[idx].NodeType) & mask) != 0)
-          {
-            // Never return attributes, as Attribute is not a content type
-            if (typ == XPathNodeType.Attribute)
-              return false;
-
-            pageNode = page;
-            idxNode = idx;
-            return true;
-          }
-
-          idx = page[idx].GetSibling(out page);
-        }
-        while (idx != 0);
-      }
-
-      return false;
-    }
-
-    /// <summary>
-    /// Return a following sibling of the specified node that has the specified type.  If no such
-    /// sibling exists, then do not set pageNode or idxNode and return false.
-    /// </summary>
-    public static bool GetContentSibling(ref XPathNode[] pageNode, ref int idxNode, XPathNodeType typ)
-    {
-      XPathNode[] page = pageNode;
-      int idx = idxNode;
-      int mask = XPathNavigator.GetContentKindMask(typ);
-
-      if (page[idx].NodeType != XPathNodeType.Attribute)
-      {
-        while (true)
-        {
-          idx = page[idx].GetSibling(out page);
-
-          if (idx == 0)
-            break;
-
-          if (((1 << (int)page[idx].NodeType) & mask) != 0)
           {
             pageNode = page;
             idxNode = idx;

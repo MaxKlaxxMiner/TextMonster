@@ -88,7 +88,7 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // Gets all children of this node.
-    public virtual XmlNodeList ChildNodes
+    public XmlNodeList ChildNodes
     {
       get { return new XmlChildNodes(this); }
     }
@@ -125,7 +125,7 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // Gets the first child of this node.
-    public virtual XmlNode FirstChild
+    public XmlNode FirstChild
     {
       get
       {
@@ -138,7 +138,7 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // Gets the last child of this node.
-    public virtual XmlNode LastChild
+    public XmlNode LastChild
     {
       get { return LastNode; }
     }
@@ -399,16 +399,6 @@ namespace TextMonster.Xml.Xml_Reader
       return newNode;
     }
 
-    // Replaces the child node oldChild with newChild node.
-    public virtual XmlNode ReplaceChild(XmlNode newChild, XmlNode oldChild)
-    {
-      XmlNode nextNode = oldChild.NextSibling;
-      RemoveChild(oldChild);
-      XmlNode node = InsertBefore(newChild, nextNode);
-      return oldChild;
-    }
-
-    // Removes specified child node.
     public virtual XmlNode RemoveChild(XmlNode oldChild)
     {
       if (!IsContainer)
@@ -635,7 +625,7 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // Gets a value indicating whether this node has any child nodes.
-    public virtual bool HasChildNodes
+    public bool HasChildNodes
     {
       get { return LastNode != null; }
     }
@@ -643,7 +633,7 @@ namespace TextMonster.Xml.Xml_Reader
     // Creates a duplicate of this node.
     public abstract XmlNode CloneNode(bool deep);
 
-    internal virtual void CopyChildren(XmlDocument doc, XmlNode container, bool deep)
+    internal void CopyChildren(XmlDocument doc, XmlNode container, bool deep)
     {
       for (XmlNode child = container.FirstChild; child != null; child = child.NextSibling)
       {
@@ -801,30 +791,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    // Gets or sets the markup representing just the children of this node.
-    public virtual string InnerXml
-    {
-      get
-      {
-        StringWriter sw = new StringWriter(CultureInfo.InvariantCulture);
-        XmlDOMTextWriter xw = new XmlDOMTextWriter(sw);
-        try
-        {
-          WriteContentTo(xw);
-        }
-        finally
-        {
-          xw.Close();
-        }
-        return sw.ToString();
-      }
-
-      set
-      {
-        throw new InvalidOperationException(Res.GetString(Res.Xdom_Set_InnerXml));
-      }
-    }
-
     public virtual IXmlSchemaInfo SchemaInfo
     {
       get
@@ -886,154 +852,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal string GetNamespaceOfPrefixStrict(string prefix)
-    {
-      XmlDocument doc = Document;
-      if (doc != null)
-      {
-        prefix = doc.NameTable.Get(prefix);
-        if (prefix == null)
-          return null;
-
-        XmlNode node = this;
-        while (node != null)
-        {
-          if (node.NodeType == XmlNodeType.Element)
-          {
-            XmlElement elem = (XmlElement)node;
-            if (elem.HasAttributes)
-            {
-              XmlAttributeCollection attrs = elem.Attributes;
-              if (prefix.Length == 0)
-              {
-                for (int iAttr = 0; iAttr < attrs.Count; iAttr++)
-                {
-                  XmlAttribute attr = attrs[iAttr];
-                  if (attr.Prefix.Length == 0)
-                  {
-                    if (Ref.Equal(attr.LocalName, doc.strXmlns))
-                    {
-                      return attr.Value; // found xmlns
-                    }
-                  }
-                }
-              }
-              else
-              {
-                for (int iAttr = 0; iAttr < attrs.Count; iAttr++)
-                {
-                  XmlAttribute attr = attrs[iAttr];
-                  if (Ref.Equal(attr.Prefix, doc.strXmlns))
-                  {
-                    if (Ref.Equal(attr.LocalName, prefix))
-                    {
-                      return attr.Value; // found xmlns:prefix
-                    }
-                  }
-                  else if (Ref.Equal(attr.Prefix, prefix))
-                  {
-                    return attr.NamespaceURI; // found prefix:attr
-                  }
-                }
-              }
-            }
-            if (Ref.Equal(node.Prefix, prefix))
-            {
-              return node.NamespaceURI;
-            }
-            node = node.ParentNode;
-          }
-          else if (node.NodeType == XmlNodeType.Attribute)
-          {
-            node = ((XmlAttribute)node).OwnerElement;
-          }
-          else
-          {
-            node = node.ParentNode;
-          }
-        }
-        if (Ref.Equal(doc.strXml, prefix))
-        { // xmlns:xml
-          return doc.strReservedXml;
-        }
-        else if (Ref.Equal(doc.strXmlns, prefix))
-        { // xmlns:xmlns
-          return doc.strReservedXmlns;
-        }
-      }
-      return null;
-    }
-
-    internal string GetPrefixOfNamespaceStrict(string namespaceURI)
-    {
-      XmlDocument doc = Document;
-      if (doc != null)
-      {
-        namespaceURI = doc.NameTable.Add(namespaceURI);
-
-        XmlNode node = this;
-        while (node != null)
-        {
-          if (node.NodeType == XmlNodeType.Element)
-          {
-            XmlElement elem = (XmlElement)node;
-            if (elem.HasAttributes)
-            {
-              XmlAttributeCollection attrs = elem.Attributes;
-              for (int iAttr = 0; iAttr < attrs.Count; iAttr++)
-              {
-                XmlAttribute attr = attrs[iAttr];
-                if (attr.Prefix.Length == 0)
-                {
-                  if (Ref.Equal(attr.LocalName, doc.strXmlns))
-                  {
-                    if (attr.Value == namespaceURI)
-                    {
-                      return string.Empty; // found xmlns="namespaceURI"
-                    }
-                  }
-                }
-                else if (Ref.Equal(attr.Prefix, doc.strXmlns))
-                {
-                  if (attr.Value == namespaceURI)
-                  {
-                    return attr.LocalName; // found xmlns:prefix="namespaceURI"
-                  }
-                }
-                else if (Ref.Equal(attr.NamespaceURI, namespaceURI))
-                {
-                  return attr.Prefix; // found prefix:attr
-                  // with prefix bound to namespaceURI
-                }
-              }
-            }
-            if (Ref.Equal(node.NamespaceURI, namespaceURI))
-            {
-              return node.Prefix;
-            }
-            node = node.ParentNode;
-          }
-          else if (node.NodeType == XmlNodeType.Attribute)
-          {
-            node = ((XmlAttribute)node).OwnerElement;
-          }
-          else
-          {
-            node = node.ParentNode;
-          }
-        }
-        if (Ref.Equal(doc.strReservedXml, namespaceURI))
-        { // xmlns:xml
-          return doc.strXml;
-        }
-        else if (Ref.Equal(doc.strReservedXmlns, namespaceURI))
-        { // xmlns:xmlns
-          return doc.strXmlns;
-        }
-      }
-      return null;
-    }
-
     internal virtual void SetParent(XmlNode node)
     {
       if (node == null)
@@ -1066,7 +884,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal virtual XmlNode FindChild(XmlNodeType type)
+    internal XmlNode FindChild(XmlNodeType type)
     {
       for (XmlNode child = FirstChild; child != null; child = child.NextSibling)
       {

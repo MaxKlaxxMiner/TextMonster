@@ -9,10 +9,6 @@ namespace TextMonster.Xml.Xml_Reader
     int curIndex;
     int endIndex;
 
-    internal IncrementalReadCharsDecoder()
-    {
-    }
-
     internal override int DecodedCount
     {
       get

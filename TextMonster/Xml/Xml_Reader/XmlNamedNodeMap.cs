@@ -15,7 +15,7 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // Retrieves a XmlNode specified by name.
-    public virtual XmlNode GetNamedItem(String name)
+    public XmlNode GetNamedItem(String name)
     {
       int offset = FindNodeOffset(name);
       if (offset >= 0)
@@ -41,10 +41,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    // Removes the node specified by name.
-
-    // Gets the number of nodes in this XmlNamedNodeMap.
-    public virtual int Count
+    public int Count
     {
       get
       {
@@ -107,7 +104,7 @@ namespace TextMonster.Xml.Xml_Reader
       return node;
     }
 
-    internal virtual XmlNode AddNodeForLoad(XmlNode node, XmlDocument doc)
+    internal XmlNode AddNodeForLoad(XmlNode node, XmlDocument doc)
     {
       XmlNodeChangedEventArgs args = doc.GetInsertEventArgsForLoad(node, parent);
       if (args != null)

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
-using System.Text;
 using TextMonster.Xml.Xml_Reader;
 // ReSharper disable InconsistentNaming
 
@@ -307,54 +306,12 @@ namespace TextMonster.Xml
       }
     }
 
-    // Returns a chunk of the value of the current node. Call this method in a loop to get all the data. 
-    // Use this method to get a streaming access to the value of the current node.
     public virtual int ReadValueChunk(char[] buffer, int index, int count)
     {
       throw new NotSupportedException(Res.GetString(Res.Xml_ReadValueChunkNotSupported));
     }
 
-    // Virtual helper methods
-    // Reads the contents of an element as a string. Stops of comments, PIs or entity references.
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-    public virtual string ReadString()
-    {
-      if (ReadState != ReadState.Interactive)
-      {
-        return string.Empty;
-      }
-      MoveToElement();
-      if (NodeType == XmlNodeType.Element)
-      {
-        if (IsEmptyElement)
-        {
-          return string.Empty;
-        }
-        if (!Read())
-        {
-          throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
-        }
-        if (NodeType == XmlNodeType.EndElement)
-        {
-          return string.Empty;
-        }
-      }
-      string result = string.Empty;
-      while (IsTextualNode(NodeType))
-      {
-        result += Value;
-        if (!Read())
-        {
-          break;
-        }
-      }
-      return result;
-    }
-
-    // Checks whether the current node is a content (non-whitespace text, CDATA, Element, EndElement, EntityReference
-    // or EndEntity) node. If the node is not a content node, then the method skips ahead to the next content node or 
-    // end of file. Skips over nodes of type ProcessingInstruction, DocumentType, Comment, Whitespace and SignificantWhitespace.
-    public virtual XmlNodeType MoveToContent()
+    public XmlNodeType MoveToContent()
     {
       do
       {
@@ -383,7 +340,7 @@ namespace TextMonster.Xml
       Dispose(true);
     }
 
-    protected virtual void Dispose(bool disposing)
+    protected void Dispose(bool disposing)
     { //the boolean flag may be used by subclasses to differentiate between disposing and finalizing
       if (disposing && ReadState != ReadState.Closed)
       {
@@ -481,56 +438,6 @@ namespace TextMonster.Xml
         message += " " + Res.GetString(Res.Xml_ErrorPosition, lineArgs);
       }
       return message;
-    }
-
-    internal string InternalReadContentAsString()
-    {
-      string value = string.Empty;
-      StringBuilder sb = null;
-      do
-      {
-        switch (NodeType)
-        {
-          case XmlNodeType.Attribute:
-          return Value;
-          case XmlNodeType.Text:
-          case XmlNodeType.Whitespace:
-          case XmlNodeType.SignificantWhitespace:
-          case XmlNodeType.CDATA:
-          // merge text content
-          if (value.Length == 0)
-          {
-            value = Value;
-          }
-          else
-          {
-            if (sb == null)
-            {
-              sb = new StringBuilder();
-              sb.Append(value);
-            }
-            sb.Append(Value);
-          }
-          break;
-          case XmlNodeType.ProcessingInstruction:
-          case XmlNodeType.Comment:
-          case XmlNodeType.EndEntity:
-          // skip comments, pis and end entity nodes
-          break;
-          case XmlNodeType.EntityReference:
-          if (CanResolveEntity)
-          {
-            ResolveEntity();
-            break;
-          }
-          goto default;
-          default:
-          goto ReturnContent;
-        }
-      } while (AttributeCount != 0 ? ReadAttributeValue() : Read());
-
-    ReturnContent:
-      return (sb == null) ? value : sb.ToString();
     }
 
     internal virtual IDtdInfo DtdInfo

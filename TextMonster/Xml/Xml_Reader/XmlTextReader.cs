@@ -23,12 +23,6 @@ namespace TextMonster.Xml.Xml_Reader
       impl.OuterReader = this;
     }
 
-    public XmlTextReader(TextReader input, XmlNameTable nt)
-    {
-      impl = new XmlTextReaderImpl(input, nt);
-      impl.OuterReader = this;
-    }
-
     public override XmlNodeType NodeType
     {
       get { return impl.NodeType; }
@@ -231,17 +225,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return false; }
     }
 
-    // Overriden helper methods
-
-    public override string ReadString()
-    {
-      impl.MoveOffEntityReference();
-      return base.ReadString();
-    }
-
-    //
-    // IXmlLineInfo members
-    //
     public bool HasLineInfo() { return true; }
 
     public int LineNumber { get { return impl.LineNumber; } }
@@ -266,11 +249,6 @@ namespace TextMonster.Xml.Xml_Reader
       return impl.LookupPrefix(namespaceName);
     }
 
-    public EntityHandling EntityHandling
-    {
-      set { impl.EntityHandling = value; }
-    }
-
     public XmlResolver XmlResolver
     {
       set { impl.XmlResolver = value; }
@@ -287,12 +265,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal override XmlNamespaceManager NamespaceManager
     {
       get { return impl.NamespaceManager; }
-    }
-
-    // NOTE: System.Data.SqlXml.XmlDataSourceResolver accesses this property via reflection
-    internal bool XmlValidatingReaderCompatibilityMode
-    {
-      set { impl.XmlValidatingReaderCompatibilityMode = value; }
     }
 
     internal override IDtdInfo DtdInfo

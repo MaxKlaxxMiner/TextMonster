@@ -72,9 +72,9 @@ namespace TextMonster.Xml.Xml_Reader
       set { namespaces = value; }
     }
 
-    internal virtual void OnAdd(XmlSchemaObjectCollection container, object item) { }
-    internal virtual void OnRemove(XmlSchemaObjectCollection container, object item) { }
-    internal virtual void OnClear(XmlSchemaObjectCollection container) { }
+    internal void OnAdd(XmlSchemaObjectCollection container, object item) { }
+    internal void OnRemove(XmlSchemaObjectCollection container, object item) { }
+    internal void OnClear(XmlSchemaObjectCollection container) { }
 
     [XmlIgnore]
     internal virtual string IdAttribute

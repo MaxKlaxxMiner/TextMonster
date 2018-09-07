@@ -13,14 +13,12 @@ namespace TextMonster.Xml.Xml_Reader
     XmlSeverityType severity;
 
     internal ValidationEventArgs(XmlSchemaException ex)
-      : base()
     {
       this.ex = ex;
       severity = XmlSeverityType.Error;
     }
 
     internal ValidationEventArgs(XmlSchemaException ex, XmlSeverityType severity)
-      : base()
     {
       this.ex = ex;
       this.severity = severity;

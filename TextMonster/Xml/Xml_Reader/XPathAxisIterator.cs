@@ -55,10 +55,7 @@ namespace TextMonster.Xml.Xml_Reader
       get { return position; }
     }
 
-    // Nodetype Matching - Given nodetype matches the navigator's nodetype
-    //Given nodetype is all . So it matches everything
-    //Given nodetype is text - Matches text, WS, Significant WS
-    protected virtual bool Matches
+    protected bool Matches
     {
       get
       {

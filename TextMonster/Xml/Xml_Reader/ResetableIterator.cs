@@ -11,10 +11,6 @@
     {
       base.count = other.count;
     }
-    protected void ResetCount()
-    {
-      base.count = -1;
-    }
 
     public abstract void Reset();
 

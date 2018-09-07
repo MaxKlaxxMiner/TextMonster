@@ -175,18 +175,6 @@ namespace TextMonster.Xml.Xml_Reader
       WriteEndElement(prefix, localName, ns);
     }
 
-    internal virtual void WriteQualifiedName(string prefix, string localName, string ns)
-    {
-      if (prefix.Length != 0)
-      {
-        WriteString(prefix);
-        WriteString(":");
-      }
-      WriteString(localName);
-    }
-
-    // This method must be called instead of WriteStartAttribute() for namespaces.
-
     internal abstract void WriteNamespaceDeclaration(string prefix, string ns);
 
     // When true, the XmlWellFormedWriter will call:
@@ -215,13 +203,13 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // This is called when the remainder of a base64 value should be output.
-    internal virtual void WriteEndBase64()
+    internal void WriteEndBase64()
     {
       // The Flush will call WriteRaw to write out the rest of the encoded characters
       base64Encoder.Flush();
     }
 
-    internal virtual void Close(WriteState currentState)
+    internal void Close(WriteState currentState)
     {
       Close();
     }

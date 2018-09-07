@@ -9,16 +9,7 @@ namespace TextMonster.Xml.Xml_Reader
   public class XmlSerializerNamespaces
   {
     Hashtable namespaces = null;
-
-    /// <include file='doc\XmlSerializerNamespaces.uex' path='docs/doc[@for="XmlSerializerNamespaces.XmlSerializerNamespaces"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlSerializerNamespaces()
-    {
-    }
-
-
+    
     /// <include file='doc\XmlSerializerNamespaces.uex' path='docs/doc[@for="XmlSerializerNamespaces.Add"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>

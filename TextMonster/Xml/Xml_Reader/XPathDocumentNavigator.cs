@@ -150,63 +150,12 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     /// <summary>
-    /// Get the base URI of the current node.
-    /// </summary>
-    public override string BaseURI
-    {
-      get
-      {
-        XPathNode[] page;
-        int idx;
-
-        if (this.idxParent != 0)
-        {
-          // Get BaseUri of parent for attribute, namespace, and collapsed text nodes
-          page = this.pageParent;
-          idx = this.idxParent;
-        }
-        else
-        {
-          page = this.pageCurrent;
-          idx = this.idxCurrent;
-        }
-
-        do
-        {
-          switch (page[idx].NodeType)
-          {
-            case XPathNodeType.Element:
-            case XPathNodeType.Root:
-            case XPathNodeType.ProcessingInstruction:
-            // BaseUri is always stored with Elements, Roots, and PIs
-            return page[idx].BaseUri;
-          }
-
-          // Get BaseUri of parent
-          idx = page[idx].GetParent(out page);
-        }
-        while (idx != 0);
-
-        return string.Empty;
-      }
-    }
-
-    /// <summary>
     /// Return the xml name table which was used to atomize all prefixes, local-names, and
     /// namespace uris in the document.
     /// </summary>
     public override XmlNameTable NameTable
     {
       get { return this.pageCurrent[this.idxCurrent].Document.NameTable; }
-    }
-
-    /// <summary>
-    /// If positioned on an attribute, move to its next sibling attribute.  If no attributes can be found,
-    /// return false.
-    /// </summary>
-    public override bool MoveToNextAttribute()
-    {
-      return XPathNodeHelper.GetNextAttribute(ref this.pageCurrent, ref this.idxCurrent);
     }
 
     /// <summary>
@@ -379,20 +328,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     /// <summary>
-    /// Position the navigator on the root node of the current document.
-    /// </summary>
-    public override void MoveToRoot()
-    {
-      if (this.idxParent != 0)
-      {
-        // Clear parent state
-        this.pageParent = null;
-        this.idxParent = 0;
-      }
-      this.idxCurrent = this.pageCurrent[this.idxCurrent].GetRoot(out this.pageCurrent);
-    }
-
-    /// <summary>
     /// Move to the first element child of the current node with the specified name.  Return false
     /// if the current node has no matching element children.
     /// </summary>
@@ -414,37 +349,6 @@ namespace TextMonster.Xml.Xml_Reader
         this.atomizedLocalName = (localName != null) ? NameTable.Get(localName) : null;
 
       return XPathNodeHelper.GetElementSibling(ref this.pageCurrent, ref this.idxCurrent, this.atomizedLocalName, namespaceURI);
-    }
-
-    /// <summary>
-    /// Move to the first content child of the current node with the specified type.  Return false
-    /// if the current node has no matching children.
-    /// </summary>
-    public override bool MoveToChild(XPathNodeType type)
-    {
-      if (this.pageCurrent[this.idxCurrent].HasCollapsedText)
-      {
-        // Only XPathNodeType.Text and XPathNodeType.All matches collapsed text node
-        if (type != XPathNodeType.Text && type != XPathNodeType.All)
-          return false;
-
-        // Virtualize collapsed text nodes
-        this.pageParent = this.pageCurrent;
-        this.idxParent = this.idxCurrent;
-        this.idxCurrent = this.pageCurrent[this.idxCurrent].Document.GetCollapsedTextNode(out this.pageCurrent);
-        return true;
-      }
-
-      return XPathNodeHelper.GetContentChild(ref this.pageCurrent, ref this.idxCurrent, type);
-    }
-
-    /// <summary>
-    /// Move to the first content sibling of the current node with the specified type.  Return false
-    /// if the current node has no matching siblings.
-    /// </summary>
-    public override bool MoveToNext(XPathNodeType type)
-    {
-      return XPathNodeHelper.GetContentSibling(ref this.pageCurrent, ref this.idxCurrent, type);
     }
 
     /// <summary>
@@ -573,126 +477,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
 
       return XPathNodeHelper.GetContentFollowing(ref this.pageCurrent, ref this.idxCurrent, pageEnd, idxEnd, type);
-    }
-
-    /// <summary>
-    /// Return an iterator that ranges over all children of the current node that match the specified QName.
-    /// </summary>
-    public override XPathNodeIterator SelectChildren(string name, string namespaceURI)
-    {
-      // If local name is wildcard, then call XPathNavigator.SelectChildren
-      if (name == null || name.Length == 0)
-        return base.SelectChildren(name, namespaceURI);
-
-      return new XPathDocumentElementChildIterator(this, name, namespaceURI);
-    }
-
-    /// <summary>
-    /// Return an iterator that ranges over all descendants of the current node that match the specified
-    /// XPathNodeType.  If matchSelf is true, then also perform the match on the current node.
-    /// </summary>
-    public override XPathNodeIterator SelectDescendants(XPathNodeType type, bool matchSelf)
-    {
-      return new XPathDocumentKindDescendantIterator(this, type, matchSelf);
-    }
-
-    /// <summary>
-    /// Return an iterator that ranges over all descendants of the current node that match the specified
-    /// QName.  If matchSelf is true, then also perform the match on the current node.
-    /// </summary>
-    public override XPathNodeIterator SelectDescendants(string name, string namespaceURI, bool matchSelf)
-    {
-      // If local name is wildcard, then call XPathNavigator.SelectDescendants
-      if (name == null || name.Length == 0)
-        return base.SelectDescendants(name, namespaceURI, matchSelf);
-
-      return new XPathDocumentElementDescendantIterator(this, name, namespaceURI, matchSelf);
-    }
-
-    /// <summary>
-    /// Returns:
-    ///     XmlNodeOrder.Unknown -- This navigator and the "other" navigator are not of the same type, or the
-    ///                             navigator's are not positioned on nodes in the same document.
-    ///     XmlNodeOrder.Before -- This navigator's current node is before the "other" navigator's current node
-    ///                            in document order.
-    ///     XmlNodeOrder.After -- This navigator's current node is after the "other" navigator's current node
-    ///                           in document order.
-    ///     XmlNodeOrder.Same -- This navigator is positioned on the same node as the "other" navigator.
-    /// </summary>
-    public override XmlNodeOrder ComparePosition(XPathNavigator other)
-    {
-      XPathDocumentNavigator that = other as XPathDocumentNavigator;
-      if (that != null)
-      {
-        XPathDocument thisDoc = this.pageCurrent[this.idxCurrent].Document;
-        XPathDocument thatDoc = that.pageCurrent[that.idxCurrent].Document;
-        if ((object)thisDoc == (object)thatDoc)
-        {
-          int locThis = GetPrimaryLocation();
-          int locThat = that.GetPrimaryLocation();
-
-          if (locThis == locThat)
-          {
-            locThis = GetSecondaryLocation();
-            locThat = that.GetSecondaryLocation();
-
-            if (locThis == locThat)
-              return XmlNodeOrder.Same;
-          }
-          return (locThis < locThat) ? XmlNodeOrder.Before : XmlNodeOrder.After;
-        }
-      }
-      return XmlNodeOrder.Unknown;
-    }
-
-    /// <summary>
-    /// Construct a primary location for this navigator.  The location is an integer that can be
-    /// easily compared with other locations in the same document in order to determine the relative
-    /// document order of two nodes.  If two locations compare equal, then secondary locations should
-    /// be compared.
-    /// </summary>
-    private int GetPrimaryLocation()
-    {
-      // Is the current node virtualized?
-      if (this.idxParent == 0)
-      {
-        // No, so primary location should be derived from current node
-        return XPathNodeHelper.GetLocation(this.pageCurrent, this.idxCurrent);
-      }
-
-      // Yes, so primary location should be derived from parent node
-      return XPathNodeHelper.GetLocation(this.pageParent, this.idxParent);
-    }
-
-    /// <summary>
-    /// Construct a secondary location for this navigator.  This location should only be used if
-    /// primary locations previously compared equal.
-    /// </summary>
-    private int GetSecondaryLocation()
-    {
-      // Is the current node virtualized?
-      if (this.idxParent == 0)
-      {
-        // No, so secondary location is int.MinValue (always first)
-        return int.MinValue;
-      }
-
-      // Yes, so secondary location should be derived from current node
-      // This happens with attributes nodes, namespace nodes, collapsed text nodes, and atomic values
-      switch (this.pageCurrent[this.idxCurrent].NodeType)
-      {
-        case XPathNodeType.Namespace:
-        // Namespace nodes come first (make location negative, but greater than int.MinValue)
-        return int.MinValue + 1 + XPathNodeHelper.GetLocation(this.pageCurrent, this.idxCurrent);
-
-        case XPathNodeType.Attribute:
-        // Attribute nodes come next (location is always positive)
-        return XPathNodeHelper.GetLocation(this.pageCurrent, this.idxCurrent);
-
-        default:
-        // Collapsed text nodes are always last
-        return int.MaxValue;
-      }
     }
 
     public override object UnderlyingObject

@@ -56,7 +56,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public virtual bool SupportsType(Uri absoluteUri, Type type)
+    public bool SupportsType(Uri absoluteUri, Type type)
     {
       if (absoluteUri == null)
       {

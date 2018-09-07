@@ -55,12 +55,6 @@ namespace TextMonster.Xml.Xml_Reader
     XmlDocument document;
     XmlNameTable nameTable;
 
-    /// <include file='doc\XmlSchema.uex' path='docs/doc[@for="XmlSchema.XmlSchema"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlSchema() { }
-
     /// <include file='doc\XmlSchema.uex' path='docs/doc[@for="XmlSchema.Read"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>

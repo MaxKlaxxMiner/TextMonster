@@ -30,7 +30,7 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // Contains this node's data.
-    public virtual string Data
+    public string Data
     {
       get
       {

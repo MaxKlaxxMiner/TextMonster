@@ -11,11 +11,7 @@ namespace TextMonster.Xml.Xml_Reader
     bool any;
     string anyNs;
     bool topLevelInSchema;
-    bool isFixed;
-    bool isOptional;
     XmlSchemaForm form = XmlSchemaForm.None;
-
-    internal Accessor() { }
 
     internal TypeMapping Mapping
     {
@@ -34,7 +30,7 @@ namespace TextMonster.Xml.Xml_Reader
       get { return defaultValue != null && defaultValue != DBNull.Value; }
     }
 
-    internal virtual string Name
+    internal string Name
     {
       get { return name == null ? string.Empty : name; }
       set { name = value; }
@@ -60,12 +56,12 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal bool IsFixed
     {
-      set { isFixed = value; }
+      set { }
     }
 
     internal bool IsOptional
     {
-      set { isOptional = value; }
+      set { }
     }
 
     internal bool IsTopLevelInSchema

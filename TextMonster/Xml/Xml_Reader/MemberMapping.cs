@@ -14,8 +14,6 @@ namespace TextMonster.Xml.Xml_Reader
     MemberInfo checkSpecifiedMemberInfo;
     MethodInfo checkShouldPersistMethodInfo;
 
-    internal MemberMapping() { }
-
     internal bool CheckShouldPersist
     {
       get { return checkShouldPersist; }

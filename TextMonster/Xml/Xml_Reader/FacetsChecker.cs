@@ -7,7 +7,7 @@ namespace TextMonster.Xml.Xml_Reader
   /// <include file='doc\XmlSchemaFacet.uex' path='docs/doc[@for="XmlSchemaFacet"]/*' />
   internal abstract class FacetsChecker
   {
-    internal virtual Exception CheckLexicalFacets(ref string parseString, XmlSchemaDatatype datatype)
+    internal Exception CheckLexicalFacets(ref string parseString, XmlSchemaDatatype datatype)
     {
       CheckWhitespaceFacets(ref parseString, datatype);
       return CheckPatternFacets(datatype.Restriction, parseString);

@@ -123,14 +123,6 @@
       }
     }
 
-    public XmlSchemaContentType ContentType
-    {
-      get
-      {
-        return contentType;
-      }
-    }
-
     internal XmlSchemaType XmlType
     {
       get

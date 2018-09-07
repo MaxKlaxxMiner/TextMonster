@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Versioning;
 using System.Text;
-using System.Threading;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -90,11 +89,6 @@ namespace TextMonster.Xml.Xml_Reader
     //Error message constants
     private const string Quote = "'";
 
-    //Empty arrays
-    private static XmlSchemaParticle[] EmptyParticleArray = new XmlSchemaParticle[0];
-    private static XmlSchemaAttribute[] EmptyAttributeArray = new XmlSchemaAttribute[0];
-
-    //Whitespace check for text nodes
     XmlCharType xmlCharType = XmlCharType.Instance;
 
     internal static bool[,] ValidStates = new bool[12, 12] {
@@ -647,16 +641,6 @@ namespace TextMonster.Xml.Xml_Reader
       return typedVal;
     }
 
-    public void GetUnspecifiedDefaultAttributes(ArrayList defaultAttributes)
-    {
-      if (defaultAttributes == null)
-      {
-        throw new ArgumentNullException("defaultAttributes");
-      }
-      CheckStateTransition(ValidatorState.Attribute, "GetUnspecifiedDefaultAttributes");
-      GetUnspecifiedDefaultAttributes(defaultAttributes, false);
-    }
-
     public void ValidateEndOfAttributes(XmlSchemaInfo schemaInfo)
     {
       CheckStateTransition(ValidatorState.EndOfAttributes, MethodNames[(int)ValidatorState.EndOfAttributes]);
@@ -671,15 +655,6 @@ namespace TextMonster.Xml.Xml_Reader
       { //set validity depending on whether all required attributes were validated successfully
         schemaInfo.Validity = context.Validity;
       }
-    }
-
-    public void ValidateText(string elementValue)
-    {
-      if (elementValue == null)
-      {
-        throw new ArgumentNullException("elementValue");
-      }
-      ValidateText(elementValue, null);
     }
 
     public void ValidateText(XmlValueGetter elementValue)
@@ -753,15 +728,6 @@ namespace TextMonster.Xml.Xml_Reader
           break;
         }
       }
-    }
-
-    public void ValidateWhitespace(string elementValue)
-    {
-      if (elementValue == null)
-      {
-        throw new ArgumentNullException("elementValue");
-      }
-      ValidateWhitespace(elementValue, null);
     }
 
     public void ValidateWhitespace(XmlValueGetter elementValue)
@@ -869,77 +835,6 @@ namespace TextMonster.Xml.Xml_Reader
       CheckForwardRefs();
     }
 
-    public XmlSchemaParticle[] GetExpectedParticles()
-    {
-      if (currentState == ValidatorState.Start || currentState == ValidatorState.TopLevelTextOrWS)
-      { //Right after initialize
-        if (partialValidationType != null)
-        {
-          XmlSchemaElement element = partialValidationType as XmlSchemaElement;
-          if (element != null)
-          {
-            return new XmlSchemaParticle[1] { element };
-          }
-          return EmptyParticleArray;
-        }
-        else
-        { //Should return all global elements
-          ICollection elements = schemaSet.GlobalElements.Values;
-          ArrayList expected = new ArrayList(elements.Count);
-          foreach (XmlSchemaElement element in elements)
-          { //Check for substitutions
-            ContentValidator.AddParticleToExpected(element, schemaSet, expected, true);
-          }
-          return expected.ToArray(typeof(XmlSchemaParticle)) as XmlSchemaParticle[];
-        }
-      }
-      if (context.ElementDecl != null)
-      {
-        ArrayList expected = context.ElementDecl.ContentValidator.ExpectedParticles(context, false, schemaSet);
-        if (expected != null)
-        {
-          return expected.ToArray(typeof(XmlSchemaParticle)) as XmlSchemaParticle[];
-        }
-      }
-      return EmptyParticleArray;
-    }
-
-    public XmlSchemaAttribute[] GetExpectedAttributes()
-    {
-      if (currentState == ValidatorState.Element || currentState == ValidatorState.Attribute)
-      {
-        SchemaElementDecl elementDecl = context.ElementDecl;
-        ArrayList attList = new ArrayList();
-        if (elementDecl != null)
-        {
-          foreach (SchemaAttDef attDef in elementDecl.AttDefs.Values)
-          {
-            if (attPresence[attDef.Name] == null)
-            {
-              attList.Add(attDef.SchemaAttribute);
-            }
-          }
-        }
-        if (nsResolver.LookupPrefix(NsXsi) != null)
-        { //Xsi namespace defined
-          AddXsiAttributes(attList);
-        }
-        return attList.ToArray(typeof(XmlSchemaAttribute)) as XmlSchemaAttribute[];
-      }
-      else if (currentState == ValidatorState.Start)
-      {
-        if (partialValidationType != null)
-        {
-          XmlSchemaAttribute attribute = partialValidationType as XmlSchemaAttribute;
-          if (attribute != null)
-          {
-            return new XmlSchemaAttribute[1] { attribute };
-          }
-        }
-      }
-      return EmptyAttributeArray;
-    }
-
     internal void GetUnspecifiedDefaultAttributes(ArrayList defaultAttributes, bool createNodeData)
     {
       currentState = ValidatorState.Attribute;
@@ -1041,14 +936,6 @@ namespace TextMonster.Xml.Xml_Reader
           return XmlSchemaContentType.Empty;
         }
         return context.ElementDecl.ContentValidator.ContentType;
-      }
-    }
-
-    internal XmlSchemaContentProcessing CurrentProcessContents
-    {
-      get
-      {
-        return processContents;
       }
     }
 
@@ -1471,27 +1358,6 @@ namespace TextMonster.Xml.Xml_Reader
         context.ValidationSkipped = true;
       }
       processContents = context.ProcessContents;
-    }
-
-    private void AddXsiAttributes(ArrayList attList)
-    {
-      BuildXsiAttributes();
-      if (attPresence[xsiTypeSO.QualifiedName] == null)
-      {
-        attList.Add(xsiTypeSO);
-      }
-      if (attPresence[xsiNilSO.QualifiedName] == null)
-      {
-        attList.Add(xsiNilSO);
-      }
-      if (attPresence[xsiSLSO.QualifiedName] == null)
-      {
-        attList.Add(xsiSLSO);
-      }
-      if (attPresence[xsiNoNsSLSO.QualifiedName] == null)
-      {
-        attList.Add(xsiNoNsSLSO);
-      }
     }
 
     private SchemaElementDecl FastGetElementDecl(XmlQualifiedName elementName, object particle)
@@ -1961,22 +1827,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal bool ProcessInlineSchema
-    {
-      get
-      {
-        return (validationFlags & XmlSchemaValidationFlags.ProcessInlineSchema) != 0;
-      }
-    }
-
-    internal bool ProcessSchemaLocation
-    {
-      get
-      {
-        return (validationFlags & XmlSchemaValidationFlags.ProcessSchemaLocation) != 0;
-      }
-    }
-
     internal bool ProcessSchemaHints
     {
       get
@@ -2357,44 +2207,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
 
     } //End of method
-
-    private static void BuildXsiAttributes()
-    {
-      if (xsiTypeSO == null)
-      { //xsi:type attribute
-        XmlSchemaAttribute tempXsiTypeSO = new XmlSchemaAttribute();
-        tempXsiTypeSO.Name = "type";
-        tempXsiTypeSO.SetQualifiedName(new XmlQualifiedName("type", XmlReservedNs.NsXsi));
-        tempXsiTypeSO.SetAttributeType(XmlSchemaType.GetBuiltInSimpleType(XmlTypeCode.QName));
-        Interlocked.CompareExchange<XmlSchemaAttribute>(ref xsiTypeSO, tempXsiTypeSO, null);
-      }
-      if (xsiNilSO == null)
-      { //xsi:nil
-        XmlSchemaAttribute tempxsiNilSO = new XmlSchemaAttribute();
-        tempxsiNilSO.Name = "nil";
-        tempxsiNilSO.SetQualifiedName(new XmlQualifiedName("nil", XmlReservedNs.NsXsi));
-        tempxsiNilSO.SetAttributeType(XmlSchemaType.GetBuiltInSimpleType(XmlTypeCode.Boolean));
-        Interlocked.CompareExchange<XmlSchemaAttribute>(ref xsiNilSO, tempxsiNilSO, null);
-      }
-      if (xsiSLSO == null)
-      { //xsi:schemaLocation
-        XmlSchemaSimpleType stringType = XmlSchemaType.GetBuiltInSimpleType(XmlTypeCode.String);
-        XmlSchemaAttribute tempxsiSLSO = new XmlSchemaAttribute();
-        tempxsiSLSO.Name = "schemaLocation";
-        tempxsiSLSO.SetQualifiedName(new XmlQualifiedName("schemaLocation", XmlReservedNs.NsXsi));
-        tempxsiSLSO.SetAttributeType(stringType);
-        Interlocked.CompareExchange<XmlSchemaAttribute>(ref xsiSLSO, tempxsiSLSO, null);
-      }
-      if (xsiNoNsSLSO == null)
-      {
-        XmlSchemaSimpleType stringType = XmlSchemaType.GetBuiltInSimpleType(XmlTypeCode.String);
-        XmlSchemaAttribute tempxsiNoNsSLSO = new XmlSchemaAttribute();
-        tempxsiNoNsSLSO.Name = "noNamespaceSchemaLocation";
-        tempxsiNoNsSLSO.SetQualifiedName(new XmlQualifiedName("noNamespaceSchemaLocation", XmlReservedNs.NsXsi));
-        tempxsiNoNsSLSO.SetAttributeType(stringType);
-        Interlocked.CompareExchange<XmlSchemaAttribute>(ref xsiNoNsSLSO, tempxsiNoNsSLSO, null);
-      }
-    }
 
     internal static void ElementValidationError(XmlQualifiedName name, ValidationState context, ValidationEventHandler eventHandler, object sender, string sourceUri, int lineNo, int linePos, XmlSchemaSet schemaSet)
     {

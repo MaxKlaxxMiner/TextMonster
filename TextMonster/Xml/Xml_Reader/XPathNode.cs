@@ -89,14 +89,6 @@
     }
 
     /// <summary>
-    /// Returns this node's base Uri.  This is string.Empty for all node kinds except Element, Root, and PI.
-    /// </summary>
-    public string BaseUri
-    {
-      get { return this.info.BaseUri; }
-    }
-
-    /// <summary>
     /// Returns this node's source line number.
     /// </summary>
     public int LineNumber
@@ -130,14 +122,6 @@
     public XPathNodePageInfo PageInfo
     {
       get { return this.info.PageInfo; }
-    }
-
-    /// <summary>
-    /// Returns the root node of the current document.  This always succeeds.
-    /// </summary>
-    public int GetRoot(out XPathNode[] pageNode)
-    {
-      return this.info.Document.GetRootNode(out pageNode);
     }
 
     /// <summary>

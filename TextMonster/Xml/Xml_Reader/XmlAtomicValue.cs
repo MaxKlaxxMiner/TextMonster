@@ -173,17 +173,17 @@ namespace TextMonster.Xml.Xml_Reader
     // XPathItem methods
     //-----------------------------------------------
 
-    public override XmlSchemaType XmlType
+    public XmlSchemaType XmlType
     {
       get { return this.xmlType; }
     }
 
-    public override Type ValueType
+    public Type ValueType
     {
       get { return this.xmlType.Datatype.ValueType; }
     }
 
-    public override object TypedValue
+    public object TypedValue
     {
       get
       {
@@ -205,7 +205,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public override bool ValueAsBoolean
+    public bool ValueAsBoolean
     {
       get
       {
@@ -228,7 +228,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public override DateTime ValueAsDateTime
+    public DateTime ValueAsDateTime
     {
       get
       {
@@ -252,7 +252,7 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
 
-    public override double ValueAsDouble
+    public double ValueAsDouble
     {
       get
       {
@@ -275,7 +275,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public override int ValueAsInt
+    public int ValueAsInt
     {
       get
       {
@@ -298,7 +298,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public override long ValueAsLong
+    public long ValueAsLong
     {
       get
       {

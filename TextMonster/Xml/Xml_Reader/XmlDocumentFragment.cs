@@ -7,7 +7,6 @@ namespace TextMonster.Xml.Xml_Reader
     XmlLinkedNode lastChild;
 
     protected internal XmlDocumentFragment(XmlDocument ownerDocument)
-      : base()
     {
       if (ownerDocument == null)
         throw new ArgumentException(Res.GetString(Res.Xdom_Node_Null_Doc));
@@ -48,24 +47,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     }
 
-    // Gets or sets the markup representing just
-    // the children of this node.
-    public override string InnerXml
-    {
-      get
-      {
-        return base.InnerXml;
-      }
-      set
-      {
-        RemoveAll();
-        XmlLoader loader = new XmlLoader();
-        //Hack that the content is the same element
-        loader.ParsePartialContent(this, value, XmlNodeType.Element);
-      }
-    }
-
-    // Creates a duplicate of this node.
     public override XmlNode CloneNode(bool deep)
     {
       XmlDocument doc = OwnerDocument;

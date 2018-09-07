@@ -132,11 +132,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal virtual bool IsEmpty
-    {
-      get { return maxOccurs == decimal.Zero; }
-    }
-
     internal bool IsMultipleOccurrence
     {
       get { return maxOccurs > decimal.One; }
@@ -179,10 +174,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     class EmptyParticle : XmlSchemaParticle
     {
-      internal override bool IsEmpty
-      {
-        get { return true; }
-      }
     }
 
     internal static readonly XmlSchemaParticle Empty = new EmptyParticle();

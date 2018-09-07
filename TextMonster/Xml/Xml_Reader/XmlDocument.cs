@@ -2,9 +2,7 @@
 using System.Collections;
 using System.Globalization;
 using System.IO;
-using System.Runtime.Versioning;
 using System.Security.Permissions;
-using System.Text;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -81,7 +79,6 @@ namespace TextMonster.Xml.Xml_Reader
     // of the XmlDocument class with the specified XmlNameTable.
 
     protected internal XmlDocument(XmlImplementation imp)
-      : base()
     {
 
       implementation = imp;
@@ -326,23 +323,6 @@ namespace TextMonster.Xml.Xml_Reader
     public override XmlDocument OwnerDocument
     {
       get { return null; }
-    }
-
-    public XmlSchemaSet Schemas
-    {
-      get
-      {
-        if (schemas == null)
-        {
-          schemas = new XmlSchemaSet(NameTable);
-        }
-        return schemas;
-      }
-
-      set
-      {
-        schemas = value;
-      }
     }
 
     internal bool CanReportValidity
@@ -927,71 +907,11 @@ namespace TextMonster.Xml.Xml_Reader
       get { return actualLoadingStatus; }
     }
 
-    private XmlTextReader SetupReader(XmlTextReader tr)
-    {
-      tr.XmlValidatingReaderCompatibilityMode = true;
-      tr.EntityHandling = EntityHandling.ExpandCharEntities;
-      if (this.HasSetResolver)
-        tr.XmlResolver = GetResolver();
-      return tr;
-    }
-
-    // Loads the XML document from the specified XmlReader.
-    public virtual void Load(FastXmlReader reader)
-    {
-      try
-      {
-        IsLoading = true;
-        actualLoadingStatus = true;
-        RemoveAll();
-        fEntRefNodesPresent = false;
-        fCDataNodesPresent = false;
-        reportValidity = true;
-
-        XmlLoader loader = new XmlLoader();
-        loader.Load(this, reader, preserveWhitespace);
-      }
-      finally
-      {
-        IsLoading = false;
-        actualLoadingStatus = false;
-
-        // Ensure the bit is still on after loading a dtd 
-        reportValidity = true;
-      }
-    }
-
-    // Loads the XML document from the specified string.
-    public virtual void LoadXml(string xml)
-    {
-      XmlTextReader reader = SetupReader(new XmlTextReader(new StringReader(xml), NameTable));
-      try
-      {
-        Load(reader);
-      }
-      finally
-      {
-        reader.Close();
-      }
-    }
-
     public override string InnerText
     {
       set
       {
         throw new InvalidOperationException(Res.GetString(Res.Xdom_Document_Innertext));
-      }
-    }
-
-    public override string InnerXml
-    {
-      get
-      {
-        return base.InnerXml;
-      }
-      set
-      {
-        LoadXml(value);
       }
     }
 
@@ -1202,39 +1122,6 @@ namespace TextMonster.Xml.Xml_Reader
       return null;
     }
 
-    internal String Version
-    {
-      get
-      {
-        XmlDeclaration decl = Declaration;
-        if (decl != null)
-          return decl.Version;
-        return null;
-      }
-    }
-
-    internal String Encoding
-    {
-      get
-      {
-        XmlDeclaration decl = Declaration;
-        if (decl != null)
-          return decl.Encoding;
-        return null;
-      }
-    }
-
-    internal String Standalone
-    {
-      get
-      {
-        XmlDeclaration decl = Declaration;
-        if (decl != null)
-          return decl.Standalone;
-        return null;
-      }
-    }
-
     internal XmlEntity GetEntityNode(String name)
     {
       if (DocumentType != null)
@@ -1390,33 +1277,6 @@ namespace TextMonster.Xml.Xml_Reader
           this.empty = false;
       }
       this.matchCount = -1;
-    }
-
-    internal XmlElementList(XmlNode parent, string name)
-      : this(parent)
-    {
-      XmlNameTable nt = parent.Document.NameTable;
-      asterisk = nt.Add("*");
-      this.name = nt.Add(name);
-      this.localName = null;
-      this.namespaceURI = null;
-    }
-
-    internal XmlElementList(XmlNode parent, string localName, string namespaceURI)
-      : this(parent)
-    {
-      XmlNameTable nt = parent.Document.NameTable;
-      asterisk = nt.Add("*");
-      this.localName = nt.Get(localName);
-      this.namespaceURI = nt.Get(namespaceURI);
-      if ((this.localName == null) || (this.namespaceURI == null))
-      {
-        this.empty = true;
-        this.atomized = false;
-        this.localName = localName;
-        this.namespaceURI = namespaceURI;
-      }
-      this.name = null;
     }
 
     internal int ChangeCount
@@ -1718,19 +1578,6 @@ namespace TextMonster.Xml.Xml_Reader
 
   internal class XmlDOMTextWriter : XmlTextWriter
   {
-
-    public XmlDOMTextWriter(Stream w, Encoding encoding)
-      : base(w, encoding)
-    {
-    }
-
-    [ResourceConsumption(ResourceScope.Machine)]
-    [ResourceExposure(ResourceScope.Machine)]
-    public XmlDOMTextWriter(String filename, Encoding encoding)
-      : base(filename, encoding)
-    {
-    }
-
     public XmlDOMTextWriter(TextWriter w)
       : base(w)
     {

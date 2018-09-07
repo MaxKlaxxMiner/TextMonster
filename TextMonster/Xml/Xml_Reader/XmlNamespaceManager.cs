@@ -66,20 +66,11 @@ namespace TextMonster.Xml.Xml_Reader
       scopeId = 1;
     }
 
-    public virtual XmlNameTable NameTable
+    public XmlNameTable NameTable
     {
       get
       {
         return nameTable;
-      }
-    }
-
-    public virtual string DefaultNamespace
-    {
-      get
-      {
-        string defaultNs = LookupNamespace(string.Empty);
-        return (defaultNs == null) ? string.Empty : defaultNs;
       }
     }
 

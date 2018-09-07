@@ -429,14 +429,8 @@ namespace TextMonster.Xml.Xml_Reader
       reportedEncoding = ps.encoding;
     }
 
-    // Initializes a new instance of the XmlTextReaderImpl class with the specified TextReader, baseUri and XmlNameTable.
-    // This constructor is used when creating XmlTextReaderImpl for V1 XmlTextReader
     internal XmlTextReaderImpl(TextReader input)
       : this(string.Empty, input, new NameTable())
-    {
-    }
-    internal XmlTextReaderImpl(TextReader input, XmlNameTable nt)
-      : this(string.Empty, input, nt)
     {
     }
 
@@ -1374,39 +1368,9 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal FastXmlReader OuterReader
     {
-      get
-      {
-        return outerReader;
-      }
       set
       {
         outerReader = value;
-      }
-    }
-
-    internal void MoveOffEntityReference()
-    {
-      if (outerReader.NodeType == XmlNodeType.EntityReference &&
-           parsingFunction == ParsingFunction.AfterResolveEntityInContent)
-      {
-        if (!outerReader.Read())
-        {
-          throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
-        }
-      }
-    }
-
-    public override string ReadString()
-    {
-      MoveOffEntityReference();
-      return base.ReadString();
-    }
-
-    public virtual bool CanReadBinaryContent
-    {
-      get
-      {
-        return true;
       }
     }
 
@@ -1840,10 +1804,6 @@ namespace TextMonster.Xml.Xml_Reader
     //
     internal bool Namespaces
     {
-      get
-      {
-        return supportNamespaces;
-      }
       set
       {
         if (readState != ReadState.Initial)
@@ -1877,83 +1837,9 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    // Enables or disables XML 1.0 normalization (incl. end-of-line normalization and normalization of attributes)
-    internal bool Normalization
-    {
-      get
-      {
-        return normalize;
-      }
-      set
-      {
-        if (readState == ReadState.Closed)
-        {
-          throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
-        }
-        normalize = value;
-
-        if (ps.entity == null || ps.entity.IsExternal)
-        {
-          ps.eolNormalized = !value;
-        }
-      }
-    }
-
-    // Returns the Encoding of the XML document
-    internal Encoding Encoding
-    {
-      get
-      {
-        return (readState == ReadState.Interactive) ? reportedEncoding : null;
-      }
-    }
-
-    // Spefifies whitespace handling of the XML document, i.e. whether return all namespaces, only significant ones or none
-    internal WhitespaceHandling WhitespaceHandling
-    {
-      get
-      {
-        return whitespaceHandling;
-      }
-      set
-      {
-        if (readState == ReadState.Closed)
-        {
-          throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
-        }
-
-        if ((uint)value > (uint)WhitespaceHandling.None)
-        {
-          throw new XmlException(Res.Xml_WhitespaceHandling, string.Empty);
-        }
-        whitespaceHandling = value;
-      }
-    }
-
-    // Specifies how the DTD is processed in the XML document.
-    internal DtdProcessing DtdProcessing
-    {
-      get
-      {
-        return dtdProcessing;
-      }
-      set
-      {
-        if ((uint)value > (uint)DtdProcessing.Parse)
-        {
-          throw new ArgumentOutOfRangeException("value");
-        }
-        dtdProcessing = value;
-      }
-    }
-
     // Spefifies whether general entities should be automatically expanded or not
     internal EntityHandling EntityHandling
     {
-      get
-      {
-        return entityHandling;
-      }
       set
       {
         if (value != EntityHandling.ExpandEntities && value != EntityHandling.ExpandCharEntities)
@@ -1986,193 +1872,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    // Reset the state of the reader so the reader is ready to parse another XML document from the same stream.
-    internal void ResetState()
-    {
-      if (fragment)
-      {
-        Throw(new InvalidOperationException(Res.GetString(Res.Xml_InvalidResetStateCall)));
-      }
-
-      if (readState == ReadState.Initial)
-      {
-        return;
-      }
-
-      // Clear
-      ResetAttributes();
-      while (namespaceManager.PopScope()) ;
-
-      while (InEntity)
-      {
-        HandleEntityEnd(true);
-      }
-
-      // Init
-      readState = ReadState.Initial;
-      parsingFunction = ParsingFunction.SwitchToInteractiveXmlDecl;
-      nextParsingFunction = ParsingFunction.DocumentContent;
-
-      curNode = nodes[0];
-      curNode.Clear(XmlNodeType.None);
-      curNode.SetLineInfo(0, 0);
-      index = 0;
-      rootElementParsed = false;
-
-      charactersInDocument = 0;
-      charactersFromEntities = 0;
-
-      afterResetState = true;
-    }
-
-    // returns the remaining unparsed data as TextReader
-    internal TextReader GetRemainder()
-    {
-      switch (parsingFunction)
-      {
-        case ParsingFunction.Eof:
-        case ParsingFunction.ReaderClosed:
-        return new StringReader(string.Empty);
-        case ParsingFunction.OpenUrl:
-        OpenUrl();
-        break;
-        case ParsingFunction.InIncrementalRead:
-        if (!InEntity)
-        {
-          stringBuilder.Append(ps.chars, incReadLeftStartPos, incReadLeftEndPos - incReadLeftStartPos);
-        }
-        break;
-      }
-
-      while (InEntity)
-      {
-        HandleEntityEnd(true);
-      }
-
-      ps.appendMode = false;
-      do
-      {
-        stringBuilder.Append(ps.chars, ps.charPos, ps.charsUsed - ps.charPos);
-        ps.charPos = ps.charsUsed;
-      } while (ReadData() != 0);
-
-      OnEof();
-
-      string remainer = stringBuilder.ToString();
-      stringBuilder.Length = 0;
-      return new StringReader(remainer);
-    }
-
-    // Reads the contents of an element including markup into a character buffer. Wellformedness checks are limited.
-    // This method is designed to read large streams of embedded text by calling it successively.
-    internal int ReadChars(char[] buffer, int index, int count)
-    {
-      if (parsingFunction == ParsingFunction.InIncrementalRead)
-      {
-        if (incReadDecoder != readCharsDecoder)
-        { // mixing ReadChars with ReadBase64 or ReadBinHex
-          if (readCharsDecoder == null)
-          {
-            readCharsDecoder = new IncrementalReadCharsDecoder();
-          }
-          readCharsDecoder.Reset();
-          incReadDecoder = readCharsDecoder;
-        }
-        return IncrementalRead(buffer, index, count);
-      }
-      else
-      {
-        if (curNode.type != XmlNodeType.Element)
-        {
-          return 0;
-        }
-        if (curNode.IsEmptyElement)
-        {
-          outerReader.Read();
-          return 0;
-        }
-
-        if (readCharsDecoder == null)
-        {
-          readCharsDecoder = new IncrementalReadCharsDecoder();
-        }
-
-        InitIncrementalRead(readCharsDecoder);
-        return IncrementalRead(buffer, index, count);
-      }
-    }
-
-    // Reads the contents of an element including markup and base64-decodes it into a byte buffer. Wellformedness checks are limited.
-    // This method is designed to read base64-encoded large streams of bytes by calling it successively.
-    internal int ReadBase64(byte[] array, int offset, int len)
-    {
-      if (parsingFunction == ParsingFunction.InIncrementalRead)
-      {
-        if (incReadDecoder != base64Decoder)
-        { // mixing ReadBase64 with ReadChars or ReadBinHex
-          InitBase64Decoder();
-        }
-        return IncrementalRead(array, offset, len);
-      }
-      else
-      {
-        if (curNode.type != XmlNodeType.Element)
-        {
-          return 0;
-        }
-        if (curNode.IsEmptyElement)
-        {
-          outerReader.Read();
-          return 0;
-        }
-
-        if (base64Decoder == null)
-        {
-          base64Decoder = new Base64Decoder();
-        }
-
-        InitIncrementalRead(base64Decoder);
-        return IncrementalRead(array, offset, len);
-      }
-    }
-
-    // Reads the contents of an element including markup and binhex-decodes it into a byte buffer. Wellformedness checks are limited.
-    // This method is designed to read binhex-encoded large streams of bytes by calling it successively.
-    internal int ReadBinHex(byte[] array, int offset, int len)
-    {
-      if (parsingFunction == ParsingFunction.InIncrementalRead)
-      {
-        if (incReadDecoder != binHexDecoder)
-        { // mixing ReadBinHex with ReadChars or ReadBase64
-          InitBinHexDecoder();
-        }
-        return IncrementalRead(array, offset, len);
-      }
-      else
-      {
-        if (curNode.type != XmlNodeType.Element)
-        {
-          return 0;
-        }
-        if (curNode.IsEmptyElement)
-        {
-          outerReader.Read();
-          return 0;
-        }
-
-        if (binHexDecoder == null)
-        {
-          binHexDecoder = new BinHexDecoder();
-        }
-
-        InitIncrementalRead(binHexDecoder);
-        return IncrementalRead(array, offset, len);
-      }
-    }
-
-    //
-    // Helpers for DtdParserProxy
-    //
     internal XmlNameTable DtdParserProxy_NameTable
     {
       get
@@ -2294,10 +1993,6 @@ namespace TextMonster.Xml.Xml_Reader
       get
       {
         return validationEventHandling;
-      }
-      set
-      {
-        validationEventHandling = value;
       }
     }
 
@@ -7814,52 +7509,6 @@ namespace TextMonster.Xml.Xml_Reader
       ps = parsingStatesStack[parsingStatesStackTop--];
     }
 
-    private void InitIncrementalRead(IncrementalReadDecoder decoder)
-    {
-      ResetAttributes();
-
-      decoder.Reset();
-      incReadDecoder = decoder;
-      incReadState = IncrementalReadState.Text;
-      incReadDepth = 1;
-      incReadLeftStartPos = ps.charPos;
-      incReadLeftEndPos = ps.charPos;
-      incReadLineInfo.Set(ps.LineNo, ps.LinePos);
-
-      parsingFunction = ParsingFunction.InIncrementalRead;
-    }
-
-    private int IncrementalRead(Array array, int index, int count)
-    {
-      if (array == null)
-      {
-        throw new ArgumentNullException((incReadDecoder is IncrementalReadCharsDecoder) ? "buffer" : "array");
-      }
-      if (count < 0)
-      {
-        throw new ArgumentOutOfRangeException((incReadDecoder is IncrementalReadCharsDecoder) ? "count" : "len");
-      }
-      if (index < 0)
-      {
-        throw new ArgumentOutOfRangeException((incReadDecoder is IncrementalReadCharsDecoder) ? "index" : "offset");
-      }
-      if (array.Length - index < count)
-      {
-        throw new ArgumentException((incReadDecoder is IncrementalReadCharsDecoder) ? "count" : "len");
-      }
-
-      if (count == 0)
-      {
-        return 0;
-      }
-
-      curNode.lineInfo = incReadLineInfo;
-
-      incReadDecoder.SetNextOutputBuffer(array, index, count);
-      IncrementalRead();
-      return incReadDecoder.DecodedCount;
-    }
-
     private int IncrementalRead()
     {
       int charsDecoded = 0;
@@ -8764,10 +8413,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal object InternalSchemaType
     {
-      get
-      {
-        return curNode.schemaType;
-      }
       set
       {
         curNode.schemaType = value;
@@ -8807,14 +8452,6 @@ namespace TextMonster.Xml.Xml_Reader
       get
       {
         return v1Compat;
-      }
-    }
-
-    internal ConformanceLevel V1ComformanceLevel
-    {
-      get
-      {
-        return fragmentType == XmlNodeType.Element ? ConformanceLevel.Fragment : ConformanceLevel.Document;
       }
     }
 
@@ -9836,17 +9473,13 @@ namespace TextMonster.Xml.Xml_Reader
 
     private class NoNamespaceManager : XmlNamespaceManager
     {
-      public NoNamespaceManager() : base() { }
-      public override string DefaultNamespace { get { return string.Empty; } }
       public override void PushScope() { }
       public override bool PopScope() { return false; }
       public override void AddNamespace(string prefix, string uri) { }
-      public virtual void RemoveNamespace(string prefix, string uri) { }
       public override IEnumerator GetEnumerator() { return null; }
       public override IDictionary<string, string> GetNamespacesInScope(XmlNamespaceScope scope) { return null; }
       public override string LookupNamespace(string prefix) { return string.Empty; }
       public override string LookupPrefix(string uri) { return null; }
-      public virtual bool HasNamespace(string prefix) { return false; }
     }
 
     private class DtdDefaultAttributeInfoToNodeDataComparer : IComparer<object>

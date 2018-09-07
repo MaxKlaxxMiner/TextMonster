@@ -188,14 +188,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     const int CondSectionEntityIdsInitialSize = 2;
 
-    //
-    // Constructor
-    //
-
-    static DtdParser()
-    {
-    }
-
     DtdParser()
     {
     }
@@ -204,10 +196,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
       return new DtdParser();
     }
-
-    //
-    // Initialization methods
-    //
 
     private void Initialize(IDtdParserAdapter readerAdapter)
     {

@@ -1308,74 +1308,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public virtual XmlSpace XmlSpace
-    {
-      get
-      {
-        int i;
-        for (i = elemTop; i >= 0 && elemScopeStack[i].xmlSpace == (XmlSpace)(int)-1; i--) ;
-        return elemScopeStack[i].xmlSpace;
-      }
-    }
-
-    public virtual string XmlLang
-    {
-      get
-      {
-        int i;
-        for (i = elemTop; i > 0 && elemScopeStack[i].xmlLang == null; i--) ;
-        return elemScopeStack[i].xmlLang;
-      }
-    }
-
-    public virtual void WriteQualifiedName(string localName, string ns)
-    {
-      try
-      {
-        if (localName == null || localName.Length == 0)
-        {
-          throw new ArgumentException(Res.GetString(Res.Xml_EmptyLocalName));
-        }
-        CheckNCName(localName);
-
-        AdvanceState(Token.Text);
-        string prefix = String.Empty;
-        if (ns != null && ns.Length != 0)
-        {
-          prefix = LookupPrefix(ns);
-          if (prefix == null)
-          {
-            if (currentState != State.Attribute)
-            {
-              throw new ArgumentException(Res.GetString(Res.Xml_UndefNamespace, ns));
-            }
-            prefix = GeneratePrefix();
-            PushNamespaceImplicit(prefix, ns);
-          }
-        }
-        // if this is a special attribute, then just convert this to text
-        // otherwise delegate to raw-writer
-        if (SaveAttrValue || rawWriter == null)
-        {
-          if (prefix.Length != 0)
-          {
-            WriteString(prefix);
-            WriteString(":");
-          }
-          WriteString(localName);
-        }
-        else
-        {
-          rawWriter.WriteQualifiedName(prefix, localName, ns);
-        }
-      }
-      catch
-      {
-        currentState = State.Error;
-        throw;
-      }
-    }
-
     public override void WriteValue(bool value)
     {
       try
@@ -1551,17 +1483,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         currentState = State.Error;
         throw;
-      }
-    }
-
-    //
-    // Internal methods
-    //
-    internal XmlWriter InnerWriter
-    {
-      get
-      {
-        return this.writer;
       }
     }
 

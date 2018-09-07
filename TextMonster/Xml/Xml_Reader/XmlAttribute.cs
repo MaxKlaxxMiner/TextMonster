@@ -242,22 +242,6 @@ namespace TextMonster.Xml.Xml_Reader
       return node;
     }
 
-    public override XmlNode ReplaceChild(XmlNode newChild, XmlNode oldChild)
-    {
-      XmlNode node;
-      if (PrepareOwnerElementInElementIdAttrMap())
-      {
-        string innerText = InnerText;
-        node = base.ReplaceChild(newChild, oldChild);
-        ResetOwnerElementInElementIdAttrMap(innerText);
-      }
-      else
-      {
-        node = base.ReplaceChild(newChild, oldChild);
-      }
-      return node;
-    }
-
     public override XmlNode RemoveChild(XmlNode oldChild)
     {
       XmlNode node;
@@ -306,10 +290,7 @@ namespace TextMonster.Xml.Xml_Reader
       return node;
     }
 
-    // DOM Level 2
-
-    // Gets the XmlElement node that contains this attribute.
-    public virtual XmlElement OwnerElement
+    public XmlElement OwnerElement
     {
       get
       {
@@ -317,8 +298,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    // Gets or sets the markup representing just the children of this node.
-    public override string InnerXml
+    public string InnerXml
     {
       set
       {

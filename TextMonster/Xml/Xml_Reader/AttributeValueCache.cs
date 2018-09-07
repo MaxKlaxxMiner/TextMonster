@@ -24,8 +24,6 @@ namespace TextMonster.Xml.Xml_Reader
       internal ItemType type;
       internal object data;
 
-      internal Item() { }
-
       internal void Set(ItemType type, object data)
       {
         this.type = type;

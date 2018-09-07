@@ -1147,11 +1147,6 @@ namespace TextMonster.Xml.Xml_Reader
       return value.Split(WhitespaceChars, StringSplitOptions.RemoveEmptyEntries);
     }
 
-    internal static string[] SplitString(string value, StringSplitOptions splitStringOptions)
-    {
-      return value.Split(WhitespaceChars, splitStringOptions);
-    }
-
     internal static bool IsNegativeZero(double value)
     {
       // Simple equals function will report that -0 is equal to +0, so compare bits instead
@@ -1166,95 +1161,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
       // NOTE: BitConverter.DoubleToInt64Bits is missing in Silverlight
       return *((long*)&value);
-    }
-
-    internal static void VerifyCharData(string data, ExceptionType exceptionType)
-    {
-      VerifyCharData(data, exceptionType, exceptionType);
-    }
-
-    internal static unsafe void VerifyCharData(string data, ExceptionType invCharExceptionType, ExceptionType invSurrogateExceptionType)
-    {
-      if (data == null || data.Length == 0)
-      {
-        return;
-      }
-
-      int i = 0;
-      int len = data.Length;
-      for (; ; )
-      {
-        while (i < len && (xmlCharType.charProperties[data[i]] & XmlCharType.fCharData) != 0)
-        {
-          i++;
-        }
-        if (i == len)
-        {
-          return;
-        }
-
-        char ch = data[i];
-        if (XmlCharType.IsHighSurrogate(ch))
-        {
-          if (i + 1 == len)
-          {
-            throw CreateException(Res.Xml_InvalidSurrogateMissingLowChar, invSurrogateExceptionType, 0, i + 1);
-          }
-          ch = data[i + 1];
-          if (XmlCharType.IsLowSurrogate(ch))
-          {
-            i += 2;
-            continue;
-          }
-          else
-          {
-            throw CreateInvalidSurrogatePairException(data[i + 1], data[i], invSurrogateExceptionType, 0, i + 1);
-          }
-        }
-        throw CreateInvalidCharException(data, i, invCharExceptionType);
-      }
-    }
-
-    internal static unsafe void VerifyCharData(char[] data, int offset, int len, ExceptionType exceptionType)
-    {
-      if (data == null || len == 0)
-      {
-        return;
-      }
-
-      int i = offset;
-      int endPos = offset + len;
-      for (; ; )
-      {
-        while (i < endPos && (xmlCharType.charProperties[data[i]] & XmlCharType.fCharData) != 0)
-        {
-          i++;
-        }
-        if (i == endPos)
-        {
-          return;
-        }
-
-        char ch = data[i];
-        if (XmlCharType.IsHighSurrogate(ch))
-        {
-          if (i + 1 == endPos)
-          {
-            throw CreateException(Res.Xml_InvalidSurrogateMissingLowChar, exceptionType, 0, offset - i + 1);
-          }
-          ch = data[i + 1];
-          if (XmlCharType.IsLowSurrogate(ch))
-          {
-            i += 2;
-            continue;
-          }
-          else
-          {
-            throw CreateInvalidSurrogatePairException(data[i + 1], data[i], exceptionType, 0, offset - i + 1);
-          }
-        }
-        throw CreateInvalidCharException(data, len, i, exceptionType);
-      }
     }
 
     internal static string EscapeValueForDebuggerDisplay(string value)
@@ -1306,28 +1212,6 @@ namespace TextMonster.Xml.Xml_Reader
         sb.Append(value, start, i - start);
       }
       return sb.ToString();
-    }
-
-    internal static Exception CreateException(string res, ExceptionType exceptionType)
-    {
-      return CreateException(res, exceptionType, 0, 0);
-    }
-
-    internal static Exception CreateException(string res, ExceptionType exceptionType, int lineNo, int linePos)
-    {
-      switch (exceptionType)
-      {
-        case ExceptionType.ArgumentException:
-        return new ArgumentException(Res.GetString(res));
-        case ExceptionType.XmlException:
-        default:
-        return new XmlException(res, string.Empty, lineNo, linePos);
-      }
-    }
-
-    internal static Exception CreateException(string res, string arg, ExceptionType exceptionType)
-    {
-      return CreateException(res, arg, exceptionType, 0, 0);
     }
 
     internal static Exception CreateException(string res, string arg, ExceptionType exceptionType, int lineNo, int linePos)
@@ -1391,26 +1275,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal static Exception CreateInvalidHighSurrogateCharException(char hi, ExceptionType exceptionType, int lineNo, int linePos)
     {
       return CreateException(Res.Xml_InvalidSurrogateHighChar, ((uint)hi).ToString("X", CultureInfo.InvariantCulture), exceptionType, lineNo, linePos);
-    }
-
-    internal static Exception CreateInvalidCharException(char[] data, int length, int invCharPos)
-    {
-      return CreateInvalidCharException(data, length, invCharPos, ExceptionType.ArgumentException);
-    }
-
-    internal static Exception CreateInvalidCharException(char[] data, int length, int invCharPos, ExceptionType exceptionType)
-    {
-      return CreateException(Res.Xml_InvalidCharacter, XmlException.BuildCharExceptionArgs(data, length, invCharPos), exceptionType, 0, invCharPos + 1);
-    }
-
-    internal static Exception CreateInvalidCharException(string data, int invCharPos)
-    {
-      return CreateInvalidCharException(data, invCharPos, ExceptionType.ArgumentException);
-    }
-
-    internal static Exception CreateInvalidCharException(string data, int invCharPos, ExceptionType exceptionType)
-    {
-      return CreateException(Res.Xml_InvalidCharacter, XmlException.BuildCharExceptionArgs(data, invCharPos), exceptionType, 0, invCharPos + 1);
     }
 
     internal static Exception CreateInvalidCharException(char invChar, char nextChar)

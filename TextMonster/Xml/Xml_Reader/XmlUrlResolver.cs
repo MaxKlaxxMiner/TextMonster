@@ -28,15 +28,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    // Construction
-
-    // Creates a new instance of the XmlUrlResolver class.
-    public XmlUrlResolver()
-    {
-    }
-
-    // Resource resolution
-
     // Maps a URI to an Object containing the actual resource.
     [ResourceConsumption(ResourceScope.Machine)]
     [ResourceExposure(ResourceScope.Machine)]

@@ -29,14 +29,5 @@ namespace TextMonster.Xml.Xml_Reader
       base(res, args, innerException, sourceUri, lineNumber, linePosition, null)
     {
     }
-
-    internal XmlSchemaValidationException(string res, string[] args, object sourceNode) :
-      base(res, args, null, null, 0, 0, null)
-    {
-    }
-
-    protected internal void SetSourceObject(object sourceObject)
-    {
-    }
   };
 }

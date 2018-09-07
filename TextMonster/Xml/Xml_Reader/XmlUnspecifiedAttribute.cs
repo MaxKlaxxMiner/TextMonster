@@ -49,13 +49,6 @@
       return node;
     }
 
-    public override XmlNode ReplaceChild(XmlNode newChild, XmlNode oldChild)
-    {
-      XmlNode node = base.ReplaceChild(newChild, oldChild);
-      fSpecified = true;
-      return node;
-    }
-
     public override XmlNode RemoveChild(XmlNode oldChild)
     {
       XmlNode node = base.RemoveChild(oldChild);

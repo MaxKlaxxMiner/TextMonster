@@ -22,11 +22,6 @@
       get { return items; }
     }
 
-    internal override bool IsEmpty
-    {
-      get { return base.IsEmpty /*|| items.Count == 0*/; }
-    }
-
     internal override void SetItems(XmlSchemaObjectCollection newItems)
     {
       items = newItems;

@@ -155,14 +155,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public override string BaseURI
-    {
-      get
-      {
-        return source.BaseURI;
-      }
-    }
-
     public override object UnderlyingObject
     {
       get
@@ -171,33 +163,6 @@ namespace TextMonster.Xml.Xml_Reader
 
         return source;
       }
-    }
-
-    public override bool MoveToNextAttribute()
-    {
-      XmlAttribute attribute = source as XmlAttribute;
-      if (attribute == null
-          || attribute.IsNamespace)
-      {
-        return false;
-      }
-      XmlAttributeCollection attributes;
-      if (!CheckAttributePosition(attribute, out attributes, attributeIndex)
-          && !ResetAttributePosition(attribute, attributes, out attributeIndex))
-      {
-        return false;
-      }
-      for (int i = attributeIndex + 1; i < attributes.Count; i++)
-      {
-        attribute = attributes[i];
-        if (!attribute.IsNamespace)
-        {
-          source = attribute;
-          attributeIndex = i;
-          return true;
-        }
-      }
-      return false;
     }
 
     public override bool MoveToNamespace(string name)
@@ -570,29 +535,6 @@ namespace TextMonster.Xml.Xml_Reader
       return false;
     }
 
-    public override void MoveToRoot()
-    {
-      for (; ; )
-      {
-        XmlNode parent = source.ParentNode;
-        if (parent == null)
-        {
-          XmlAttribute attribute = source as XmlAttribute;
-          if (attribute == null)
-          {
-            break;
-          }
-          parent = attribute.IsNamespace ? namespaceParent : attribute.OwnerElement;
-          if (parent == null)
-          {
-            break;
-          }
-        }
-        source = parent;
-      }
-      namespaceParent = null;
-    }
-
     public override bool MoveTo(XPathNavigator other)
     {
       DocumentXPathNavigator that = other as DocumentXPathNavigator;
@@ -622,35 +564,6 @@ namespace TextMonster.Xml.Xml_Reader
           if (child.NodeType == XmlNodeType.Element
               && child.LocalName == localName
               && child.NamespaceURI == namespaceUri)
-          {
-            source = child;
-            return true;
-          }
-          child = NextSibling(child);
-        }
-        while (child != null);
-      }
-      return false;
-    }
-
-    public override bool MoveToChild(XPathNodeType type)
-    {
-      if (source.NodeType == XmlNodeType.Attribute)
-      {
-        return false;
-      }
-
-      XmlNode child = FirstChild(source);
-      if (child != null)
-      {
-        int mask = GetContentKindMask(type);
-        if (mask == 0)
-        {
-          return false;
-        }
-        do
-        {
-          if (((1 << (int)child.XPNodeType) & mask) != 0)
           {
             source = child;
             return true;
@@ -847,41 +760,6 @@ namespace TextMonster.Xml.Xml_Reader
       return false;
     }
 
-    public override bool MoveToNext(XPathNodeType type)
-    {
-      XmlNode sibling = NextSibling(source);
-      if (sibling == null)
-      {
-        return false;
-      }
-      if (sibling.IsText
-          && source.IsText)
-      {
-        sibling = NextSibling(TextEnd(sibling));
-        if (sibling == null)
-        {
-          return false;
-        }
-      }
-
-      int mask = GetContentKindMask(type);
-      if (mask == 0)
-      {
-        return false;
-      }
-      do
-      {
-        if (((1 << (int)sibling.XPNodeType) & mask) != 0)
-        {
-          source = sibling;
-          return true;
-        }
-        sibling = NextSibling(sibling);
-      }
-      while (sibling != null);
-      return false;
-    }
-
     public override bool IsSamePosition(XPathNavigator other)
     {
       DocumentXPathNavigator that = other as DocumentXPathNavigator;
@@ -904,210 +782,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    private static XmlNode OwnerNode(XmlNode node)
-    {
-      XmlNode parent = node.ParentNode;
-      if (parent != null)
-      {
-        return parent;
-      }
-      XmlAttribute attribute = node as XmlAttribute;
-      if (attribute != null)
-      {
-        return attribute.OwnerElement;
-      }
-      return null;
-    }
-
-    private static int GetDepth(XmlNode node)
-    {
-      int depth = 0;
-      XmlNode owner = OwnerNode(node);
-      while (owner != null)
-      {
-        depth++;
-        owner = OwnerNode(owner);
-      }
-      return depth;
-    }
-
-    //Assuming that node1 and node2 are in the same level; Except when they are namespace nodes, they should have the same parent node
-    //the returned value is node2's position corresponding to node1 
-    private XmlNodeOrder Compare(XmlNode node1, XmlNode node2)
-    {
-      if (node1.XPNodeType == XPathNodeType.Attribute)
-      {
-        if (node2.XPNodeType == XPathNodeType.Attribute)
-        {
-          XmlElement element = ((XmlAttribute)node1).OwnerElement;
-          if (element.HasAttributes)
-          {
-            XmlAttributeCollection attributes = element.Attributes;
-            for (int i = 0; i < attributes.Count; i++)
-            {
-              XmlAttribute attribute = attributes[i];
-              if (attribute == node1)
-              {
-                return XmlNodeOrder.Before;
-              }
-              else if (attribute == node2)
-              {
-                return XmlNodeOrder.After;
-              }
-            }
-          }
-          return XmlNodeOrder.Unknown;
-        }
-        else
-        {
-          return XmlNodeOrder.Before;
-        }
-      }
-      if (node2.XPNodeType == XPathNodeType.Attribute)
-      {
-        return XmlNodeOrder.After;
-      }
-
-      //neither of the node is Namespace node or Attribute node
-      XmlNode nextNode = node1.NextSibling;
-      while (nextNode != null && nextNode != node2)
-        nextNode = nextNode.NextSibling;
-      if (nextNode == null)
-        //didn't meet node2 in the path to the end, thus it has to be in the front of node1
-        return XmlNodeOrder.After;
-      else
-      //met node2 in the path to the end, so node1 is at front
-        return XmlNodeOrder.Before;
-    }
-
-    public override XmlNodeOrder ComparePosition(XPathNavigator other)
-    {
-      DocumentXPathNavigator that = other as DocumentXPathNavigator;
-      if (that == null)
-      {
-        return XmlNodeOrder.Unknown;
-      }
-
-      this.CalibrateText();
-      that.CalibrateText();
-
-      if (this.source == that.source
-          && this.namespaceParent == that.namespaceParent)
-      {
-        return XmlNodeOrder.Same;
-      }
-
-      if (this.namespaceParent != null
-          || that.namespaceParent != null)
-      {
-        return base.ComparePosition(other);
-      }
-
-      XmlNode node1 = this.source;
-      XmlNode node2 = that.source;
-
-      XmlNode parent1 = OwnerNode(node1);
-      XmlNode parent2 = OwnerNode(node2);
-      if (parent1 == parent2)
-      {
-        if (parent1 == null)
-        {
-          return XmlNodeOrder.Unknown;
-        }
-        else
-        {
-          return Compare(node1, node2);
-        }
-      }
-
-      int depth1 = GetDepth(node1);
-      int depth2 = GetDepth(node2);
-      if (depth2 > depth1)
-      {
-        while (node2 != null
-               && depth2 > depth1)
-        {
-          node2 = OwnerNode(node2);
-          depth2--;
-        }
-        if (node1 == node2)
-        {
-          return XmlNodeOrder.Before;
-        }
-        parent2 = OwnerNode(node2);
-      }
-      else if (depth1 > depth2)
-      {
-        while (node1 != null
-               && depth1 > depth2)
-        {
-          node1 = OwnerNode(node1);
-          depth1--;
-        }
-        if (node1 == node2)
-        {
-          return XmlNodeOrder.After;
-        }
-        parent1 = OwnerNode(node1);
-      }
-
-      while (parent1 != null
-             && parent2 != null)
-      {
-        if (parent1 == parent2)
-        {
-          return Compare(node1, node2);
-        }
-        node1 = parent1;
-        node2 = parent2;
-        parent1 = OwnerNode(node1);
-        parent2 = OwnerNode(node2);
-      }
-      return XmlNodeOrder.Unknown;
-    }
-
-    //the function just for XPathNodeList to enumerate current Node.
     XmlNode IHasXmlNode.GetNode() { return source; }
-
-    public override XPathNodeIterator SelectDescendants(string localName, string namespaceURI, bool matchSelf)
-    {
-      string nsAtom = document.NameTable.Get(namespaceURI);
-      if (nsAtom == null || this.source.NodeType == XmlNodeType.Attribute)
-        return new DocumentXPathNodeIterator_Empty(this);
-
-      string localNameAtom = document.NameTable.Get(localName);
-      if (localNameAtom == null)
-        return new DocumentXPathNodeIterator_Empty(this);
-
-      if (localNameAtom.Length == 0)
-      {
-        if (matchSelf)
-          return new DocumentXPathNodeIterator_ElemChildren_AndSelf_NoLocalName(this, nsAtom);
-        return new DocumentXPathNodeIterator_ElemChildren_NoLocalName(this, nsAtom);
-      }
-
-      if (matchSelf)
-        return new DocumentXPathNodeIterator_ElemChildren_AndSelf(this, localNameAtom, nsAtom);
-      return new DocumentXPathNodeIterator_ElemChildren(this, localNameAtom, nsAtom);
-    }
-
-    public override XPathNodeIterator SelectDescendants(XPathNodeType nt, bool includeSelf)
-    {
-      if (nt == XPathNodeType.Element)
-      {
-        XmlNodeType curNT = source.NodeType;
-        if (curNT != XmlNodeType.Document && curNT != XmlNodeType.Element)
-        {
-          //only Document, Entity, Element node can have Element node as children ( descendant )
-          //entity nodes should be invisible to XPath data model
-          return new DocumentXPathNodeIterator_Empty(this);
-        }
-        if (includeSelf)
-          return new DocumentXPathNodeIterator_AllElemChildren_AndSelf(this);
-        return new DocumentXPathNodeIterator_AllElemChildren(this);
-      }
-      return base.SelectDescendants(nt, includeSelf);
-    }
 
     internal void ResetPosition(XmlNode node)
     {
@@ -1247,37 +922,6 @@ namespace TextMonster.Xml.Xml_Reader
       return sibling;
     }
 
-    private XmlNode PreviousSibling(XmlNode node)
-    {
-      XmlNode sibling = node.PreviousSibling;
-
-      if (!document.HasEntityReferences)
-      {
-        return sibling;
-      }
-      return PreviousSiblingTail(node, sibling);
-    }
-
-    private XmlNode PreviousSiblingTail(XmlNode node, XmlNode sibling)
-    {
-      while (sibling == null)
-      {
-        node = node.ParentNode;
-        if (node == null
-            || node.NodeType != XmlNodeType.EntityReference)
-        {
-          return null;
-        }
-        sibling = node.PreviousSibling;
-      }
-      while (sibling != null
-             && sibling.NodeType == XmlNodeType.EntityReference)
-      {
-        sibling = sibling.LastChild;
-      }
-      return sibling;
-    }
-
     private XmlNode PreviousText(XmlNode node)
     {
       XmlNode text = node.PreviousText;
@@ -1361,20 +1005,6 @@ namespace TextMonster.Xml.Xml_Reader
           break;
       }
       return false;
-    }
-
-    private XmlNode TextStart(XmlNode node)
-    {
-      XmlNode start;
-
-      do
-      {
-        start = node;
-        node = PreviousSibling(node);
-      }
-      while (node != null
-             && node.IsText);
-      return start;
     }
 
     private XmlNode TextEnd(XmlNode node)

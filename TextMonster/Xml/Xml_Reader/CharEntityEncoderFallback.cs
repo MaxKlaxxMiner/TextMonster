@@ -11,10 +11,6 @@ namespace TextMonster.Xml.Xml_Reader
     private int curMarkPos;
     private int startOffset;
 
-    internal CharEntityEncoderFallback()
-    {
-    }
-
     public override EncoderFallbackBuffer CreateFallbackBuffer()
     {
       if (fallbackBuffer == null)

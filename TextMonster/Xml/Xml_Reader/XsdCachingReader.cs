@@ -467,14 +467,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal string ReadOriginalContentAsString()
-    {
-      returnOriginalStringValues = true;
-      string strValue = InternalReadContentAsString();
-      returnOriginalStringValues = false;
-      return strValue;
-    }
-
     // Gets a value indicating whether XmlReader is positioned at the end of the stream.
     public override bool EOF
     {

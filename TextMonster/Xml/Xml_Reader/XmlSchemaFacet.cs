@@ -19,7 +19,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     /// <include file='doc\XmlSchemaFacet.uex' path='docs/doc[@for="XmlSchemaFacet.IsFixed"]/*' />
     [XmlAttribute("fixed"), DefaultValue(false)]
-    public virtual bool IsFixed
+    public bool IsFixed
     {
       get { return isFixed; }
       set

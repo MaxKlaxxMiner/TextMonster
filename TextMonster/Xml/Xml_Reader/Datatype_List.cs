@@ -114,8 +114,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal DatatypeImplementation ItemType { get { return itemType; } }
-
     internal override Exception TryParseValue(object value, XmlNameTable nameTable, IXmlNamespaceResolver namespaceResolver, out object typedValue)
     {
       Exception exception;

@@ -1144,14 +1144,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal bool CompileAll
-    {
-      get
-      {
-        return compileAll;
-      }
-    }
-
     //Private Methods
     private void RemoveSchemaFromCaches(XmlSchema schema)
     {
