@@ -58,9 +58,5 @@ namespace TextMonster.Xml.Xml_Reader
     public override void WriteTo(XmlWriter w)
     {
     }
-
-    public override void WriteContentTo(XmlWriter w)
-    {
-    }
   }
 }

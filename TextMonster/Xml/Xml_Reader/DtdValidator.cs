@@ -415,7 +415,7 @@ namespace TextMonster.Xml.Xml_Reader
       IDs.Add(name, node);
     }
 
-    public override object FindId(string name)
+    public object FindId(string name)
     {
       return IDs == null ? null : IDs[name];
     }

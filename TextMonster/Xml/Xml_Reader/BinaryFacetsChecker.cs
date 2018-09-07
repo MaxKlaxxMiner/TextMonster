@@ -51,10 +51,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
       return null;
     }
-    internal override bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype)
-    {
-      return MatchEnumeration((byte[])value, enumeration, datatype);
-    }
 
     private bool MatchEnumeration(byte[] value, ArrayList enumeration, XmlSchemaDatatype datatype)
     {

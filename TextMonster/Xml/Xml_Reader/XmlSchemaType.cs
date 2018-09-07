@@ -124,17 +124,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return datatype; }
     }
 
-    /// <include file='doc\XmlSchemaType.uex' path='docs/doc[@for="XmlSchemaType.IsMixed"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    [XmlIgnore]
-    public virtual bool IsMixed
-    {
-      get { return false; }
-      set { ;}
-    }
-
     [XmlIgnore]
     public XmlTypeCode TypeCode
     {

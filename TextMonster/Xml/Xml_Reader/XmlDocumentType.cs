@@ -127,12 +127,6 @@
       w.WriteDocType(name, publicId, systemId, internalSubset);
     }
 
-    // Saves all the children of the node to the specified XmlWriter.
-    public override void WriteContentTo(XmlWriter w)
-    {
-      // Intentionally do nothing
-    }
-
     internal SchemaInfo DtdSchemaInfo
     {
       get

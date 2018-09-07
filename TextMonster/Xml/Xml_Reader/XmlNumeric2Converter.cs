@@ -41,7 +41,7 @@ namespace TextMonster.Xml.Xml_Reader
     // ToDouble
     //-----------------------------------------------
 
-    public override double ToDouble(string value)
+    public virtual double ToDouble(string value)
     {
       if (value == null) throw new ArgumentNullException("value");
 
@@ -93,7 +93,7 @@ namespace TextMonster.Xml.Xml_Reader
       if (TypeCode == XmlTypeCode.Float) return XmlConvert.ToSingle((string)value);
       return ((float)XmlConvert.ToDouble((string)value));
     }
-    public override float ToSingle(object value)
+    public virtual float ToSingle(object value)
     {
       if (value == null) throw new ArgumentNullException("value");
 

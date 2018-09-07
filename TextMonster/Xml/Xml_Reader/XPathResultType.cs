@@ -6,7 +6,6 @@
     String = 1,
     Boolean = 2,
     NodeSet = 3,
-    Any = 5,
-    Error
+    Any = 5
   };
 }

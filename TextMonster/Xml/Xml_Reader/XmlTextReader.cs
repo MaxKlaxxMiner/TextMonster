@@ -197,29 +197,6 @@ namespace TextMonster.Xml.Xml_Reader
       impl.ResolveEntity();
     }
 
-    public override int ReadContentAsBase64(byte[] buffer, int index, int count)
-    {
-      return impl.ReadContentAsBase64(buffer, index, count);
-    }
-
-    public override int ReadElementContentAsBase64(byte[] buffer, int index, int count)
-    {
-      return impl.ReadElementContentAsBase64(buffer, index, count);
-    }
-
-    public override int ReadContentAsBinHex(byte[] buffer, int index, int count)
-    {
-      return impl.ReadContentAsBinHex(buffer, index, count);
-    }
-
-    public override int ReadElementContentAsBinHex(byte[] buffer, int index, int count)
-    {
-      return impl.ReadElementContentAsBinHex(buffer, index, count);
-    }
-
-    // Text streaming methods
-
-    // XmlTextReader does do support streaming of Value (there are backwards compatibility issues when enabled)
     public override bool CanReadValueChunk
     {
       get { return false; }

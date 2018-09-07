@@ -207,7 +207,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
       if (identifier == null || identifier.Length == 0)
         return;
-      string originalIdentifier = identifier;
       int arrayCount = 0;
       while (identifier.EndsWith("[]", StringComparison.Ordinal))
       {

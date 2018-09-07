@@ -578,7 +578,7 @@ namespace TextMonster.Xml.Xml_Reader
     {
       if (currentAttrIndex + 1 < coreReaderAttributeCount)
       {
-        bool moveTo = coreReader.MoveToNextAttribute();
+        coreReader.MoveToNextAttribute();
         currentAttrIndex++;
         if (inlineSchemaParser == null)
         {
@@ -722,7 +722,6 @@ namespace TextMonster.Xml.Xml_Reader
     // Skips to the end tag of the current element.
     public override void Skip()
     {
-      int startDepth = Depth;
       switch (NodeType)
       {
         case XmlNodeType.Element:
@@ -796,113 +795,6 @@ namespace TextMonster.Xml.Xml_Reader
       return false;
     }
 
-    public override int ReadContentAsBase64(byte[] buffer, int index, int count)
-    {
-      if (ReadState != ReadState.Interactive)
-      {
-        return 0;
-      }
-
-      // init ReadContentAsBinaryHelper when called first time
-      if (validationState != ValidatingReaderState.OnReadBinaryContent)
-      {
-        readBinaryHelper = ReadContentAsBinaryHelper.CreateOrReset(readBinaryHelper, this);
-        savedState = validationState;
-      }
-
-      // restore original state in order to have a normal Read() behavior when called from readBinaryHelper
-      validationState = savedState;
-
-      // call to the helper
-      int readCount = readBinaryHelper.ReadContentAsBase64(buffer, index, count);
-
-      // set OnReadBinaryContent state again and return
-      savedState = validationState;
-      validationState = ValidatingReaderState.OnReadBinaryContent;
-      return readCount;
-    }
-
-    public override int ReadContentAsBinHex(byte[] buffer, int index, int count)
-    {
-      if (ReadState != ReadState.Interactive)
-      {
-        return 0;
-      }
-
-      // init ReadContentAsBinaryHelper when called first time
-      if (validationState != ValidatingReaderState.OnReadBinaryContent)
-      {
-        readBinaryHelper = ReadContentAsBinaryHelper.CreateOrReset(readBinaryHelper, this);
-        savedState = validationState;
-      }
-
-      // restore original state in order to have a normal Read() behavior when called from readBinaryHelper
-      validationState = savedState;
-
-      // call to the helper
-      int readCount = readBinaryHelper.ReadContentAsBinHex(buffer, index, count);
-
-      // set OnReadBinaryContent state again and return
-      savedState = validationState;
-      validationState = ValidatingReaderState.OnReadBinaryContent;
-      return readCount;
-    }
-
-    public override int ReadElementContentAsBase64(byte[] buffer, int index, int count)
-    {
-      if (ReadState != ReadState.Interactive)
-      {
-        return 0;
-      }
-
-      // init ReadContentAsBinaryHelper when called first time
-      if (validationState != ValidatingReaderState.OnReadBinaryContent)
-      {
-        readBinaryHelper = ReadContentAsBinaryHelper.CreateOrReset(readBinaryHelper, this);
-        savedState = validationState;
-      }
-
-      // restore original state in order to have a normal Read() behavior when called from readBinaryHelper
-      validationState = savedState;
-
-      // call to the helper
-      int readCount = readBinaryHelper.ReadElementContentAsBase64(buffer, index, count);
-
-      // set OnReadBinaryContent state again and return
-      savedState = validationState;
-      validationState = ValidatingReaderState.OnReadBinaryContent;
-      return readCount;
-    }
-
-    public override int ReadElementContentAsBinHex(byte[] buffer, int index, int count)
-    {
-      if (ReadState != ReadState.Interactive)
-      {
-        return 0;
-      }
-
-      // init ReadContentAsBinaryHelper when called first time
-      if (validationState != ValidatingReaderState.OnReadBinaryContent)
-      {
-        readBinaryHelper = ReadContentAsBinaryHelper.CreateOrReset(readBinaryHelper, this);
-        savedState = validationState;
-      }
-
-      // restore original state in order to have a normal Read() behavior when called from readBinaryHelper
-      validationState = savedState;
-
-      // call to the helper
-      int readCount = readBinaryHelper.ReadElementContentAsBinHex(buffer, index, count);
-
-      // set OnReadBinaryContent state again and return
-      savedState = validationState;
-      validationState = ValidatingReaderState.OnReadBinaryContent;
-      return readCount;
-    }
-
-    //
-    // IXmlSchemaInfo interface
-    //
     bool IXmlSchemaInfo.IsDefault
     {
       get

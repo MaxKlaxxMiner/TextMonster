@@ -131,7 +131,7 @@ namespace TextMonster.Xml.Xml_Reader
           schemaIndex--;
         }
 
-        for (int i = schemaIndex; schemaIndex >= 0; schemaIndex--)
+        for (; schemaIndex >= 0; schemaIndex--)
         {
           listSchema = (XmlSchema)lockList.GetByIndex(schemaIndex);
           listSchema.IsProcessing = false; //Reset processing flag from Preprocess

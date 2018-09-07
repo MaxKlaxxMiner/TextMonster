@@ -140,11 +140,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
     }
 
-    public virtual object FindId(string name)
-    {
-      return null;
-    }
-
     public void ValidateText()
     {
       if (context.NeedValidateChildren)

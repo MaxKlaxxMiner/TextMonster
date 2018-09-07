@@ -130,23 +130,6 @@ namespace TextMonster.Xml.Xml_Reader
       w.WriteEntityRef(name);
     }
 
-    // Saves all the children of the node to the specified XmlWriter.
-    public override void WriteContentTo(XmlWriter w)
-    {
-      // -- eventually will the fix. commented out waiting for finalizing on the issue.
-      foreach (XmlNode n in this)
-      {
-        n.WriteTo(w);
-      } //still use the old code to generate the output
-      /*
-      foreach( XmlNode n in this ) {
-          if ( n.NodeType != XmlNodeType.EntityReference )
-          n.WriteTo( w );
-          else
-              n.WriteContentTo( w );
-      }*/
-    }
-
     public override String BaseURI
     {
       get

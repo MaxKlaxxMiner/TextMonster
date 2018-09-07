@@ -9,14 +9,6 @@ namespace TextMonster.Xml.Xml_Reader
     int curIndex;
     int endIndex;
 
-    internal override int DecodedCount
-    {
-      get
-      {
-        return curIndex - startIndex;
-      }
-    }
-
     internal override bool IsFull
     {
       get
@@ -36,31 +28,6 @@ namespace TextMonster.Xml.Xml_Reader
       curIndex += copyCount;
 
       return copyCount;
-    }
-
-    internal override int Decode(string str, int startPos, int len)
-    {
-      int copyCount = endIndex - curIndex;
-      if (copyCount > len)
-      {
-        copyCount = len;
-      }
-      str.CopyTo(startPos, buffer, curIndex, copyCount);
-      curIndex += copyCount;
-
-      return copyCount;
-    }
-
-    internal override void Reset()
-    {
-    }
-
-    internal override void SetNextOutputBuffer(Array buffer, int index, int count)
-    {
-      this.buffer = (char[])buffer;
-      this.startIndex = index;
-      this.curIndex = index;
-      this.endIndex = index + count;
     }
   }
 }

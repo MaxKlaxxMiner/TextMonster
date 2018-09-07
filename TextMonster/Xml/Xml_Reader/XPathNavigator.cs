@@ -195,11 +195,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     public abstract string NamespaceURI { get; }
 
-    public virtual object UnderlyingObject
-    {
-      get { return null; }
-    }
-
     public virtual bool MoveToNamespace(string name)
     {
       if (MoveToFirstNamespace(XPathNamespaceScope.All))
@@ -229,162 +224,6 @@ namespace TextMonster.Xml.Xml_Reader
     public abstract bool MoveToParent();
 
     public abstract bool MoveTo(XPathNavigator other);
-
-    public virtual bool MoveToChild(string localName, string namespaceURI)
-    {
-      if (MoveToFirstChild())
-      {
-        do
-        {
-          if (NodeType == XPathNodeType.Element && localName == LocalName && namespaceURI == NamespaceURI)
-            return true;
-        }
-        while (MoveToNext());
-        MoveToParent();
-      }
-
-      return false;
-    }
-
-    public virtual bool MoveToFollowing(string localName, string namespaceURI, XPathNavigator end)
-    {
-      XPathNavigator navSave = Clone();
-
-      if (end != null)
-      {
-        switch (end.NodeType)
-        {
-          case XPathNodeType.Attribute:
-          case XPathNodeType.Namespace:
-          // Scan until we come to the next content-typed node 
-          // after the attribute or namespace node
-          end = end.Clone();
-          end.MoveToNonDescendant();
-          break;
-        }
-      }
-      switch (NodeType)
-      {
-        case XPathNodeType.Attribute:
-        case XPathNodeType.Namespace:
-        if (!MoveToParent())
-        {
-          // Restore previous position and return false
-          // MoveTo(navSave);
-          return false;
-        }
-        break;
-      }
-      do
-      {
-        if (!MoveToFirstChild())
-        {
-          // Look for next sibling
-          while (true)
-          {
-            if (MoveToNext())
-              break;
-
-            if (!MoveToParent())
-            {
-              // Restore previous position and return false
-              MoveTo(navSave);
-              return false;
-            }
-          }
-        }
-
-        // Have we reached the end of the scan?
-        if (end != null && IsSamePosition(end))
-        {
-          // Restore previous position and return false
-          MoveTo(navSave);
-          return false;
-        }
-      }
-      while (NodeType != XPathNodeType.Element
-             || localName != LocalName
-             || namespaceURI != NamespaceURI);
-
-      return true;
-    }
-
-    public virtual bool MoveToFollowing(XPathNodeType type, XPathNavigator end)
-    {
-      XPathNavigator navSave = Clone();
-      int mask = GetContentKindMask(type);
-
-      if (end != null)
-      {
-        switch (end.NodeType)
-        {
-          case XPathNodeType.Attribute:
-          case XPathNodeType.Namespace:
-          // Scan until we come to the next content-typed node 
-          // after the attribute or namespace node
-          end = end.Clone();
-          end.MoveToNonDescendant();
-          break;
-        }
-      }
-      switch (NodeType)
-      {
-        case XPathNodeType.Attribute:
-        case XPathNodeType.Namespace:
-        if (!MoveToParent())
-        {
-          // Restore previous position and return false
-          // MoveTo(navSave);
-          return false;
-        }
-        break;
-      }
-      do
-      {
-        if (!MoveToFirstChild())
-        {
-          // Look for next sibling
-          while (true)
-          {
-            if (MoveToNext())
-              break;
-
-            if (!MoveToParent())
-            {
-              // Restore previous position and return false
-              MoveTo(navSave);
-              return false;
-            }
-          }
-        }
-
-        // Have we reached the end of the scan?
-        if (end != null && IsSamePosition(end))
-        {
-          // Restore previous position and return false
-          MoveTo(navSave);
-          return false;
-        }
-      }
-      while (((1 << (int)NodeType) & mask) == 0);
-
-      return true;
-    }
-
-    public virtual bool MoveToNext(string localName, string namespaceURI)
-    {
-      XPathNavigator navClone = Clone();
-
-      while (MoveToNext())
-      {
-        if (NodeType == XPathNodeType.Element && localName == LocalName && namespaceURI == NamespaceURI)
-          return true;
-      }
-      MoveTo(navClone);
-      return false;
-    }
-
-    public abstract bool IsSamePosition(XPathNavigator other);
 
     public virtual IXmlSchemaInfo SchemaInfo
     {
@@ -449,16 +288,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal static int GetContentKindMask(XPathNodeType type)
     {
       return ContentKindMasks[(int)type];
-    }
-
-    internal static int GetKindMask(XPathNodeType type)
-    {
-      if (type == XPathNodeType.All)
-        return AllMask;
-      else if (type == XPathNodeType.Text)
-        return TextMask;
-
-      return (1 << (int)type);
     }
 
     internal static bool IsText(XPathNodeType type)

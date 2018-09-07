@@ -40,12 +40,6 @@ namespace TextMonster.Xml.Xml_Reader
       w.WriteComment(Data);
     }
 
-    // Saves all the children of the node to the specified XmlWriter.
-    public override void WriteContentTo(XmlWriter w)
-    {
-      // Intentionally do nothing
-    }
-
     internal override XPathNodeType XPNodeType { get { return XPathNodeType.Comment; } }
   }
 }

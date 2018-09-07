@@ -316,7 +316,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal virtual XmlValueConverter CreateValueConverter(XmlSchemaType schemaType) { return null; }
 
-    internal override FacetsChecker FacetsChecker { get { return miscFacetsChecker; } }
+    internal virtual FacetsChecker FacetsChecker { get { return miscFacetsChecker; } }
 
     internal override XmlValueConverter ValueConverter
     {

@@ -74,12 +74,6 @@ namespace TextMonster.Xml.Xml_Reader
       w.WriteCData(Data);
     }
 
-    // Saves the node to the specified XmlWriter.
-    public override void WriteContentTo(XmlWriter w)
-    {
-      // Intentionally do nothing
-    }
-
     internal override XPathNodeType XPNodeType
     {
       get

@@ -56,13 +56,6 @@ namespace TextMonster.Xml.Xml_Reader
       base64Encoder.Encode(buffer, index, count);
     }
 
-    // Raw writers do not have to keep track of namespaces.
-    public override string LookupPrefix(string ns)
-    {
-      throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
-    }
-
-    // Raw writers do not have to keep track of write states.
     public override WriteState WriteState
     {
       get

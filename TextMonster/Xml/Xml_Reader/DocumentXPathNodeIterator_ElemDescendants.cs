@@ -31,11 +31,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return position; }
     }
 
-    protected void SetPosition(int pos)
-    {
-      position = pos;
-    }
-
     public override bool MoveNext()
     {
       for (; ; )

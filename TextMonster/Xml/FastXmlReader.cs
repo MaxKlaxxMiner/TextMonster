@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
 using TextMonster.Xml.Xml_Reader;
 // ReSharper disable InconsistentNaming
@@ -9,74 +8,11 @@ namespace TextMonster.Xml
   // ReSharper disable once InconsistentNaming
   public abstract class FastXmlReader : IDisposable
   {
-    private const uint IsTextualNodeBitmap = 0x6018; // 00 0110 0000 0001 1000
-    // 0 None, 
-    // 0 Element,
-    // 0 Attribute,
-    // 1 Text,
-    // 1 CDATA,
-    // 0 EntityReference,
-    // 0 Entity,
-    // 0 ProcessingInstruction,
-    // 0 Comment,
-    // 0 Document,
-    // 0 DocumentType,
-    // 0 DocumentFragment,
-    // 0 Notation,
-    // 1 Whitespace,
-    // 1 SignificantWhitespace,
-    // 0 EndElement,
-    // 0 EndEntity,
-    // 0 XmlDeclaration
-
-    private const uint CanReadContentAsBitmap = 0x1E1BC; // 01 1110 0001 1011 1100
-    // 0 None, 
-    // 0 Element,
-    // 1 Attribute,
-    // 1 Text,
-    // 1 CDATA,
-    // 1 EntityReference,
-    // 0 Entity,
-    // 1 ProcessingInstruction,
-    // 1 Comment,
-    // 0 Document,
-    // 0 DocumentType,
-    // 0 DocumentFragment,
-    // 0 Notation,
-    // 1 Whitespace,
-    // 1 SignificantWhitespace,
-    // 1 EndElement,
-    // 1 EndEntity,
-    // 0 XmlDeclaration
-
     private const uint HasValueBitmap = 0x2659C; // 10 0110 0101 1001 1100
-    // 0 None, 
-    // 0 Element,
-    // 1 Attribute,
-    // 1 Text,
-    // 1 CDATA,
-    // 0 EntityReference,
-    // 0 Entity,
-    // 1 ProcessingInstruction,
-    // 1 Comment,
-    // 0 Document,
-    // 1 DocumentType,
-    // 0 DocumentFragment,
-    // 0 Notation,
-    // 1 Whitespace,
-    // 1 SignificantWhitespace,
-    // 0 EndElement,
-    // 0 EndEntity,
-    // 1 XmlDeclaration
-
-    //
-    // Constants
-    //
     internal const int DefaultBufferSize = 4096;
     private const int BiggerBufferSize = 8192;
     private const int MaxStreamLengthForDefaultBufferSize = 64 * 1024; // 64kB
 
-    // Settings
     public virtual XmlReaderSettings Settings
     {
       get
@@ -85,11 +21,8 @@ namespace TextMonster.Xml
       }
     }
 
-    // Node Properties
-    // Get the type of the current node.
     public abstract XmlNodeType NodeType { get; }
 
-    // Gets the name of the current node, including the namespace prefix.
     public virtual string Name
     {
       get
@@ -102,10 +35,8 @@ namespace TextMonster.Xml
       }
     }
 
-    // Gets the name of the current node without the namespace prefix.
     public abstract string LocalName { get; }
 
-    // Gets the namespace URN (as defined in the W3C Namespace Specification) of the current namespace scope.
     public abstract string NamespaceURI { get; }
 
     // Gets the namespace prefix associated with the current node.
@@ -271,44 +202,12 @@ namespace TextMonster.Xml
     // Resolves the entity reference for nodes of NodeType EntityReference.
     public abstract void ResolveEntity();
 
-    // Returns decoded bytes of the current base64 text content. Call this methods until it returns 0 to get all the data.
-    public virtual int ReadContentAsBase64(byte[] buffer, int index, int count)
-    {
-      throw new NotSupportedException(Res.GetString(Res.Xml_ReadBinaryContentNotSupported, "ReadContentAsBase64"));
-    }
-
-    // Returns decoded bytes of the current base64 element content. Call this methods until it returns 0 to get all the data.
-    public virtual int ReadElementContentAsBase64(byte[] buffer, int index, int count)
-    {
-      throw new NotSupportedException(Res.GetString(Res.Xml_ReadBinaryContentNotSupported, "ReadElementContentAsBase64"));
-    }
-
-    // Returns decoded bytes of the current binhex text content. Call this methods until it returns 0 to get all the data.
-    public virtual int ReadContentAsBinHex(byte[] buffer, int index, int count)
-    {
-      throw new NotSupportedException(Res.GetString(Res.Xml_ReadBinaryContentNotSupported, "ReadContentAsBinHex"));
-    }
-
-    // Returns decoded bytes of the current binhex element content. Call this methods until it returns 0 to get all the data.
-    public virtual int ReadElementContentAsBinHex(byte[] buffer, int index, int count)
-    {
-      throw new NotSupportedException(Res.GetString(Res.Xml_ReadBinaryContentNotSupported, "ReadElementContentAsBinHex"));
-    }
-
-    // Text streaming methods
-
-    // Returns true if the XmlReader supports calls to ReadValueChunk.
     public virtual bool CanReadValueChunk
     {
       get
       {
         return false;
       }
-    }
-
-    public virtual int ReadValueChunk(char[] buffer, int index, int count)
-    {
-      throw new NotSupportedException(Res.GetString(Res.Xml_ReadValueChunkNotSupported));
     }
 
     public XmlNodeType MoveToContent()
@@ -360,16 +259,6 @@ namespace TextMonster.Xml
       }
     }
 
-    static internal bool IsTextualNode(XmlNodeType nodeType)
-    {
-      return 0 != (IsTextualNodeBitmap & (1 << (int)nodeType));
-    }
-
-    static internal bool CanReadContentAs(XmlNodeType nodeType)
-    {
-      return 0 != (CanReadContentAsBitmap & (1 << (int)nodeType));
-    }
-
     static internal bool HasValueInternal(XmlNodeType nodeType)
     {
       return 0 != (HasValueBitmap & (1 << (int)nodeType));
@@ -401,43 +290,6 @@ namespace TextMonster.Xml
       }
 
       return false;
-    }
-
-    internal Exception CreateReadContentAsException(string methodName)
-    {
-      return CreateReadContentAsException(methodName, NodeType, this as IXmlLineInfo);
-    }
-
-    internal Exception CreateReadElementContentAsException(string methodName)
-    {
-      return CreateReadElementContentAsException(methodName, NodeType, this as IXmlLineInfo);
-    }
-
-    internal bool CanReadContentAs()
-    {
-      return CanReadContentAs(NodeType);
-    }
-
-    private static Exception CreateReadContentAsException(string methodName, XmlNodeType nodeType, IXmlLineInfo lineInfo)
-    {
-      return new InvalidOperationException(AddLineInfo(Res.GetString(Res.Xml_InvalidReadContentAs, methodName, nodeType.ToString()), lineInfo));
-    }
-
-    private static Exception CreateReadElementContentAsException(string methodName, XmlNodeType nodeType, IXmlLineInfo lineInfo)
-    {
-      return new InvalidOperationException(AddLineInfo(Res.GetString(Res.Xml_InvalidReadElementContentAs, methodName, nodeType.ToString()), lineInfo));
-    }
-
-    static string AddLineInfo(string message, IXmlLineInfo lineInfo)
-    {
-      if (lineInfo != null)
-      {
-        var lineArgs = new string[2];
-        lineArgs[0] = lineInfo.LineNumber.ToString(CultureInfo.InvariantCulture);
-        lineArgs[1] = lineInfo.LinePosition.ToString(CultureInfo.InvariantCulture);
-        message += " " + Res.GetString(Res.Xml_ErrorPosition, lineArgs);
-      }
-      return message;
     }
 
     internal virtual IDtdInfo DtdInfo

@@ -144,7 +144,7 @@
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
     [XmlAttribute("mixed"), DefaultValue(false)]
-    public override bool IsMixed
+    public virtual bool IsMixed
     {
       get
       {

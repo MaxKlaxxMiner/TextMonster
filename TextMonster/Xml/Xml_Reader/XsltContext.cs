@@ -6,6 +6,5 @@
     // is used by XsltCompileContext
     internal XsltContext(bool dummy)
     { }
-    public abstract IXsltContextFunction ResolveFunction(string prefix, string name, XPathResultType[] ArgTypes);
   }
 }

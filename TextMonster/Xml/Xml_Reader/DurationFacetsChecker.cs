@@ -57,10 +57,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
       return null;
     }
-    internal override bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype)
-    {
-      return MatchEnumeration((TimeSpan)value, enumeration);
-    }
 
     private bool MatchEnumeration(TimeSpan value, ArrayList enumeration)
     {

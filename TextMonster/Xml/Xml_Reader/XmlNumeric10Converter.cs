@@ -72,7 +72,7 @@ namespace TextMonster.Xml.Xml_Reader
     {
       return Int64ToInt32((long)value);
     }
-    public override int ToInt32(string value)
+    public virtual int ToInt32(string value)
     {
       if (value == null) throw new ArgumentNullException("value");
 
@@ -104,7 +104,7 @@ namespace TextMonster.Xml.Xml_Reader
       return ((long)(int)value);
     }
 
-    public override long ToInt64(string value)
+    public virtual long ToInt64(string value)
     {
       if (value == null) throw new ArgumentNullException("value");
 

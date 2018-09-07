@@ -32,7 +32,7 @@ namespace TextMonster.Xml.Xml_Reader
       return DateTimeOffsetToDateTime(value);
     }
 
-    public override DateTime ToDateTime(string value)
+    public virtual DateTime ToDateTime(string value)
     {
       if (value == null) throw new ArgumentNullException("value");
 

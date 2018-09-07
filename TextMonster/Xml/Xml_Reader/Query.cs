@@ -11,7 +11,6 @@ namespace TextMonster.Xml.Xml_Reader
   [DebuggerDisplay("{ToString()}")]
   internal abstract class Query : ResetableIterator
   {
-    public Query() { }
     protected Query(Query other) : base(other) { }
 
     // -- XPathNodeIterator --
@@ -35,31 +34,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    // ------------- ResetableIterator -----------
-    // It's importent that Query is resetable. This fact is used in several plases: 
-    // 1. In LogicalExpr: "foo = bar"
-    // 2. In SelectionOperator.Reset().
-    // In all this cases Reset() means restart iterate through the same nodes. 
-    // So reset shouldn't clean bufferes in query. This should be done in set context.
-    //public abstract void Reset();
-
-    // -------------------- Query ------------------
-    public virtual void SetXsltContext(XsltContext context) { }
-
-    public abstract object Evaluate(XPathNodeIterator nodeIterator);
     public abstract XPathNavigator Advance();
-
-    public abstract XPathResultType StaticType { get; }
-
-    // ----------------- Helper methods -------------
-    public static Query Clone(Query input)
-    {
-      if (input != null)
-      {
-        return (Query)input.Clone();
-      }
-      return null;
-    }
 
     protected static XPathNodeIterator Clone(XPathNodeIterator input)
     {
@@ -68,11 +43,6 @@ namespace TextMonster.Xml.Xml_Reader
         return input.Clone();
       }
       return null;
-    }
-
-    public virtual void PrintQuery(XmlWriter w)
-    {
-      w.WriteElementString(this.GetType().Name, string.Empty);
     }
   }
 }

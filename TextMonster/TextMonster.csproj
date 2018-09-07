@@ -100,14 +100,10 @@
     <Compile Include="Xml\Xml_Reader\ConstantMapping.cs" />
     <Compile Include="Xml\Xml_Reader\DefaultValueAttribute.cs" />
     <Compile Include="Xml\Xml_Reader\DocumentXPathNavigator.cs" />
-    <Compile Include="Xml\Xml_Reader\DocumentXPathNodeIterator_AllElemChildren.cs" />
-    <Compile Include="Xml\Xml_Reader\DocumentXPathNodeIterator_ElemChildren.cs" />
-    <Compile Include="Xml\Xml_Reader\DocumentXPathNodeIterator_ElemChildren_NoLocalName.cs" />
     <Compile Include="Xml\Xml_Reader\DocumentXPathNodeIterator_ElemDescendants.cs" />
     <Compile Include="Xml\Xml_Reader\DynamicAssemblies.cs" />
     <Compile Include="Xml\Xml_Reader\ElementAccessor.cs" />
     <Compile Include="Xml\Xml_Reader\EnumMapping.cs" />
-    <Compile Include="Xml\Xml_Reader\ExtensionQuery.cs" />
     <Compile Include="Xml\Xml_Reader\Filter.cs" />
     <Compile Include="Xml\Xml_Reader\Group.cs" />
     <Compile Include="Xml\Xml_Reader\ImportContext.cs" />
@@ -164,11 +160,8 @@
     <Compile Include="Xml\Xml_Reader\XmlTextWriterBase64Encoder.cs" />
     <Compile Include="Xml\Xml_Reader\XmlTypeAttribute.cs" />
     <Compile Include="Xml\Xml_Reader\XPathArrayIterator.cs" />
-    <Compile Include="Xml\Xml_Reader\XPathAxisIterator.cs" />
     <Compile Include="Xml\Xml_Reader\XPathEmptyIterator.cs" />
-    <Compile Include="Xml\Xml_Reader\XPathSelectionIterator.cs" />
     <Compile Include="Xml\Xml_Reader\XsltContext.cs" />
-    <Compile Include="Xml\Xml_Reader\IXsltContextFunction.cs" />
     <Compile Include="Xml\Xml_Reader\Query.cs" />
     <Compile Include="Xml\Xml_Reader\ResetableIterator.cs" />
     <Compile Include="Xml\Xml_Reader\Function.cs" />
@@ -432,7 +425,6 @@
     <Compile Include="Xml\Xml_Reader\XmlTokenizedType.cs" />
     <Compile Include="Xml\Xml_Reader\XmlSchemaDatatype.cs" />
     <Compile Include="Xml\Xml_Reader\XmlSchemaValidity.cs" />
-    <Compile Include="Xml\Xml_Reader\XPathDocumentBaseIterator.cs" />
     <Compile Include="Xml\Xml_Reader\EntityHandling.cs" />
     <Compile Include="Xml\Xml_Reader\IDtdDefaultAttributeInfo.cs" />
     <Compile Include="Xml\Xml_Reader\IDtdAttributeInfo.cs" />

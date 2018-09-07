@@ -14,17 +14,6 @@ namespace TextMonster.Xml.Xml_Reader
     bool hasHalfByteCached;
     byte cachedHalfByte;
 
-    //
-    // IncrementalReadDecoder interface
-    //
-    internal override int DecodedCount
-    {
-      get
-      {
-        return curIndex - startIndex;
-      }
-    }
-
     internal override bool IsFull
     {
       get
@@ -67,56 +56,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
       curIndex += bytesDecoded;
       return charsDecoded;
-    }
-
-    internal override unsafe int Decode(string str, int startPos, int len)
-    {
-      if (str == null)
-      {
-        throw new ArgumentNullException("str");
-      }
-      if (len < 0)
-      {
-        throw new ArgumentOutOfRangeException("len");
-      }
-      if (startPos < 0)
-      {
-        throw new ArgumentOutOfRangeException("startPos");
-      }
-      if (str.Length - startPos < len)
-      {
-        throw new ArgumentOutOfRangeException("len");
-      }
-
-      if (len == 0)
-      {
-        return 0;
-      }
-      int bytesDecoded, charsDecoded;
-      fixed (char* pChars = str)
-      {
-        fixed (byte* pBytes = &buffer[curIndex])
-        {
-          Decode(pChars + startPos, pChars + startPos + len, pBytes, pBytes + (endIndex - curIndex),
-                  ref hasHalfByteCached, ref cachedHalfByte, out charsDecoded, out bytesDecoded);
-        }
-      }
-      curIndex += bytesDecoded;
-      return charsDecoded;
-    }
-
-    internal override void Reset()
-    {
-      hasHalfByteCached = false;
-      cachedHalfByte = 0;
-    }
-
-    internal override void SetNextOutputBuffer(Array buffer, int index, int count)
-    {
-      this.buffer = (byte[])buffer;
-      startIndex = index;
-      curIndex = index;
-      endIndex = index + count;
     }
 
     //

@@ -68,8 +68,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal abstract Exception TryParseValue(object value, XmlNameTable nameTable, IXmlNamespaceResolver namespaceResolver, out object typedValue);
 
-    internal abstract FacetsChecker FacetsChecker { get; }
-
     internal abstract XmlSchemaWhiteSpace BuiltInWhitespaceFacet { get; }
 
     internal abstract XmlSchemaDatatype DeriveByList(XmlSchemaType schemaType);

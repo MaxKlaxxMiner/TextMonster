@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Text.RegularExpressions;
 
 namespace TextMonster.Xml.Xml_Reader
@@ -114,11 +113,6 @@ namespace TextMonster.Xml.Xml_Reader
         }
       }
       return null;
-    }
-
-    internal virtual bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype)
-    {
-      return false;
     }
 
     internal static decimal Power(int x, int y)

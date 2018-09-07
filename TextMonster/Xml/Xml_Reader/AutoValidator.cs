@@ -35,11 +35,6 @@
 
     public override void CompleteValidation() { }
 
-    public override object FindId(string name)
-    {
-      return null;
-    }
-
     private ValidationType DetectValidationType()
     {
       //Type not yet detected : Check in Schema Collection

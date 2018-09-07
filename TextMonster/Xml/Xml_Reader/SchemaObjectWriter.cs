@@ -825,7 +825,6 @@ namespace TextMonster.Xml.Xml_Reader
     void Write46_XmlSchemaElement(XmlSchemaElement o)
     {
       if ((object)o == null) return;
-      System.Type t = o.GetType();
       WriteStartElement("element");
       WriteAttribute(@"id", @"", o.Id);
       WriteAttribute("minOccurs", "", XmlConvert.ToString(o.MinOccurs));
@@ -887,7 +886,6 @@ namespace TextMonster.Xml.Xml_Reader
     void Write47_XmlSchemaKey(XmlSchemaKey o)
     {
       if ((object)o == null) return;
-      System.Type t = o.GetType();
       WriteStartElement("key");
       WriteAttribute(@"id", @"", ((System.String)o.@Id));
       WriteAttribute(@"name", @"", ((System.String)o.@Name));
@@ -942,7 +940,6 @@ namespace TextMonster.Xml.Xml_Reader
     void Write50_XmlSchemaKeyref(XmlSchemaKeyref o)
     {
       if ((object)o == null) return;
-      System.Type t = o.GetType();
       WriteStartElement("keyref");
 
       WriteAttribute(@"id", @"", ((System.String)o.@Id));
@@ -968,7 +965,6 @@ namespace TextMonster.Xml.Xml_Reader
     void Write51_XmlSchemaUnique(XmlSchemaUnique o)
     {
       if ((object)o == null) return;
-      System.Type t = o.GetType();
       WriteStartElement("unique");
 
       WriteAttribute(@"id", @"", ((System.String)o.@Id));
@@ -990,7 +986,6 @@ namespace TextMonster.Xml.Xml_Reader
     void Write52_XmlSchemaChoice(XmlSchemaChoice o)
     {
       if ((object)o == null) return;
-      System.Type t = o.GetType();
       WriteStartElement("choice");
 
       WriteAttribute(@"id", @"", ((System.String)o.@Id));

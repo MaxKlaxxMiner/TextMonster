@@ -29,7 +29,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     public override void InitValidation(ValidationState context)
     {
-      int positionsCount = positions.Count;
       List<RangePositionInfo> runningPositions = context.RunningPositions;
       if (runningPositions != null)
       {

@@ -1276,7 +1276,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public override string LookupPrefix(string ns)
+    public virtual string LookupPrefix(string ns)
     {
       try
       {

@@ -31,32 +31,11 @@ namespace TextMonster.Xml.Xml_Reader
 
     public abstract void WriteDocType(string name, string pubid, string sysid, string subset);
 
-    // Writes out the specified start tag and associates it with the given namespace.
-    public void WriteStartElement(string localName, string ns)
-    {
-      WriteStartElement(null, localName, ns);
-    }
-
-    // Writes out the specified start tag and associates it with the given namespace and prefix.
-
     public abstract void WriteStartElement(string prefix, string localName, string ns);
-
-    // Writes out a start tag with the specified local name with no namespace.
-    public void WriteStartElement(string localName)
-    {
-      WriteStartElement(null, localName, (string)null);
-    }
 
     public abstract void WriteEndElement();
 
     public abstract void WriteFullEndElement();
-
-    public void WriteAttributeString(string localName, string value)
-    {
-      WriteStartAttribute(null, localName, (string)null);
-      WriteString(value);
-      WriteEndAttribute();
-    }
 
     public abstract void WriteStartAttribute(string prefix, string localName, string ns);
 
@@ -126,10 +105,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     public abstract void Flush();
 
-    // Returns the closest prefix defined in the current namespace scope for the specified namespace URI.
-    public abstract string LookupPrefix(string ns);
-
-    // Writes out the specified value.
     public virtual void WriteValue(object value)
     {
       if (value == null)
@@ -207,22 +182,6 @@ namespace TextMonster.Xml.Xml_Reader
     public virtual void WriteValue(long value)
     {
       WriteString(XmlConvert.ToString(value));
-    }
-
-    public void WriteElementString(string localName, String value)
-    {
-      WriteElementString(localName, null, value);
-    }
-
-    // Writes out an attribute with the specified name, namespace URI and string value.
-    public void WriteElementString(string localName, String ns, String value)
-    {
-      WriteStartElement(localName, ns);
-      if (null != value && 0 != value.Length)
-      {
-        WriteString(value);
-      }
-      WriteEndElement();
     }
 
     public void Dispose()

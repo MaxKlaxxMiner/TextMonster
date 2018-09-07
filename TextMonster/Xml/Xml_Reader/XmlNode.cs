@@ -665,7 +665,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
       get
       {
-        XmlDocument doc = OwnerDocument;
         return HasReadOnlyParent(this);
       }
     }
@@ -824,11 +823,6 @@ namespace TextMonster.Xml.Xml_Reader
     // Saves the current node to the specified XmlWriter.
     public abstract void WriteTo(XmlWriter w);
 
-    // Saves all the children of the node to the specified XmlWriter.
-    public abstract void WriteContentTo(XmlWriter w);
-
-    // Removes all the children and/or attributes
-    // of the current node.
     public virtual void RemoveAll()
     {
       XmlNode child = FirstChild;

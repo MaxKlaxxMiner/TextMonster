@@ -91,12 +91,6 @@ namespace TextMonster.Xml.Xml_Reader
       w.WriteWhitespace(Data);
     }
 
-    // Saves all the children of the node to the specified XmlWriter.
-    public override void WriteContentTo(XmlWriter w)
-    {
-      // Intentionally do nothing
-    }
-
     internal override XPathNodeType XPNodeType
     {
       get

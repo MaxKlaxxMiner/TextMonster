@@ -125,11 +125,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
     }
 
-    // Saves all the children of the node to the specified XmlWriter.
-    public override void WriteContentTo(XmlWriter w)
-    {
-    }
-
     public override String BaseURI
     {
       get { return baseURI; }

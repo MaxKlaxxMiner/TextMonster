@@ -185,7 +185,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         if (ContentType == XmlSchemaContentType.Mixed)
         {
-          string ctype = IsOpen ? "Any" : "TextOnly";
           return IsOpen ? ContentValidator.Any : ContentValidator.TextOnly;
         }
         else
@@ -204,7 +203,6 @@ namespace TextMonster.Xml.Xml_Reader
       contentNode.ExpandTree(contentRoot, symbols, positions);
 
       // calculate followpos
-      int symbolsCount = symbols.Count;
       int positionsCount = positions.Count;
       BitSet firstpos = new BitSet(positionsCount);
       BitSet lastpos = new BitSet(positionsCount);

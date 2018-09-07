@@ -923,10 +923,9 @@ namespace TextMonster.Xml.Xml_Reader
       SchemaNames schemaNames = GetSchemaNames(readerNameTable);
       Parser parser = new Parser(SchemaType.XSD, readerNameTable, schemaNames, eventHandler);
       parser.XmlResolver = readerSettings.GetXmlResolver_CheckConfig();
-      SchemaType schemaType;
       try
       {
-        schemaType = parser.Parse(reader, targetNamespace);
+        parser.Parse(reader, targetNamespace);
       }
       catch (XmlSchemaException e)
       {

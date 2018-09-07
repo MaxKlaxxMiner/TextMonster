@@ -143,27 +143,6 @@
     }
 
     /// <summary>
-    /// Returns the next element in document order that has the same local name hashcode as this element.
-    /// If there are no similar elements, then 0 is returned.
-    /// </summary>
-    public int GetSimilarElement(out XPathNode[] pageNode)
-    {
-      pageNode = this.info.SimilarElementPage;
-      return this.idxSimilar;
-    }
-
-    /// <summary>
-    /// Returns true if this is an Element node with a name that matches the specified localName and
-    /// namespaceName.  Assume that localName has been atomized, but namespaceName has not.
-    /// </summary>
-    public bool ElementMatch(string localName, string namespaceName)
-    {
-      return NodeType == XPathNodeType.Element &&
-             (object)this.info.LocalName == (object)localName &&
-             this.info.NamespaceUri == namespaceName;
-    }
-
-    /// <summary>
     /// Return true if this node is an xmlns:xml node.
     /// </summary>
     public bool IsXmlNamespaceNode
@@ -198,14 +177,6 @@
     public bool HasContentChild
     {
       get { return (this.props & HasContentChildBit) != 0; }
-    }
-
-    /// <summary>
-    /// Returns true if this node has at least one element child.
-    /// </summary>
-    public bool HasElementChild
-    {
-      get { return (this.props & HasElementChildBit) != 0; }
     }
 
     /// <summary>

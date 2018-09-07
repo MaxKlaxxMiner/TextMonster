@@ -96,11 +96,6 @@ namespace TextMonster.Xml.Xml_Reader
       return CheckValueFacets(decimalValue, datatype);
     }
 
-    internal override bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype)
-    {
-      return MatchEnumeration(datatype.ValueConverter.ToDecimal(value), enumeration, datatype.ValueConverter);
-    }
-
     internal bool MatchEnumeration(decimal value, ArrayList enumeration, XmlValueConverter valueConverter)
     {
       for (int i = 0; i < enumeration.Count; ++i)

@@ -113,34 +113,6 @@ namespace TextMonster.Xml.Xml_Reader
       return (long)ChangeTypeWildcardDestination(value, Int64Type, null);
     }
 
-
-    //-----------------------------------------------
-    // ToSingle
-    //-----------------------------------------------
-
-    public override float ToSingle(object value)
-    {
-      if (value == null) throw new ArgumentNullException("value");
-
-      Type sourceType = value.GetType();
-
-      if (sourceType == XmlAtomicValueType) return ((float)((XmlAtomicValue)value).ValueAs(SingleType));
-
-      return (float)ChangeTypeWildcardDestination(value, SingleType, null);
-    }
-
-
-    //-----------------------------------------------
-    // ToString
-    //-----------------------------------------------
-
-    // This converter does not support conversions to String.
-
-
-    //-----------------------------------------------
-    // ChangeType
-    //-----------------------------------------------
-
     public override object ChangeType(bool value, Type destinationType)
     {
       if (destinationType == null) throw new ArgumentNullException("destinationType");

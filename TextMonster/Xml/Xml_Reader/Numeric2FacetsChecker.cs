@@ -63,10 +63,7 @@ namespace TextMonster.Xml.Xml_Reader
       double doubleValue = (double)value;
       return CheckValueFacets(doubleValue, datatype);
     }
-    internal override bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype)
-    {
-      return MatchEnumeration(datatype.ValueConverter.ToDouble(value), enumeration, datatype.ValueConverter);
-    }
+
     private bool MatchEnumeration(double value, ArrayList enumeration, XmlValueConverter valueConverter)
     {
       for (int i = 0; i < enumeration.Count; ++i)

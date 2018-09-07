@@ -23,7 +23,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Xml_UnknownEncoding = "Xml_UnknownEncoding";
     internal const string Xml_InternalError = "Xml_InternalError";
     internal const string Xml_InvalidCharInThisEncoding = "Xml_InvalidCharInThisEncoding";
-    internal const string Xml_ErrorPosition = "Xml_ErrorPosition";
     internal const string Xml_MessageWithErrorPosition = "Xml_MessageWithErrorPosition";
     internal const string Xml_UnexpectedTokenEx = "Xml_UnexpectedTokenEx";
     internal const string Xml_UnexpectedTokens2 = "Xml_UnexpectedTokens2";
@@ -76,16 +75,7 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Xml_CannotStartDocumentOnFragment = "Xml_CannotStartDocumentOnFragment";
     internal const string Xml_ErrorOpeningExternalDtd = "Xml_ErrorOpeningExternalDtd";
     internal const string Xml_ErrorOpeningExternalEntity = "Xml_ErrorOpeningExternalEntity";
-    internal const string Xml_ReadBinaryContentNotSupported = "Xml_ReadBinaryContentNotSupported";
-    internal const string Xml_ReadValueChunkNotSupported = "Xml_ReadValueChunkNotSupported";
-    internal const string Xml_InvalidReadContentAs = "Xml_InvalidReadContentAs";
-    internal const string Xml_InvalidReadElementContentAs = "Xml_InvalidReadElementContentAs";
-    internal const string Xml_MixingReadValueChunkWithBinary = "Xml_MixingReadValueChunkWithBinary";
-    internal const string Xml_MixingBinaryContentMethods = "Xml_MixingBinaryContentMethods";
-    internal const string Xml_MixingV1StreamingWithV2Binary = "Xml_MixingV1StreamingWithV2Binary";
-    internal const string Xml_InvalidReadValueChunk = "Xml_InvalidReadValueChunk";
     internal const string Xml_DoubleBaseUri = "Xml_DoubleBaseUri";
-    internal const string Xml_NotEnoughSpaceForSurrogatePair = "Xml_NotEnoughSpaceForSurrogatePair";
     internal const string Xml_EmptyUrl = "Xml_EmptyUrl";
     internal const string Xml_LimitExceeded = "Xml_LimitExceeded";
     internal const string Xml_CharEntityOverflow = "Xml_CharEntityOverflow";
@@ -420,9 +410,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Xp_InvalidName = "Xp_InvalidName";
     internal const string Xp_InvalidToken = "Xp_InvalidToken";
     internal const string Xp_NodeSetExpected = "Xp_NodeSetExpected";
-    internal const string Xp_NoContext = "Xp_NoContext";
-    internal const string Xp_UndefFunc = "Xp_UndefFunc";
-    internal const string Xp_FunctionFailed = "Xp_FunctionFailed";
     internal const string Xp_QueryTooComplex = "Xp_QueryTooComplex";
     internal const string Xdom_DualDocumentTypeNode = "Xdom_DualDocumentTypeNode";
     internal const string Xdom_DualDocumentElementNode = "Xdom_DualDocumentElementNode";

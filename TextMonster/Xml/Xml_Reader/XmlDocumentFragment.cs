@@ -123,7 +123,7 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // Saves all the children of the node to the specified XmlWriter.
-    public override void WriteContentTo(XmlWriter w)
+    public virtual void WriteContentTo(XmlWriter w)
     {
       foreach (XmlNode n in this)
       {

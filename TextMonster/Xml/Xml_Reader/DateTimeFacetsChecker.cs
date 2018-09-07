@@ -58,11 +58,6 @@ namespace TextMonster.Xml.Xml_Reader
       return null;
     }
 
-    internal override bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype)
-    {
-      return MatchEnumeration(datatype.ValueConverter.ToDateTime(value), enumeration, datatype);
-    }
-
     private bool MatchEnumeration(DateTime value, ArrayList enumeration, XmlSchemaDatatype datatype)
     {
       for (int i = 0; i < enumeration.Count; ++i)

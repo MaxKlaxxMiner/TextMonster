@@ -70,11 +70,6 @@ namespace TextMonster.Xml.Xml_Reader
       return new XPathException(res, new string[] { arg, arg2 });
     }
 
-    internal static XPathException Create(string res, string arg, Exception innerException)
-    {
-      return new XPathException(res, new string[] { arg }, innerException);
-    }
-
     private XPathException(string res, string[] args) :
       this(res, args, null)
     {

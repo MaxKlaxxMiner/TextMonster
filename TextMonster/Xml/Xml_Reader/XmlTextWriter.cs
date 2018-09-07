@@ -870,21 +870,6 @@ namespace TextMonster.Xml.Xml_Reader
       textWriter.Flush();
     }
 
-    // Returns the closest prefix defined in the current namespace scope for the specified namespace URI.
-    public override string LookupPrefix(string ns)
-    {
-      if (ns == null || ns.Length == 0)
-      {
-        throw new ArgumentException(Res.GetString(Res.Xml_EmptyName));
-      }
-      string s = FindPrefix(ns);
-      if (s == null && ns == stack[top].defaultNs)
-      {
-        s = string.Empty;
-      }
-      return s;
-    }
-
     void StartDocument(int standalone)
     {
       try
