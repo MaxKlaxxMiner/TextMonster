@@ -9,7 +9,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     public override XmlTokenizedType TokenizedType { get { return XmlTokenizedType.QName; } }
 
-    public override object ParseValue(string s, XmlNameTable nameTable, IXmlNamespaceResolver nsmgr)
+    public override object ParseValue(string s, NameTable nameTable, IXmlNamespaceResolver nsmgr)
     {
       if (s == null || s.Length == 0)
       {

@@ -28,7 +28,7 @@ namespace TextMonster.Xml.Xml_Reader
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public abstract object ParseValue(string s, XmlNameTable nameTable, IXmlNamespaceResolver nsmgr);
+    public abstract object ParseValue(string s, NameTable nameTable, IXmlNamespaceResolver nsmgr);
 
     /// <include file='doc\XmlSchemaDatatype.uex' path='docs/doc[@for="XmlSchemaDatatype.Variety"]/*' />
     /// <devdoc>
@@ -62,11 +62,11 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal abstract int Compare(object value1, object value2);
 
-    internal abstract object ParseValue(string s, XmlNameTable nameTable, IXmlNamespaceResolver nsmgr, bool createAtomicValue);
+    internal abstract object ParseValue(string s, NameTable nameTable, IXmlNamespaceResolver nsmgr, bool createAtomicValue);
 
-    internal abstract Exception TryParseValue(string s, XmlNameTable nameTable, IXmlNamespaceResolver nsmgr, out object typedValue);
+    internal abstract Exception TryParseValue(string s, NameTable nameTable, IXmlNamespaceResolver nsmgr, out object typedValue);
 
-    internal abstract Exception TryParseValue(object value, XmlNameTable nameTable, IXmlNamespaceResolver namespaceResolver, out object typedValue);
+    internal abstract Exception TryParseValue(object value, NameTable nameTable, IXmlNamespaceResolver namespaceResolver, out object typedValue);
 
     internal abstract XmlSchemaWhiteSpace BuiltInWhitespaceFacet { get; }
 
@@ -276,7 +276,7 @@ namespace TextMonster.Xml.Xml_Reader
       return DatatypeImplementation.FromXdrName(name);
     }
 
-    internal static string XdrCanonizeUri(string uri, XmlNameTable nameTable, SchemaNames schemaNames)
+    internal static string XdrCanonizeUri(string uri, NameTable nameTable, SchemaNames schemaNames)
     {
       string canonicalUri;
       int offset = 5;

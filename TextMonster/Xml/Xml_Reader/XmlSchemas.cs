@@ -274,7 +274,7 @@ namespace TextMonster.Xml.Xml_Reader
       {
         try
         {
-          XmlNameTable nameTable = new NameTable();
+          NameTable nameTable = new NameTable();
           Preprocessor prep = new Preprocessor(nameTable, new SchemaNames(nameTable), null);
           prep.SchemaLocations = new Hashtable();
           prep.Execute(schema, schema.TargetNamespace, false);
@@ -475,7 +475,7 @@ namespace TextMonster.Xml.Xml_Reader
       {
         try
         {
-          XmlNameTable nameTable = new NameTable();
+          NameTable nameTable = new NameTable();
           Preprocessor prep = new Preprocessor(nameTable, new SchemaNames(nameTable), null);
           prep.XmlResolver = null;
           prep.SchemaLocations = new Hashtable();

@@ -2,7 +2,7 @@
 {
   internal sealed class SchemaNames
   {
-    XmlNameTable nameTable;
+    NameTable nameTable;
 
     public string NsDataType;
     public string NsDataTypeAlias;
@@ -149,7 +149,7 @@
 
     internal XmlQualifiedName[] TokenToQName = new XmlQualifiedName[(int)Token.XmlLang + 1];
 
-    public SchemaNames(XmlNameTable nameTable)
+    public SchemaNames(NameTable nameTable)
     {
       this.nameTable = nameTable;
       NsDataType = nameTable.Add(XmlReservedNs.NsDataType);

@@ -6,7 +6,7 @@ namespace TextMonster.Xml.Xml_Reader
   public sealed class XmlReaderSettings
   {
     // Nametable
-    XmlNameTable nameTable;
+    NameTable nameTable;
 
     // XmlResolver
     XmlResolver xmlResolver;
@@ -47,7 +47,7 @@ namespace TextMonster.Xml.Xml_Reader
       Initialize();
     }
 
-    public XmlNameTable NameTable
+    public NameTable NameTable
     {
       get
       {

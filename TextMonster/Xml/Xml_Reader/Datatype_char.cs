@@ -17,7 +17,7 @@ namespace TextMonster.Xml.Xml_Reader
       return ((char)value1).CompareTo(value2);
     }
 
-    public override object ParseValue(string s, XmlNameTable nameTable, IXmlNamespaceResolver nsmgr)
+    public override object ParseValue(string s, NameTable nameTable, IXmlNamespaceResolver nsmgr)
     {
       try
       {
@@ -33,7 +33,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal override Exception TryParseValue(string s, XmlNameTable nameTable, IXmlNamespaceResolver nsmgr, out object typedValue)
+    internal override Exception TryParseValue(string s, NameTable nameTable, IXmlNamespaceResolver nsmgr, out object typedValue)
     {
       Exception exception;
 

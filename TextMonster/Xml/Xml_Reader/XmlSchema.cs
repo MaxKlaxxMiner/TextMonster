@@ -53,7 +53,7 @@ namespace TextMonster.Xml.Xml_Reader
     bool isChameleon;
     Hashtable ids = new Hashtable();
     XmlDocument document;
-    XmlNameTable nameTable;
+    NameTable nameTable;
 
     /// <include file='doc\XmlSchema.uex' path='docs/doc[@for="XmlSchema.Read"]/*' />
     /// <devdoc>
@@ -70,7 +70,7 @@ namespace TextMonster.Xml.Xml_Reader
     /// </devdoc>
     public static XmlSchema Read(FastXmlReader reader, ValidationEventHandler validationEventHandler)
     {
-      XmlNameTable nameTable = reader.NameTable;
+      NameTable nameTable = reader.NameTable;
       Parser parser = new Parser(SchemaType.XSD, nameTable, new SchemaNames(nameTable), validationEventHandler);
       try
       {
@@ -91,12 +91,12 @@ namespace TextMonster.Xml.Xml_Reader
       return parser.XmlSchema;
     }
 
-    internal bool CompileSchema(XmlSchemaCollection xsc, XmlResolver resolver, SchemaInfo schemaInfo, string ns, ValidationEventHandler validationEventHandler, XmlNameTable nameTable, bool CompileContentModel)
+    internal bool CompileSchema(XmlSchemaCollection xsc, XmlResolver resolver, SchemaInfo schemaInfo, string ns, ValidationEventHandler validationEventHandler, NameTable nameTable, bool CompileContentModel)
     {
       return false;
     }
 
-    internal void CompileSchemaInSet(XmlNameTable nameTable, ValidationEventHandler eventHandler, XmlSchemaCompilationSettings compilationSettings)
+    internal void CompileSchemaInSet(NameTable nameTable, ValidationEventHandler eventHandler, XmlSchemaCompilationSettings compilationSettings)
     {
     }
 

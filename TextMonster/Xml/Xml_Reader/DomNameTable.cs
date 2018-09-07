@@ -6,7 +6,7 @@
     int count;
     int mask;
     XmlDocument ownerDocument;
-    XmlNameTable nameTable;
+    NameTable nameTable;
 
     const int InitialSize = 64; // must be a power of two
 

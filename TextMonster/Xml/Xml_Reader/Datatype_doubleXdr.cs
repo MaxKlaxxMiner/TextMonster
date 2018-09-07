@@ -4,7 +4,7 @@ namespace TextMonster.Xml.Xml_Reader
 {
   internal class Datatype_doubleXdr : Datatype_double
   {
-    public override object ParseValue(string s, XmlNameTable nameTable, IXmlNamespaceResolver nsmgr)
+    public override object ParseValue(string s, NameTable nameTable, IXmlNamespaceResolver nsmgr)
     {
       double value;
       try

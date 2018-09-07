@@ -1,18 +1,68 @@
 using System;
+using System.Collections.Generic;
 
 namespace TextMonster.Xml.Xml_Reader
 {
+  public class NameTable
+  {
+    public string Add(string name)
+    {
+      return name;
+    }
+
+    sealed class StringElement
+    {
+      public readonly string value;
+      public readonly StringElement next;
+      public readonly ulong crc64;
+
+      public StringElement(StringElement parent, string value)
+      {
+        this.value = value;
+        crc64 = value.GetCrc64();
+        next = parent;
+      }
+    }
+
+    readonly StringElement[] dict = new StringElement[256];
+
+    public string Add(char[] chars, int ofs, int len)
+    {
+      ulong crc = chars.GetCrc64(ofs, len);
+
+      for (var el = dict[(byte)len]; el != null; el = el.next)
+      {
+        if (el.crc64 == crc) return el.value;
+      }
+
+      string name = new string(chars, ofs, len);
+
+      dict[(byte)len] = new StringElement(dict[(byte)len], name);
+
+      return name;
+    }
+
+    public string Get(string name)
+    {
+      ulong crc = name.GetCrc64();
+
+      for (var el = dict[(byte)name.Length]; el != null; el = el.next)
+      {
+        if (el.crc64 == crc) return el.value;
+      }
+
+      return name;
+    }
+  }
+
   /// <include file='doc\NameTable.uex' path='docs/doc[@for="NameTable"]/*' />
   /// <devdoc>
   ///    <para>
-  ///       XmlNameTable implemented as a simple hash table.
+  ///       NameTable implemented as a simple hash table.
   ///    </para>
   /// </devdoc>
-  public class NameTable : XmlNameTable
+  public class NameTableOld
   {
-    //
-    // Private types
-    //
     class Entry
     {
       internal string str;
@@ -27,37 +77,28 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    //
-    // Fields
-    //
     Entry[] entries;
     int count;
     int mask;
     int hashCodeRandomizer;
 
-    //
-    // Constructor
-    //
     /// <include file='doc\NameTable.uex' path='docs/doc[@for="NameTable.NameTable"]/*' />
     /// <devdoc>
     ///      Public constructor.
     /// </devdoc>
-    public NameTable()
+    public NameTableOld()
     {
       mask = 31;
       entries = new Entry[mask + 1];
       hashCodeRandomizer = Environment.TickCount;
     }
 
-    //
-    // XmlNameTable public methods
-    //
     /// <include file='doc\NameTable.uex' path='docs/doc[@for="NameTable.Add"]/*' />
     /// <devdoc>
     ///      Add the given string to the NameTable or return
     ///      the existing string if it is already in the NameTable.
     /// </devdoc>
-    public override string Add(string key)
+    public string Add(string key)
     {
       if (key == null)
       {
@@ -86,7 +127,7 @@ namespace TextMonster.Xml.Xml_Reader
     ///      Add the given string to the NameTable or return
     ///      the existing string if it is already in the NameTable.
     /// </devdoc>
-    public override string Add(char[] key, int start, int len)
+    public string Add(char[] key, int start, int len)
     {
       if (len == 0)
       {
@@ -123,7 +164,7 @@ namespace TextMonster.Xml.Xml_Reader
     /// <devdoc>
     ///      Find the matching string in the NameTable.
     /// </devdoc>
-    public override string Get(string value)
+    public string Get(string value)
     {
       if (value == null)
       {
@@ -145,10 +186,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
       return null;
     }
-
-    //
-    // Private methods
-    //
 
     private string AddEntry(string str, int hashCode)
     {

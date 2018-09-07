@@ -552,7 +552,7 @@ namespace TextMonster.Xml.Xml_Reader
         SchemaAttDef attdef,
         SchemaInfo sinfo,
         XmlNamespaceManager nsManager,
-        XmlNameTable NameTable,
+        NameTable NameTable,
         object sender,
         ValidationEventHandler eventhandler,
         string baseUri,

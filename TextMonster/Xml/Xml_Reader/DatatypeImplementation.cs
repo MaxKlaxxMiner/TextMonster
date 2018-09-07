@@ -374,7 +374,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal override XmlSchemaWhiteSpace BuiltInWhitespaceFacet { get { return XmlSchemaWhiteSpace.Preserve; } }
 
-    public override object ParseValue(string s, XmlNameTable nameTable, IXmlNamespaceResolver nsmgr)
+    public override object ParseValue(string s, NameTable nameTable, IXmlNamespaceResolver nsmgr)
     {
       object typedValue;
       Exception exception = TryParseValue(s, nameTable, nsmgr, out typedValue);
@@ -390,7 +390,7 @@ namespace TextMonster.Xml.Xml_Reader
       return typedValue;
     }
 
-    internal override object ParseValue(string s, XmlNameTable nameTable, IXmlNamespaceResolver nsmgr, bool createAtomicValue)
+    internal override object ParseValue(string s, NameTable nameTable, IXmlNamespaceResolver nsmgr, bool createAtomicValue)
     {
       if (createAtomicValue)
       {
@@ -408,7 +408,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal override Exception TryParseValue(object value, XmlNameTable nameTable, IXmlNamespaceResolver namespaceResolver, out object typedValue)
+    internal override Exception TryParseValue(object value, NameTable nameTable, IXmlNamespaceResolver namespaceResolver, out object typedValue)
     {
       Exception exception = null;
       typedValue = null;

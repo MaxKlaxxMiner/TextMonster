@@ -62,7 +62,7 @@
       }
     }
 
-    public string GetAtomizedNameWPrefix(XmlNameTable nameTable)
+    public string GetAtomizedNameWPrefix(NameTable nameTable)
     {
       if (nameWPrefix == null)
       {

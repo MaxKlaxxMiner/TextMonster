@@ -4,7 +4,7 @@ namespace TextMonster.Xml.Xml_Reader
 {
   internal class Datatype_floatXdr : Datatype_float
   {
-    public override object ParseValue(string s, XmlNameTable nameTable, IXmlNamespaceResolver nsmgr)
+    public override object ParseValue(string s, NameTable nameTable, IXmlNamespaceResolver nsmgr)
     {
       float value;
       try

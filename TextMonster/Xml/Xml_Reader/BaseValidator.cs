@@ -8,7 +8,7 @@ namespace TextMonster.Xml.Xml_Reader
   {
     XmlSchemaCollection schemaCollection;
     IValidationEventHandling eventHandling;
-    XmlNameTable nameTable;
+    NameTable nameTable;
     SchemaNames schemaNames;
     PositionInfo positionInfo;
     XmlResolver xmlResolver;
@@ -56,7 +56,7 @@ namespace TextMonster.Xml.Xml_Reader
       get { return schemaCollection; }
     }
 
-    public XmlNameTable NameTable
+    public NameTable NameTable
     {
       get { return nameTable; }
     }

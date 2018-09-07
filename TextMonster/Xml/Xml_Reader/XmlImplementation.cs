@@ -5,7 +5,7 @@
   public class XmlImplementation
   {
 
-    private XmlNameTable nameTable;
+    private NameTable nameTable;
 
     // Initializes a new instance of the XmlImplementation class.
     public XmlImplementation()
@@ -13,7 +13,7 @@
     {
     }
 
-    public XmlImplementation(XmlNameTable nt)
+    public XmlImplementation(NameTable nt)
     {
       nameTable = nt;
     }
@@ -23,7 +23,7 @@
       return new XmlDocument(this);
     }
 
-    internal XmlNameTable NameTable
+    internal NameTable NameTable
     {
       get { return nameTable; }
     }

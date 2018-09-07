@@ -49,10 +49,10 @@ namespace TextMonster.Xml.Xml_Reader
 
     private XmlResolver xmlResolver = null;
 
-    public Preprocessor(XmlNameTable nameTable, SchemaNames schemaNames, ValidationEventHandler eventHandler)
+    public Preprocessor(NameTable nameTable, SchemaNames schemaNames, ValidationEventHandler eventHandler)
       : this(nameTable, schemaNames, eventHandler, new XmlSchemaCompilationSettings()) { }
 
-    public Preprocessor(XmlNameTable nameTable, SchemaNames schemaNames, ValidationEventHandler eventHandler, XmlSchemaCompilationSettings compilationSettings)
+    public Preprocessor(NameTable nameTable, SchemaNames schemaNames, ValidationEventHandler eventHandler, XmlSchemaCompilationSettings compilationSettings)
       : base(nameTable, schemaNames, eventHandler, compilationSettings)
     {
       referenceNamespaces = new Hashtable();

@@ -262,8 +262,8 @@ namespace TestTool
       //SpeedCheck("ParseXml2() - XElement", ParseXml2);
       for (int r = 0; r < 3; r++)
       {
-        SpeedCheck("ParseXml1() - XElement", ParseXml1);
-        SpeedCheck("ParseXml2() - X_Element", ParseXml2);
+        //SpeedCheck("ParseXml1() - XElement", ParseXml1);
+        //SpeedCheck("ParseXml2() - X_Element", ParseXml2);
         SpeedCheck("ParseXml3() - X_Element Fast", ParseXml3);
       }
     }

@@ -71,7 +71,7 @@ namespace TextMonster.Xml.Xml_Reader
       return false;
     }
 
-    internal override Exception TryParseValue(string s, XmlNameTable nameTable, IXmlNamespaceResolver nsmgr, out object typedValue)
+    internal override Exception TryParseValue(string s, NameTable nameTable, IXmlNamespaceResolver nsmgr, out object typedValue)
     {
       Exception exception;
       XmlSchemaSimpleType memberType = null;
@@ -107,7 +107,7 @@ namespace TextMonster.Xml.Xml_Reader
       return exception;
     }
 
-    internal override Exception TryParseValue(object value, XmlNameTable nameTable, IXmlNamespaceResolver nsmgr, out object typedValue)
+    internal override Exception TryParseValue(object value, NameTable nameTable, IXmlNamespaceResolver nsmgr, out object typedValue)
     {
       Exception exception;
       if (value == null)

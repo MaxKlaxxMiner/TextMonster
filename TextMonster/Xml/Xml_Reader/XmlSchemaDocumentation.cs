@@ -30,7 +30,7 @@
     public string Language
     {
       get { return language; }
-      set { language = (string)languageType.Datatype.ParseValue(value, (XmlNameTable)null, (IXmlNamespaceResolver)null); }
+      set { language = (string)languageType.Datatype.ParseValue(value, (NameTable)null, (IXmlNamespaceResolver)null); }
     }
 
     /// <include file='doc\XmlSchemaDocumentation.uex' path='docs/doc[@for="XmlSchemaDocumentation.Markup"]/*' />

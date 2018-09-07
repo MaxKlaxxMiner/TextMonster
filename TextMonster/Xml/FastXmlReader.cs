@@ -184,8 +184,8 @@ namespace TextMonster.Xml
       SkipSubtree();
     }
 
-    // Gets the XmlNameTable associated with the XmlReader.
-    public abstract XmlNameTable NameTable { get; }
+    // Gets the NameTable associated with the XmlReader.
+    public abstract NameTable NameTable { get; }
 
     // Resolves a namespace prefix in the current element's scope.
     public abstract string LookupNamespace(string prefix);

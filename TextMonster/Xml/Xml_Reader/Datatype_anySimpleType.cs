@@ -31,7 +31,7 @@ namespace TextMonster.Xml.Xml_Reader
       return String.Compare(value1.ToString(), value2.ToString(), StringComparison.Ordinal);
     }
 
-    internal override Exception TryParseValue(string s, XmlNameTable nameTable, IXmlNamespaceResolver nsmgr, out object typedValue)
+    internal override Exception TryParseValue(string s, NameTable nameTable, IXmlNamespaceResolver nsmgr, out object typedValue)
     {
       typedValue = XmlComplianceUtil.NonCDataNormalize(s); //Whitespace facet is treated as collapse since thats the way it was in Everett
       return null;

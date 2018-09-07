@@ -13,7 +13,7 @@ namespace TextMonster.Xml.Xml_Reader
   {
     private XPathNode[] pageText, pageRoot, pageXmlNmsp;
     private int idxText, idxRoot, idxXmlNmsp;
-    private XmlNameTable nameTable;
+    private NameTable nameTable;
     private bool hasLineInfo;
     private Dictionary<XPathNodeRef, XPathNodeRef> mapNmsp;
     private Dictionary<string, XPathNodeRef> idValueMap;
@@ -194,7 +194,7 @@ namespace TextMonster.Xml.Xml_Reader
     /// <summary>
     /// Return the name table used to atomize all name parts (local name, namespace uri, prefix).
     /// </summary>
-    internal XmlNameTable NameTable
+    internal NameTable NameTable
     {
       get { return this.nameTable; }
     }

@@ -31,7 +31,7 @@ namespace TextMonster.Xml.Xml_Reader
     int lastDecl = 0;
 
     // name table
-    XmlNameTable nameTable;
+    NameTable nameTable;
 
     // ID (depth) of the current scope
     int scopeId;
@@ -51,7 +51,7 @@ namespace TextMonster.Xml.Xml_Reader
     {
     }
 
-    public XmlNamespaceManager(XmlNameTable nameTable)
+    public XmlNamespaceManager(NameTable nameTable)
     {
       this.nameTable = nameTable;
       xml = nameTable.Add("xml");
@@ -66,7 +66,7 @@ namespace TextMonster.Xml.Xml_Reader
       scopeId = 1;
     }
 
-    public XmlNameTable NameTable
+    public NameTable NameTable
     {
       get
       {

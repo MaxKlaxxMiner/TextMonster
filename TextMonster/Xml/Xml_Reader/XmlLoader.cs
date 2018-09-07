@@ -590,7 +590,7 @@ namespace TextMonster.Xml.Xml_Reader
       String baseURI = this.doc.BaseURI;
       //constructing xmlnamespace
       Hashtable prefixes = new Hashtable();
-      XmlNameTable nt = this.doc.NameTable;
+      NameTable nt = this.doc.NameTable;
       XmlNamespaceManager mgr = new XmlNamespaceManager(nt);
       bool bHasDefXmlnsAttr = false;
 

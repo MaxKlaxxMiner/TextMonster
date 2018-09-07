@@ -4,14 +4,14 @@ namespace TextMonster.Xml.Xml_Reader
 {
   internal class BaseProcessor
   {
-    XmlNameTable nameTable;
+    NameTable nameTable;
     SchemaNames schemaNames;
     ValidationEventHandler eventHandler;
     XmlSchemaCompilationSettings compilationSettings;
     int errorCount;
     string NsXml;
 
-    public BaseProcessor(XmlNameTable nameTable, SchemaNames schemaNames, ValidationEventHandler eventHandler, XmlSchemaCompilationSettings compilationSettings)
+    public BaseProcessor(NameTable nameTable, SchemaNames schemaNames, ValidationEventHandler eventHandler, XmlSchemaCompilationSettings compilationSettings)
     {
       this.nameTable = nameTable;
       this.schemaNames = schemaNames;
@@ -20,7 +20,7 @@ namespace TextMonster.Xml.Xml_Reader
       NsXml = nameTable.Add(XmlReservedNs.NsXml);
     }
 
-    protected XmlNameTable NameTable
+    protected NameTable NameTable
     {
       get { return nameTable; }
     }

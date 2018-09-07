@@ -4,7 +4,7 @@ namespace TextMonster.Xml.Xml_Reader
 {
   internal class Datatype_fixed : Datatype_decimal
   {
-    public override object ParseValue(string s, XmlNameTable nameTable, IXmlNamespaceResolver nsmgr)
+    public override object ParseValue(string s, NameTable nameTable, IXmlNamespaceResolver nsmgr)
     {
       Exception exception;
 
@@ -29,7 +29,7 @@ namespace TextMonster.Xml.Xml_Reader
       throw exception;
     }
 
-    internal override Exception TryParseValue(string s, XmlNameTable nameTable, IXmlNamespaceResolver nsmgr, out object typedValue)
+    internal override Exception TryParseValue(string s, NameTable nameTable, IXmlNamespaceResolver nsmgr, out object typedValue)
     {
       Exception exception;
 

@@ -11,7 +11,7 @@ namespace TextMonster.Xml.Xml_Reader
   {
     XmlTextReaderImpl impl;
 
-    public XmlTextReader(string url, Stream input, XmlNameTable nt)
+    public XmlTextReader(string url, Stream input, NameTable nt)
     {
       impl = new XmlTextReaderImpl(url, input, nt);
       impl.OuterReader = this;
@@ -172,7 +172,7 @@ namespace TextMonster.Xml.Xml_Reader
       impl.Skip();
     }
 
-    public override XmlNameTable NameTable
+    public override NameTable NameTable
     {
       get { return impl.NameTable; }
     }

@@ -6,8 +6,7 @@ namespace TextMonster.Xml.Xml_Reader
   // Specifies the context that the XmLReader will use for xml fragment
   public class XmlParserContext
   {
-
-    private XmlNameTable _nt = null;
+    private NameTable _nt = null;
     private XmlNamespaceManager _nsMgr = null;
     private String _docTypeName = String.Empty;
     private String _pubId = String.Empty;
@@ -18,7 +17,7 @@ namespace TextMonster.Xml.Xml_Reader
     private String _baseURI = String.Empty;
     private Encoding _encoding = null;
 
-    public XmlParserContext(XmlNameTable nt, XmlNamespaceManager nsMgr, String docTypeName,
+    public XmlParserContext(NameTable nt, XmlNamespaceManager nsMgr, String docTypeName,
               String pubId, String sysId, String internalSubset, String baseURI,
               String xmlLang, XmlSpace xmlSpace)
       : this(nt, nsMgr, docTypeName, pubId, sysId, internalSubset, baseURI, xmlLang, xmlSpace, null)
@@ -26,7 +25,7 @@ namespace TextMonster.Xml.Xml_Reader
       // Intentionally Empty
     }
 
-    public XmlParserContext(XmlNameTable nt, XmlNamespaceManager nsMgr, String docTypeName,
+    public XmlParserContext(NameTable nt, XmlNamespaceManager nsMgr, String docTypeName,
                       String pubId, String sysId, String internalSubset, String baseURI,
                       String xmlLang, XmlSpace xmlSpace, Encoding enc)
     {
@@ -63,7 +62,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     }
 
-    public XmlNameTable NameTable
+    public NameTable NameTable
     {
       get
       {

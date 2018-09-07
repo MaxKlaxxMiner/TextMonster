@@ -374,7 +374,7 @@ namespace TextMonster.Xml.Xml_Reader
     private DeclBaseInfo _UndefinedAttributeTypes;
     private DeclBaseInfo _BaseDecl;
 
-    private XmlNameTable _NameTable;
+    private NameTable _NameTable;
     private SchemaNames _SchemaNames;
 
     private XmlNamespaceManager _CurNsMgr;
@@ -392,7 +392,7 @@ namespace TextMonster.Xml.Xml_Reader
                        XmlNamespaceManager curmgr,
                        SchemaInfo sinfo,
                        string targetNamspace,
-                       XmlNameTable nameTable,
+                       NameTable nameTable,
                        SchemaNames schemaNames,
                        ValidationEventHandler eventhandler
                        )

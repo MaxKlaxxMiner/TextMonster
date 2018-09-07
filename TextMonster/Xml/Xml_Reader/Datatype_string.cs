@@ -17,7 +17,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     public override XmlTokenizedType TokenizedType { get { return XmlTokenizedType.CDATA; } }
 
-    internal override Exception TryParseValue(string s, XmlNameTable nameTable, IXmlNamespaceResolver nsmgr, out object typedValue)
+    internal override Exception TryParseValue(string s, NameTable nameTable, IXmlNamespaceResolver nsmgr, out object typedValue)
     {
       Exception exception;
 

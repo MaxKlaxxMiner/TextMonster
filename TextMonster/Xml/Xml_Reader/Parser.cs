@@ -6,7 +6,7 @@ namespace TextMonster.Xml.Xml_Reader
   {
 
     SchemaType schemaType;
-    XmlNameTable nameTable;
+    NameTable nameTable;
     SchemaNames schemaNames;
     ValidationEventHandler eventHandler;
     XmlNamespaceManager namespaceManager;
@@ -30,7 +30,7 @@ namespace TextMonster.Xml.Xml_Reader
     //Whitespace check for text nodes
     XmlCharType xmlCharType = XmlCharType.Instance;
 
-    public Parser(SchemaType schemaType, XmlNameTable nameTable, SchemaNames schemaNames, ValidationEventHandler eventHandler)
+    public Parser(SchemaType schemaType, NameTable nameTable, SchemaNames schemaNames, ValidationEventHandler eventHandler)
     {
       this.schemaType = schemaType;
       this.nameTable = nameTable;

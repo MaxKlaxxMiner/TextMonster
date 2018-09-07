@@ -626,7 +626,7 @@ namespace TextMonster.Xml.Xml_Reader
     private bool hasChild;
     private HWStack stateHistory = new HWStack(STACK_INCREMENT);
     private Stack containerStack = new Stack();
-    private XmlNameTable nameTable;
+    private NameTable nameTable;
     private SchemaNames schemaNames;
     private XmlNamespaceManager namespaceManager;
     private bool canIncludeImport;
@@ -676,7 +676,7 @@ namespace TextMonster.Xml.Xml_Reader
                        FastXmlReader reader,
                        XmlNamespaceManager curmgr,
                        XmlSchema schema,
-                       XmlNameTable nameTable,
+                       NameTable nameTable,
                        SchemaNames schemaNames,
                        ValidationEventHandler eventhandler
                        )

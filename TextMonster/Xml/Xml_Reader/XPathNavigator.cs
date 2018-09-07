@@ -60,7 +60,7 @@ namespace TextMonster.Xml.Xml_Reader
       return Clone();
     }
 
-    public abstract XmlNameTable NameTable { get; }
+    public abstract NameTable NameTable { get; }
 
     public virtual string LookupNamespace(string prefix)
     {

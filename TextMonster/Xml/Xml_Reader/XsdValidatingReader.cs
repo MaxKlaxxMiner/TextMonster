@@ -60,7 +60,7 @@ namespace TextMonster.Xml.Xml_Reader
     private string originalAtomicValueString;
 
     //cached coreReader information
-    private XmlNameTable coreReaderNameTable;
+    private NameTable coreReaderNameTable;
     private XsdCachingReader cachingReader;
 
     //ReadAttributeValue TextNode
@@ -749,8 +749,8 @@ namespace TextMonster.Xml.Xml_Reader
       return;
     }
 
-    // Gets the XmlNameTable associated with this implementation.
-    public override XmlNameTable NameTable
+    // Gets the NameTable associated with this implementation.
+    public override NameTable NameTable
     {
       get
       {

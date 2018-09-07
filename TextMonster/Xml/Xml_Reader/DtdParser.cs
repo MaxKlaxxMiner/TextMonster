@@ -127,7 +127,7 @@ namespace TextMonster.Xml.Xml_Reader
     IDtdParserAdapterWithValidation readerAdapterWithValidation;
 
     // name table
-    XmlNameTable nameTable;
+    NameTable nameTable;
 
     // final schema info
     SchemaInfo schemaInfo;

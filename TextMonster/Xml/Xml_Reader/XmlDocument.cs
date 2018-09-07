@@ -73,7 +73,7 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // Initializes a new instance
-    // of the XmlDocument class with the specified XmlNameTable.
+    // of the XmlDocument class with the specified NameTable.
 
     protected internal XmlDocument(XmlImplementation imp)
     {
@@ -82,7 +82,7 @@ namespace TextMonster.Xml.Xml_Reader
       domNameTable = new DomNameTable(this);
 
       // force the following string instances to be default in the nametable
-      XmlNameTable nt = this.NameTable;
+      NameTable nt = this.NameTable;
       nt.Add(string.Empty);
       strDocumentName = nt.Add("#document");
       strDocumentFragmentName = nt.Add("#document-fragment");
@@ -718,9 +718,9 @@ namespace TextMonster.Xml.Xml_Reader
 
     // Microsoft extensions
 
-    // Gets the XmlNameTable associated with this
+    // Gets the NameTable associated with this
     // implementation.
-    public XmlNameTable NameTable
+    public NameTable NameTable
     {
       get { return implementation.NameTable; }
     }
@@ -1083,7 +1083,7 @@ namespace TextMonster.Xml.Xml_Reader
     {
       if (atomized == false)
       {
-        XmlNameTable nameTable = this.rootNode.Document.NameTable;
+        NameTable nameTable = this.rootNode.Document.NameTable;
         this.localName = nameTable.Add(this.localName);
         this.namespaceURI = nameTable.Add(this.namespaceURI);
         this.atomized = true;

@@ -27,7 +27,7 @@ namespace TextMonster.Xml.Xml_Reader
       return Compare((byte[])value1, (byte[])value2);
     }
 
-    internal override Exception TryParseValue(string s, XmlNameTable nameTable, IXmlNamespaceResolver nsmgr, out object typedValue)
+    internal override Exception TryParseValue(string s, NameTable nameTable, IXmlNamespaceResolver nsmgr, out object typedValue)
     {
       Exception exception;
 

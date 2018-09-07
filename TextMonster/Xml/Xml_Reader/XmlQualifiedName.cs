@@ -238,7 +238,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal void Atomize(XmlNameTable nameTable)
+    internal void Atomize(NameTable nameTable)
     {
       name = nameTable.Add(name);
       ns = nameTable.Add(ns);

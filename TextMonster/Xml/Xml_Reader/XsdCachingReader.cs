@@ -14,7 +14,7 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     private FastXmlReader coreReader;
-    private XmlNameTable coreReaderNameTable;
+    private NameTable coreReaderNameTable;
 
     private ValidatingReaderNodeData[] contentEvents;
     private ValidatingReaderNodeData[] attributeEvents;
@@ -520,8 +520,8 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    // Gets the XmlNameTable associated with this implementation.
-    public override XmlNameTable NameTable
+    // Gets the NameTable associated with this implementation.
+    public override NameTable NameTable
     {
       get
       {

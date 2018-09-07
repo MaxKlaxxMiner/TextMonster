@@ -6,7 +6,7 @@ namespace TextMonster.Xml.Xml_Reader
   internal partial interface IDtdParserAdapter
   {
 
-    XmlNameTable NameTable { get; }
+    NameTable NameTable { get; }
     IXmlNamespaceResolver NamespaceResolver { get; }
 
     Uri BaseUri { get; }

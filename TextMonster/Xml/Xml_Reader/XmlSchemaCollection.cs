@@ -18,7 +18,7 @@ namespace TextMonster.Xml.Xml_Reader
   public sealed class XmlSchemaCollection : ICollection
   {
     private Hashtable collection;
-    private XmlNameTable nameTable;
+    private NameTable nameTable;
     private SchemaNames schemaNames;
     private ReaderWriterLock wLock;
     private int timeout = Timeout.Infinite;
@@ -29,10 +29,10 @@ namespace TextMonster.Xml.Xml_Reader
 
     /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollection.XmlSchemaCollection1"]/*' />
     /// <devdoc>
-    ///    <para>Construct a new empty schema collection with associated XmlNameTable.
-    ///       The XmlNameTable is used when loading schemas</para>
+    ///    <para>Construct a new empty schema collection with associated NameTable.
+    ///       The NameTable is used when loading schemas</para>
     /// </devdoc>
-    public XmlSchemaCollection(XmlNameTable nametable)
+    public XmlSchemaCollection(NameTable nametable)
     {
       if (nametable == null)
       {
@@ -60,9 +60,9 @@ namespace TextMonster.Xml.Xml_Reader
 
     /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollection.NameTable"]/*' />
     /// <devdoc>
-    ///    <para>The default XmlNameTable used by the XmlSchemaCollection when loading new schemas.</para>
+    ///    <para>The default NameTable used by the XmlSchemaCollection when loading new schemas.</para>
     /// </devdoc>
-    public XmlNameTable NameTable
+    public NameTable NameTable
     {
       get { return nameTable; }
     }
@@ -143,7 +143,7 @@ namespace TextMonster.Xml.Xml_Reader
       return (node != null) ? node.SchemaInfo : null;
     }
 
-    internal SchemaNames GetSchemaNames(XmlNameTable nt)
+    internal SchemaNames GetSchemaNames(NameTable nt)
     {
       if (nameTable != nt)
       {

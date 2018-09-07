@@ -59,7 +59,7 @@ namespace TextMonster.Xml.Xml_Reader
     //Other state
     private ValidationEventHandler eventHandler;
     private object validationEventSender;
-    private XmlNameTable nameTable;
+    private NameTable nameTable;
     private IXmlLineInfo positionInfo;
     private IXmlLineInfo dummyPositionInfo;
 
@@ -109,7 +109,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     private static string[] MethodNames = new string[12] { "None", "Initialize", "top-level ValidateAttribute", "top-level ValidateText or ValidateWhitespace", "ValidateElement", "ValidateAttribute", "ValidateEndOfAttributes", "ValidateText", "ValidateWhitespace", "ValidateEndElement", "SkipToEndElement", "EndValidation" };
 
-    public XmlSchemaValidator(XmlNameTable nameTable, XmlSchemaSet schemas, IXmlNamespaceResolver namespaceResolver, XmlSchemaValidationFlags validationFlags)
+    public XmlSchemaValidator(NameTable nameTable, XmlSchemaSet schemas, IXmlNamespaceResolver namespaceResolver, XmlSchemaValidationFlags validationFlags)
     {
       if (nameTable == null)
       {

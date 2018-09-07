@@ -158,7 +158,7 @@ namespace TextMonster.Xml.Xml_Reader
     NodeData[] attrDuplSortingArray;
 
     // name table
-    XmlNameTable nameTable;
+    NameTable nameTable;
     bool nameTableFromSettings;
 
     // resolver
@@ -277,9 +277,9 @@ namespace TextMonster.Xml.Xml_Reader
 
     private const string XmlDeclarationBegining = "<?xml";
 
-    // Initializes a new instance of the XmlTextReaderImpl class with the specified XmlNameTable.
+    // Initializes a new instance of the XmlTextReaderImpl class with the specified NameTable.
     // This constructor is used when creating XmlTextReaderImpl for V1 XmlTextReader
-    internal XmlTextReaderImpl(XmlNameTable nt)
+    internal XmlTextReaderImpl(NameTable nt)
     {
       v1Compat = true;
       outerReader = this;
@@ -331,7 +331,7 @@ namespace TextMonster.Xml.Xml_Reader
       xmlContext = new XmlContext();
 
       // create or get nametable and namespace manager from XmlParserContext
-      XmlNameTable nt = settings.NameTable;
+      NameTable nt = settings.NameTable;
       if (context == null)
       {
         if (nt == null)
@@ -404,7 +404,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal XmlTextReaderImpl(string url, Stream input, XmlNameTable nt)
+    internal XmlTextReaderImpl(string url, Stream input, NameTable nt)
       : this(nt)
     {
       namespaceManager = new XmlNamespaceManager(nt);
@@ -425,7 +425,7 @@ namespace TextMonster.Xml.Xml_Reader
     {
     }
 
-    internal XmlTextReaderImpl(string url, TextReader input, XmlNameTable nt)
+    internal XmlTextReaderImpl(string url, TextReader input, NameTable nt)
       : this(nt)
     {
       namespaceManager = new XmlNamespaceManager(nt);
@@ -468,7 +468,7 @@ namespace TextMonster.Xml.Xml_Reader
       InitFragmentReader(XmlNodeType.XmlDeclaration, context, true);
     }
 
-    // Initializes a new instance of the XmlTextReaderImpl class with the specified url and XmlNameTable.
+    // Initializes a new instance of the XmlTextReaderImpl class with the specified url and NameTable.
     // This constructor is used when creating XmlTextReaderImpl for V1 XmlTextReader
     [ResourceConsumption(ResourceScope.Machine)]
     [ResourceExposure(ResourceScope.Machine)]
@@ -479,7 +479,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     [ResourceConsumption(ResourceScope.Machine)]
     [ResourceExposure(ResourceScope.Machine)]
-    public XmlTextReaderImpl(string url, XmlNameTable nt)
+    public XmlTextReaderImpl(string url, NameTable nt)
       : this(nt)
     {
       if (url == null)
@@ -808,8 +808,8 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    // Returns the XmlNameTable associated with this XmlReader
-    public override XmlNameTable NameTable
+    // Returns the NameTable associated with this XmlReader
+    public override NameTable NameTable
     {
       get
       {
@@ -1479,7 +1479,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal XmlNameTable DtdParserProxy_NameTable
+    internal NameTable DtdParserProxy_NameTable
     {
       get
       {
@@ -1529,7 +1529,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal Uri DtdParserProxy_BaseUri
     {
-      // SxS: ps.baseUri may be initialized in the constructor (public XmlTextReaderImpl( string url, XmlNameTable nt )) based on 
+      // SxS: ps.baseUri may be initialized in the constructor (public XmlTextReaderImpl( string url, NameTable nt )) based on 
       // url provided by the user. Here the property returns ps.BaseUri - so it may expose a path. 
       [ResourceConsumption(ResourceScope.Machine)]
       [ResourceExposure(ResourceScope.Machine)]
@@ -7574,7 +7574,7 @@ namespace TextMonster.Xml.Xml_Reader
     void SetupFromParserContext(XmlParserContext context, XmlReaderSettings settings)
     {
       // setup nameTable
-      XmlNameTable nt = settings.NameTable;
+      NameTable nt = settings.NameTable;
       nameTableFromSettings = (nt != null);
 
       // get name table from namespace manager in XmlParserContext, if available; 
@@ -8438,7 +8438,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
 
       // This should be inlined by JIT compiler
-      internal string GetNameWPrefix(XmlNameTable nt)
+      internal string GetNameWPrefix(NameTable nt)
       {
         if (nameWPrefix != null)
         {
@@ -8450,7 +8450,7 @@ namespace TextMonster.Xml.Xml_Reader
         }
       }
 
-      internal string CreateNameWPrefix(XmlNameTable nt)
+      internal string CreateNameWPrefix(NameTable nt)
       {
         if (prefix.Length == 0)
         {

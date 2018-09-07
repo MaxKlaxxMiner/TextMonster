@@ -320,8 +320,8 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    // Returns the XmlNameTable associated with this XmlReader
-    public override XmlNameTable NameTable
+    // Returns the NameTable associated with this XmlReader
+    public override NameTable NameTable
     {
       get
       {

@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Crc64.cs" />
     <Compile Include="UnsafeReader.cs" />
     <Compile Include="UnsafeHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -546,7 +547,6 @@
     <Compile Include="Xml\Xml_Reader\XmlConvert.cs" />
     <Compile Include="Xml\Xml_Reader\IXmlSchemaInfo.cs" />
     <Compile Include="Xml\Xml_Reader\XmlSpace.cs" />
-    <Compile Include="Xml\Xml_Reader\XmlNameTable.cs" />
     <Compile Include="Xml\Xml_Reader\XmlNodeType.cs" />
     <Compile Include="Xml\Xml_Reader\XmlReaderSettings.cs" />
     <Compile Include="Xml\FastXmlReader.cs" />

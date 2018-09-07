@@ -17,7 +17,7 @@ namespace TextMonster.Xml.Xml_Reader
   /// </devdoc>
   public class XmlSchemaSet
   {
-    XmlNameTable nameTable;
+    NameTable nameTable;
     SchemaNames schemaNames;
     SortedList schemas;              // List of source schemas 
 
@@ -79,10 +79,10 @@ namespace TextMonster.Xml.Xml_Reader
 
     /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.XmlSchemaSet1"]/*' />
     /// <devdoc>
-    ///    <para>Construct a new empty schema schemas with associated XmlNameTable.
-    ///       The XmlNameTable is used when loading schemas</para>
+    ///    <para>Construct a new empty schema schemas with associated NameTable.
+    ///       The NameTable is used when loading schemas</para>
     /// </devdoc>
-    public XmlSchemaSet(XmlNameTable nameTable)
+    public XmlSchemaSet(NameTable nameTable)
     {
       if (nameTable == null)
       {
@@ -918,7 +918,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal XmlSchema ParseSchema(string targetNamespace, FastXmlReader reader)
     {
-      XmlNameTable readerNameTable = reader.NameTable;
+      NameTable readerNameTable = reader.NameTable;
       SchemaNames schemaNames = GetSchemaNames(readerNameTable);
       Parser parser = new Parser(SchemaType.XSD, readerNameTable, schemaNames, eventHandler);
       parser.XmlResolver = readerSettings.GetXmlResolver_CheckConfig();
@@ -1056,7 +1056,7 @@ namespace TextMonster.Xml.Xml_Reader
       return eventHandler;
     }
 
-    internal SchemaNames GetSchemaNames(XmlNameTable nt)
+    internal SchemaNames GetSchemaNames(NameTable nt)
     {
       if (nameTable != nt)
       {

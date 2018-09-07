@@ -17,7 +17,7 @@ namespace TextMonster.Xml.Xml_Reader
     private XPathNodeInfoTable infoTable;   // Atomization table for shared node information
     private XPathDocument doc;              // Currently building document
     private IXmlLineInfo lineInfo;          // Line information provider
-    private XmlNameTable nameTable;         // Atomization table for all names in the document
+    private NameTable nameTable;         // Atomization table for all names in the document
     private bool atomizeNames;              // True if all names should be atomized (false if they are pre-atomized)
 
     private XPathNode[] pageNmsp;           // Page of last in-scope namespace node

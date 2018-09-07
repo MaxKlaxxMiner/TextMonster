@@ -20,7 +20,7 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // IDtdParserAdapter proxies
-    XmlNameTable IDtdParserAdapter.NameTable
+    NameTable IDtdParserAdapter.NameTable
     {
       get { return reader.DtdParserProxy_NameTable; }
     }
