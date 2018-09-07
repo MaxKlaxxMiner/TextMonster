@@ -22,20 +22,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal override XmlSchemaWhiteSpace BuiltInWhitespaceFacet { get { return XmlSchemaWhiteSpace.Collapse; } }
 
-    internal override RestrictionFlags ValidRestrictionFlags
-    {
-      get
-      {
-        return RestrictionFlags.Pattern |
-               RestrictionFlags.Enumeration |
-               RestrictionFlags.WhiteSpace |
-               RestrictionFlags.MinExclusive |
-               RestrictionFlags.MinInclusive |
-               RestrictionFlags.MaxExclusive |
-               RestrictionFlags.MaxInclusive;
-      }
-    }
-
     internal override int Compare(object value1, object value2)
     {
       return ((double)value1).CompareTo(value2);

@@ -75,21 +75,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal int FindNodeOffsetNS(XmlAttribute node)
-    {
-      for (int i = 0; i < nodes.Count; i++)
-      {
-        XmlAttribute tmp = (XmlAttribute)nodes[i];
-        if (tmp.LocalNameHash == node.LocalNameHash
-            && tmp.LocalName == node.LocalName
-            && tmp.NamespaceURI == node.NamespaceURI)
-        {
-          return i;
-        }
-      }
-      return -1;
-    }
-
     // Adds a XmlNode using its Name property
     public override XmlNode SetNamedItem(XmlNode node)
     {

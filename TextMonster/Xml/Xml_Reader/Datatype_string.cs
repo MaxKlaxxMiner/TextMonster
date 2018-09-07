@@ -17,19 +17,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     public override XmlTokenizedType TokenizedType { get { return XmlTokenizedType.CDATA; } }
 
-    internal override RestrictionFlags ValidRestrictionFlags
-    {
-      get
-      {
-        return RestrictionFlags.Length |
-               RestrictionFlags.MinLength |
-               RestrictionFlags.MaxLength |
-               RestrictionFlags.Pattern |
-               RestrictionFlags.Enumeration |
-               RestrictionFlags.WhiteSpace;
-      }
-    }
-
     internal override Exception TryParseValue(string s, XmlNameTable nameTable, IXmlNamespaceResolver nsmgr, out object typedValue)
     {
       Exception exception;

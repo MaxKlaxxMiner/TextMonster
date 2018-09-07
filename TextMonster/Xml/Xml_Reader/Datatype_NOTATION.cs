@@ -18,19 +18,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     public override XmlTokenizedType TokenizedType { get { return XmlTokenizedType.NOTATION; } }
 
-    internal override RestrictionFlags ValidRestrictionFlags
-    {
-      get
-      {
-        return RestrictionFlags.Length |
-               RestrictionFlags.MinLength |
-               RestrictionFlags.MaxLength |
-               RestrictionFlags.Pattern |
-               RestrictionFlags.Enumeration |
-               RestrictionFlags.WhiteSpace;
-      }
-    }
-
     public override Type ValueType { get { return atomicValueType; } }
 
     internal override Type ListValueType { get { return listValueType; } }

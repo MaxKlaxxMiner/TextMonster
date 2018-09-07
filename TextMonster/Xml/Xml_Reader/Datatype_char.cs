@@ -11,8 +11,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal override Type ListValueType { get { return listValueType; } }
 
-    internal override RestrictionFlags ValidRestrictionFlags { get { return 0; } } //XDR only
-
     internal override int Compare(object value1, object value2)
     {
       // this should be culture sensitive - comparing values

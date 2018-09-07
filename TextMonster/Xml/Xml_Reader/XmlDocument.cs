@@ -781,25 +781,6 @@ namespace TextMonster.Xml.Xml_Reader
       return new XmlWhitespace(text, this);
     }
 
-    public virtual XmlElement GetElementById(string elementId)
-    {
-      if (htElementIdMap != null)
-      {
-        ArrayList elementList = (ArrayList)(htElementIdMap[elementId]);
-        if (elementList != null)
-        {
-          foreach (WeakReference elemRef in elementList)
-          {
-            XmlElement elem = (XmlElement)elemRef.Target;
-            if (elem != null
-                && elem.IsConnected())
-              return elem;
-          }
-        }
-      }
-      return null;
-    }
-
     private XmlNode ImportNodeInternal(XmlNode node, bool deep)
     {
       XmlNode newNode = null;
@@ -1027,29 +1008,6 @@ namespace TextMonster.Xml.Xml_Reader
       foreach (XmlNode n in this)
       {
         n.WriteTo(xw);
-      }
-    }
-
-    public void Validate(ValidationEventHandler validationEventHandler, XmlNode nodeToValidate)
-    {
-      if (this.schemas == null || this.schemas.Count == 0)
-      { //Should we error
-        throw new InvalidOperationException(Res.GetString(Res.XmlDocument_NoSchemaInfo));
-      }
-      XmlDocument parentDocument = nodeToValidate.Document;
-      if (parentDocument != this)
-      {
-        throw new ArgumentException(Res.GetString(Res.XmlDocument_NodeNotFromDocument, "nodeToValidate"));
-      }
-      if (nodeToValidate == this)
-      {
-        reportValidity = false;
-      }
-      DocumentSchemaValidator validator = new DocumentSchemaValidator(this, schemas, validationEventHandler);
-      validator.Validate(nodeToValidate);
-      if (nodeToValidate == this)
-      {
-        reportValidity = true;
       }
     }
 

@@ -26,23 +26,6 @@ namespace TextMonster.Xml.Xml_Reader
       UNION,
     };
 
-    static Op[] invertOp = {
-      /*INVALID*/ Op.INVALID,
-      /*OR     */ Op.INVALID,
-      /*END    */ Op.INVALID,
-      /*EQ     */ Op.EQ,
-      /*NE     */ Op.NE,
-      /*LT     */ Op.GT,
-      /*LE     */ Op.GE,
-      /*GT     */ Op.LT,
-      /*GE     */ Op.LE,
-    };
-
-    static public Operator.Op InvertOperator(Operator.Op op)
-    {
-      return invertOp[(int)op];
-    }
-
     private Op opType;
     private AstNode opnd1;
     private AstNode opnd2;
@@ -70,9 +53,5 @@ namespace TextMonster.Xml.Xml_Reader
         return XPathResultType.NodeSet;
       }
     }
-
-    public Op OperatorType { get { return opType; } }
-    public AstNode Operand1 { get { return opnd1; } }
-    public AstNode Operand2 { get { return opnd2; } }
   }
 }

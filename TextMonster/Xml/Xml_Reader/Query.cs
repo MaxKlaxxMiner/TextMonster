@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -56,7 +55,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     public abstract XPathResultType StaticType { get; }
-    public virtual QueryProps Properties { get { return QueryProps.Merge; } }
 
     // ----------------- Helper methods -------------
     public static Query Clone(Query input)
@@ -75,68 +73,6 @@ namespace TextMonster.Xml.Xml_Reader
         return input.Clone();
       }
       return null;
-    }
-
-    protected static XPathNavigator Clone(XPathNavigator input)
-    {
-      if (input != null)
-      {
-        return input.Clone();
-      }
-      return null;
-    }
-
-    // -----------------------------------------------------
-    // Set of methods to support insertion to sorted buffer.
-    // buffer is always sorted here
-
-    public bool Insert(List<XPathNavigator> buffer, XPathNavigator nav)
-    {
-      int l = 0;
-      int r = buffer.Count;
-
-      // In most cases nodes are already sorted. 
-      // This means that nav often will be equal or after then last item in the buffer
-      // So let's check this first.
-      if (r != 0)
-      {
-        switch (CompareNodes(buffer[r - 1], nav))
-        {
-          case XmlNodeOrder.Same:
-          return false;
-          case XmlNodeOrder.Before:
-          buffer.Add(nav.Clone());
-          return true;
-          default:
-          r--;
-          break;
-        }
-      }
-
-      while (l < r)
-      {
-        int m = GetMedian(l, r);
-        switch (CompareNodes(buffer[m], nav))
-        {
-          case XmlNodeOrder.Same:
-          return false;
-          case XmlNodeOrder.Before:
-          l = m + 1;
-          break;
-          default:
-          r = m;
-          break;
-        }
-      }
-      AssertDOD(buffer, nav, l);
-      buffer.Insert(l, nav.Clone());
-      return true;
-    }
-
-    private static int GetMedian(int l, int r)
-    {
-      Debug.Assert(0 <= l && l < r);
-      return (int)(((uint)l + (uint)r) >> 1);
     }
 
     public static XmlNodeOrder CompareNodes(XPathNavigator l, XPathNavigator r)
@@ -161,25 +97,6 @@ namespace TextMonster.Xml.Xml_Reader
         );
       }
       return cmp;
-    }
-
-    [Conditional("DEBUG")]
-    private void AssertDOD(List<XPathNavigator> buffer, XPathNavigator nav, int pos)
-    {
-      if (nav.GetType().ToString() == "Microsoft.VisualStudio.Modeling.StoreNavigator") return;
-      if (nav.GetType().ToString() == "DataDocumentXPathNavigator") return;
-      Debug.Assert(0 <= pos && pos <= buffer.Count, "Algorithm error: Insert()");
-      XmlNodeOrder cmp;
-      if (0 < pos)
-      {
-        cmp = CompareNodes(buffer[pos - 1], nav);
-        Debug.Assert(cmp == XmlNodeOrder.Before, "Algorithm error: Insert()");
-      }
-      if (pos < buffer.Count)
-      {
-        cmp = CompareNodes(nav, buffer[pos]);
-        Debug.Assert(cmp == XmlNodeOrder.Before, "Algorithm error: Insert()");
-      }
     }
 
     [Conditional("DEBUG")]
@@ -217,27 +134,6 @@ namespace TextMonster.Xml.Xml_Reader
       Debug.Assert(actualSize == querySize, "AssertQuery(): actualSize != querySize");
     }
 
-    // =================== XPathResultType_Navigator ======================
-    // In v.1.0 and v.1.1 XPathResultType.Navigator is defined == to XPathResultType.String
-    // This is source for multiple bugs or additional type casts.
-    // To fix all of them in one change in v.2 we internaly use one more value:
-    public const XPathResultType XPathResultType_Navigator = (XPathResultType)4;
-    // The biggest challenge in this change is preserve backward compatibility with v.1.1
-    // To achive this in all places where we accept from or report to user XPathResultType.
-    // On my best knowledge this happens only in XsltContext.ResolveFunction() / IXsltContextFunction.ReturnType
-
-
-    protected XPathResultType GetXPathType(object value)
-    {
-      if (value is XPathNodeIterator) return XPathResultType.NodeSet;
-      if (value is string) return XPathResultType.String;
-      if (value is double) return XPathResultType.Number;
-      if (value is bool) return XPathResultType.Boolean;
-      Debug.Assert(value is XPathNavigator, "Unknown value type");
-      return XPathResultType_Navigator;
-    }
-
-    // =================== Serialization ======================
     public virtual void PrintQuery(XmlWriter w)
     {
       w.WriteElementString(this.GetType().Name, string.Empty);

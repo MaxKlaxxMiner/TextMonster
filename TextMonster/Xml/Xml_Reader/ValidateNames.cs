@@ -160,39 +160,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     /// <summary>
-    /// Calls parseName and throws exception if the resulting name is not a valid NCName.
-    /// Returns the input string if there is no error.
-    /// </summary>
-    internal static string ParseNCNameThrow(string s)
-    {
-      // throwOnError = true
-      ParseNCNameInternal(s, true);
-      return s;
-    }
-
-    /// <summary>
-    /// Calls parseName and returns false or throws exception if the resulting name is not
-    /// a valid NCName.  Returns the input string if there is no error.
-    /// </summary>
-    private static bool ParseNCNameInternal(string s, bool throwOnError)
-    {
-      int len = ParseNCName(s, 0);
-
-      if (len == 0 || len != s.Length)
-      {
-        // If the string is not a valid NCName, then throw or return false
-        if (throwOnError) ThrowInvalidName(s, 0, len);
-        return false;
-      }
-
-      return true;
-    }
-
-    //-----------------------------------------------
-    // QName parsing
-    //-----------------------------------------------
-
-    /// <summary>
     /// Attempts to parse the input string as a QName (see the XML Namespace spec).
     /// Quits parsing when an invalid QName char is reached or the end of string is reached.
     /// Returns the number of valid QName chars that were parsed.

@@ -372,8 +372,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal abstract Type ListValueType { get; }
 
-    internal abstract RestrictionFlags ValidRestrictionFlags { get; }
-
     internal override XmlSchemaWhiteSpace BuiltInWhitespaceFacet { get { return XmlSchemaWhiteSpace.Preserve; } }
 
     public override object ParseValue(string s, XmlNameTable nameTable, IXmlNamespaceResolver nsmgr)

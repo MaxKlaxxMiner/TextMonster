@@ -73,11 +73,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public FunctionType TypeOfFunction { get { return functionType; } }
-    public ArrayList ArgumentList { get { return argumentList; } }
-    public string Prefix { get { return prefix; } }
-    public string Name { get { return name; } }
-
     internal static XPathResultType[] ReturnTypes = {
             /* FunctionType.FuncLast            */ XPathResultType.Number ,
             /* FunctionType.FuncPosition        */ XPathResultType.Number ,

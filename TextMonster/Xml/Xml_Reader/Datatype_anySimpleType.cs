@@ -23,8 +23,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     public override XmlTokenizedType TokenizedType { get { return XmlTokenizedType.None; } }
 
-    internal override RestrictionFlags ValidRestrictionFlags { get { return 0; } }
-
     internal override XmlSchemaWhiteSpace BuiltInWhitespaceFacet { get { return XmlSchemaWhiteSpace.Collapse; } }
 
     internal override int Compare(object value1, object value2)

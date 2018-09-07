@@ -169,16 +169,6 @@
     }
 
     /// <summary>
-    /// Returns true if this node's name matches the specified localName and namespaceName.  Assume
-    /// that localName has been atomized, but namespaceName has not.
-    /// </summary>
-    public bool NameMatch(string localName, string namespaceName)
-    {
-      return (object)this.info.LocalName == (object)localName &&
-             this.info.NamespaceUri == namespaceName;
-    }
-
-    /// <summary>
     /// Returns true if this is an Element node with a name that matches the specified localName and
     /// namespaceName.  Assume that localName has been atomized, but namespaceName has not.
     /// </summary>
@@ -215,14 +205,6 @@
     public bool HasCollapsedText
     {
       get { return (this.props & HasCollapsedTextBit) != 0; }
-    }
-
-    /// <summary>
-    /// Returns true if this node has at least one attribute.
-    /// </summary>
-    public bool HasAttribute
-    {
-      get { return (this.props & HasAttributeBit) != 0; }
     }
 
     /// <summary>
@@ -276,14 +258,6 @@
         if (value) this.props |= HasNmspDeclsBit;
         else unchecked { this.props &= (byte)~((uint)HasNmspDeclsBit); }
       }
-    }
-
-    /// <summary>
-    /// Returns true if this node is an empty element that allows shortcut tag syntax.
-    /// </summary>
-    public bool AllowShortcutTag
-    {
-      get { return (this.props & AllowShortcutTagBit) != 0; }
     }
 
     /// <summary>

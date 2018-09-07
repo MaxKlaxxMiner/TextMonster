@@ -168,16 +168,6 @@ namespace TextMonster.Xml.Xml_Reader
       return false;
     }
 
-    //trace to the top to find out its parent node.
-    internal bool IsConnected()
-    {
-      XmlNode parent = ParentNode;
-      while (parent != null && !(parent.NodeType == XmlNodeType.Document))
-        parent = parent.ParentNode;
-      return parent != null;
-    }
-
-    // Inserts the specified node immediately before the specified reference node.
     public virtual XmlNode InsertBefore(XmlNode newChild, XmlNode refChild)
     {
       if (this == newChild || AncestorNode(newChild))

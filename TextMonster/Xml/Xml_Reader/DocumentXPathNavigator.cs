@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace TextMonster.Xml.Xml_Reader
@@ -96,20 +95,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public override string Prefix
-    {
-      get
-      {
-        XmlAttribute attribute = source as XmlAttribute;
-        if (attribute != null
-            && attribute.IsNamespace)
-        {
-          return string.Empty;
-        }
-        return source.Prefix;
-      }
-    }
-
     public override string Value
     {
       get
@@ -178,27 +163,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public override bool IsEmptyElement
-    {
-      get
-      {
-        XmlElement element = source as XmlElement;
-        if (element != null)
-        {
-          return element.IsEmpty;
-        }
-        return false;
-      }
-    }
-
-    public override string XmlLang
-    {
-      get
-      {
-        return source.XmlLang;
-      }
-    }
-
     public override object UnderlyingObject
     {
       get
@@ -207,56 +171,6 @@ namespace TextMonster.Xml.Xml_Reader
 
         return source;
       }
-    }
-
-    public override bool MoveToAttribute(string localName, string namespaceURI)
-    {
-      XmlElement element = source as XmlElement;
-      if (element != null
-          && element.HasAttributes)
-      {
-        XmlAttributeCollection attributes = element.Attributes;
-        for (int i = 0; i < attributes.Count; i++)
-        {
-          XmlAttribute attribute = attributes[i];
-          if (attribute.LocalName == localName
-              && attribute.NamespaceURI == namespaceURI)
-          {
-            if (!attribute.IsNamespace)
-            {
-              source = attribute;
-              attributeIndex = i;
-              return true;
-            }
-            else
-            {
-              return false;
-            }
-          }
-        }
-      }
-      return false;
-    }
-
-    public override bool MoveToFirstAttribute()
-    {
-      XmlElement element = source as XmlElement;
-      if (element != null
-          && element.HasAttributes)
-      {
-        XmlAttributeCollection attributes = element.Attributes;
-        for (int i = 0; i < attributes.Count; i++)
-        {
-          XmlAttribute attribute = attributes[i];
-          if (!attribute.IsNamespace)
-          {
-            source = attribute;
-            attributeIndex = i;
-            return true;
-          }
-        }
-      }
-      return false;
     }
 
     public override bool MoveToNextAttribute()
@@ -284,61 +198,6 @@ namespace TextMonster.Xml.Xml_Reader
         }
       }
       return false;
-    }
-
-    public override string GetNamespace(string name)
-    {
-      XmlNode node = source;
-      while (node != null
-             && node.NodeType != XmlNodeType.Element)
-      {
-        XmlAttribute attribute = node as XmlAttribute;
-        if (attribute != null)
-        {
-          node = attribute.OwnerElement;
-        }
-        else
-        {
-          node = node.ParentNode;
-        }
-      }
-
-      XmlElement element = node as XmlElement;
-      if (element != null)
-      {
-        string localName;
-        if (name != null
-            && name.Length != 0)
-        {
-          localName = name;
-        }
-        else
-        {
-          localName = document.strXmlns;
-        }
-        string namespaceUri = document.strReservedXmlns;
-
-        do
-        {
-          XmlAttribute attribute = element.GetAttributeNode(localName, namespaceUri);
-          if (attribute != null)
-          {
-            return attribute.Value;
-          }
-          element = element.ParentNode as XmlElement;
-        }
-        while (element != null);
-      }
-
-      if (name == document.strXml)
-      {
-        return document.strReservedXml;
-      }
-      else if (name == document.strXmlns)
-      {
-        return document.strReservedXmlns;
-      }
-      return string.Empty;
     }
 
     public override bool MoveToNamespace(string name)
@@ -748,18 +607,6 @@ namespace TextMonster.Xml.Xml_Reader
       return false;
     }
 
-    public override bool MoveToId(string id)
-    {
-      XmlElement element = document.GetElementById(id);
-      if (element != null)
-      {
-        source = element;
-        namespaceParent = null;
-        return true;
-      }
-      return false;
-    }
-
     public override bool MoveToChild(string localName, string namespaceUri)
     {
       if (source.NodeType == XmlNodeType.Attribute)
@@ -1049,16 +896,6 @@ namespace TextMonster.Xml.Xml_Reader
       return false;
     }
 
-    public override bool IsDescendant(XPathNavigator other)
-    {
-      DocumentXPathNavigator that = other as DocumentXPathNavigator;
-      if (that != null)
-      {
-        return IsDescendant(this.source, that.source);
-      }
-      return false;
-    }
-
     public override IXmlSchemaInfo SchemaInfo
     {
       get
@@ -1270,60 +1107,6 @@ namespace TextMonster.Xml.Xml_Reader
         return new DocumentXPathNodeIterator_AllElemChildren(this);
       }
       return base.SelectDescendants(nt, includeSelf);
-    }
-
-    internal static void DeleteToFollowingSibling(XmlNode node, XmlNode end)
-    {
-      XmlNode parent = node.ParentNode;
-
-      if (parent == null)
-      {
-        throw new InvalidOperationException(Res.GetString(Res.Xpn_MissingParent));
-      }
-      if (node.IsReadOnly
-          || end.IsReadOnly)
-      {
-        throw new InvalidOperationException(Res.GetString(Res.Xdom_Node_Modify_ReadOnly));
-      }
-      while (node != end)
-      {
-        XmlNode temp = node;
-        node = node.NextSibling;
-        parent.RemoveChild(temp);
-      }
-      parent.RemoveChild(node);
-    }
-
-    private static XmlNamespaceManager GetNamespaceManager(XmlNode node, XmlDocument document)
-    {
-      XmlNamespaceManager namespaceManager = new XmlNamespaceManager(document.NameTable);
-      List<XmlElement> elements = new List<XmlElement>();
-
-      while (node != null)
-      {
-        XmlElement element = node as XmlElement;
-        if (element != null
-            && element.HasAttributes)
-        {
-          elements.Add(element);
-        }
-        node = node.ParentNode;
-      }
-      for (int i = elements.Count - 1; i >= 0; i--)
-      {
-        namespaceManager.PushScope();
-        XmlAttributeCollection attributes = elements[i].Attributes;
-        for (int j = 0; j < attributes.Count; j++)
-        {
-          XmlAttribute attribute = attributes[j];
-          if (attribute.IsNamespace)
-          {
-            string prefix = attribute.Prefix.Length == 0 ? string.Empty : attribute.LocalName;
-            namespaceManager.AddNamespace(prefix, attribute.Value);
-          }
-        }
-      }
-      return namespaceManager;
     }
 
     internal void ResetPosition(XmlNode node)
@@ -1544,50 +1327,6 @@ namespace TextMonster.Xml.Xml_Reader
         }
       }
       return null;
-    }
-
-    internal static bool IsFollowingSibling(XmlNode left, XmlNode right)
-    {
-      for (; ; )
-      {
-        left = left.NextSibling;
-        if (left == null)
-        {
-          break;
-        }
-        if (left == right)
-        {
-          return true;
-        }
-      }
-      return false;
-    }
-
-    private static bool IsDescendant(XmlNode top, XmlNode bottom)
-    {
-      for (; ; )
-      {
-        XmlNode parent = bottom.ParentNode;
-        if (parent == null)
-        {
-          XmlAttribute attribute = bottom as XmlAttribute;
-          if (attribute == null)
-          {
-            break;
-          }
-          parent = attribute.OwnerElement;
-          if (parent == null)
-          {
-            break;
-          }
-        }
-        bottom = parent;
-        if (top == bottom)
-        {
-          return true;
-        }
-      }
-      return false;
     }
 
     private static bool IsValidChild(XmlNode parent, XmlNode child)

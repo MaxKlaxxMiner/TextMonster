@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Runtime.Versioning;
 
 namespace TextMonster.Xml.Xml_Reader
@@ -101,66 +100,6 @@ namespace TextMonster.Xml.Xml_Reader
     // some of the XmlValidatingReader methods we will call the overriden version.
     FastXmlReader outerReader;
 
-    //
-    // Constructors
-    //
-    // Initializes a new instance of XmlValidatingReaderImpl class with the specified XmlReader.
-    // This constructor is used when creating XmlValidatingReaderImpl for V1 XmlValidatingReader
-    internal XmlValidatingReaderImpl(FastXmlReader reader)
-    {
-      outerReader = this;
-      coreReader = reader;
-      coreReaderNSResolver = reader as IXmlNamespaceResolver;
-      coreReaderImpl = reader as XmlTextReaderImpl;
-      if (coreReaderImpl == null)
-      {
-        XmlTextReader tr = reader as XmlTextReader;
-        if (tr != null)
-        {
-          coreReaderImpl = tr.Impl;
-        }
-      }
-      if (coreReaderImpl == null)
-      {
-        throw new ArgumentException(Res.GetString(Res.Arg_ExpectingXmlTextReader), "reader");
-      }
-      coreReaderImpl.EntityHandling = EntityHandling.ExpandEntities;
-      coreReaderImpl.XmlValidatingReaderCompatibilityMode = true;
-      this.processIdentityConstraints = true;
-
-#pragma warning disable 618
-      schemaCollection = new XmlSchemaCollection(coreReader.NameTable);
-      schemaCollection.XmlResolver = GetResolver();
-
-      eventHandling = new ValidationEventHandling(this);
-      coreReaderImpl.ValidationEventHandling = eventHandling;
-      coreReaderImpl.OnDefaultAttributeUse = new XmlTextReaderImpl.OnDefaultAttributeUseDelegate(ValidateDefaultAttributeOnUse);
-
-      validationType = ValidationType.Auto;
-      SetupValidation(ValidationType.Auto);
-#pragma warning restore 618
-
-    }
-
-    [ResourceConsumption(ResourceScope.Machine, ResourceScope.Machine)]
-    [ResourceExposure(ResourceScope.None)]
-    internal XmlValidatingReaderImpl(Stream xmlFragment, XmlNodeType fragType, XmlParserContext context)
-      : this(new XmlTextReader(xmlFragment, fragType, context))
-    {
-      if (coreReader.BaseURI.Length > 0)
-      {
-        validator.BaseUri = GetResolver().ResolveUri(null, coreReader.BaseURI);
-      }
-
-      if (context != null)
-      {
-        parsingFunction = ParsingFunction.ParseDtdFromContext;
-        parserContext = context;
-      }
-    }
-
-    // Initializes a new instance of XmlValidatingReaderImpl class with the specified arguments.
-    // This constructor is used when creating XmlValidatingReaderImpl reader via "XmlReader.Create(..)"
     internal XmlValidatingReaderImpl(FastXmlReader reader, ValidationEventHandler settingsEventHandler, bool processIdentityConstraints)
     {
       outerReader = this;
@@ -557,14 +496,6 @@ namespace TextMonster.Xml.Xml_Reader
       return true;
     }
 
-    public override bool CanReadBinaryContent
-    {
-      get
-      {
-        return true;
-      }
-    }
-
     public override int ReadContentAsBase64(byte[] buffer, int index, int count)
     {
       if (ReadState != ReadState.Interactive)
@@ -678,14 +609,6 @@ namespace TextMonster.Xml.Xml_Reader
         parsingFunction = ParsingFunction.Read;
       }
       coreReader.ResolveEntity();
-    }
-
-    internal FastXmlReader OuterReader
-    {
-      set
-      {
-        outerReader = value;
-      }
     }
 
     internal void MoveOffEntityReference()

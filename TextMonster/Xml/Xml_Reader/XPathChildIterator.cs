@@ -2,7 +2,6 @@
 {
   internal class XPathChildIterator : XPathAxisIterator
   {
-    public XPathChildIterator(XPathNavigator nav, XPathNodeType type) : base(nav, type, /*matchSelf:*/false) { }
     public XPathChildIterator(XPathNavigator nav, string name, string namespaceURI) : base(nav, name, namespaceURI, /*matchSelf:*/false) { }
     public XPathChildIterator(XPathChildIterator it) : base(it) { }
 

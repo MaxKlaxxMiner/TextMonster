@@ -945,12 +945,6 @@ namespace TextMonster.Xml.Xml_Reader
       return Double.NaN;
     }
 
-    internal static Double XPathRound(Double value)
-    {
-      double temp = Math.Round(value);
-      return (value - temp == 0.5) ? temp + 1 : temp;
-    }
-
     internal static Exception TryToTimeSpan(string s, out TimeSpan result)
     {
       XsdDuration duration;

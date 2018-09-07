@@ -13,8 +13,5 @@ namespace TextMonster.Xml.Xml_Reader
 
     public override AstType Type { get { return AstType.Variable; } }
     public override XPathResultType ReturnType { get { return XPathResultType.Any; } }
-
-    public string Localname { get { return localname; } }
-    public string Prefix { get { return prefix; } }
   }
 }

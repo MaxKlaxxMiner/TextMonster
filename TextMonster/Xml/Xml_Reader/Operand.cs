@@ -19,7 +19,5 @@ namespace TextMonster.Xml.Xml_Reader
 
     public override AstType Type { get { return AstType.ConstantOperand; } }
     public override XPathResultType ReturnType { get { return type; } }
-
-    public object OperandValue { get { return val; } }
   }
 }

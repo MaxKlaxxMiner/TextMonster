@@ -13,8 +13,5 @@ namespace TextMonster.Xml.Xml_Reader
 
     public override AstType Type { get { return AstType.Filter; } }
     public override XPathResultType ReturnType { get { return XPathResultType.NodeSet; } }
-
-    public AstNode Input { get { return input; } }
-    public AstNode Condition { get { return condition; } }
   }
 }

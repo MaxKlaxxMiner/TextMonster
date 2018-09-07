@@ -114,13 +114,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal override RestrictionFlags ValidRestrictionFlags
-    {
-      get
-      {
-        return RestrictionFlags.Length | RestrictionFlags.MinLength | RestrictionFlags.MaxLength | RestrictionFlags.Enumeration | RestrictionFlags.WhiteSpace | RestrictionFlags.Pattern;
-      }
-    }
     internal DatatypeImplementation ItemType { get { return itemType; } }
 
     internal override Exception TryParseValue(object value, XmlNameTable nameTable, IXmlNamespaceResolver namespaceResolver, out object typedValue)

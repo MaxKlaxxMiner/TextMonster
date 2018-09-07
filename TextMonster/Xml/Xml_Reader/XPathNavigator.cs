@@ -490,72 +490,14 @@ namespace TextMonster.Xml.Xml_Reader
 
     public abstract string NamespaceURI { get; }
 
-    public abstract string Prefix { get; }
-
     public abstract string BaseURI { get; }
-
-    public abstract bool IsEmptyElement { get; }
-
-    public virtual string XmlLang
-    {
-      get
-      {
-        XPathNavigator navClone = Clone();
-        do
-        {
-          if (navClone.MoveToAttribute("lang", XmlReservedNs.NsXml))
-            return navClone.Value;
-        }
-        while (navClone.MoveToParent());
-
-        return string.Empty;
-      }
-    }
 
     public virtual object UnderlyingObject
     {
       get { return null; }
     }
 
-    public virtual bool MoveToAttribute(string localName, string namespaceURI)
-    {
-      if (MoveToFirstAttribute())
-      {
-        do
-        {
-          if (localName == LocalName && namespaceURI == NamespaceURI)
-            return true;
-        }
-        while (MoveToNextAttribute());
-
-        MoveToParent();
-      }
-
-      return false;
-    }
-
-    public abstract bool MoveToFirstAttribute();
-
     public abstract bool MoveToNextAttribute();
-
-    public virtual string GetNamespace(string name)
-    {
-      string value;
-
-      if (!MoveToNamespace(name))
-      {
-        if (name == "xml")
-          return XmlReservedNs.NsXml;
-        if (name == "xmlns")
-          return XmlReservedNs.NsXmlNs;
-        return string.Empty;
-      }
-
-      value = Value;
-      MoveToParent();
-
-      return value;
-    }
 
     public virtual bool MoveToNamespace(string name)
     {
@@ -579,8 +521,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     public abstract bool MoveToNextNamespace(XPathNamespaceScope namespaceScope);
 
-    public bool MoveToFirstNamespace() { return MoveToFirstNamespace(XPathNamespaceScope.All); }
-
     public bool MoveToNextNamespace() { return MoveToNextNamespace(XPathNamespaceScope.All); }
 
     public abstract bool MoveToNext();
@@ -596,8 +536,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     public abstract bool MoveTo(XPathNavigator other);
-
-    public abstract bool MoveToId(string id);
 
     public virtual bool MoveToChild(string localName, string namespaceURI)
     {
@@ -788,18 +726,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     public abstract bool IsSamePosition(XPathNavigator other);
 
-    public virtual bool IsDescendant(XPathNavigator nav)
-    {
-      if (nav != null)
-      {
-        nav = nav.Clone();
-        while (nav.MoveToParent())
-          if (nav.IsSamePosition(this))
-            return true;
-      }
-      return false;
-    }
-
     public virtual XmlNodeOrder ComparePosition(XPathNavigator nav)
     {
       if (nav == null)
@@ -863,11 +789,6 @@ namespace TextMonster.Xml.Xml_Reader
     public virtual IXmlSchemaInfo SchemaInfo
     {
       get { return this as IXmlSchemaInfo; }
-    }
-
-    public virtual XPathNodeIterator SelectChildren(XPathNodeType type)
-    {
-      return new XPathChildIterator(this.Clone(), type);
     }
 
     public virtual XPathNodeIterator SelectChildren(string name, string namespaceURI)
@@ -1000,19 +921,6 @@ namespace TextMonster.Xml.Xml_Reader
         break;
       }
       return cmp < 0 ? XmlNodeOrder.Before : XmlNodeOrder.After;
-    }
-
-    internal static XmlNamespaceManager GetNamespaces(IXmlNamespaceResolver resolver)
-    {
-      XmlNamespaceManager mngr = new XmlNamespaceManager(new NameTable());
-      IDictionary<string, string> dictionary = resolver.GetNamespacesInScope(XmlNamespaceScope.All);
-      foreach (KeyValuePair<string, string> pair in dictionary)
-      {
-        //"xmlns " is always in the namespace manager so adding it would throw an exception
-        if (pair.Key != "xmlns")
-          mngr.AddNamespace(pair.Key, pair.Value);
-      }
-      return mngr;
     }
 
     // Get mask that will allow XPathNodeType content matching to be performed using only a shift and an and operation

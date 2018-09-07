@@ -449,34 +449,6 @@ namespace TextMonster.Xml.Xml_Reader
       reportedEncoding = ps.encoding;
     }
 
-    // Initializes a new instance of XmlTextReaderImpl class for parsing fragments with the specified stream, fragment type and parser context
-    // This constructor is used when creating XmlTextReaderImpl for V1 XmlTextReader
-    // SxS: The method resolves URI but does not expose the resolved value up the stack hence Resource Exposure scope is None.
-    [ResourceConsumption(ResourceScope.Machine, ResourceScope.Machine)]
-    [ResourceExposure(ResourceScope.None)]
-    internal XmlTextReaderImpl(Stream xmlFragment, XmlNodeType fragType, XmlParserContext context)
-      : this((context != null && context.NameTable != null) ? context.NameTable : new NameTable())
-    {
-
-      Encoding enc = (context != null) ? context.Encoding : null;
-      if (context == null || context.BaseURI == null || context.BaseURI.Length == 0)
-      {
-        InitStreamInput(xmlFragment, enc);
-      }
-      else
-      {
-        // It is important to have valid resolver here to resolve the Xml url file path. 
-        // it is safe as this resolver will not be used to resolve DTD url's
-        InitStreamInput(GetTempResolver().ResolveUri(null, context.BaseURI), xmlFragment, enc);
-      }
-      InitFragmentReader(fragType, context, false);
-
-      reportedBaseUri = ps.baseUriStr;
-      reportedEncoding = ps.encoding;
-    }
-
-    // Initializes a new instance of XmlTextRreaderImpl class for parsing fragments with the specified string, fragment type and parser context
-    // This constructor is used when creating XmlTextReaderImpl for V1 XmlTextReader
     internal XmlTextReaderImpl(string xmlFragment, XmlNodeType fragType, XmlParserContext context)
       : this(null == context || null == context.NameTable ? new NameTable() : context.NameTable)
     {
@@ -1430,7 +1402,7 @@ namespace TextMonster.Xml.Xml_Reader
       return base.ReadString();
     }
 
-    public override bool CanReadBinaryContent
+    public virtual bool CanReadBinaryContent
     {
       get
       {

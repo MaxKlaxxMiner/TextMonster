@@ -67,7 +67,6 @@ namespace TextMonster.Xml.Xml_Reader
     public override XPathResultType StaticType { get { return XPathResultType.NodeSet; } }
     public override int CurrentPosition { get { return count; } }
     public override int Count { get { return outputBuffer.Count; } }
-    public override QueryProps Properties { get { return QueryProps.Merge | QueryProps.Cached | QueryProps.Position | QueryProps.Count; } }
 
     public override void PrintQuery(XmlWriter w)
     {

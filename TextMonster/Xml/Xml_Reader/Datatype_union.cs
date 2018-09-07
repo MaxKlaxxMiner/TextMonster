@@ -47,15 +47,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal override Type ListValueType { get { return listValueType; } }
 
-    internal override RestrictionFlags ValidRestrictionFlags
-    {
-      get
-      {
-        return RestrictionFlags.Pattern |
-            RestrictionFlags.Enumeration;
-      }
-    }
-
     internal bool HasAtomicMembers()
     {
       for (int i = 0; i < types.Length; ++i)

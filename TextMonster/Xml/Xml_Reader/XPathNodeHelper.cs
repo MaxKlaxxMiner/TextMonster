@@ -55,20 +55,6 @@
     }
 
     /// <summary>
-    /// Return the first attribute of the specified node.  If no attribute exist, do not
-    /// set pageNode or idxNode and return false.
-    /// </summary>
-    public static bool GetFirstAttribute(ref XPathNode[] pageNode, ref int idxNode)
-    {
-      if (pageNode[idxNode].HasAttribute)
-      {
-        GetChild(ref pageNode, ref idxNode);
-        return true;
-      }
-      return false;
-    }
-
-    /// <summary>
     /// Return the next attribute sibling of the specified node.  If the node is not itself an
     /// attribute, or if there are no siblings, then do not set pageNode or idxNode and return false.
     /// </summary>
@@ -290,36 +276,6 @@
             return true;
           }
         }
-      }
-
-      return false;
-    }
-
-    /// <summary>
-    /// Return the attribute of the specified node that has the specified name.  If no such attribute exists,
-    /// then do not set pageNode or idxNode and return false.  Assume that the localName has been atomized with respect
-    /// to this document's name table, but not the namespaceName.
-    /// </summary>
-    public static bool GetAttribute(ref XPathNode[] pageNode, ref int idxNode, string localName, string namespaceName)
-    {
-      XPathNode[] page = pageNode;
-      int idx = idxNode;
-
-      // Find attribute with specified localName and namespaceName
-      if (page[idx].HasAttribute)
-      {
-        GetChild(ref page, ref idx);
-        do
-        {
-          if (page[idx].NameMatch(localName, namespaceName))
-          {
-            pageNode = page;
-            idxNode = idx;
-            return true;
-          }
-          idx = page[idx].GetSibling(out page);
-        }
-        while (idx != 0 && page[idx].NodeType == XPathNodeType.Attribute);
       }
 
       return false;

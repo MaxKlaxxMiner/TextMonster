@@ -10,7 +10,5 @@
     }
     public override AstType Type { get { return AstType.Group; } }
     public override XPathResultType ReturnType { get { return XPathResultType.NodeSet; } }
-
-    public AstNode GroupNode { get { return groupNode; } }
   }
 }

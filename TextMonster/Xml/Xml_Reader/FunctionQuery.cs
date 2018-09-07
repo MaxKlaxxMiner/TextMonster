@@ -8,11 +8,6 @@ namespace TextMonster.Xml.Xml_Reader
     private IList<Query> args;
     private IXsltContextFunction function;
 
-    public FunctionQuery(string prefix, string name, List<Query> args)
-      : base(prefix, name)
-    {
-      this.args = args;
-    }
     private FunctionQuery(FunctionQuery other)
       : base(other)
     {

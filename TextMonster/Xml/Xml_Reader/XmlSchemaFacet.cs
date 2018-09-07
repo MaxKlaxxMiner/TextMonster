@@ -33,10 +33,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal FacetType FacetType
     {
-      get
-      {
-        return facetType;
-      }
       set
       {
         facetType = value;

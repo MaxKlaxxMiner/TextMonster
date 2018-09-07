@@ -29,12 +29,6 @@ namespace TextMonster.Xml.Xml_Reader
       impl.OuterReader = this;
     }
 
-    public XmlTextReader(Stream xmlFragment, XmlNodeType fragType, XmlParserContext context)
-    {
-      impl = new XmlTextReaderImpl(xmlFragment, fragType, context);
-      impl.OuterReader = this;
-    }
-
     public override XmlNodeType NodeType
     {
       get { return impl.NodeType; }
@@ -207,12 +201,6 @@ namespace TextMonster.Xml.Xml_Reader
     public override void ResolveEntity()
     {
       impl.ResolveEntity();
-    }
-
-    // Binary content access methods
-    public override bool CanReadBinaryContent
-    {
-      get { return true; }
     }
 
     public override int ReadContentAsBase64(byte[] buffer, int index, int count)

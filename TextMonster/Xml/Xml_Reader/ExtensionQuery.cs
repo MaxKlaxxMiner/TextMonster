@@ -9,12 +9,6 @@ namespace TextMonster.Xml.Xml_Reader
     protected XsltContext xsltContext;
     private ResetableIterator queryIterator;
 
-    public ExtensionQuery(string prefix, string name)
-      : base()
-    {
-      this.prefix = prefix;
-      this.name = name;
-    }
     protected ExtensionQuery(ExtensionQuery other)
       : base(other)
     {

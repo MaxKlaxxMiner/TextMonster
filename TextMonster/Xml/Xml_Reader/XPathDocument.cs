@@ -322,30 +322,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     /// <summary>
-    /// Lookup the element node associated with the specified ID value.
-    /// </summary>
-    internal int LookupIdElement(string id, out XPathNode[] pageElem)
-    {
-      XPathNodeRef nodeRef;
-
-      if (this.idValueMap == null || !this.idValueMap.ContainsKey(id))
-      {
-        pageElem = null;
-        return 0;
-      }
-
-      // Extract page and index from XPathNodeRef
-      nodeRef = this.idValueMap[id];
-      pageElem = nodeRef.Page;
-      return nodeRef.Index;
-    }
-
-
-    //-----------------------------------------------
-    // Helper Methods
-    //-----------------------------------------------
-
-    /// <summary>
     /// Set properties on the reader so that it is backwards-compatible with V1.
     /// </summary>
     private XmlTextReaderImpl SetupReader(XmlTextReaderImpl reader)

@@ -150,14 +150,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     /// <summary>
-    /// Get the prefix portion of the current node's name.
-    /// </summary>
-    public override string Prefix
-    {
-      get { return this.pageCurrent[this.idxCurrent].Prefix; }
-    }
-
-    /// <summary>
     /// Get the base URI of the current node.
     /// </summary>
     public override string BaseURI
@@ -200,14 +192,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     /// <summary>
-    /// Return true if this is an element which used a shortcut tag in its Xml 1.0 serialized form.
-    /// </summary>
-    public override bool IsEmptyElement
-    {
-      get { return this.pageCurrent[this.idxCurrent].AllowShortcutTag; }
-    }
-
-    /// <summary>
     /// Return the xml name table which was used to atomize all prefixes, local-names, and
     /// namespace uris in the document.
     /// </summary>
@@ -217,56 +201,12 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     /// <summary>
-    /// Position the navigator on the first attribute of the current node and return true.  If no attributes
-    /// can be found, return false.
-    /// </summary>
-    public override bool MoveToFirstAttribute()
-    {
-      XPathNode[] page = this.pageCurrent;
-      int idx = this.idxCurrent;
-
-      if (XPathNodeHelper.GetFirstAttribute(ref this.pageCurrent, ref this.idxCurrent))
-      {
-        // Save element parent in order to make node-order comparison simpler
-        this.pageParent = page;
-        this.idxParent = idx;
-        return true;
-      }
-
-      return false;
-    }
-
-    /// <summary>
     /// If positioned on an attribute, move to its next sibling attribute.  If no attributes can be found,
     /// return false.
     /// </summary>
     public override bool MoveToNextAttribute()
     {
       return XPathNodeHelper.GetNextAttribute(ref this.pageCurrent, ref this.idxCurrent);
-    }
-
-    /// <summary>
-    /// Position the navigator on the attribute with the specified name and return true.  If no matching
-    /// attribute can be found, return false.  Don't assume the name parts are atomized with respect
-    /// to this document.
-    /// </summary>
-    public override bool MoveToAttribute(string localName, string namespaceURI)
-    {
-      XPathNode[] page = this.pageCurrent;
-      int idx = this.idxCurrent;
-
-      if ((object)localName != (object)this.atomizedLocalName)
-        this.atomizedLocalName = (localName != null) ? NameTable.Get(localName) : null;
-
-      if (XPathNodeHelper.GetAttribute(ref this.pageCurrent, ref this.idxCurrent, this.atomizedLocalName, namespaceURI))
-      {
-        // Save element parent in order to make node-order comparison simpler
-        this.pageParent = page;
-        this.idxParent = idx;
-        return true;
-      }
-
-      return false;
     }
 
     /// <summary>
@@ -420,28 +360,6 @@ namespace TextMonster.Xml.Xml_Reader
         this.idxParent = that.idxParent;
         return true;
       }
-      return false;
-    }
-
-    /// <summary>
-    /// Position to the navigator to the element whose id is equal to the specified "id" string.
-    /// </summary>
-    public override bool MoveToId(string id)
-    {
-      XPathNode[] page;
-      int idx;
-
-      idx = this.pageCurrent[this.idxCurrent].Document.LookupIdElement(id, out page);
-      if (idx != 0)
-      {
-        // Move to ID element and clear parent state
-        this.pageCurrent = page;
-        this.idxCurrent = idx;
-        this.pageParent = null;
-        this.idxParent = 0;
-        return true;
-      }
-
       return false;
     }
 
@@ -658,14 +576,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     /// <summary>
-    /// Return an iterator that ranges over all children of the current node that match the specified XPathNodeType.
-    /// </summary>
-    public override XPathNodeIterator SelectChildren(XPathNodeType type)
-    {
-      return new XPathDocumentKindChildIterator(this, type);
-    }
-
-    /// <summary>
     /// Return an iterator that ranges over all children of the current node that match the specified QName.
     /// </summary>
     public override XPathNodeIterator SelectChildren(string name, string namespaceURI)
@@ -733,38 +643,6 @@ namespace TextMonster.Xml.Xml_Reader
         }
       }
       return XmlNodeOrder.Unknown;
-    }
-
-    /// <summary>
-    /// Return true if the "other" navigator's current node is a descendant of this navigator's current node.
-    /// </summary>
-    public override bool IsDescendant(XPathNavigator other)
-    {
-      XPathDocumentNavigator that = other as XPathDocumentNavigator;
-      if (that != null)
-      {
-        XPathNode[] pageThat;
-        int idxThat;
-
-        // If that current node's parent is virtualized, then start with the virtual parent
-        if (that.idxParent != 0)
-        {
-          pageThat = that.pageParent;
-          idxThat = that.idxParent;
-        }
-        else
-        {
-          idxThat = that.pageCurrent[that.idxCurrent].GetParent(out pageThat);
-        }
-
-        while (idxThat != 0)
-        {
-          if (idxThat == this.idxCurrent && pageThat == this.pageCurrent)
-            return true;
-          idxThat = pageThat[idxThat].GetParent(out pageThat);
-        }
-      }
-      return false;
     }
 
     /// <summary>
