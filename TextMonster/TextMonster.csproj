@@ -89,7 +89,6 @@
     <Compile Include="Xml\Xml_Reader\UTF16Decoder.cs" />
     <Compile Include="Xml\Xml_Reader\XmlSchemaProviderAttribute.cs" />
     <Compile Include="Xml\Xml_Reader\DebuggerDisplayXmlNodeProxy.cs" />
-    <Compile Include="Xml\Xml_Reader\WhitespaceHandling.cs" />
     <Compile Include="Xml\Xml_Reader\XmlChildEnumerator.cs" />
     <Compile Include="Xml\Xml_Reader\XmlChildNodes.cs" />
     <Compile Include="Xml\Xml_Reader\XmlFacetComparer.cs" />

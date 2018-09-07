@@ -171,7 +171,6 @@ namespace TextMonster.Xml.Xml_Reader
     // settings
     bool normalize;
     bool supportNamespaces = true;
-    WhitespaceHandling whitespaceHandling;
     EntityHandling entityHandling;
     bool ignorePIs;
     bool ignoreComments;
@@ -313,7 +312,6 @@ namespace TextMonster.Xml.Xml_Reader
       nextParsingFunction = ParsingFunction.DocumentContent;
 
       entityHandling = EntityHandling.ExpandCharEntities;
-      whitespaceHandling = WhitespaceHandling.All;
       closeInput = true;
 
       maxCharactersInDocument = 0;
@@ -372,7 +370,6 @@ namespace TextMonster.Xml.Xml_Reader
 
       xmlResolverIsSet = settings.IsXmlResolverSet;
 
-      whitespaceHandling = (settings.IgnoreWhitespace) ? WhitespaceHandling.Significant : WhitespaceHandling.All;
       normalize = true;
       ignorePIs = settings.IgnoreProcessingInstructions;
       ignoreComments = settings.IgnoreComments;
@@ -656,7 +653,6 @@ namespace TextMonster.Xml.Xml_Reader
         settings.CheckCharacters = checkCharacters;
         settings.LineNumberOffset = lineNumberOffset;
         settings.LinePositionOffset = linePositionOffset;
-        settings.IgnoreWhitespace = (whitespaceHandling == WhitespaceHandling.Significant);
         settings.IgnoreProcessingInstructions = ignorePIs;
         settings.IgnoreComments = ignoreComments;
         settings.MaxCharactersInDocument = maxCharactersInDocument;
@@ -4942,30 +4938,10 @@ namespace TextMonster.Xml.Xml_Reader
 
     private bool ParseRootLevelWhitespace()
     {
-      XmlNodeType nodeType = GetWhitespaceType();
-
-      if (nodeType == XmlNodeType.None)
+      EatWhitespaces(null);
+      if (ps.chars[ps.charPos] == '<' || ps.charsUsed - ps.charPos == 0 || ZeroEndingStream(ps.charPos))
       {
-        EatWhitespaces(null);
-        if (ps.chars[ps.charPos] == '<' || ps.charsUsed - ps.charPos == 0 || ZeroEndingStream(ps.charPos))
-        {
-          return false;
-        }
-      }
-      else
-      {
-        curNode.SetLineInfo(ps.LineNo, ps.LinePos);
-        EatWhitespaces(stringBuilder);
-        if (ps.chars[ps.charPos] == '<' || ps.charsUsed - ps.charPos == 0 || ZeroEndingStream(ps.charPos))
-        {
-          if (stringBuilder.Length > 0)
-          {
-            curNode.SetValueNode(nodeType, stringBuilder.ToString());
-            stringBuilder.Length = 0;
-            return true;
-          }
-          return false;
-        }
+        return false;
       }
 
       if (xmlCharType.IsCharData(ps.chars[ps.charPos]))
@@ -6816,23 +6792,6 @@ namespace TextMonster.Xml.Xml_Reader
       curNode.xmlContextPushed = false;
     }
 
-    // Returns the whitespace node type according to the current whitespaceHandling setting and xml:space
-    private XmlNodeType GetWhitespaceType()
-    {
-      if (whitespaceHandling != WhitespaceHandling.None)
-      {
-        if (xmlContext.xmlSpace == XmlSpace.Preserve)
-        {
-          return XmlNodeType.SignificantWhitespace;
-        }
-        if (whitespaceHandling == WhitespaceHandling.All)
-        {
-          return XmlNodeType.Whitespace;
-        }
-      }
-      return XmlNodeType.None;
-    }
-
     private XmlNodeType GetTextNodeType(int orChars)
     {
       if (orChars > 0x20)
@@ -6841,7 +6800,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
       else
       {
-        return GetWhitespaceType();
+        return XmlNodeType.None;
       }
     }
 

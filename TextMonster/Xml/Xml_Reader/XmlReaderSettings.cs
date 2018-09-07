@@ -5,10 +5,6 @@ namespace TextMonster.Xml.Xml_Reader
 {
   public sealed class XmlReaderSettings
   {
-    //
-    // Fields
-    //
-
     // Nametable
     XmlNameTable nameTable;
 
@@ -184,20 +180,6 @@ namespace TextMonster.Xml.Xml_Reader
           throw new ArgumentOutOfRangeException("value");
         }
         maxCharactersFromEntities = value;
-      }
-    }
-
-    // Filtering settings
-    public bool IgnoreWhitespace
-    {
-      get
-      {
-        return ignoreWhitespace;
-      }
-      set
-      {
-        CheckReadOnly("IgnoreWhitespace");
-        ignoreWhitespace = value;
       }
     }
 
