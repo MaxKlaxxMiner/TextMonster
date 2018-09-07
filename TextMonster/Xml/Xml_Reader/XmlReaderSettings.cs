@@ -183,32 +183,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public bool IgnoreProcessingInstructions
-    {
-      get
-      {
-        return ignorePIs;
-      }
-      set
-      {
-        CheckReadOnly("IgnoreProcessingInstructions");
-        ignorePIs = value;
-      }
-    }
-
-    public bool IgnoreComments
-    {
-      get
-      {
-        return ignoreComments;
-      }
-      set
-      {
-        CheckReadOnly("IgnoreComments");
-        ignoreComments = value;
-      }
-    }
-
     public bool CloseInput
     {
       get

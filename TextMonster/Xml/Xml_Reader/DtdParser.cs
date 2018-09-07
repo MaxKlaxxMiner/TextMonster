@@ -322,14 +322,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    private bool SaveInternalSubsetValue
-    {
-      get
-      {
-        return readerAdapter.EntityStackLength == 0 && internalSubsetValueSb != null;
-      }
-    }
-
     private bool ParsingTopLevelMarkup
     {
       get
@@ -1317,15 +1309,7 @@ namespace TextMonster.Xml.Xml_Reader
       SaveParsingBuffer();
       try
       {
-        if (SaveInternalSubsetValue)
-        {
-          readerAdapter.ParseComment(internalSubsetValueSb);
-          internalSubsetValueSb.Append("-->");
-        }
-        else
-        {
-          readerAdapter.ParseComment(null);
-        }
+        readerAdapter.ParseComment();
       }
       catch (XmlException e)
       {
@@ -1344,15 +1328,7 @@ namespace TextMonster.Xml.Xml_Reader
     private void ParsePI()
     {
       SaveParsingBuffer();
-      if (SaveInternalSubsetValue)
-      {
-        readerAdapter.ParsePI(internalSubsetValueSb);
-        internalSubsetValueSb.Append("?>");
-      }
-      else
-      {
-        readerAdapter.ParsePI(null);
-      }
+      readerAdapter.ParsePI();
       LoadParsingBuffer();
     }
 
@@ -2474,7 +2450,7 @@ namespace TextMonster.Xml.Xml_Reader
           if (chars[curPos + 1] == '#')
           {
             SaveParsingBuffer();
-            int endPos = readerAdapter.ParseNumericCharRef(SaveInternalSubsetValue ? internalSubsetValueSb : null);
+            int endPos = readerAdapter.ParseNumericCharRef(null);
             LoadParsingBuffer();
             stringBuilder.Append(chars, curPos, endPos - curPos);
             readerAdapter.CurrentPosition = endPos;
@@ -2488,7 +2464,7 @@ namespace TextMonster.Xml.Xml_Reader
             SaveParsingBuffer();
             if (literalType == LiteralType.AttributeValue)
             {
-              int endPos = readerAdapter.ParseNamedCharRef(true, SaveInternalSubsetValue ? internalSubsetValueSb : null);
+              int endPos = readerAdapter.ParseNamedCharRef(true, null);
               LoadParsingBuffer();
 
               if (endPos >= 0)
@@ -3186,14 +3162,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private void SaveParsingBuffer(int internalSubsetValueEndPos)
     {
-      if (SaveInternalSubsetValue)
-      {
-        int readerCurPos = readerAdapter.CurrentPosition;
-        if (internalSubsetValueEndPos - readerCurPos > 0)
-        {
-          internalSubsetValueSb.Append(chars, readerCurPos, internalSubsetValueEndPos - readerCurPos);
-        }
-      }
       readerAdapter.CurrentPosition = curPos;
     }
 

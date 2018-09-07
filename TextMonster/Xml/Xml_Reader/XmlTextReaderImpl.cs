@@ -172,8 +172,6 @@ namespace TextMonster.Xml.Xml_Reader
     bool normalize;
     bool supportNamespaces = true;
     EntityHandling entityHandling;
-    bool ignorePIs;
-    bool ignoreComments;
     bool checkCharacters;
     int lineNumberOffset;
     int linePositionOffset;
@@ -371,8 +369,6 @@ namespace TextMonster.Xml.Xml_Reader
       xmlResolverIsSet = settings.IsXmlResolverSet;
 
       normalize = true;
-      ignorePIs = settings.IgnoreProcessingInstructions;
-      ignoreComments = settings.IgnoreComments;
       checkCharacters = settings.CheckCharacters;
       lineNumberOffset = settings.LineNumberOffset;
       linePositionOffset = settings.LinePositionOffset;
@@ -653,8 +649,6 @@ namespace TextMonster.Xml.Xml_Reader
         settings.CheckCharacters = checkCharacters;
         settings.LineNumberOffset = lineNumberOffset;
         settings.LinePositionOffset = linePositionOffset;
-        settings.IgnoreProcessingInstructions = ignorePIs;
-        settings.IgnoreComments = ignoreComments;
         settings.MaxCharactersInDocument = maxCharactersInDocument;
         settings.MaxCharactersFromEntities = maxCharactersFromEntities;
 
@@ -1646,42 +1640,19 @@ namespace TextMonster.Xml.Xml_Reader
       return this.ParseNamedCharRef(expand, internalSubsetBuilder);
     }
 
-    internal void DtdParserProxy_ParsePI(StringBuilder sb)
+    internal void DtdParserProxy_ParsePI()
     {
-      if (sb == null)
-      {
-        ParsingMode pm = parsingMode;
-        parsingMode = ParsingMode.SkipNode;
-        ParsePI(null);
-        parsingMode = pm;
-      }
-      else
-      {
-        ParsePI(sb);
-      }
+      ParsePI();
     }
 
-    internal void DtdParserProxy_ParseComment(StringBuilder sb)
+    internal void DtdParserProxy_ParseComment()
     {
       try
       {
-        if (sb == null)
-        {
-          ParsingMode savedParsingMode = parsingMode;
-          parsingMode = ParsingMode.SkipNode;
-          ParseCDataOrComment(XmlNodeType.Comment);
-          parsingMode = savedParsingMode;
-        }
-        else
-        {
-          NodeData originalCurNode = curNode;
-
-          curNode = AddNode(index + attrCount + 1, index);
-          ParseCDataOrComment(XmlNodeType.Comment);
-          curNode.CopyTo(0, sb);
-
-          curNode = originalCurNode;
-        }
+        ParsingMode savedParsingMode = parsingMode;
+        parsingMode = ParsingMode.SkipNode;
+        ParseCDataOrComment(XmlNodeType.Comment);
+        parsingMode = savedParsingMode;
       }
       catch (XmlException e)
       {
@@ -1766,7 +1737,7 @@ namespace TextMonster.Xml.Xml_Reader
       int initialPos = ps.charPos;
       if (v1Compat)
       {
-        EatWhitespaces(null);
+        EatWhitespaces();
       }
       if (!ParseXmlDeclaration(true))
       {
@@ -2684,7 +2655,7 @@ namespace TextMonster.Xml.Xml_Reader
       for (; ; )
       {
         int originalSbLen = sb.Length;
-        int wsCount = EatWhitespaces(xmlDeclState == 0 ? null : sb);
+        int wsCount = EatWhitespaces();
 
         // end of xml declaration
         if (ps.chars[ps.charPos] == '?')
@@ -2806,7 +2777,7 @@ namespace TextMonster.Xml.Xml_Reader
         // parse equals and quote char; 
         if (ps.chars[ps.charPos] != '=')
         {
-          EatWhitespaces(sb);
+          EatWhitespaces();
           if (ps.chars[ps.charPos] != '=')
           {
             ThrowUnexpectedToken("=");
@@ -2818,7 +2789,7 @@ namespace TextMonster.Xml.Xml_Reader
         char quoteChar = ps.chars[ps.charPos];
         if (quoteChar != '"' && quoteChar != '\'')
         {
-          EatWhitespaces(sb);
+          EatWhitespaces();
           quoteChar = ps.chars[ps.charPos];
           if (quoteChar != '"' && quoteChar != '\'')
           {
@@ -3918,7 +3889,7 @@ namespace TextMonster.Xml.Xml_Reader
         if (chars[pos] != '=')
         {
           ps.charPos = pos;
-          EatWhitespaces(null);
+          EatWhitespaces();
           pos = ps.charPos;
           if (chars[pos] != '=')
           {
@@ -3931,7 +3902,7 @@ namespace TextMonster.Xml.Xml_Reader
         if (quoteChar != '"' && quoteChar != '\'')
         {
           ps.charPos = pos;
-          EatWhitespaces(null);
+          EatWhitespaces();
           pos = ps.charPos;
           quoteChar = chars[pos];
           if (quoteChar != '"' && quoteChar != '\'')
@@ -4938,7 +4909,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     private bool ParseRootLevelWhitespace()
     {
-      EatWhitespaces(null);
+      EatWhitespaces();
       if (ps.chars[ps.charPos] == '<' || ps.charsUsed - ps.charPos == 0 || ZeroEndingStream(ps.charPos))
       {
         return false;
@@ -5186,18 +5157,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     private bool ParsePI()
     {
-      return ParsePI(null);
-    }
-
-    // Parses processing instruction; if piInDtdStringBuilder != null, the processing instruction is in DTD and
-    // it will be saved in the passed string builder (target, whitespace & value).
-    private bool ParsePI(StringBuilder piInDtdStringBuilder)
-    {
-      if (parsingMode == ParsingMode.Full)
-      {
-        curNode.SetLineInfo(ps.LineNo, ps.LinePos);
-      }
-
       // parse target name
       int nameEndPos = ParseName();
       string target = nameTable.Add(ps.chars, ps.charPos, nameEndPos - ps.charPos);
@@ -5208,21 +5167,9 @@ namespace TextMonster.Xml.Xml_Reader
       }
       ps.charPos = nameEndPos;
 
-      if (piInDtdStringBuilder == null)
-      {
-        if (!ignorePIs && parsingMode == ParsingMode.Full)
-        {
-          curNode.SetNamedNode(XmlNodeType.ProcessingInstruction, target);
-        }
-      }
-      else
-      {
-        piInDtdStringBuilder.Append(target);
-      }
-
       // check mandatory whitespace
       char ch = ps.chars[ps.charPos];
-      if (EatWhitespaces(piInDtdStringBuilder) == 0)
+      if (EatWhitespaces() == 0)
       {
         if (ps.charsUsed - ps.charPos < 2)
         {
@@ -5236,54 +5183,8 @@ namespace TextMonster.Xml.Xml_Reader
 
       // scan processing instruction value
       int startPos, endPos;
-      if (ParsePIValue(out startPos, out endPos))
-      {
-        if (piInDtdStringBuilder == null)
-        {
-          if (ignorePIs)
-          {
-            return false;
-          }
-          if (parsingMode == ParsingMode.Full)
-          {
-            curNode.SetValue(ps.chars, startPos, endPos - startPos);
-          }
-        }
-        else
-        {
-          piInDtdStringBuilder.Append(ps.chars, startPos, endPos - startPos);
-        }
-      }
-      else
-      {
-        StringBuilder sb;
-        if (piInDtdStringBuilder == null)
-        {
-          if (ignorePIs || parsingMode != ParsingMode.Full)
-          {
-            while (!ParsePIValue(out startPos, out endPos)) ;
-            return false;
-          }
-          sb = stringBuilder;
-        }
-        else
-        {
-          sb = piInDtdStringBuilder;
-        }
-
-        do
-        {
-          sb.Append(ps.chars, startPos, endPos - startPos);
-        } while (!ParsePIValue(out startPos, out endPos));
-        sb.Append(ps.chars, startPos, endPos - startPos);
-
-        if (piInDtdStringBuilder == null)
-        {
-          curNode.SetValue(stringBuilder.ToString());
-          stringBuilder.Length = 0;
-        }
-      }
-      return true;
+      while (!ParsePIValue(out startPos, out endPos)) { }
+      return false;
     }
 
     private bool ParsePIValue(out int outStartPos, out int outEndPos)
@@ -5306,13 +5207,9 @@ namespace TextMonster.Xml.Xml_Reader
       {
 
         char tmpch;
-        unsafe
+        while (((xmlCharType.charProperties[tmpch = chars[pos]] & XmlCharType.fText) != 0) && tmpch != '?')
         {
-          while (((xmlCharType.charProperties[tmpch = chars[pos]] & XmlCharType.fText) != 0) &&
-              tmpch != '?')
-          {
-            pos++;
-          }
+          pos++;
         }
 
         switch (chars[pos])
@@ -5351,28 +5248,6 @@ namespace TextMonster.Xml.Xml_Reader
           case (char)0xD:
           if (chars[pos + 1] == (char)0xA)
           {
-            if (!ps.eolNormalized && parsingMode == ParsingMode.Full)
-            {
-              // EOL normalization of 0xD 0xA
-              if (pos - ps.charPos > 0)
-              {
-                if (rcount == 0)
-                {
-                  rcount = 1;
-                  rpos = pos;
-                }
-                else
-                {
-                  ShiftBuffer(rpos + rcount, rpos, pos - rpos - rcount);
-                  rpos = pos - rcount;
-                  rcount++;
-                }
-              }
-              else
-              {
-                ps.charPos++;
-              }
-            }
             pos += 2;
           }
           else if (pos + 1 < ps.charsUsed || ps.isEof)
@@ -5442,19 +5317,11 @@ namespace TextMonster.Xml.Xml_Reader
 
     private bool ParseComment()
     {
-      if (ignoreComments)
-      {
-        ParsingMode oldParsingMode = parsingMode;
-        parsingMode = ParsingMode.SkipNode;
-        ParseCDataOrComment(XmlNodeType.Comment);
-        parsingMode = oldParsingMode;
-        return false;
-      }
-      else
-      {
-        ParseCDataOrComment(XmlNodeType.Comment);
-        return true;
-      }
+      ParsingMode oldParsingMode = parsingMode;
+      parsingMode = ParsingMode.SkipNode;
+      ParseCDataOrComment(XmlNodeType.Comment);
+      parsingMode = oldParsingMode;
+      return false;
     }
 
     private void ParseCData()
@@ -5688,7 +5555,7 @@ namespace TextMonster.Xml.Xml_Reader
 
       ps.charPos += 8;
 
-      EatWhitespaces(null);
+      EatWhitespaces();
 
       SkipDtd();
       return false;
@@ -5703,7 +5570,7 @@ namespace TextMonster.Xml.Xml_Reader
       ps.charPos = pos;
 
       // check whitespace
-      EatWhitespaces(null);
+      EatWhitespaces();
 
       // PUBLIC Id
       if (ps.chars[ps.charPos] == 'P')
@@ -5724,7 +5591,7 @@ namespace TextMonster.Xml.Xml_Reader
         ps.charPos += 6;
 
         // check whitespace
-        if (EatWhitespaces(null) == 0)
+        if (EatWhitespaces() == 0)
         {
           ThrowExpectingWhitespace(ps.charPos);
         }
@@ -5733,7 +5600,7 @@ namespace TextMonster.Xml.Xml_Reader
         SkipPublicOrSystemIdLiteral();
 
         // check whitespace
-        if (EatWhitespaces(null) == 0)
+        if (EatWhitespaces() == 0)
         {
           ThrowExpectingWhitespace(ps.charPos);
         }
@@ -5741,7 +5608,7 @@ namespace TextMonster.Xml.Xml_Reader
         // parse SYSTEM value
         SkipPublicOrSystemIdLiteral();
 
-        EatWhitespaces(null);
+        EatWhitespaces();
       }
       else if (ps.chars[ps.charPos] == 'S')
       {
@@ -5761,7 +5628,7 @@ namespace TextMonster.Xml.Xml_Reader
         ps.charPos += 6;
 
         // check whitespace
-        if (EatWhitespaces(null) == 0)
+        if (EatWhitespaces() == 0)
         {
           ThrowExpectingWhitespace(ps.charPos);
         }
@@ -5769,7 +5636,7 @@ namespace TextMonster.Xml.Xml_Reader
         // parse SYSTEM value
         SkipPublicOrSystemIdLiteral();
 
-        EatWhitespaces(null);
+        EatWhitespaces();
       }
       else if (ps.chars[ps.charPos] != '[' && ps.chars[ps.charPos] != '>')
       {
@@ -5783,7 +5650,7 @@ namespace TextMonster.Xml.Xml_Reader
 
         SkipUntil(']', true);
 
-        EatWhitespaces(null);
+        EatWhitespaces();
         if (ps.chars[ps.charPos] != '>')
         {
           ThrowUnexpectedToken(">");
@@ -6013,7 +5880,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    private int EatWhitespaces(StringBuilder sb)
+    private int EatWhitespaces()
     {
       int pos = ps.charPos;
       int wsCount = 0;
@@ -6032,16 +5899,6 @@ namespace TextMonster.Xml.Xml_Reader
             case (char)0xD:
             if (chars[pos + 1] == (char)0xA)
             {
-              int tmp1 = pos - ps.charPos;
-              if (sb != null && !ps.eolNormalized)
-              {
-                if (tmp1 > 0)
-                {
-                  sb.Append(chars, ps.charPos, tmp1);
-                  wsCount += tmp1;
-                }
-                ps.charPos = pos + 1;
-              }
               pos += 2;
             }
             else if (pos + 1 < ps.charsUsed || ps.isEof)
@@ -6072,10 +5929,6 @@ namespace TextMonster.Xml.Xml_Reader
               int tmp2 = pos - ps.charPos;
               if (tmp2 > 0)
               {
-                if (sb != null)
-                {
-                  sb.Append(ps.chars, ps.charPos, tmp2);
-                }
                 ps.charPos = pos;
                 wsCount += tmp2;
               }
@@ -6088,10 +5941,6 @@ namespace TextMonster.Xml.Xml_Reader
         int tmp3 = pos - ps.charPos;
         if (tmp3 > 0)
         {
-          if (sb != null)
-          {
-            sb.Append(ps.chars, ps.charPos, tmp3);
-          }
           ps.charPos = pos;
           wsCount += tmp3;
         }
@@ -6915,7 +6764,7 @@ namespace TextMonster.Xml.Xml_Reader
         int initialPos = ps.charPos;
         if (v1Compat)
         {
-          EatWhitespaces(null);
+          EatWhitespaces();
         }
         if (!ParseXmlDeclaration(true))
         {
@@ -7242,7 +7091,7 @@ namespace TextMonster.Xml.Xml_Reader
                   ps.charPos = endPos;
                   if (xmlCharType.IsWhiteSpace(ps.chars[endPos]))
                   {
-                    EatWhitespaces(null);
+                    EatWhitespaces();
                   }
                   if (ps.chars[ps.charPos] != '>')
                   {

@@ -535,8 +535,6 @@ namespace TextMonster.Xml
 
     protected static readonly Xml_Reader.XmlReaderSettings DefaultXmlReaderSettingsFast = new Xml_Reader.XmlReaderSettings
     {
-//      IgnoreComments = true,
-//      IgnoreProcessingInstructions = true,
       MaxCharactersFromEntities = 10000000L,
       XmlResolver = null
     };

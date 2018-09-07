@@ -100,14 +100,14 @@ namespace TextMonster.Xml.Xml_Reader
       return reader.DtdParserProxy_ParseNamedCharRef(expand, internalSubsetBuilder);
     }
 
-    void IDtdParserAdapter.ParsePI(StringBuilder sb)
+    void IDtdParserAdapter.ParsePI()
     {
-      reader.DtdParserProxy_ParsePI(sb);
+      reader.DtdParserProxy_ParsePI();
     }
 
-    void IDtdParserAdapter.ParseComment(StringBuilder sb)
+    void IDtdParserAdapter.ParseComment()
     {
-      reader.DtdParserProxy_ParseComment(sb);
+      reader.DtdParserProxy_ParseComment();
     }
 
     bool IDtdParserAdapter.PushEntity(IDtdEntityInfo entity, out int entityId)

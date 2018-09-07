@@ -26,8 +26,8 @@ namespace TextMonster.Xml.Xml_Reader
 
     int ParseNumericCharRef(StringBuilder internalSubsetBuilder);
     int ParseNamedCharRef(bool expand, StringBuilder internalSubsetBuilder);
-    void ParsePI(StringBuilder sb);
-    void ParseComment(StringBuilder sb);
+    void ParsePI();
+    void ParseComment();
 
     bool PushEntity(IDtdEntityInfo entity, out int entityId);
 
