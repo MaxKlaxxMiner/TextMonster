@@ -63,39 +63,5 @@ namespace TextMonster.Xml.Xml_Reader
     {
       return XmlCharType.Instance.IsOnlyWhitespace(data);
     }
-
-    internal bool DecideXPNodeTypeForTextNodes(XmlNode node, ref XPathNodeType xnt)
-    {
-      //returns true - if all siblings of the node are processed else returns false.
-      //The reference XPathNodeType argument being passed in is the watermark that
-      //changes according to the siblings nodetype and will contain the correct
-      //nodetype when it returns.
-
-      while (node != null)
-      {
-        switch (node.NodeType)
-        {
-          case XmlNodeType.Whitespace:
-          break;
-          case XmlNodeType.SignificantWhitespace:
-          xnt = XPathNodeType.SignificantWhitespace;
-          break;
-          case XmlNodeType.Text:
-          case XmlNodeType.CDATA:
-          xnt = XPathNodeType.Text;
-          return false;
-          case XmlNodeType.EntityReference:
-          if (!DecideXPNodeTypeForTextNodes(node.FirstChild, ref xnt))
-          {
-            return false;
-          }
-          break;
-          default:
-          return false;
-        }
-        node = node.NextSibling;
-      }
-      return true;
-    }
   }
 }

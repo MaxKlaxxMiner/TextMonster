@@ -2,8 +2,6 @@
 {
   public enum XPathNamespaceScope
   {
-    All,
-    ExcludeXml,
-    Local
+    All
   }
 }

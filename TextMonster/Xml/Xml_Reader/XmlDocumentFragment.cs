@@ -130,7 +130,5 @@ namespace TextMonster.Xml.Xml_Reader
         n.WriteTo(w);
       }
     }
-
-    internal override XPathNodeType XPNodeType { get { return XPathNodeType.Root; } }
   }
 }

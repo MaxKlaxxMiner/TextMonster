@@ -91,33 +91,11 @@ namespace TextMonster.Xml.Xml_Reader
       w.WriteString(Data);
     }
 
-    internal override XPathNodeType XPNodeType
-    {
-      get
-      {
-        XPathNodeType xnt = XPathNodeType.SignificantWhitespace;
-        DecideXPNodeTypeForTextNodes(this, ref xnt);
-        return xnt;
-      }
-    }
-
     internal override bool IsText
     {
       get
       {
         return true;
-      }
-    }
-
-    public override XmlNode PreviousText
-    {
-      get
-      {
-        if (parentNode.IsText)
-        {
-          return parentNode;
-        }
-        return null;
       }
     }
   }

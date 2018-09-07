@@ -99,8 +99,6 @@
     <Compile Include="Xml\Xml_Reader\CodeIdentifiers.cs" />
     <Compile Include="Xml\Xml_Reader\ConstantMapping.cs" />
     <Compile Include="Xml\Xml_Reader\DefaultValueAttribute.cs" />
-    <Compile Include="Xml\Xml_Reader\DocumentXPathNavigator.cs" />
-    <Compile Include="Xml\Xml_Reader\DocumentXPathNodeIterator_ElemDescendants.cs" />
     <Compile Include="Xml\Xml_Reader\DynamicAssemblies.cs" />
     <Compile Include="Xml\Xml_Reader\ElementAccessor.cs" />
     <Compile Include="Xml\Xml_Reader\EnumMapping.cs" />
@@ -159,11 +157,6 @@
     <Compile Include="Xml\Xml_Reader\XmlSchemas.cs" />
     <Compile Include="Xml\Xml_Reader\XmlTextWriterBase64Encoder.cs" />
     <Compile Include="Xml\Xml_Reader\XmlTypeAttribute.cs" />
-    <Compile Include="Xml\Xml_Reader\XPathArrayIterator.cs" />
-    <Compile Include="Xml\Xml_Reader\XPathEmptyIterator.cs" />
-    <Compile Include="Xml\Xml_Reader\XsltContext.cs" />
-    <Compile Include="Xml\Xml_Reader\Query.cs" />
-    <Compile Include="Xml\Xml_Reader\ResetableIterator.cs" />
     <Compile Include="Xml\Xml_Reader\Function.cs" />
     <Compile Include="Xml\Xml_Reader\XmlSchemaValidationException.cs" />
     <Compile Include="Xml\Xml_Reader\XmlUnionConverter.cs" />
@@ -478,7 +471,6 @@
     <Compile Include="Xml\Xml_Reader\XPathDocument.cs" />
     <Compile Include="Xml\Xml_Reader\XPathNodeInfoAtom.cs" />
     <Compile Include="Xml\Xml_Reader\XPathNode.cs" />
-    <Compile Include="Xml\Xml_Reader\XPathDocumentNavigator.cs" />
     <Compile Include="Xml\Xml_Reader\IXPathNavigable.cs" />
     <Compile Include="Xml\Xml_Reader\XmlNodeListEnumerator.cs" />
     <Compile Include="Xml\Xml_Reader\IHasXmlNode.cs" />

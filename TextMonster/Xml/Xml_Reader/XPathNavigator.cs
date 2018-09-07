@@ -60,19 +60,6 @@ namespace TextMonster.Xml.Xml_Reader
       return Clone();
     }
 
-    //-----------------------------------------------
-    // IXPathNavigable
-    //-----------------------------------------------
-
-    public virtual XPathNavigator CreateNavigator()
-    {
-      return Clone();
-    }
-
-    //-----------------------------------------------
-    // IXmlNamespaceResolver
-    //-----------------------------------------------
-
     public abstract XmlNameTable NameTable { get; }
 
     public virtual string LookupNamespace(string prefix)
@@ -193,8 +180,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     public abstract string Name { get; }
 
-    public abstract string NamespaceURI { get; }
-
     public virtual bool MoveToNamespace(string name)
     {
       if (MoveToFirstNamespace(XPathNamespaceScope.All))
@@ -217,77 +202,11 @@ namespace TextMonster.Xml.Xml_Reader
 
     public abstract bool MoveToNextNamespace(XPathNamespaceScope namespaceScope);
 
-    public abstract bool MoveToNext();
-
-    public abstract bool MoveToFirstChild();
-
     public abstract bool MoveToParent();
-
-    public abstract bool MoveTo(XPathNavigator other);
 
     public virtual IXmlSchemaInfo SchemaInfo
     {
       get { return this as IXmlSchemaInfo; }
-    }
-
-    internal bool MoveToNonDescendant()
-    {
-      // If current node is document, there is no next non-descendant
-      if (NodeType == XPathNodeType.Root)
-        return false;
-
-      // If sibling exists, it is the next non-descendant
-      if (MoveToNext())
-        return true;
-
-      // The current node is either an attribute, namespace, or last child node
-      XPathNavigator navSave = Clone();
-
-      if (!MoveToParent())
-        return false;
-
-      switch (navSave.NodeType)
-      {
-        case XPathNodeType.Attribute:
-        case XPathNodeType.Namespace:
-        // Next node in document order is first content-child of parent
-        if (MoveToFirstChild())
-          return true;
-        break;
-      }
-
-      while (!MoveToNext())
-      {
-        if (!MoveToParent())
-        {
-          // Restore original position and return false
-          MoveTo(navSave);
-          return false;
-        }
-      }
-
-      return true;
-    }
-
-    internal const int AllMask = 0x7FFFFFFF;
-    internal const int NoAttrNmspMask = AllMask & ~(1 << (int)XPathNodeType.Attribute) & ~(1 << (int)XPathNodeType.Namespace);
-    internal const int TextMask = (1 << (int)XPathNodeType.Text) | (1 << (int)XPathNodeType.SignificantWhitespace) | (1 << (int)XPathNodeType.Whitespace);
-    internal static readonly int[] ContentKindMasks = {
-            (1 << (int) XPathNodeType.Root),                        // Root
-            (1 << (int) XPathNodeType.Element),                     // Element
-            0,                                                      // Attribute (not content)
-            0,                                                      // Namespace (not content)
-            TextMask,                                               // Text
-            (1 << (int) XPathNodeType.SignificantWhitespace),       // SignificantWhitespace
-            (1 << (int) XPathNodeType.Whitespace),                  // Whitespace
-            (1 << (int) XPathNodeType.ProcessingInstruction),       // ProcessingInstruction
-            (1 << (int) XPathNodeType.Comment),                     // Comment
-            NoAttrNmspMask,                                         // All
-        };
-
-    internal static int GetContentKindMask(XPathNodeType type)
-    {
-      return ContentKindMasks[(int)type];
     }
 
     internal static bool IsText(XPathNodeType type)

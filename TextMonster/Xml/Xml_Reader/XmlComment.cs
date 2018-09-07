@@ -39,7 +39,5 @@ namespace TextMonster.Xml.Xml_Reader
     {
       w.WriteComment(Data);
     }
-
-    internal override XPathNodeType XPNodeType { get { return XPathNodeType.Comment; } }
   }
 }

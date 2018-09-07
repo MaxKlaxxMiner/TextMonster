@@ -24,18 +24,6 @@ namespace TextMonster.Xml.Xml_Reader
       this.parentNode = doc;
     }
 
-    public virtual XPathNavigator CreateNavigator()
-    {
-      XmlDocument thisAsDoc = this as XmlDocument;
-      if (thisAsDoc != null)
-      {
-        return thisAsDoc.CreateNavigator(this);
-      }
-      XmlDocument doc = OwnerDocument;
-      Debug.Assert(doc != null);
-      return doc.CreateNavigator(this);
-    }
-
     // Gets the name of the node.
     public abstract string Name
     {
@@ -966,35 +954,11 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal virtual XPathNodeType XPNodeType
-    {
-      get
-      {
-        return (XPathNodeType)(-1);
-      }
-    }
-
-    internal virtual string XPLocalName
-    {
-      get
-      {
-        return string.Empty;
-      }
-    }
-
     internal virtual bool IsText
     {
       get
       {
         return false;
-      }
-    }
-
-    public virtual XmlNode PreviousText
-    {
-      get
-      {
-        return null;
       }
     }
 

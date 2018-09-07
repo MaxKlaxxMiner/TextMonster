@@ -192,43 +192,11 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     /// <summary>
-    /// Create a navigator positioned on the root node of the document.
-    /// </summary>
-    public XPathNavigator CreateNavigator()
-    {
-      return new XPathDocumentNavigator(this.pageRoot, this.idxRoot, null, 0);
-    }
-
-
-    //-----------------------------------------------
-    // Document Properties
-    //-----------------------------------------------
-
-    /// <summary>
     /// Return the name table used to atomize all name parts (local name, namespace uri, prefix).
     /// </summary>
     internal XmlNameTable NameTable
     {
       get { return this.nameTable; }
-    }
-
-    /// <summary>
-    /// Return true if line number information is recorded in the cache.
-    /// </summary>
-    internal bool HasLineInfo
-    {
-      get { return this.hasLineInfo; }
-    }
-
-    /// <summary>
-    /// Return the singleton collapsed text node associated with the document.  One physical text node
-    /// represents each logical text node in the document that is the only content-typed child of its
-    /// element parent.
-    /// </summary>
-    internal int GetCollapsedTextNode(out XPathNode[] pageText)
-    {
-      pageText = this.pageText;
-      return this.idxText;
     }
 
     /// <summary>
@@ -260,15 +228,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     /// <summary>
-    /// Every document has an implicit xmlns:xml namespace node.
-    /// </summary>
-    internal int GetXmlNamespaceNode(out XPathNode[] pageXmlNmsp)
-    {
-      pageXmlNmsp = this.pageXmlNmsp;
-      return this.idxXmlNmsp;
-    }
-
-    /// <summary>
     /// Set the page and index where the implicit xmlns:xml node is stored.
     /// </summary>
     internal void SetXmlNamespaceNode(XPathNode[] pageXmlNmsp, int idxXmlNmsp)
@@ -286,27 +245,6 @@ namespace TextMonster.Xml.Xml_Reader
         this.mapNmsp = new Dictionary<XPathNodeRef, XPathNodeRef>();
 
       this.mapNmsp.Add(new XPathNodeRef(pageElem, idxElem), new XPathNodeRef(pageNmsp, idxNmsp));
-    }
-
-    /// <summary>
-    /// Lookup the namespace nodes associated with an element.
-    /// </summary>
-    internal int LookupNamespaces(XPathNode[] pageElem, int idxElem, out XPathNode[] pageNmsp)
-    {
-      XPathNodeRef nodeRef = new XPathNodeRef(pageElem, idxElem);
-
-      // Check whether this element has any local namespaces
-      if (this.mapNmsp == null || !this.mapNmsp.ContainsKey(nodeRef))
-      {
-        pageNmsp = null;
-        return 0;
-      }
-
-      // Yes, so return the page and index of the first local namespace node
-      nodeRef = this.mapNmsp[nodeRef];
-
-      pageNmsp = nodeRef.Page;
-      return nodeRef.Index;
     }
 
     /// <summary>

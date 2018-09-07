@@ -359,33 +359,5 @@ namespace TextMonster.Xml.Xml_Reader
         return String.Empty;
       }
     }
-    internal override XPathNodeType XPNodeType
-    {
-      get
-      {
-        if (IsNamespace)
-        {
-          return XPathNodeType.Namespace;
-        }
-        return XPathNodeType.Attribute;
-      }
-    }
-
-    internal override string XPLocalName
-    {
-      get
-      {
-        if (name.Prefix.Length == 0 && name.LocalName == "xmlns") return string.Empty;
-        return name.LocalName;
-      }
-    }
-
-    internal bool IsNamespace
-    {
-      get
-      {
-        return Ref.Equal(name.NamespaceURI, name.OwnerDocument.strReservedXmlns);
-      }
-    }
   }
 }

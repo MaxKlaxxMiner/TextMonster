@@ -51,31 +51,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    // Gets the attribute with the specified LocalName and NamespaceUri.
-    [System.Runtime.CompilerServices.IndexerName("ItemOf")]
-    public XmlAttribute this[string localName, string namespaceURI]
-    {
-      get
-      {
-        int hash = XmlName.GetHashCode(localName);
-
-        for (int i = 0; i < nodes.Count; i++)
-        {
-          XmlAttribute node = (XmlAttribute)nodes[i];
-
-          if (hash == node.LocalNameHash
-              && localName == node.LocalName
-              && namespaceURI == node.NamespaceURI)
-          {
-            return node;
-          }
-        }
-
-        return null;
-      }
-    }
-
-    // Adds a XmlNode using its Name property
     public override XmlNode SetNamedItem(XmlNode node)
     {
       if (node != null && !(node is XmlAttribute))

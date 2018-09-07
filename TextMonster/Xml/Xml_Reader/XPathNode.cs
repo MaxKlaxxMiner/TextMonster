@@ -10,7 +10,6 @@
     private uint props;                          // Node properties (broken down into bits below)
     private string value;                          // String value of node
 
-    private const uint NodeTypeMask = 0xF;
     private const uint HasAttributeBit = 0x10;
     private const uint HasContentChildBit = 0x20;
     private const uint HasElementChildBit = 0x40;
@@ -25,14 +24,6 @@
     public const int MaxLineNumberOffset = 0x3FFF;
     public const int MaxLinePositionOffset = 0xFFFF;
     public const int MaxCollapsedPositionOffset = 0xFF;
-
-    /// <summary>
-    /// Returns the type of this node
-    /// </summary>
-    public XPathNodeType NodeType
-    {
-      get { return (XPathNodeType)(this.props & NodeTypeMask); }
-    }
 
     /// <summary>
     /// Returns the namespace prefix of this node.  If this node has no prefix, then the empty string
@@ -53,42 +44,6 @@
     }
 
     /// <summary>
-    /// Returns the name of this node.  If this node has no name, then the empty string
-    /// will be returned (never null).
-    /// </summary>
-    public string Name
-    {
-      get
-      {
-        if (Prefix.Length == 0)
-        {
-          return LocalName;
-        }
-        else
-        {
-          return string.Concat(Prefix, ":", LocalName);
-        }
-      }
-    }
-
-    /// <summary>
-    /// Returns the namespace part of this node's name.  If this node has no name, then the empty string
-    /// will be returned (never null).
-    /// </summary>
-    public string NamespaceUri
-    {
-      get { return this.info.NamespaceUri; }
-    }
-
-    /// <summary>
-    /// Returns this node's document.
-    /// </summary>
-    public XPathDocument Document
-    {
-      get { return this.info.Document; }
-    }
-
-    /// <summary>
     /// Returns this node's source line number.
     /// </summary>
     public int LineNumber
@@ -102,18 +57,6 @@
     public int LinePosition
     {
       get { return this.info.LinePositionBase + (int)this.posOffset; }
-    }
-
-    /// <summary>
-    /// If this node is an element with collapsed text, then return the source line position of the node (the
-    /// source line number is the same as LineNumber).
-    /// </summary>
-    public int CollapsedLinePosition
-    {
-      get
-      {
-        return LinePosition + (int)(this.props >> CollapsedPositionShift);
-      }
     }
 
     /// <summary>
@@ -143,60 +86,12 @@
     }
 
     /// <summary>
-    /// Return true if this node is an xmlns:xml node.
-    /// </summary>
-    public bool IsXmlNamespaceNode
-    {
-      get
-      {
-        string localName = this.info.LocalName;
-        return NodeType == XPathNodeType.Namespace && localName.Length == 3 && localName == "xml";
-      }
-    }
-
-    /// <summary>
-    /// Returns true if this node has a sibling.
-    /// </summary>
-    public bool HasSibling
-    {
-      get { return this.idxSibling != 0; }
-    }
-
-    /// <summary>
-    /// Returns true if this node has a collapsed text node as its only content-typed child.
-    /// </summary>
-    public bool HasCollapsedText
-    {
-      get { return (this.props & HasCollapsedTextBit) != 0; }
-    }
-
-    /// <summary>
     /// Returns true if this node has at least one content-typed child (attributes and namespaces
     /// don't count).
     /// </summary>
     public bool HasContentChild
     {
       get { return (this.props & HasContentChildBit) != 0; }
-    }
-
-    /// <summary>
-    /// Returns true if this is an attribute or namespace node.
-    /// </summary>
-    public bool IsAttrNmsp
-    {
-      get
-      {
-        XPathNodeType xptyp = NodeType;
-        return xptyp == XPathNodeType.Attribute || xptyp == XPathNodeType.Namespace;
-      }
-    }
-
-    /// <summary>
-    /// Returns true if this is a text or whitespace node.
-    /// </summary>
-    public bool IsText
-    {
-      get { return XPathNavigator.IsText(NodeType); }
     }
 
     /// <summary>

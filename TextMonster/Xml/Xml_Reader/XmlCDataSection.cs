@@ -74,31 +74,11 @@ namespace TextMonster.Xml.Xml_Reader
       w.WriteCData(Data);
     }
 
-    internal override XPathNodeType XPNodeType
-    {
-      get
-      {
-        return XPathNodeType.Text;
-      }
-    }
-
     internal override bool IsText
     {
       get
       {
         return true;
-      }
-    }
-
-    public override XmlNode PreviousText
-    {
-      get
-      {
-        if (parentNode.IsText)
-        {
-          return parentNode;
-        }
-        return null;
       }
     }
   }

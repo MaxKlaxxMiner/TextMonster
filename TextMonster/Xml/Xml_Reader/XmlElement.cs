@@ -277,16 +277,6 @@ namespace TextMonster.Xml.Xml_Reader
       return (XmlAttribute)Attributes.SetNamedItem(newAttr);
     }
 
-    // Returns the XmlAttribute with the specified LocalName and NamespaceURI.
-    public virtual XmlAttribute GetAttributeNode(string localName, string namespaceURI)
-    {
-      //Debug.Assert(namespaceURI != null);
-      if (HasAttributes)
-        return Attributes[localName, namespaceURI];
-      return null;
-    }
-
-    // Determines whether the current node has the specified attribute.
     public virtual bool HasAttribute(string name)
     {
       return GetAttributeNode(name) != null;
@@ -462,9 +452,5 @@ namespace TextMonster.Xml.Xml_Reader
     {
       this.parentNode = node;
     }
-
-    internal override XPathNodeType XPNodeType { get { return XPathNodeType.Element; } }
-
-    internal override string XPLocalName { get { return LocalName; } }
   }
 }

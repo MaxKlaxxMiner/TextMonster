@@ -15,19 +15,7 @@ namespace TextMonster.Xml.Xml_Reader
     public abstract bool MoveNext();
     public abstract XPathNavigator Current { get; }
     public abstract int CurrentPosition { get; }
-    public virtual int Count
-    {
-      get
-      {
-        if (count == -1)
-        {
-          XPathNodeIterator clone = this.Clone();
-          while (clone.MoveNext()) ;
-          count = clone.CurrentPosition;
-        }
-        return count;
-      }
-    }
+
     public virtual IEnumerator GetEnumerator()
     {
       return new Enumerator(this);

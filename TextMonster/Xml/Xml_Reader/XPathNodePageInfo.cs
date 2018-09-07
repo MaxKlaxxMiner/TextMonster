@@ -44,7 +44,6 @@
     /// </summary>
     public XPathNode[] NextPage
     {
-      get { return this.pageNext; }
       set { this.pageNext = value; }
     }
   }
