@@ -77,7 +77,6 @@ namespace TextMonster.Xml.Xml_Reader
     public override String Prefix
     {
       get { return name.Prefix; }
-      set { name = name.OwnerDocument.AddAttrXmlName(value, LocalName, NamespaceURI, SchemaInfo); }
     }
 
     // Gets the type of the current node.

@@ -9,7 +9,6 @@ namespace TextMonster.Xml.Xml_Reader
   internal class TypeScope
   {
     Hashtable typeDescs = new Hashtable();
-    Hashtable arrayTypeDescs = new Hashtable();
     ArrayList typeMappings = new ArrayList();
 
     static Hashtable primitiveTypes = new Hashtable();
@@ -91,45 +90,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal static bool IsKnownType(Type type)
-    {
-      if (type == typeof(object))
-        return true;
-      if (type.IsEnum)
-        return false;
-      switch (Type.GetTypeCode(type))
-      {
-        case TypeCode.String: return true;
-        case TypeCode.Int32: return true;
-        case TypeCode.Boolean: return true;
-        case TypeCode.Int16: return true;
-        case TypeCode.Int64: return true;
-        case TypeCode.Single: return true;
-        case TypeCode.Double: return true;
-        case TypeCode.Decimal: return true;
-        case TypeCode.DateTime: return true;
-        case TypeCode.Byte: return true;
-        case TypeCode.SByte: return true;
-        case TypeCode.UInt16: return true;
-        case TypeCode.UInt32: return true;
-        case TypeCode.UInt64: return true;
-        case TypeCode.Char: return true;
-        default:
-          if (type == typeof(XmlQualifiedName))
-            return true;
-          else if (type == typeof(byte[]))
-            return true;
-          else if (type == typeof(Guid))
-            return true;
-          else if (type == typeof(XmlNode[]))
-          {
-            return true;
-          }
-          break;
-      }
-      return false;
-    }
-
     static void AddSoapEncodedTypes(string ns)
     {
       AddSoapEncodedPrimitive(typeof(string), "normalizedString", ns, "String", new XmlQualifiedName("normalizedString", XmlSchema.Namespace), TypeFlags.AmbiguousDataType | TypeFlags.CanBeAttributeValue | TypeFlags.CanBeElementValue | TypeFlags.Reference | TypeFlags.HasDefaultConstructor);
@@ -204,11 +164,6 @@ namespace TextMonster.Xml.Xml_Reader
       AddNonXsdPrimitive(type, dataTypeName, ns, formatterName, baseTypeName, new XmlSchemaFacet[0], flags);
     }
 
-    internal TypeDesc GetTypeDesc(string name, string ns)
-    {
-      return GetTypeDesc(name, ns, TypeFlags.CanBeElementValue | TypeFlags.CanBeTextValue | TypeFlags.CanBeAttributeValue);
-    }
-
     internal TypeDesc GetTypeDesc(string name, string ns, TypeFlags flags)
     {
       TypeDesc typeDesc = (TypeDesc)primitiveNames[name, ns];
@@ -230,11 +185,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal TypeDesc GetTypeDesc(Type type)
     {
       return GetTypeDesc(type, null, true, true);
-    }
-
-    internal TypeDesc GetTypeDesc(Type type, MemberInfo source)
-    {
-      return GetTypeDesc(type, source, true, true);
     }
 
     internal TypeDesc GetTypeDesc(Type type, MemberInfo source, bool directReference)
@@ -262,42 +212,6 @@ namespace TextMonster.Xml.Xml_Reader
 
 
       return typeDesc;
-    }
-
-    internal TypeDesc GetArrayTypeDesc(Type type)
-    {
-      TypeDesc typeDesc = (TypeDesc)arrayTypeDescs[type];
-      if (typeDesc == null)
-      {
-        typeDesc = GetTypeDesc(type);
-        if (!typeDesc.IsArrayLike)
-          typeDesc = ImportTypeDesc(type, null, false);
-        typeDesc.CheckSupported();
-        arrayTypeDescs.Add(type, typeDesc);
-      }
-      return typeDesc;
-    }
-
-    internal TypeMapping GetTypeMappingFromTypeDesc(TypeDesc typeDesc)
-    {
-      foreach (TypeMapping typeMapping in TypeMappings)
-      {
-        if (typeMapping.TypeDesc == typeDesc)
-          return typeMapping;
-      }
-      return null;
-    }
-
-    internal Type GetTypeFromTypeDesc(TypeDesc typeDesc)
-    {
-      if (typeDesc.Type != null)
-        return typeDesc.Type;
-      foreach (DictionaryEntry de in typeDescs)
-      {
-        if (de.Value == typeDesc)
-          return de.Key as Type;
-      }
-      return null;
     }
 
     TypeDesc ImportTypeDesc(Type type, MemberInfo memberInfo, bool directReference)

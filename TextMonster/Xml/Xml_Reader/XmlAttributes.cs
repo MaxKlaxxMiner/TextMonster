@@ -144,80 +144,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal static object GetAttr(ICustomAttributeProvider provider, Type attrType)
-    {
-      object[] attrs = provider.GetCustomAttributes(attrType, false);
-      if (attrs.Length == 0) return null;
-      return attrs[0];
-    }
-
-    /// <include file='doc\XmlAttributes.uex' path='docs/doc[@for="XmlAttributes.XmlElements"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlElementAttributes XmlElements
-    {
-      get { return xmlElements; }
-    }
-
-    /// <include file='doc\XmlAttributes.uex' path='docs/doc[@for="XmlAttributes.XmlAttribute"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlAttributeAttribute XmlAttribute
-    {
-      get { return xmlAttribute; }
-      set { xmlAttribute = value; }
-    }
-
-    /// <include file='doc\XmlAttributes.uex' path='docs/doc[@for="XmlAttributes.XmlEnum"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlEnumAttribute XmlEnum
-    {
-      get { return xmlEnum; }
-      set { xmlEnum = value; }
-    }
-
-    /// <include file='doc\XmlAttributes.uex' path='docs/doc[@for="XmlAttributes.XmlText"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlTextAttribute XmlText
-    {
-      get { return xmlText; }
-    }
-
-    /// <include file='doc\XmlAttributes.uex' path='docs/doc[@for="XmlAttributes.XmlArray"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlArrayAttribute XmlArray
-    {
-      get { return xmlArray; }
-      set { xmlArray = value; }
-    }
-
-    /// <include file='doc\XmlAttributes.uex' path='docs/doc[@for="XmlAttributes.XmlArrayItems"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlArrayItemAttributes XmlArrayItems
-    {
-      get { return xmlArrayItems; }
-    }
-
-    /// <include file='doc\XmlAttributes.uex' path='docs/doc[@for="XmlAttributes.XmlDefaultValue"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public object XmlDefaultValue
-    {
-      get { return xmlDefaultValue; }
-      set { xmlDefaultValue = value; }
-    }
-
     /// <include file='doc\XmlAttributes.uex' path='docs/doc[@for="XmlAttributes.XmlIgnore"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
@@ -225,57 +151,6 @@ namespace TextMonster.Xml.Xml_Reader
     public bool XmlIgnore
     {
       get { return xmlIgnore; }
-    }
-
-    /// <include file='doc\XmlAttributes.uex' path='docs/doc[@for="XmlAttributes.XmlType"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlTypeAttribute XmlType
-    {
-      get { return xmlType; }
-    }
-
-    /// <include file='doc\XmlAttributes.uex' path='docs/doc[@for="XmlAttributes.XmlRoot"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlRootAttribute XmlRoot
-    {
-      get { return xmlRoot; }
-    }
-
-    /// <include file='doc\XmlAttributes.uex' path='docs/doc[@for="XmlAttributes.XmlAnyElement"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlAnyElementAttributes XmlAnyElements
-    {
-      get { return xmlAnyElements; }
-    }
-
-    /// <include file='doc\XmlAttributes.uex' path='docs/doc[@for="XmlAttributes.XmlAnyAttribute"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlAnyAttributeAttribute XmlAnyAttribute
-    {
-      get { return xmlAnyAttribute; }
-    }
-
-    /// <include file='doc\XmlAttributes.uex' path='docs/doc[@for="XmlAttributes.XmlChoiceIdentifier"]/*' />
-    public XmlChoiceIdentifierAttribute XmlChoiceIdentifier
-    {
-      get { return xmlChoiceIdentifier; }
-    }
-
-    /// <include file='doc\XmlAttributes.uex' path='docs/doc[@for="XmlAttributes.Xmlns"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public bool Xmlns
-    {
-      get { return xmlns; }
     }
   }
 }

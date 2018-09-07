@@ -428,15 +428,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public object ValidateAttribute(string localName, string namespaceUri, string attributeValue, XmlSchemaInfo schemaInfo)
-    {
-      if (attributeValue == null)
-      {
-        throw new ArgumentNullException("attributeValue");
-      }
-      return ValidateAttribute(localName, namespaceUri, null, attributeValue, schemaInfo);
-    }
-
     public object ValidateAttribute(string localName, string namespaceUri, XmlValueGetter attributeValue, XmlSchemaInfo schemaInfo)
     {
       if (attributeValue == null)

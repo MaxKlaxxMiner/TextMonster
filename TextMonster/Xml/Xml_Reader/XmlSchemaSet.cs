@@ -599,19 +599,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.CopyTo"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public void CopyTo(XmlSchema[] schemas, int index)
-    {
-      if (schemas == null)
-        throw new ArgumentNullException("schemas");
-      if (index < 0 || index > schemas.Length - 1)
-        throw new ArgumentOutOfRangeException("index");
-      this.schemas.Values.CopyTo(schemas, index);
-    }
-
     /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.Schemas1"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>

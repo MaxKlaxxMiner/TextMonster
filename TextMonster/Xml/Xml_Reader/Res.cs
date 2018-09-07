@@ -44,7 +44,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Xml_InvalidVersionNumber = "Xml_InvalidVersionNumber";
     internal const string Xml_DupAttributeName = "Xml_DupAttributeName";
     internal const string Xml_BadDTDLocation = "Xml_BadDTDLocation";
-    internal const string Xml_ElementNotFound = "Xml_ElementNotFound";
     internal const string Xml_ElementNotFoundNs = "Xml_ElementNotFoundNs";
     internal const string Xml_PartialContentNodeTypeNotSupportedEx = "Xml_PartialContentNodeTypeNotSupportedEx";
     internal const string Xml_MultipleDTDsProvided = "Xml_MultipleDTDsProvided";
@@ -93,7 +92,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Xml_DoubleBaseUri = "Xml_DoubleBaseUri";
     internal const string Xml_NotEnoughSpaceForSurrogatePair = "Xml_NotEnoughSpaceForSurrogatePair";
     internal const string Xml_EmptyUrl = "Xml_EmptyUrl";
-    internal const string Xml_UnexpectedNodeInSimpleContent = "Xml_UnexpectedNodeInSimpleContent";
     internal const string Xml_InvalidWhitespaceCharacter = "Xml_InvalidWhitespaceCharacter";
     internal const string Xml_IncompatibleConformanceLevel = "Xml_IncompatibleConformanceLevel";
     internal const string Xml_LimitExceeded = "Xml_LimitExceeded";
@@ -187,7 +185,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string XmlConvert_NotOneCharString = "XmlConvert_NotOneCharString";
     internal const string Sch_ParEntityRefNesting = "Sch_ParEntityRefNesting";
     internal const string Sch_NotTokenString = "Sch_NotTokenString";
-    internal const string Sch_XsdDateTimeCompare = "Sch_XsdDateTimeCompare";
     internal const string Sch_InvalidDateTimeOption = "Sch_InvalidDateTimeOption";
     internal const string Sch_StandAloneNormalization = "Sch_StandAloneNormalization";
     internal const string Sch_UnSpecifiedDefaultAttributeInExternalStandalone = "Sch_UnSpecifiedDefaultAttributeInExternalStandalone";
@@ -259,11 +256,8 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Sch_DupAttributeGroup = "Sch_DupAttributeGroup";
     internal const string Sch_DupNotation = "Sch_DupNotation";
     internal const string Sch_DefaultFixedAttributes = "Sch_DefaultFixedAttributes";
-    internal const string Sch_FixedInRef = "Sch_FixedInRef";
-    internal const string Sch_FixedDefaultInRef = "Sch_FixedDefaultInRef";
     internal const string Sch_DupXsdElement = "Sch_DupXsdElement";
     internal const string Sch_ForbiddenAttribute = "Sch_ForbiddenAttribute";
-    internal const string Sch_AttributeIgnored = "Sch_AttributeIgnored";
     internal const string Sch_ElementRef = "Sch_ElementRef";
     internal const string Sch_TypeMutualExclusive = "Sch_TypeMutualExclusive";
     internal const string Sch_ElementNameRef = "Sch_ElementNameRef";

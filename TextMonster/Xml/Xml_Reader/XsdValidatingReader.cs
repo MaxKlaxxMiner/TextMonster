@@ -707,7 +707,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public override object ReadElementContentAsObject()
+    public virtual object ReadElementContentAsObject()
     {
       if (this.NodeType != XmlNodeType.Element)
       {
@@ -719,7 +719,7 @@ namespace TextMonster.Xml.Xml_Reader
 
     }
 
-    public override bool ReadElementContentAsBoolean()
+    public virtual bool ReadElementContentAsBoolean()
     {
       if (this.NodeType != XmlNodeType.Element)
       {
@@ -754,7 +754,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public override DateTime ReadElementContentAsDateTime()
+    public virtual DateTime ReadElementContentAsDateTime()
     {
       if (this.NodeType != XmlNodeType.Element)
       {
@@ -789,7 +789,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public override double ReadElementContentAsDouble()
+    public virtual double ReadElementContentAsDouble()
     {
       if (this.NodeType != XmlNodeType.Element)
       {
@@ -894,7 +894,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public override int ReadElementContentAsInt()
+    public virtual int ReadElementContentAsInt()
     {
       if (this.NodeType != XmlNodeType.Element)
       {
@@ -929,7 +929,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public override long ReadElementContentAsLong()
+    public virtual long ReadElementContentAsLong()
     {
       if (this.NodeType != XmlNodeType.Element)
       {
@@ -964,7 +964,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public override string ReadElementContentAsString()
+    public virtual string ReadElementContentAsString()
     {
       if (this.NodeType != XmlNodeType.Element)
       {
@@ -999,7 +999,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public override object ReadElementContentAs(Type returnType, IXmlNamespaceResolver namespaceResolver)
+    public virtual object ReadElementContentAs(Type returnType, IXmlNamespaceResolver namespaceResolver)
     {
       if (this.NodeType != XmlNodeType.Element)
       {

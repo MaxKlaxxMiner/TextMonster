@@ -1,9 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.Versioning;
-using System.Security;
-using System.Security.Permissions;
-using Microsoft.Win32;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -673,32 +670,6 @@ namespace TextMonster.Xml.Xml_Reader
 
       s_enableLegacyXmlSettings = true;
       return s_enableLegacyXmlSettings.Value;
-    }
-
-    [RegistryPermission(SecurityAction.Assert, Unrestricted = true)]
-    [SecuritySafeCritical]
-    private static bool ReadSettingsFromRegistry(RegistryKey hive, ref bool value)
-    {
-      const string regValueName = "EnableLegacyXmlSettings";
-      const string regValuePath = @"SOFTWARE\Microsoft\.NETFramework\XML";
-
-      try
-      {
-        using (RegistryKey xmlRegKey = hive.OpenSubKey(regValuePath, false))
-        {
-          if (xmlRegKey != null)
-          {
-            if (xmlRegKey.GetValueKind(regValueName) == RegistryValueKind.DWord)
-            {
-              value = ((int)xmlRegKey.GetValue(regValueName)) == 1;
-              return true;
-            }
-          }
-        }
-      }
-      catch { /* use the default if we couldn't read the key */ }
-
-      return false;
     }
   }
 }

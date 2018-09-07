@@ -596,22 +596,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     public abstract bool MoveToPrevious();
 
-    public virtual bool MoveToFirst()
-    {
-      switch (NodeType)
-      {
-        case XPathNodeType.Attribute:
-        case XPathNodeType.Namespace:
-        // MoveToFirst should only succeed for content-typed nodes
-        return false;
-      }
-
-      if (!MoveToParent())
-        return false;
-
-      return MoveToFirstChild();
-    }
-
     public abstract bool MoveToFirstChild();
 
     public abstract bool MoveToParent();
@@ -658,11 +642,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
 
       return false;
-    }
-
-    public virtual bool MoveToFollowing(string localName, string namespaceURI)
-    {
-      return MoveToFollowing(localName, namespaceURI, null);
     }
 
     public virtual bool MoveToFollowing(string localName, string namespaceURI, XPathNavigator end)
@@ -726,11 +705,6 @@ namespace TextMonster.Xml.Xml_Reader
              || namespaceURI != NamespaceURI);
 
       return true;
-    }
-
-    public virtual bool MoveToFollowing(XPathNodeType type)
-    {
-      return MoveToFollowing(type, null);
     }
 
     public virtual bool MoveToFollowing(XPathNodeType type, XPathNavigator end)

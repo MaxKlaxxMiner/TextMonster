@@ -211,14 +211,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     /// <summary>
-    /// Returns XmlTypeCode of the value being stored
-    /// </summary>
-    public XmlTypeCode TypeCode
-    {
-      get { return typeCodes[(int)InternalTypeCode]; }
-    }
-
-    /// <summary>
     /// Returns the year part of XsdDateTime
     /// The returned value is integer between 1 and 9999
     /// </summary>
@@ -428,29 +420,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     /// <summary>
-    /// Compares two DateTime values, returning an integer that indicates
-    /// their relationship.
-    /// </summary>
-    public static int Compare(XsdDateTime left, XsdDateTime right)
-    {
-      if (left.extra == right.extra)
-      {
-        return DateTime.Compare(left.dt, right.dt);
-      }
-      else
-      {
-        // Xsd types should be the same for it to be comparable
-        if (left.InternalTypeCode != right.InternalTypeCode)
-        {
-          throw new ArgumentException(Res.GetString(Res.Sch_XsdDateTimeCompare, left.TypeCode, right.TypeCode));
-        }
-        // Convert both to UTC
-        return DateTime.Compare(left.GetZuluDateTime(), right.GetZuluDateTime());
-
-      }
-    }
-
-    /// <summary>
     /// Serialization to a string
     /// </summary>
     public override string ToString()
@@ -599,35 +568,6 @@ namespace TextMonster.Xml.Xml_Reader
       text[start] = (char)(value / 10 + '0');
       text[start + 1] = (char)(value % 10 + '0');
     }
-
-    // Auxiliary for compare. 
-    // Returns UTC DateTime
-    private DateTime GetZuluDateTime()
-    {
-      switch (InternalKind)
-      {
-        case XsdDateTimeKind.Zulu:
-        return dt;
-        case XsdDateTimeKind.LocalEastOfZulu:
-        return dt.Subtract(new TimeSpan(ZoneHour, ZoneMinute, 0));
-        case XsdDateTimeKind.LocalWestOfZulu:
-        return dt.Add(new TimeSpan(ZoneHour, ZoneMinute, 0));
-        default:
-        return dt.ToUniversalTime();
-      }
-    }
-
-    private static readonly XmlTypeCode[] typeCodes = {
-            XmlTypeCode.DateTime,
-            XmlTypeCode.Time,
-            XmlTypeCode.Date,
-            XmlTypeCode.GYearMonth,
-            XmlTypeCode.GYear,
-            XmlTypeCode.GMonthDay,
-            XmlTypeCode.GDay,
-            XmlTypeCode.GMonth
-        };
-
 
     // Parsing string according to XML schema spec
     struct Parser

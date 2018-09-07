@@ -33,14 +33,5 @@ namespace TextMonster.Xml.Xml_Reader
       get { return dataType == null ? string.Empty : dataType; }
       set { dataType = value; }
     }
-
-    /// <include file='doc\XmlAttributeAttribute.uex' path='docs/doc[@for="XmlAttributeAttribute.Form"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlSchemaForm Form
-    {
-      get { return form; }
-    }
   }
 }

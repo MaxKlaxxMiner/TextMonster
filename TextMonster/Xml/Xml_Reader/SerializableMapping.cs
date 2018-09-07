@@ -78,18 +78,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal SerializableMapping Next
-    {
-      get { return next; }
-      set { next = value; }
-    }
-
-    internal Type Type
-    {
-      get { return type; }
-      set { type = value; }
-    }
-
     internal XmlSchemaSet Schemas
     {
       get

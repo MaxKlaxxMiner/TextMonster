@@ -309,12 +309,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return impl.Namespaces; }
     }
 
-    public bool Normalization
-    {
-      get { return impl.Normalization; }
-      set { impl.Normalization = value; }
-    }
-
     public WhitespaceHandling WhitespaceHandling
     {
       get { return impl.WhitespaceHandling; }

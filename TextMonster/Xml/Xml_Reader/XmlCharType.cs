@@ -378,11 +378,6 @@ namespace TextMonster.Xml.Xml_Reader
       return (charProperties[ch] & fWhitespace) != 0;
     }
 
-    public bool IsExtender(char ch)
-    {
-      return (ch == 0xb7);
-    }
-
     // NOTE: This method will not be inlined (because it uses byte* charProperties)
     public bool IsNCNameSingleChar(char ch)
     {
@@ -397,11 +392,6 @@ namespace TextMonster.Xml.Xml_Reader
     public bool IsNameSingleChar(char ch)
     {
       return IsNCNameSingleChar(ch) || ch == ':';
-    }
-
-    public bool IsStartNameSingleChar(char ch)
-    {
-      return IsStartNCNameSingleChar(ch) || ch == ':';
     }
 
     public bool IsCharData(char ch)
@@ -425,16 +415,6 @@ namespace TextMonster.Xml.Xml_Reader
       return (charProperties[ch] & fText) != 0;
     }
 
-    // AttrValueChar = CharData - { 0xA, 0xD, 0x9, '<', '>', '&', '\'', '"' }
-    // NOTE: This method will not be inlined (because it uses byte* charProperties)
-    internal bool IsAttributeValueChar(char ch)
-    {
-      return (charProperties[ch] & fAttrValue) != 0;
-    }
-
-    // XML 1.0 Fourth Edition definitions
-    //
-    // NOTE: This method will not be inlined (because it uses byte* charProperties)
     public bool IsLetter(char ch)
     {
       return (charProperties[ch] & fLetter) != 0;
@@ -459,24 +439,12 @@ namespace TextMonster.Xml.Xml_Reader
       return IsNCNameCharXml4e(ch) || ch == ':';
     }
 
-    // This method uses the XML 4th edition name character ranges
-    public bool IsStartNameCharXml4e(char ch)
-    {
-      return IsStartNCNameCharXml4e(ch) || ch == ':';
-    }
-
     // Digit methods
     public static bool IsDigit(char ch)
     {
       return InRange(ch, 0x30, 0x39);
     }
 
-    public static bool IsHexDigit(char ch)
-    {
-      return InRange(ch, 0x30, 0x39) || InRange(ch, 'a', 'f') || InRange(ch, 'A', 'F');
-    }
-
-    // Surrogate methods
     internal static bool IsHighSurrogate(int ch)
     {
       return InRange(ch, SurHighStart, SurHighEnd);

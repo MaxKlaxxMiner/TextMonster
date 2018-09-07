@@ -682,10 +682,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal FastXmlReader OuterReader
     {
-      get
-      {
-        return outerReader;
-      }
       set
       {
         outerReader = value;

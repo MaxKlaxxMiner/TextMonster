@@ -24,15 +24,6 @@ namespace TextMonster.Xml.Xml_Reader
       this.elementName = elementName;
     }
 
-    /// <include file='doc\XmlRootAttribute.uex' path='docs/doc[@for="XmlRootAttribute.ElementName"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public string ElementName
-    {
-      get { return elementName == null ? string.Empty : elementName; }
-    }
-
     /// <include file='doc\XmlRootAttribute.uex' path='docs/doc[@for="XmlRootAttribute.Namespace"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
@@ -41,25 +32,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
       get { return ns; }
       set { ns = value; }
-    }
-
-    /// <include file='doc\XmlRootAttribute.uex' path='docs/doc[@for="XmlRootAttribute.IsNullable"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public bool IsNullable
-    {
-      get { return nullable; }
-    }
-
-    internal bool IsNullableSpecified
-    {
-      get { return nullableSpecified; }
-    }
-
-    internal string Key
-    {
-      get { return (ns == null ? String.Empty : ns) + ":" + ElementName + ":" + nullable.ToString(); }
     }
   }
 }

@@ -59,14 +59,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     /// <summary>
-    /// Construct an XsdDuration from a TimeSpan value.
-    /// </summary>
-    public XsdDuration(TimeSpan timeSpan)
-      : this(timeSpan, DurationType.Duration)
-    {
-    }
-
-    /// <summary>
     /// Construct an XsdDuration from a TimeSpan value that represents an xsd:duration, an xdt:dayTimeDuration, or
     /// an xdt:yearMonthDuration.
     /// </summary>

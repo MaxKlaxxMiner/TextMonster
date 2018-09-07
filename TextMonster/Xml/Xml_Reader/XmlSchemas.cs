@@ -313,35 +313,6 @@ namespace TextMonster.Xml.Xml_Reader
       return false;
     }
 
-    static string ItemName(XmlSchemaObject o)
-    {
-      if (o is XmlSchemaNotation)
-      {
-        return ((XmlSchemaNotation)o).Name;
-      }
-      else if (o is XmlSchemaGroup)
-      {
-        return ((XmlSchemaGroup)o).Name;
-      }
-      else if (o is XmlSchemaElement)
-      {
-        return ((XmlSchemaElement)o).Name;
-      }
-      else if (o is XmlSchemaType)
-      {
-        return ((XmlSchemaType)o).Name;
-      }
-      else if (o is XmlSchemaAttributeGroup)
-      {
-        return ((XmlSchemaAttributeGroup)o).Name;
-      }
-      else if (o is XmlSchemaAttribute)
-      {
-        return ((XmlSchemaAttribute)o).Name;
-      }
-      return null;
-    }
-
     internal static XmlQualifiedName GetParentName(XmlSchemaObject item)
     {
       while (item.Parent != null)

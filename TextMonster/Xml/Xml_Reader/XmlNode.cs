@@ -661,101 +661,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    // DOM Level 2
-
-    // Puts all XmlText nodes in the full depth of the sub-tree
-    // underneath this XmlNode into a "normal" form where only
-    // markup (e.g., tags, comments, processing instructions, CDATA sections,
-    // and entity references) separates XmlText nodes, that is, there
-    // are no adjacent XmlText nodes.
-    public virtual void Normalize()
-    {
-      XmlNode firstChildTextLikeNode = null;
-      StringBuilder sb = new StringBuilder();
-      for (XmlNode crtChild = this.FirstChild; crtChild != null; )
-      {
-        XmlNode nextChild = crtChild.NextSibling;
-        switch (crtChild.NodeType)
-        {
-          case XmlNodeType.Text:
-          case XmlNodeType.Whitespace:
-          case XmlNodeType.SignificantWhitespace:
-          {
-            sb.Append(crtChild.Value);
-            XmlNode winner = NormalizeWinner(firstChildTextLikeNode, crtChild);
-            if (winner == firstChildTextLikeNode)
-            {
-              this.RemoveChild(crtChild);
-            }
-            else
-            {
-              if (firstChildTextLikeNode != null)
-                this.RemoveChild(firstChildTextLikeNode);
-              firstChildTextLikeNode = crtChild;
-            }
-            break;
-          }
-          case XmlNodeType.Element:
-          {
-            crtChild.Normalize();
-            goto default;
-          }
-          default:
-          {
-            if (firstChildTextLikeNode != null)
-            {
-              firstChildTextLikeNode.Value = sb.ToString();
-              firstChildTextLikeNode = null;
-            }
-            sb.Remove(0, sb.Length);
-            break;
-          }
-        }
-        crtChild = nextChild;
-      }
-      if (firstChildTextLikeNode != null && sb.Length > 0)
-        firstChildTextLikeNode.Value = sb.ToString();
-    }
-
-    private XmlNode NormalizeWinner(XmlNode firstNode, XmlNode secondNode)
-    {
-      //first node has the priority
-      if (firstNode == null)
-        return secondNode;
-      Debug.Assert(firstNode.NodeType == XmlNodeType.Text
-                  || firstNode.NodeType == XmlNodeType.SignificantWhitespace
-                  || firstNode.NodeType == XmlNodeType.Whitespace
-                  || secondNode.NodeType == XmlNodeType.Text
-                  || secondNode.NodeType == XmlNodeType.SignificantWhitespace
-                  || secondNode.NodeType == XmlNodeType.Whitespace);
-      if (firstNode.NodeType == XmlNodeType.Text)
-        return firstNode;
-      if (secondNode.NodeType == XmlNodeType.Text)
-        return secondNode;
-      if (firstNode.NodeType == XmlNodeType.SignificantWhitespace)
-        return firstNode;
-      if (secondNode.NodeType == XmlNodeType.SignificantWhitespace)
-        return secondNode;
-      if (firstNode.NodeType == XmlNodeType.Whitespace)
-        return firstNode;
-      if (secondNode.NodeType == XmlNodeType.Whitespace)
-        return secondNode;
-      Debug.Assert(true, "shouldn't have fall through here.");
-      return null;
-    }
-
-    // Test if the DOM implementation implements a specific feature.
-    public virtual bool Supports(string feature, string version)
-    {
-      if (String.Compare("XML", feature, StringComparison.OrdinalIgnoreCase) == 0)
-      {
-        if (version == null || version == "1.0" || version == "2.0")
-          return true;
-      }
-      return false;
-    }
-
-    // Gets the namespace URI of this node.
     public virtual string NamespaceURI
     {
       get { return string.Empty; }
@@ -765,7 +670,6 @@ namespace TextMonster.Xml.Xml_Reader
     public virtual string Prefix
     {
       get { return string.Empty; }
-      set { }
     }
 
     // Gets the name of the node without the namespace prefix.
@@ -806,12 +710,6 @@ namespace TextMonster.Xml.Xml_Reader
         }
       }
       return false;
-    }
-
-    // Creates a duplicate of this node.
-    public virtual XmlNode Clone()
-    {
-      return this.CloneNode(true);
     }
 
     object ICloneable.Clone()

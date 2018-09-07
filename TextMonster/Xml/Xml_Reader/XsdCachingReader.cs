@@ -272,33 +272,6 @@ namespace TextMonster.Xml.Xml_Reader
       return attributeEvents[i].RawValue;
     }
 
-    // Gets the value of the attribute with the specified index.
-    public override string this[int i]
-    {
-      get
-      {
-        return GetAttribute(i);
-      }
-    }
-
-    // Gets the value of the attribute with the specified Name.
-    public override string this[string name]
-    {
-      get
-      {
-        return GetAttribute(name);
-      }
-    }
-
-    // Gets the value of the attribute with the specified LocalName and NamespaceURI.
-    public override string this[string name, string namespaceURI]
-    {
-      get
-      {
-        return GetAttribute(name, namespaceURI);
-      }
-    }
-
     // Moves to the attribute with the specified Name.
     public override bool MoveToAttribute(string name)
     {

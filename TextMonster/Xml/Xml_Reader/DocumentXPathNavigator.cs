@@ -737,30 +737,6 @@ namespace TextMonster.Xml.Xml_Reader
       return true;
     }
 
-    public override bool MoveToFirst()
-    {
-      if (source.NodeType == XmlNodeType.Attribute)
-      {
-        return false;
-      }
-      XmlNode parent = ParentNode(source);
-      if (parent == null)
-      {
-        return false;
-      }
-      XmlNode sibling = FirstChild(parent);
-      while (!IsValidChild(parent, sibling))
-      {
-        sibling = NextSibling(sibling);
-        if (sibling == null)
-        {
-          return false;
-        }
-      }
-      source = sibling;
-      return true;
-    }
-
     public override bool MoveToFirstChild()
     {
       XmlNode child;

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Versioning;
 using System.Security.Permissions;
 using System.Text;
 
@@ -391,42 +390,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    [ResourceConsumption(ResourceScope.Machine)]
-    [ResourceExposure(ResourceScope.Machine)]
-    internal XmlWriter CreateWriter(string outputFileName)
-    {
-      if (outputFileName == null)
-      {
-        throw new ArgumentNullException("outputFileName");
-      }
-
-      // need to clone the settigns so that we can set CloseOutput to true to make sure the stream gets closed in the end
-      XmlWriterSettings newSettings = this;
-      if (!newSettings.CloseOutput)
-      {
-        newSettings = newSettings.Clone();
-        newSettings.CloseOutput = true;
-      }
-
-      FileStream fs = null;
-      try
-      {
-        // open file stream
-        fs = new FileStream(outputFileName, FileMode.Create, FileAccess.Write, FileShare.Read);
-
-        // create writer
-        return newSettings.CreateWriter(fs);
-      }
-      catch
-      {
-        if (fs != null)
-        {
-          fs.Close();
-        }
-        throw;
-      }
-    }
-
     internal XmlWriter CreateWriter(Stream output)
     {
       if (output == null)
@@ -583,17 +546,6 @@ namespace TextMonster.Xml.Xml_Reader
       return writer;
     }
 
-    internal XmlWriter CreateWriter(XmlWriter output)
-    {
-      if (output == null)
-      {
-        throw new ArgumentNullException("output");
-      }
-
-      return AddConformanceWrapper(output);
-    }
-
-
     internal bool ReadOnly
     {
       set
@@ -639,80 +591,5 @@ namespace TextMonster.Xml.Xml_Reader
 
       isReadOnly = false;
     }
-
-    private XmlWriter AddConformanceWrapper(XmlWriter baseWriter)
-    {
-      ConformanceLevel confLevel = ConformanceLevel.Auto;
-      XmlWriterSettings baseWriterSettings = baseWriter.Settings;
-      bool checkValues = false;
-      bool checkNames = false;
-      bool replaceNewLines = false;
-      bool needWrap = false;
-
-      if (baseWriterSettings == null)
-      {
-        // assume the V1 writer already do all conformance checking; 
-        // wrap only if NewLineHandling == Replace or CheckCharacters is true
-        if (this.newLineHandling == NewLineHandling.Replace)
-        {
-          replaceNewLines = true;
-          needWrap = true;
-        }
-        if (this.checkCharacters)
-        {
-          checkValues = true;
-          needWrap = true;
-        }
-      }
-      else
-      {
-        if (this.conformanceLevel != baseWriterSettings.ConformanceLevel)
-        {
-          confLevel = this.ConformanceLevel;
-          needWrap = true;
-        }
-        if (this.checkCharacters && !baseWriterSettings.CheckCharacters)
-        {
-          checkValues = true;
-          checkNames = confLevel == ConformanceLevel.Auto;
-          needWrap = true;
-        }
-        if (this.newLineHandling == NewLineHandling.Replace &&
-             baseWriterSettings.NewLineHandling == NewLineHandling.None)
-        {
-          replaceNewLines = true;
-          needWrap = true;
-        }
-      }
-
-      XmlWriter writer = baseWriter;
-
-      if (needWrap)
-      {
-        if (confLevel != ConformanceLevel.Auto)
-        {
-          writer = new XmlWellFormedWriter(writer, this);
-        }
-        if (checkValues || replaceNewLines)
-        {
-          writer = new XmlCharCheckingWriter(writer, checkValues, checkNames, replaceNewLines, this.NewLineChars);
-        }
-      }
-
-      if (this.IsQuerySpecific && (baseWriterSettings == null || !baseWriterSettings.IsQuerySpecific))
-      {
-        // Create QueryOutputWriterV1 if CData sections or DocType need to be tracked
-        writer = new QueryOutputWriterV1(writer, this);
-      }
-
-      return writer;
-    }
-
-    //
-    // Internal methods
-    //
-
-    internal void GetObjectData(object writer) { }
-    internal XmlWriterSettings(object reader) { }
   }
 }

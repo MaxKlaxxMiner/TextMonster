@@ -27,11 +27,6 @@ namespace TextMonster.Xml.Xml_Reader
       this.ignore = mapping.ignore;
     }
 
-    internal bool IsParticle
-    {
-      get { return (elements != null && elements.Length > 0); }
-    }
-
     internal TypeDesc TypeDesc
     {
       get { return typeDesc; }
@@ -64,7 +59,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal XmlnsAccessor Xmlns
     {
-      get { return xmlns; }
       set { xmlns = value; }
     }
 

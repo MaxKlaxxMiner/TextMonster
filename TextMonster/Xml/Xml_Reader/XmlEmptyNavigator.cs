@@ -108,11 +108,6 @@
       return false;
     }
 
-    public override bool MoveToFirst()
-    {
-      return false;
-    }
-
     public override bool MoveToFirstAttribute()
     {
       return false;

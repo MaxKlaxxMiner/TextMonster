@@ -67,11 +67,6 @@ namespace TextMonster.Xml.Xml_Reader
       return XmlConvert.ToString(value, "yyyy-MM-ddTHH:mm:ss.fffffffzzzzzz");
     }
 
-    internal static string FromChar(char value)
-    {
-      return XmlConvert.ToString((UInt16)value);
-    }
-
     internal static string FromXmlName(string name)
     {
       return XmlConvert.EncodeName(name);
@@ -104,15 +99,6 @@ namespace TextMonster.Xml.Xml_Reader
         }
         return sb.ToString();
       }
-    }
-
-    internal static void WriteArrayBase64(XmlWriter writer, byte[] inData, int start, int count)
-    {
-      if (inData == null || count == 0)
-      {
-        return;
-      }
-      writer.WriteBase64(inData, start, count);
     }
 
     internal static string FromEnum(long val, string[] vals, long[] ids, string typeName)

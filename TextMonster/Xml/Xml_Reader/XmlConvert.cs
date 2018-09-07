@@ -510,93 +510,6 @@ namespace TextMonster.Xml.Xml_Reader
       return null;
     }
 
-    public static string VerifyWhitespace(string content)
-    {
-      if (content == null)
-      {
-        throw new ArgumentNullException("content");
-      }
-
-      // returns the position of invalid character or -1
-      int pos = xmlCharType.IsOnlyWhitespaceWithPos(content);
-      if (pos != -1)
-      {
-        throw new XmlException(Res.Xml_InvalidWhitespaceCharacter, XmlException.BuildCharExceptionArgs(content, pos), 0, pos + 1);
-      }
-      return content;
-    }
-
-    //
-    // Verification methods for single characters and surrogates
-    // 
-    // In cases where the direct call into XmlCharType would not get automatically inlined (because of the use of byte* field), 
-    // direct access to the XmlCharType.charProperties is used instead (= manual inlining).
-    //
-
-    // Start name character types - as defined in Namespaces XML 1.0 spec (second edition) production [6] NCNameStartChar
-    //                              combined with the production [4] NameStartChar of XML 1.0 spec
-    public static unsafe bool IsStartNCNameChar(char ch)
-    {
-      return (xmlCharType.charProperties[ch] & XmlCharType.fNCStartNameSC) != 0;
-    }
-
-    // Name character types - as defined in Namespaces XML 1.0 spec (second edition) production [6] NCNameStartChar
-    //                        combined with the production [4] NameChar of XML 1.0 spec
-    public static unsafe bool IsNCNameChar(char ch)
-    {
-      return (xmlCharType.charProperties[ch] & XmlCharType.fNCNameSC) != 0;
-    }
-
-    // Valid XML character – as defined in XML 1.0 spec (fifth edition) production [2] Char
-    public static unsafe bool IsXmlChar(char ch)
-    {
-      return (xmlCharType.charProperties[ch] & XmlCharType.fCharData) != 0;
-    }
-
-    public static bool IsXmlSurrogatePair(char lowChar, char highChar)
-    {
-      return XmlCharType.IsHighSurrogate(highChar) && XmlCharType.IsLowSurrogate(lowChar);
-    }
-
-    // Valid PUBLIC ID character – as defined in XML 1.0 spec (fifth edition) production [13] PublidChar
-    public static bool IsPublicIdChar(char ch)
-    {
-      return xmlCharType.IsPubidChar(ch);
-    }
-
-    // Valid Xml white space – as defined in XML 1.0 spec (fifth edition) production [3] S
-    public static unsafe bool IsWhitespaceChar(char ch)
-    {
-      return (xmlCharType.charProperties[ch] & XmlCharType.fWhitespace) != 0;
-    }
-
-    // Value convertors:
-    //
-    // String representation of Base types in XML (xsd) sometimes differ from
-    // one common language runtime offer and for all types it has to be locale independent.
-    // o -- means that XmlConvert pass through to common language runtime converter with InvariantInfo FormatInfo
-    // x -- means we doing something special to make a convertion.
-    //
-    // From:  To: Bol Chr SBy Byt I16 U16 I32 U32 I64 U64 Sgl Dbl Dec Dat Tim Str uid
-    // ------------------------------------------------------------------------------
-    // Boolean                                                                 x
-    // Char                                                                    o
-    // SByte                                                                   o
-    // Byte                                                                    o
-    // Int16                                                                   o
-    // UInt16                                                                  o
-    // Int32                                                                   o
-    // UInt32                                                                  o
-    // Int64                                                                   o
-    // UInt64                                                                  o
-    // Single                                                                  x
-    // Double                                                                  x
-    // Decimal                                                                 o
-    // DateTime                                                                x
-    // String      x   o   o   o   o   o   o   o   o   o   o   x   x   o   o       x
-    // Guid                                                                    x
-    // -----------------------------------------------------------------------------
-
     ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToString"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
@@ -604,15 +517,6 @@ namespace TextMonster.Xml.Xml_Reader
     public static string ToString(Boolean value)
     {
       return value ? "true" : "false";
-    }
-
-    ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToString1"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public static string ToString(Char value)
-    {
-      return value.ToString(null);
     }
 
     ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToString2"]/*' />
@@ -728,15 +632,6 @@ namespace TextMonster.Xml.Xml_Reader
         return ("-0");
       }
       return value.ToString("R", NumberFormatInfo.InvariantInfo);
-    }
-
-    ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToString11"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public static string ToString(TimeSpan value)
-    {
-      return new XsdDuration(value).ToString();
     }
 
     ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToString12"]/*' />

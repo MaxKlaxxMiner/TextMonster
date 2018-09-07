@@ -82,21 +82,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return hasSimpleContent; }
     }
 
-    internal bool HasXmlnsMember
-    {
-      get
-      {
-        StructMapping mapping = this;
-        while (mapping != null)
-        {
-          if (mapping.XmlnsMember != null)
-            return true;
-          mapping = mapping.BaseMapping;
-        }
-        return false;
-      }
-    }
-
     internal MemberMapping[] Members
     {
       get { return members; }
@@ -106,13 +91,11 @@ namespace TextMonster.Xml.Xml_Reader
     internal MemberMapping XmlnsMember
     {
       get { return xmlnsMember; }
-      set { xmlnsMember = value; }
     }
 
     internal bool IsOpenModel
     {
       get { return openModel; }
-      set { openModel = value; }
     }
 
     internal CodeIdentifiers Scope
@@ -151,54 +134,6 @@ namespace TextMonster.Xml.Xml_Reader
         }
       }
       return null;
-    }
-    internal bool Declares(MemberMapping member, string parent)
-    {
-      StructMapping m;
-      return (FindDeclaringMapping(member, out m, parent) != null);
-    }
-
-    internal void SetContentModel(TextAccessor text, bool hasElements)
-    {
-      if (BaseMapping == null || BaseMapping.TypeDesc.IsRoot)
-      {
-        hasSimpleContent = !hasElements && text != null && !text.Mapping.IsList;
-      }
-      else if (BaseMapping.HasSimpleContent)
-      {
-        if (text != null || hasElements)
-        {
-          // we can only extent a simleContent type with attributes
-          throw new InvalidOperationException(Res.GetString(Res.XmlIllegalSimpleContentExtension, TypeDesc.FullName, BaseMapping.TypeDesc.FullName));
-        }
-        else
-        {
-          hasSimpleContent = true;
-        }
-      }
-      else
-      {
-        hasSimpleContent = false;
-      }
-      if (!hasSimpleContent && text != null && !text.Mapping.TypeDesc.CanBeTextValue)
-      {
-        throw new InvalidOperationException(Res.GetString(Res.XmlIllegalTypedTextAttribute, TypeDesc.FullName, text.Name, text.Mapping.TypeDesc.FullName));
-      }
-    }
-
-    internal bool HasExplicitSequence()
-    {
-      if (members != null)
-      {
-        for (int i = 0; i < members.Length; i++)
-        {
-          if (members[i].IsParticle && members[i].IsSequence)
-          {
-            return true;
-          }
-        }
-      }
-      return (baseMapping != null && baseMapping.HasExplicitSequence());
     }
 
     internal void SetSequence()

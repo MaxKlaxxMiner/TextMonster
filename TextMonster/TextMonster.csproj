@@ -49,7 +49,6 @@
     <Compile Include="Xml\Xml_Reader\Accessor.cs" />
     <Compile Include="Xml\Xml_Reader\AccessorMapping.cs" />
     <Compile Include="Xml\Xml_Reader\ArrayMapping.cs" />
-    <Compile Include="Xml\Xml_Reader\ArrayModel.cs" />
     <Compile Include="Xml\Xml_Reader\AttributeAccessor.cs" />
     <Compile Include="Xml\Xml_Reader\AttributeQuery.cs" />
     <Compile Include="Xml\Xml_Reader\BinHexDecoder.cs" />
@@ -83,16 +82,9 @@
     <Compile Include="Xml\Xml_Reader\Root.cs" />
     <Compile Include="Xml\Xml_Reader\XmlTextEncoder.cs" />
     <Compile Include="Xml\Xml_Reader\IncrementalReadCharsDecoder.cs" />
-    <Compile Include="Xml\Xml_Reader\ConstantModel.cs" />
-    <Compile Include="Xml\Xml_Reader\EnumModel.cs" />
-    <Compile Include="Xml\Xml_Reader\ImportStructWorkItem.cs" />
     <Compile Include="Xml\Xml_Reader\IncrementalReadDummyDecoder.cs" />
     <Compile Include="Xml\Xml_Reader\ModelScope.cs" />
-    <Compile Include="Xml\Xml_Reader\PrimitiveModel.cs" />
     <Compile Include="Xml\Xml_Reader\SafeAsciiDecoder.cs" />
-    <Compile Include="Xml\Xml_Reader\SpecialModel.cs" />
-    <Compile Include="Xml\Xml_Reader\StructModel.cs" />
-    <Compile Include="Xml\Xml_Reader\TypeModel.cs" />
     <Compile Include="Xml\Xml_Reader\Ucs4Decoder.cs" />
     <Compile Include="Xml\Xml_Reader\Ucs4Decoder1234.cs" />
     <Compile Include="Xml\Xml_Reader\Ucs4Decoder2143.cs" />
@@ -211,7 +203,6 @@
     <Compile Include="Xml\Xml_Reader\XmlCustomFormatter.cs" />
     <Compile Include="Xml\Xml_Reader\XmlDocumentFragment.cs" />
     <Compile Include="Xml\Xml_Reader\XmlElementAttributes.cs" />
-    <Compile Include="Xml\Xml_Reader\XmlMappingAccess.cs" />
     <Compile Include="Xml\Xml_Reader\XmlNodeChangedEventHandler.cs" />
     <Compile Include="Xml\Xml_Reader\XmlnsAccessor.cs" />
     <Compile Include="Xml\Xml_Reader\XmlSchemaEnumerator.cs" />

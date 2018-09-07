@@ -56,33 +56,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal MemberInfo CheckSpecifiedMemberInfo
     {
       get { return checkSpecifiedMemberInfo; }
-      set { checkSpecifiedMemberInfo = value; }
-    }
-
-    internal MethodInfo CheckShouldPersistMethodInfo
-    {
-      set { checkShouldPersistMethodInfo = value; }
-    }
-
-    internal bool IsReturnValue
-    {
-      set { isReturnValue = value; }
-    }
-
-    internal bool ReadOnly
-    {
-      set { readOnly = value; }
-    }
-
-    internal bool IsSequence
-    {
-      get { return sequenceId >= 0; }
-    }
-
-    internal int SequenceId
-    {
-      get { return sequenceId; }
-      set { sequenceId = value; }
     }
 
     internal MemberMapping Clone()

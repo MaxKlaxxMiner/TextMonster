@@ -49,22 +49,5 @@ namespace TextMonster.Xml.Xml_Reader
       }
       set { namespaces = value; }
     }
-
-    internal string LookupPrefix(string ns)
-    {
-      if (string.IsNullOrEmpty(ns))
-        return null;
-      if (namespaces == null || namespaces.Count == 0)
-        return null;
-
-      foreach (string prefix in namespaces.Keys)
-      {
-        if (!string.IsNullOrEmpty(prefix) && (string)namespaces[prefix] == ns)
-        {
-          return prefix;
-        }
-      }
-      return null;
-    }
   }
 }

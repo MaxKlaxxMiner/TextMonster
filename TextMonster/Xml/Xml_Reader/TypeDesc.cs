@@ -114,16 +114,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return (flags & TypeFlags.Reference) == 0; }
     }
 
-    internal bool CanBeAttributeValue
-    {
-      get { return (flags & TypeFlags.CanBeAttributeValue) != 0; }
-    }
-
-    internal bool CanBeElementValue
-    {
-      get { return (flags & TypeFlags.CanBeElementValue) != 0; }
-    }
-
     internal bool CanBeTextValue
     {
       get { return (flags & TypeFlags.CanBeTextValue) != 0; }
@@ -132,12 +122,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal bool IsMixed
     {
       get { return isMixed || CanBeTextValue; }
-      set { isMixed = value; }
-    }
-
-    internal bool IsSpecial
-    {
-      get { return (flags & TypeFlags.Special) != 0; }
     }
 
     internal bool IsAmbiguousDataType
@@ -170,24 +154,9 @@ namespace TextMonster.Xml.Xml_Reader
       get { return (flags & TypeFlags.Abstract) != 0; }
     }
 
-    internal bool IsOptionalValue
-    {
-      get { return (flags & TypeFlags.OptionalValue) != 0; }
-    }
-
-    internal bool IsVoid
-    {
-      get { return kind == TypeKind.Void; }
-    }
-
     internal bool IsClass
     {
       get { return kind == TypeKind.Class; }
-    }
-
-    internal bool IsStructLike
-    {
-      get { return kind == TypeKind.Struct || kind == TypeKind.Class; }
     }
 
     internal bool IsArrayLike
@@ -210,11 +179,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return kind == TypeKind.Primitive; }
     }
 
-    internal bool IsEnum
-    {
-      get { return kind == TypeKind.Enum; }
-    }
-
     internal bool IsNullable
     {
       get { return !IsValueType; }
@@ -231,19 +195,6 @@ namespace TextMonster.Xml.Xml_Reader
       set { exception = value; }
     }
 
-    internal TypeDesc GetNullableTypeDesc(Type type)
-    {
-      if (IsOptionalValue)
-        return this;
-
-      if (nullableTypeDesc == null)
-      {
-        nullableTypeDesc = new TypeDesc("NullableOf" + this.name, "System.Nullable`1[" + this.fullName + "]", null, TypeKind.Struct, this, this.flags | TypeFlags.OptionalValue, this.formatterName);
-        nullableTypeDesc.type = type;
-      }
-
-      return nullableTypeDesc;
-    }
     internal void CheckSupported()
     {
       if (IsUnsupported)
@@ -274,7 +225,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal TypeDesc ArrayElementTypeDesc
     {
-      get { return arrayElementTypeDesc; }
       set { arrayElementTypeDesc = value; }
     }
 

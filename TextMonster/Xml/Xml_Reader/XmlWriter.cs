@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
-using System.Runtime.Versioning;
-using System.Text;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -59,23 +56,10 @@ namespace TextMonster.Xml.Xml_Reader
       WriteStartElement(null, localName, (string)null);
     }
 
-    // Closes one element and pops the corresponding namespace scope.
-
     public abstract void WriteEndElement();
-
-    // Closes one element and pops the corresponding namespace scope. Writes out a full end element tag, e.g. </element>.
 
     public abstract void WriteFullEndElement();
 
-    // Writes out the attribute with the specified LocalName, value, and NamespaceURI.
-    public void WriteAttributeString(string localName, string ns, string value)
-    {
-      WriteStartAttribute(null, localName, ns);
-      WriteString(value);
-      WriteEndAttribute();
-    }
-
-    // Writes out the attribute with the specified LocalName and value.
     public void WriteAttributeString(string localName, string value)
     {
       WriteStartAttribute(null, localName, (string)null);
@@ -561,17 +545,6 @@ namespace TextMonster.Xml.Xml_Reader
       WriteEndElement();
     }
 
-    // Writes out an attribute with the specified name, namespace URI, and string value.
-    public void WriteElementString(string prefix, String localName, String ns, String value)
-    {
-      WriteStartElement(prefix, localName, ns);
-      if (null != value && 0 != value.Length)
-      {
-        WriteString(value);
-      }
-      WriteEndElement();
-    }
-
     public void Dispose()
     {
       Dispose(true);
@@ -608,36 +581,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    //
-    // Static methods for creating writers
-    //
-    // Creates an XmlWriter for writing into the provided file.
-    [ResourceConsumption(ResourceScope.Machine)]
-    [ResourceExposure(ResourceScope.Machine)]
-    public static XmlWriter Create(string outputFileName)
-    {
-      return Create(outputFileName, null);
-    }
-
-    // Creates an XmlWriter for writing into the provided file with the specified settings.
-    [ResourceConsumption(ResourceScope.Machine)]
-    [ResourceExposure(ResourceScope.Machine)]
-    public static XmlWriter Create(string outputFileName, XmlWriterSettings settings)
-    {
-      if (settings == null)
-      {
-        settings = new XmlWriterSettings();
-      }
-      return settings.CreateWriter(outputFileName);
-    }
-
-    // Creates an XmlWriter for writing into the provided stream.
-    public static XmlWriter Create(Stream output)
-    {
-      return Create(output, null);
-    }
-
-    // Creates an XmlWriter for writing into the provided stream with the specified settings.
     public static XmlWriter Create(Stream output, XmlWriterSettings settings)
     {
       if (settings == null)
@@ -647,13 +590,6 @@ namespace TextMonster.Xml.Xml_Reader
       return settings.CreateWriter(output);
     }
 
-    // Creates an XmlWriter for writing into the provided TextWriter.
-    public static XmlWriter Create(TextWriter output)
-    {
-      return Create(output, null);
-    }
-
-    // Creates an XmlWriter for writing into the provided TextWriter with the specified settings.
     public static XmlWriter Create(TextWriter output, XmlWriterSettings settings)
     {
       if (settings == null)
@@ -662,42 +598,5 @@ namespace TextMonster.Xml.Xml_Reader
       }
       return settings.CreateWriter(output);
     }
-
-    // Creates an XmlWriter for writing into the provided StringBuilder.
-    public static XmlWriter Create(StringBuilder output)
-    {
-      return Create(output, null);
-    }
-
-    // Creates an XmlWriter for writing into the provided StringBuilder with the specified settings.
-    public static XmlWriter Create(StringBuilder output, XmlWriterSettings settings)
-    {
-      if (settings == null)
-      {
-        settings = new XmlWriterSettings();
-      }
-      if (output == null)
-      {
-        throw new ArgumentNullException("output");
-      }
-      return settings.CreateWriter(new StringWriter(output, CultureInfo.InvariantCulture));
-    }
-
-    // Creates an XmlWriter wrapped around the provided XmlWriter with the default settings.
-    public static XmlWriter Create(XmlWriter output)
-    {
-      return Create(output, null);
-    }
-
-    // Creates an XmlWriter wrapped around the provided XmlWriter with the specified settings.
-    public static XmlWriter Create(XmlWriter output, XmlWriterSettings settings)
-    {
-      if (settings == null)
-      {
-        settings = new XmlWriterSettings();
-      }
-      return settings.CreateWriter(output);
-    }
-
   }
 }
