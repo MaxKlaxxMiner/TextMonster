@@ -413,11 +413,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal XmlTextReaderImpl(Stream input, XmlNameTable nt)
-      : this(string.Empty, input, nt)
-    {
-    }
-
     internal XmlTextReaderImpl(string url, Stream input, XmlNameTable nt)
       : this(nt)
     {
@@ -551,40 +546,6 @@ namespace TextMonster.Xml.Xml_Reader
       reportedBaseUri = ps.baseUriStr;
 
       parsingFunction = ParsingFunction.OpenUrl;
-    }
-
-    // Initializes a new instance of the XmlTextReaderImpl class with the specified arguments.
-    // This constructor is used when creating XmlTextReaderImpl via XmlReader.Create
-    internal XmlTextReaderImpl(string uriStr, XmlReaderSettings settings, XmlParserContext context, XmlResolver uriResolver)
-      : this(settings.GetXmlResolver(), settings, context)
-    {
-
-      Uri baseUri = uriResolver.ResolveUri(null, uriStr);
-      string baseUriStr = baseUri.ToString();
-
-      // get BaseUri from XmlParserContext
-      if (context != null)
-      {
-        if (context.BaseURI != null && context.BaseURI.Length > 0 &&
-            !UriEqual(baseUri, baseUriStr, context.BaseURI, settings.GetXmlResolver()))
-        {
-          if (baseUriStr.Length > 0)
-          {
-            Throw(Res.Xml_DoubleBaseUri);
-          }
-          baseUriStr = context.BaseURI;
-        }
-      }
-
-      reportedBaseUri = baseUriStr;
-      this.closeInput = true;
-      laterInitParam = new LaterInitParam();
-      laterInitParam.inputUriStr = uriStr;
-      laterInitParam.inputbaseUri = baseUri;
-      laterInitParam.inputContext = context;
-      laterInitParam.inputUriResolver = uriResolver;
-      laterInitParam.initType = InitInputType.UriString;
-      FinishInitUriString();
     }
 
     private void FinishInitUriString()
@@ -727,20 +688,6 @@ namespace TextMonster.Xml.Xml_Reader
       laterInitParam = null;
     }
 
-    // Initializes a new instance of the XmlTextReaderImpl class for fragment parsing.
-    // This constructor is used by XmlBinaryReader for nested text XML
-    internal XmlTextReaderImpl(string xmlFragment, XmlParserContext context, XmlReaderSettings settings)
-      : this(null, settings, context)
-    {
-      InitStringInput(string.Empty, Encoding.Unicode, xmlFragment);
-      reportedBaseUri = ps.baseUriStr;
-      reportedEncoding = ps.encoding;
-    }
-
-    //
-    // XmlReader members
-    //
-    // Returns the current settings of the reader
     public override XmlReaderSettings Settings
     {
       get

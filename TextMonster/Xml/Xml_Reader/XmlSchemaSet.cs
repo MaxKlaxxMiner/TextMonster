@@ -267,20 +267,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    /// <summary>
-    /// Table of all types extensions
-    /// </summary>
-    internal XmlSchemaObjectTable TypeExtensions
-    {
-      get
-      {
-        if (typeExtensions == null)
-        {
-          typeExtensions = new XmlSchemaObjectTable();
-        }
-        return typeExtensions;
-      }
-    }
     //Public Methods
 
 
@@ -760,22 +746,6 @@ namespace TextMonster.Xml.Xml_Reader
       return schema;
     }
 
-    private void SetDtdProcessing(FastXmlReader reader)
-    {
-      if (reader.Settings != null)
-      {
-        this.readerSettings.DtdProcessing = reader.Settings.DtdProcessing;
-      }
-      else
-      {
-        XmlTextReader v1Reader = reader as XmlTextReader;
-        if (v1Reader != null)
-        {
-          this.readerSettings.DtdProcessing = v1Reader.DtdProcessing;
-        }
-      }
-    }
-
     private void AddSchemaToSet(XmlSchema schema)
     {
       // Due to bug 644477 - this method is tightly coupled (THE CODE IS BASICALLY COPIED) to Reprocess 
@@ -933,15 +903,6 @@ namespace TextMonster.Xml.Xml_Reader
         }
       }
       return null;
-    }
-
-    private void ClearTables()
-    {
-      GlobalElements.Clear();
-      GlobalAttributes.Clear();
-      GlobalTypes.Clear();
-      SubstitutionGroups.Clear();
-      TypeExtensions.Clear();
     }
 
     internal bool PreprocessSchema(ref XmlSchema schema, string targetNamespace)

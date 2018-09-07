@@ -58,34 +58,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal XmlNode ReadCurrentNode(XmlDocument doc, FastXmlReader reader)
-    {
-      this.doc = doc;
-      this.reader = reader;
-      // WS are optional only for loading (see XmlDocument.PreserveWhitespace)
-      this.preserveWhitespace = true;
-      if (doc == null)
-        throw new ArgumentException(Res.GetString(Res.Xdom_Load_NoDocument));
-      if (reader == null)
-        throw new ArgumentException(Res.GetString(Res.Xdom_Load_NoReader));
-
-      if (reader.ReadState == ReadState.Initial)
-      {
-        reader.Read();
-      }
-      if (reader.ReadState == ReadState.Interactive)
-      {
-        XmlNode n = LoadNode(true);
-
-        // Move to the next node
-        if (n.NodeType != XmlNodeType.Attribute)
-          reader.Read();
-
-        return n;
-      }
-      return null;
-    }
-
     private XmlNode LoadNode(bool skipOverWhitespace)
     {
       FastXmlReader r = this.reader;

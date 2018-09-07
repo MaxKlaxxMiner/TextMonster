@@ -40,14 +40,6 @@
     }
 
     /// <summary>
-    /// Return the previous node page in the document.
-    /// </summary>
-    public XPathNode[] PreviousPage
-    {
-      get { return this.pagePrev; }
-    }
-
-    /// <summary>
     /// Return the next node page in the document.
     /// </summary>
     public XPathNode[] NextPage

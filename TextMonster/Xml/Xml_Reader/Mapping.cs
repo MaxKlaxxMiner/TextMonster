@@ -5,10 +5,5 @@ namespace TextMonster.Xml.Xml_Reader
     bool isSoap;
 
     internal Mapping() { }
-
-    protected Mapping(Mapping mapping)
-    {
-      this.isSoap = mapping.isSoap;
-    }
   }
 }

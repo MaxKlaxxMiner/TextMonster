@@ -19,10 +19,5 @@ namespace TextMonster.Xml.Xml_Reader
       get { return memberIds; }
       set { memberIds = value; }
     }
-
-    internal MemberInfo MemberInfo
-    {
-      get { return memberInfo; }
-    }
   }
 }

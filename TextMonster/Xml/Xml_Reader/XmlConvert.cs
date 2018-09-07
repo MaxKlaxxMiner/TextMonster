@@ -456,36 +456,6 @@ namespace TextMonster.Xml.Xml_Reader
       return null;
     }
 
-    /// <include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.VerifyNMTOKEN"]/*' />
-    /// <devdoc>
-    ///    <para>
-    ///    </para>
-    /// </devdoc>
-    public static string VerifyNMTOKEN(string name)
-    {
-      return VerifyNMTOKEN(name, ExceptionType.XmlException);
-    }
-
-    internal static string VerifyNMTOKEN(string name, ExceptionType exceptionType)
-    {
-      if (name == null)
-      {
-        throw new ArgumentNullException("name");
-      }
-      if (name.Length == 0)
-      {
-        throw CreateException(Res.Xml_InvalidNmToken, name, exceptionType);
-      }
-
-      int endPos = ValidateNames.ParseNmtokenNoNamespaces(name, 0);
-
-      if (endPos != name.Length)
-      {
-        throw CreateException(Res.Xml_BadNameChar, XmlException.BuildCharExceptionArgs(name, endPos), exceptionType, 0, endPos + 1);
-      }
-      return name;
-    }
-
     internal static Exception TryVerifyNMTOKEN(string name)
     {
       if (name == null || name.Length == 0)
@@ -634,16 +604,6 @@ namespace TextMonster.Xml.Xml_Reader
       return value.ToString("R", NumberFormatInfo.InvariantInfo);
     }
 
-    ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToString12"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    [Obsolete("Use XmlConvert.ToString() that takes in XmlDateTimeSerializationMode")]
-    public static string ToString(DateTime value)
-    {
-      return ToString(value, "yyyy-MM-ddTHH:mm:ss.fffffffzzzzzz");
-    }
-
     ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToString13"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
@@ -686,20 +646,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
       XsdDateTime xsdDateTime = new XsdDateTime(value);
       return xsdDateTime.ToString();
-    }
-
-    public static string ToString(DateTimeOffset value, string format)
-    {
-      return value.ToString(format, DateTimeFormatInfo.InvariantInfo);
-    }
-
-    ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToString15"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public static string ToString(Guid value)
-    {
-      return value.ToString();
     }
 
     ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToBoolean"]/*' />
@@ -788,15 +734,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
       return null;
     }
-    ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToSByte"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    [CLSCompliant(false)]
-    public static SByte ToSByte(string s)
-    {
-      return SByte.Parse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo);
-    }
 
     internal static Exception TryToSByte(string s, out SByte result)
     {
@@ -805,15 +742,6 @@ namespace TextMonster.Xml.Xml_Reader
         return new FormatException(Res.GetString(Res.XmlConvert_BadFormat, s, "SByte"));
       }
       return null;
-    }
-
-    ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToInt16"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public static Int16 ToInt16(string s)
-    {
-      return Int16.Parse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo);
     }
 
     internal static Exception TryToInt16(string s, out Int16 result)
@@ -861,15 +789,6 @@ namespace TextMonster.Xml.Xml_Reader
       return null;
     }
 
-    ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToByte"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public static Byte ToByte(string s)
-    {
-      return Byte.Parse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo);
-    }
-
     internal static Exception TryToByte(string s, out Byte result)
     {
       if (!Byte.TryParse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
@@ -877,16 +796,6 @@ namespace TextMonster.Xml.Xml_Reader
         return new FormatException(Res.GetString(Res.XmlConvert_BadFormat, s, "Byte"));
       }
       return null;
-    }
-
-    ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToUInt16"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    [CLSCompliant(false)]
-    public static UInt16 ToUInt16(string s)
-    {
-      return UInt16.Parse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo);
     }
 
     internal static Exception TryToUInt16(string s, out UInt16 result)
@@ -898,17 +807,6 @@ namespace TextMonster.Xml.Xml_Reader
       return null;
     }
 
-    ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToUInt32"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    [CLSCompliant(false)]
-    public static UInt32 ToUInt32(string s)
-    {
-      return UInt32.Parse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo);
-    }
-
-
     internal static Exception TryToUInt32(string s, out UInt32 result)
     {
       if (!UInt32.TryParse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
@@ -916,16 +814,6 @@ namespace TextMonster.Xml.Xml_Reader
         return new FormatException(Res.GetString(Res.XmlConvert_BadFormat, s, "UInt32"));
       }
       return null;
-    }
-
-    ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToUInt64"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    [CLSCompliant(false)]
-    public static UInt64 ToUInt64(string s)
-    {
-      return UInt64.Parse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo);
     }
 
     internal static Exception TryToUInt64(string s, out UInt64 result)
@@ -1057,55 +945,10 @@ namespace TextMonster.Xml.Xml_Reader
       return Double.NaN;
     }
 
-    internal static String ToXPathString(Object value)
-    {
-      string s = value as string;
-      if (s != null)
-      {
-        return s;
-      }
-      else if (value is double)
-      {
-        return ((double)value).ToString("R", NumberFormatInfo.InvariantInfo);
-      }
-      else if (value is bool)
-      {
-        return (bool)value ? "true" : "false";
-      }
-      else
-      {
-        return Convert.ToString(value, NumberFormatInfo.InvariantInfo);
-      }
-    }
-
     internal static Double XPathRound(Double value)
     {
       double temp = Math.Round(value);
       return (value - temp == 0.5) ? temp + 1 : temp;
-    }
-
-    ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToTimeSpan"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public static TimeSpan ToTimeSpan(string s)
-    {
-      XsdDuration duration;
-      TimeSpan timeSpan;
-
-      try
-      {
-        duration = new XsdDuration(s);
-      }
-      catch (Exception)
-      {
-        // Remap exception for v1 compatibility
-        throw new FormatException(Res.GetString(Res.XmlConvert_BadFormat, s, "TimeSpan"));
-      }
-
-      timeSpan = duration.ToTimeSpan();
-
-      return timeSpan;
     }
 
     internal static Exception TryToTimeSpan(string s, out TimeSpan result)
@@ -1125,74 +968,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    // use AllDateTimeFormats property to access the formats
     static volatile string[] s_allDateTimeFormats;
-
-    // NOTE: Do not use this property for reference comparison. It may not be unique.
-    static string[] AllDateTimeFormats
-    {
-      get
-      {
-        if (s_allDateTimeFormats == null)
-        {
-          CreateAllDateTimeFormats();
-        }
-        return s_allDateTimeFormats;
-      }
-    }
-
-    static void CreateAllDateTimeFormats()
-    {
-      if (s_allDateTimeFormats == null)
-      {
-        // no locking; the array is immutable so it's not a problem that it may get initialized more than once
-        s_allDateTimeFormats = new string[] {
-                    "yyyy-MM-ddTHH:mm:ss.FFFFFFFzzzzzz", //dateTime
-                    "yyyy-MM-ddTHH:mm:ss.FFFFFFF",
-                    "yyyy-MM-ddTHH:mm:ss.FFFFFFFZ",
-                    "HH:mm:ss.FFFFFFF",                  //time 
-                    "HH:mm:ss.FFFFFFFZ",
-                    "HH:mm:ss.FFFFFFFzzzzzz",
-                    "yyyy-MM-dd",                   // date
-                    "yyyy-MM-ddZ",
-                    "yyyy-MM-ddzzzzzz",
-                    "yyyy-MM",                      // yearMonth
-                    "yyyy-MMZ",
-                    "yyyy-MMzzzzzz",
-                    "yyyy",                         // year
-                    "yyyyZ",
-                    "yyyyzzzzzz",
-                    "--MM-dd",                      // monthDay
-                    "--MM-ddZ",
-                    "--MM-ddzzzzzz",
-                    "---dd",                        // day
-                    "---ddZ",
-                    "---ddzzzzzz",
-                    "--MM--",                       // month
-                    "--MM--Z",
-                    "--MM--zzzzzz",
-                };
-      }
-    }
-
-    ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToDateTime"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    [Obsolete("Use XmlConvert.ToDateTime() that takes in XmlDateTimeSerializationMode")]
-    public static DateTime ToDateTime(string s)
-    {
-      return ToDateTime(s, AllDateTimeFormats);
-    }
-
-    ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToDateTime1"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public static DateTime ToDateTime(string s, string format)
-    {
-      return DateTime.ParseExact(s, format, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.AllowLeadingWhite | DateTimeStyles.AllowTrailingWhite);
-    }
 
     ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToDateTime2"]/*' />
     /// <devdoc>
@@ -1233,35 +1009,6 @@ namespace TextMonster.Xml.Xml_Reader
         throw new ArgumentException(Res.GetString(Res.Sch_InvalidDateTimeOption, dateTimeOption, "dateTimeOption"));
       }
       return dt;
-    }
-
-    public static DateTimeOffset ToDateTimeOffset(string s)
-    {
-      if (s == null)
-      {
-        throw new ArgumentNullException("s");
-      }
-      XsdDateTime xsdDateTime = new XsdDateTime(s, XsdDateTimeFlags.AllXsd);
-      DateTimeOffset dateTimeOffset = (DateTimeOffset)xsdDateTime;
-      return dateTimeOffset;
-    }
-
-    public static DateTimeOffset ToDateTimeOffset(string s, string format)
-    {
-      if (s == null)
-      {
-        throw new ArgumentNullException("s");
-      }
-      return DateTimeOffset.ParseExact(s, format, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.AllowLeadingWhite | DateTimeStyles.AllowTrailingWhite);
-    }
-
-    public static DateTimeOffset ToDateTimeOffset(string s, string[] formats)
-    {
-      if (s == null)
-      {
-        throw new ArgumentNullException("s");
-      }
-      return DateTimeOffset.ParseExact(s, formats, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.AllowLeadingWhite | DateTimeStyles.AllowTrailingWhite);
     }
 
     ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToGuid"]/*' />

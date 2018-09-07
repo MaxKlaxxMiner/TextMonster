@@ -700,27 +700,6 @@ namespace TextMonster.Xml.Xml_Reader
       throw new InvalidOperationException(Res.GetString(Res.XmlInvalidDefaultValue, value.ToString(), pm.TypeDesc.Name));
     }
 
-    void ExportRootIfNecessary(TypeScope typeScope)
-    {
-      if (!needToExportRoot)
-        return;
-      foreach (TypeMapping mapping in typeScope.TypeMappings)
-      {
-        if (mapping is StructMapping && mapping.TypeDesc.IsRoot)
-        {
-          ExportDerivedMappings((StructMapping)mapping);
-        }
-        else if (mapping is ArrayMapping)
-        {
-          ExportArrayMapping((ArrayMapping)mapping, mapping.Namespace, null);
-        }
-        else if (mapping is SerializableMapping)
-        {
-          ExportSpecialMapping((SerializableMapping)mapping, mapping.Namespace, false, null);
-        }
-      }
-    }
-
     XmlQualifiedName ExportStructMapping(StructMapping mapping, string ns, XmlSchemaElement element)
     {
       if (mapping.TypeDesc.IsRoot)

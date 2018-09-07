@@ -83,7 +83,6 @@
     <Compile Include="Xml\Xml_Reader\XmlTextEncoder.cs" />
     <Compile Include="Xml\Xml_Reader\IncrementalReadCharsDecoder.cs" />
     <Compile Include="Xml\Xml_Reader\IncrementalReadDummyDecoder.cs" />
-    <Compile Include="Xml\Xml_Reader\ModelScope.cs" />
     <Compile Include="Xml\Xml_Reader\SafeAsciiDecoder.cs" />
     <Compile Include="Xml\Xml_Reader\Ucs4Decoder.cs" />
     <Compile Include="Xml\Xml_Reader\Ucs4Decoder1234.cs" />
@@ -100,7 +99,6 @@
     <Compile Include="Xml\Xml_Reader\DebuggerDisplayXmlNodeProxy.cs" />
     <Compile Include="Xml\Xml_Reader\WhitespaceHandling.cs" />
     <Compile Include="Xml\Xml_Reader\XmlCharCheckingReader.cs" />
-    <Compile Include="Xml\Xml_Reader\XmlCharCheckingReaderWithNS.cs" />
     <Compile Include="Xml\Xml_Reader\XmlChildEnumerator.cs" />
     <Compile Include="Xml\Xml_Reader\XmlChildNodes.cs" />
     <Compile Include="Xml\Xml_Reader\XmlFacetComparer.cs" />
@@ -118,7 +116,6 @@
     <Compile Include="Xml\Xml_Reader\DocumentOrderQuery.cs" />
     <Compile Include="Xml\Xml_Reader\DocumentXmlWriterType.cs" />
     <Compile Include="Xml\Xml_Reader\DocumentSchemaValidator.cs" />
-    <Compile Include="Xml\Xml_Reader\DocumentXmlWriter.cs" />
     <Compile Include="Xml\Xml_Reader\DocumentXPathNavigator.cs" />
     <Compile Include="Xml\Xml_Reader\DocumentXPathNodeIterator_AllElemChildren.cs" />
     <Compile Include="Xml\Xml_Reader\DocumentXPathNodeIterator_AllElemChildren_AndSelf.cs" />
@@ -188,7 +185,6 @@
     <Compile Include="Xml\Xml_Reader\UnionExpr.cs" />
     <Compile Include="Xml\Xml_Reader\UrtTypes.cs" />
     <Compile Include="Xml\Xml_Reader\ValueQuery.cs" />
-    <Compile Include="Xml\Xml_Reader\CompiledXpathExpr.cs" />
     <Compile Include="Xml\Xml_Reader\StringFunctions.cs" />
     <Compile Include="Xml\Xml_Reader\Variable.cs" />
     <Compile Include="Xml\Xml_Reader\VariableQuery.cs" />
@@ -212,7 +208,6 @@
     <Compile Include="Xml\Xml_Reader\XmlSchemas.cs" />
     <Compile Include="Xml\Xml_Reader\XmlTextWriterBase64Encoder.cs" />
     <Compile Include="Xml\Xml_Reader\XmlTypeAttribute.cs" />
-    <Compile Include="Xml\Xml_Reader\XPathAncestorIterator.cs" />
     <Compile Include="Xml\Xml_Reader\XPathAncestorQuery.cs" />
     <Compile Include="Xml\Xml_Reader\XPathArrayIterator.cs" />
     <Compile Include="Xml\Xml_Reader\XPathAxisIterator.cs" />
@@ -220,7 +215,6 @@
     <Compile Include="Xml\Xml_Reader\XPathDescendantIterator.cs" />
     <Compile Include="Xml\Xml_Reader\XPathEmptyIterator.cs" />
     <Compile Include="Xml\Xml_Reader\XPathExpression.cs" />
-    <Compile Include="Xml\Xml_Reader\QueryBuilder.cs" />
     <Compile Include="Xml\Xml_Reader\BaseAxisQuery.cs" />
     <Compile Include="Xml\Xml_Reader\XPathSelectionIterator.cs" />
     <Compile Include="Xml\Xml_Reader\XPathSelfQuery.cs" />
@@ -235,7 +229,6 @@
     <Compile Include="Xml\Xml_Reader\XmlSchemaValidationException.cs" />
     <Compile Include="Xml\Xml_Reader\XPathNavigatorReader.cs" />
     <Compile Include="Xml\Xml_Reader\XmlEmptyNavigator.cs" />
-    <Compile Include="Xml\Xml_Reader\XPathNavigatorReaderWithSI.cs" />
     <Compile Include="Xml\Xml_Reader\XmlUnionConverter.cs" />
     <Compile Include="Xml\Xml_Reader\XsdValidator.cs" />
     <Compile Include="Xml\Xml_Reader\XmlNotation.cs" />
@@ -311,7 +304,6 @@
     <Compile Include="Xml\Xml_Reader\Datatype_year.cs" />
     <Compile Include="Xml\Xml_Reader\Datatype_yearMonth.cs" />
     <Compile Include="Xml\Xml_Reader\Datatype_normalizedStringV1Compat.cs" />
-    <Compile Include="Xml\Xml_Reader\Datatype_tokenV1Compat.cs" />
     <Compile Include="Xml\Xml_Reader\Datatype_anyAtomicType.cs" />
     <Compile Include="Xml\Xml_Reader\XmlAnyConverter.cs" />
     <Compile Include="Xml\Xml_Reader\Datatype_NOTATION.cs" />
@@ -510,9 +502,6 @@
     <Compile Include="Xml\Xml_Reader\IDtdAttributeListInfo.cs" />
     <Compile Include="Xml\Xml_Reader\TextBlockType.cs" />
     <Compile Include="Xml\Xml_Reader\XPathDocumentBuilder.cs" />
-    <Compile Include="Xml\Xml_Reader\QueryOutputWriterV1.cs" />
-    <Compile Include="Xml\Xml_Reader\XmlWrappingWriter.cs" />
-    <Compile Include="Xml\Xml_Reader\XmlCharCheckingWriter.cs" />
     <Compile Include="Xml\Xml_Reader\QueryOutputWriter.cs" />
     <Compile Include="Xml\Xml_Reader\TextEncodedRawTextWriter.cs" />
     <Compile Include="Xml\Xml_Reader\HtmlEncodedRawTextWriter.cs" />
@@ -623,8 +612,6 @@
     <Compile Include="Xml\Xml_Reader\IDtdInfo.cs" />
     <Compile Include="Xml\Xml_Reader\XmlNamespaceManager.cs" />
     <Compile Include="Xml\Xml_Reader\XmlWrappingReader.cs" />
-    <Compile Include="Xml\Xml_Reader\XmlSubtreeReader.cs" />
-    <Compile Include="Xml\Xml_Reader\XmlValidatingReader.cs" />
     <Compile Include="Xml\Xml_Reader\XmlTextReader.cs" />
     <Compile Include="Xml\Xml_Reader\XmlTextWriter.cs" />
     <Compile Include="Xml\Xml_Reader\XmlWriter.cs" />

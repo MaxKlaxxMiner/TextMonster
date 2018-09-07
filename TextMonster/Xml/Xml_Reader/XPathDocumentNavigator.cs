@@ -365,20 +365,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     /// <summary>
-    /// If the current node is an attribute or namespace (not content), return false.  Otherwise,
-    /// move to the previous (sibling) content node.  Return false if there are no previous content nodes.
-    /// </summary>
-    public override bool MoveToPrevious()
-    {
-      // If parent exists, then this is a namespace, an attribute, or a collapsed text node, all of which do
-      // not have previous siblings.
-      if (this.idxParent != 0)
-        return false;
-
-      return XPathNodeHelper.GetPreviousContentSibling(ref this.pageCurrent, ref this.idxCurrent);
-    }
-
-    /// <summary>
     /// Move to the first content-typed child of the current node.  Return false if the current
     /// node has no content children.
     /// </summary>
@@ -472,14 +458,6 @@ namespace TextMonster.Xml.Xml_Reader
                this.idxParent == that.idxParent && this.pageParent == that.pageParent;
       }
       return false;
-    }
-
-    /// <summary>
-    /// Returns true if the current node has children.
-    /// </summary>
-    public override bool HasChildren
-    {
-      get { return this.pageCurrent[this.idxCurrent].HasContentChild; }
     }
 
     /// <summary>
@@ -839,45 +817,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    /// <summary>
-    /// Create a unique id for the current node.  This is used by the generate-id() function.
-    /// </summary>
-    internal override string UniqueId
-    {
-      get
-      {
-        // 32-bit integer is split into 5-bit groups, the maximum number of groups is 7
-        char[] buf = new char[1 + 7 + 1 + 7];
-        int idx = 0;
-        int loc;
-
-        // Ensure distinguishing attributes, namespaces and child nodes
-        buf[idx++] = NodeTypeLetter[(int)this.pageCurrent[this.idxCurrent].NodeType];
-
-        // If the current node is virtualized, code its parent
-        if (this.idxParent != 0)
-        {
-          loc = (this.pageParent[0].PageInfo.PageNumber - 1) << 16 | (this.idxParent - 1);
-          do
-          {
-            buf[idx++] = UniqueIdTbl[loc & 0x1f];
-            loc >>= 5;
-          } while (loc != 0);
-          buf[idx++] = '0';
-        }
-
-        // Code the node itself
-        loc = (this.pageCurrent[0].PageInfo.PageNumber - 1) << 16 | (this.idxCurrent - 1);
-        do
-        {
-          buf[idx++] = UniqueIdTbl[loc & 0x1f];
-          loc >>= 5;
-        } while (loc != 0);
-
-        return new string(buf, 0, idx);
-      }
-    }
-
     public override object UnderlyingObject
     {
       get
@@ -932,19 +871,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-
-    //-----------------------------------------------
-    // Helper methods
-    //-----------------------------------------------
-
-    /// <summary>
-    /// Get hashcode based on current position of the navigator.
-    /// </summary>
-    public int GetPositionHashCode()
-    {
-      return this.idxCurrent ^ this.idxParent;
-    }
-
     /// <summary>
     /// Return true if navigator is positioned to an element having the specified name.
     /// </summary>
@@ -958,15 +884,6 @@ namespace TextMonster.Xml.Xml_Reader
         return false;
 
       return this.pageCurrent[this.idxCurrent].ElementMatch(this.atomizedLocalName, namespaceURI);
-    }
-
-    /// <summary>
-    /// Return true if navigator is positioned to a content node of the specified kind.  Whitespace/SignficantWhitespace/Text are
-    /// all treated the same (i.e. they all match each other).
-    /// </summary>
-    public bool IsContentKindMatch(XPathNodeType typ)
-    {
-      return (((1 << (int)this.pageCurrent[this.idxCurrent].NodeType) & GetContentKindMask(typ)) != 0);
     }
 
     /// <summary>

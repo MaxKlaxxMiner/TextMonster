@@ -463,11 +463,6 @@
       return Ref.Equal(ns, NsXdr) && Ref.Equal(localName, XdrSchema);
     }
 
-    public XmlQualifiedName GetName(SchemaNames.Token token)
-    {
-      return TokenToQName[(int)token];
-    }
-
     public enum Token
     {
       Empty,

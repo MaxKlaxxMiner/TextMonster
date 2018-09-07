@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Versioning;
 using System.Security.Permissions;
 
 namespace TextMonster.Xml.Xml_Reader
@@ -11,12 +10,6 @@ namespace TextMonster.Xml.Xml_Reader
   public class XmlTextReader : FastXmlReader, IXmlLineInfo, IXmlNamespaceResolver
   {
     XmlTextReaderImpl impl;
-
-    public XmlTextReader(Stream input, XmlNameTable nt)
-    {
-      impl = new XmlTextReaderImpl(input, nt);
-      impl.OuterReader = this;
-    }
 
     public XmlTextReader(string url, Stream input, XmlNameTable nt)
     {
@@ -42,22 +35,6 @@ namespace TextMonster.Xml.Xml_Reader
       impl.OuterReader = this;
     }
 
-    public XmlTextReader(string xmlFragment, XmlNodeType fragType, XmlParserContext context)
-    {
-      impl = new XmlTextReaderImpl(xmlFragment, fragType, context);
-      impl.OuterReader = this;
-    }
-
-    [ResourceConsumption(ResourceScope.Machine)]
-    [ResourceExposure(ResourceScope.Machine)]
-    public XmlTextReader(String url, XmlNameTable nt)
-    {
-      impl = new XmlTextReaderImpl(url, nt);
-      impl.OuterReader = this;
-    }
-    //
-    // XmlReader members
-    //
     public override XmlNodeType NodeType
     {
       get { return impl.NodeType; }
@@ -299,25 +276,6 @@ namespace TextMonster.Xml.Xml_Reader
     string IXmlNamespaceResolver.LookupPrefix(string namespaceName)
     {
       return impl.LookupPrefix(namespaceName);
-    }
-
-    //
-    // XmlTextReader 
-    //
-    public bool Namespaces
-    {
-      get { return impl.Namespaces; }
-    }
-
-    public WhitespaceHandling WhitespaceHandling
-    {
-      get { return impl.WhitespaceHandling; }
-      set { impl.WhitespaceHandling = value; }
-    }
-
-    public DtdProcessing DtdProcessing
-    {
-      get { return impl.DtdProcessing; }
     }
 
     public EntityHandling EntityHandling

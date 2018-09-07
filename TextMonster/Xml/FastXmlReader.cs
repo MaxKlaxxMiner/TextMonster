@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Runtime.Versioning;
 using System.Text;
 using TextMonster.Xml.Xml_Reader;
 // ReSharper disable InconsistentNaming
@@ -572,218 +570,6 @@ namespace TextMonster.Xml
       return NodeType;
     }
 
-    // Reads to the next sibling of the current element with the given LocalName and NamespaceURI.
-    public virtual bool ReadToNextSibling(string localName, string namespaceURI)
-    {
-      if (string.IsNullOrEmpty(localName))
-      {
-        throw XmlConvert.CreateInvalidNameArgumentException(localName, "localName");
-      }
-      if (namespaceURI == null)
-      {
-        throw new ArgumentNullException("namespaceURI");
-      }
-
-      // atomize local name and namespace
-      localName = NameTable.Add(localName);
-      namespaceURI = NameTable.Add(namespaceURI);
-
-      // find the next sibling
-      XmlNodeType nt;
-      do
-      {
-        if (!SkipSubtree())
-        {
-          break;
-        }
-        nt = NodeType;
-        if (nt == XmlNodeType.Element && Ref.Equal(localName, LocalName) && Ref.Equal(namespaceURI, NamespaceURI))
-        {
-          return true;
-        }
-      } while (nt != XmlNodeType.EndElement && !EOF);
-      return false;
-    }
-
-    // Returns the inner content (including markup) of an element or attribute as a string.
-    public virtual string ReadInnerXml()
-    {
-      if (ReadState != ReadState.Interactive)
-      {
-        return string.Empty;
-      }
-      if (NodeType != XmlNodeType.Attribute && NodeType != XmlNodeType.Element)
-      {
-        Read();
-        return string.Empty;
-      }
-
-      StringWriter sw = new StringWriter(CultureInfo.InvariantCulture);
-      XmlWriter xtw = CreateWriterForInnerOuterXml(sw);
-
-      try
-      {
-        if (NodeType == XmlNodeType.Attribute)
-        {
-          ((XmlTextWriter)xtw).QuoteChar = QuoteChar;
-          WriteAttributeValue(xtw);
-        }
-        if (NodeType == XmlNodeType.Element)
-        {
-          WriteNode(xtw, false);
-        }
-      }
-      finally
-      {
-        xtw.Close();
-      }
-      return sw.ToString();
-    }
-
-    // Writes the content (inner XML) of the current node into the provided XmlWriter.
-    private void WriteNode(XmlWriter xtw, bool defattr)
-    {
-      Debug.Assert(xtw is XmlTextWriter);
-      int d = NodeType == XmlNodeType.None ? -1 : Depth;
-      while (Read() && (d < Depth))
-      {
-        switch (NodeType)
-        {
-          case XmlNodeType.Element:
-          xtw.WriteStartElement(Prefix, LocalName, NamespaceURI);
-          ((XmlTextWriter)xtw).QuoteChar = QuoteChar;
-          xtw.WriteAttributes(this, defattr);
-          if (IsEmptyElement)
-          {
-            xtw.WriteEndElement();
-          }
-          break;
-          case XmlNodeType.Text:
-          xtw.WriteString(Value);
-          break;
-          case XmlNodeType.Whitespace:
-          case XmlNodeType.SignificantWhitespace:
-          xtw.WriteWhitespace(Value);
-          break;
-          case XmlNodeType.CDATA:
-          xtw.WriteCData(Value);
-          break;
-          case XmlNodeType.EntityReference:
-          xtw.WriteEntityRef(Name);
-          break;
-          case XmlNodeType.XmlDeclaration:
-          case XmlNodeType.ProcessingInstruction:
-          xtw.WriteProcessingInstruction(Name, Value);
-          break;
-          case XmlNodeType.DocumentType:
-          xtw.WriteDocType(Name, GetAttribute("PUBLIC"), GetAttribute("SYSTEM"), Value);
-          break;
-          case XmlNodeType.Comment:
-          xtw.WriteComment(Value);
-          break;
-          case XmlNodeType.EndElement:
-          xtw.WriteFullEndElement();
-          break;
-        }
-      }
-      if (d == Depth && NodeType == XmlNodeType.EndElement)
-      {
-        Read();
-      }
-    }
-
-    // Writes the attribute into the provided XmlWriter.
-    private void WriteAttributeValue(XmlWriter xtw)
-    {
-      string attrName = Name;
-      while (ReadAttributeValue())
-      {
-        if (NodeType == XmlNodeType.EntityReference)
-        {
-          xtw.WriteEntityRef(Name);
-        }
-        else
-        {
-          xtw.WriteString(Value);
-        }
-      }
-      MoveToAttribute(attrName);
-    }
-
-    // Returns the current element and its descendants or an attribute as a string.
-    public virtual string ReadOuterXml()
-    {
-      if (ReadState != ReadState.Interactive)
-      {
-        return string.Empty;
-      }
-      if (NodeType != XmlNodeType.Attribute && NodeType != XmlNodeType.Element)
-      {
-        Read();
-        return string.Empty;
-      }
-
-      StringWriter sw = new StringWriter(CultureInfo.InvariantCulture);
-      XmlWriter xtw = CreateWriterForInnerOuterXml(sw);
-
-      try
-      {
-        if (NodeType == XmlNodeType.Attribute)
-        {
-          xtw.WriteStartAttribute(Prefix, LocalName, NamespaceURI);
-          WriteAttributeValue(xtw);
-          xtw.WriteEndAttribute();
-        }
-        else
-        {
-          xtw.WriteNode(this, false);
-        }
-      }
-      finally
-      {
-        xtw.Close();
-      }
-      return sw.ToString();
-    }
-
-    private XmlWriter CreateWriterForInnerOuterXml(StringWriter sw)
-    {
-      XmlTextWriter w = new XmlTextWriter(sw);
-      // This is a V1 hack; we can put a custom implementation of ReadOuterXml on XmlTextReader/XmlValidatingReader
-      SetNamespacesFlag(w);
-      return w;
-    }
-
-    void SetNamespacesFlag(XmlTextWriter xtw)
-    {
-      XmlTextReader tr = this as XmlTextReader;
-      if (tr != null)
-      {
-        xtw.Namespaces = tr.Namespaces;
-      }
-      else
-      {
-#pragma warning disable 618
-        XmlValidatingReader vr = this as XmlValidatingReader;
-        if (vr != null)
-        {
-          xtw.Namespaces = vr.Namespaces;
-        }
-      }
-#pragma warning restore 618
-    }
-
-    // Returns an XmlReader that will read only the current element and its descendants and then go to EOF state.
-    public virtual FastXmlReader ReadSubtree()
-    {
-      if (NodeType != XmlNodeType.Element)
-      {
-        throw new InvalidOperationException(Res.GetString(Res.Xml_ReadSubtreeNotOnElement));
-      }
-      return new XmlSubtreeReader(this);
-    }
-
-    // Returns true when the current node has any attributes.
     public virtual bool HasAttributes
     {
       get
@@ -861,26 +647,6 @@ namespace TextMonster.Xml
       }
 
       return false;
-    }
-
-    private void CheckElement(string localName, string namespaceURI)
-    {
-      if (string.IsNullOrEmpty(localName))
-      {
-        throw XmlConvert.CreateInvalidNameArgumentException(localName, "localName");
-      }
-      if (namespaceURI == null)
-      {
-        throw new ArgumentNullException("namespaceURI");
-      }
-      if (NodeType != XmlNodeType.Element)
-      {
-        throw new XmlException(Res.Xml_InvalidNodeType, NodeType.ToString(), this as IXmlLineInfo);
-      }
-      if (LocalName != localName || NamespaceURI != namespaceURI)
-      {
-        throw new XmlException(Res.Xml_ElementNotFoundNs, new[] { localName, namespaceURI }, this as IXmlLineInfo);
-      }
     }
 
     internal Exception CreateReadContentAsException(string methodName)
@@ -970,127 +736,12 @@ namespace TextMonster.Xml
       return (sb == null) ? value : sb.ToString();
     }
 
-    private bool SetupReadElementContentAsXxx(string methodName)
-    {
-      if (NodeType != XmlNodeType.Element)
-      {
-        throw CreateReadElementContentAsException(methodName);
-      }
-
-      bool isEmptyElement = IsEmptyElement;
-
-      // move to content or beyond the empty element
-      Read();
-
-      if (isEmptyElement)
-      {
-        return false;
-      }
-
-      XmlNodeType nodeType = NodeType;
-      if (nodeType == XmlNodeType.EndElement)
-      {
-        Read();
-        return false;
-      }
-      if (nodeType == XmlNodeType.Element)
-      {
-        throw new XmlException(Res.Xml_MixedReadElementContentAs, string.Empty, this as IXmlLineInfo);
-      }
-      return true;
-    }
-
-    private void FinishReadElementContentAsXxx()
-    {
-      if (NodeType != XmlNodeType.EndElement)
-      {
-        throw new XmlException(Res.Xml_InvalidNodeType, NodeType.ToString());
-      }
-      Read();
-    }
-
-    internal bool IsDefaultInternal
-    {
-      get
-      {
-        if (IsDefault)
-        {
-          return true;
-        }
-        IXmlSchemaInfo schemaInfo = SchemaInfo;
-        if (schemaInfo != null && schemaInfo.IsDefault)
-        {
-          return true;
-        }
-        return false;
-      }
-    }
-
     internal virtual IDtdInfo DtdInfo
     {
       get
       {
         return null;
       }
-    }
-
-    internal static ConformanceLevel GetV1ConformanceLevel(FastXmlReader reader)
-    {
-      XmlTextReaderImpl tri = GetXmlTextReaderImpl(reader);
-      return tri != null ? tri.V1ComformanceLevel : ConformanceLevel.Document;
-    }
-
-    private static XmlTextReaderImpl GetXmlTextReaderImpl(FastXmlReader reader)
-    {
-      XmlTextReaderImpl tri = reader as XmlTextReaderImpl;
-      if (tri != null)
-      {
-        return tri;
-      }
-
-      XmlTextReader tr = reader as XmlTextReader;
-      if (tr != null)
-      {
-        return tr.Impl;
-      }
-
-      XmlValidatingReaderImpl vri = reader as XmlValidatingReaderImpl;
-      if (vri != null)
-      {
-        return vri.ReaderImpl;
-      }
-#pragma warning disable 618
-      XmlValidatingReader vr = reader as XmlValidatingReader;
-#pragma warning restore 618
-      if (vr != null)
-      {
-        return vr.Impl.ReaderImpl;
-      }
-      return null;
-    }
-
-    //
-    // Static methods for creating readers
-    //
-
-    // Creates an XmlReader according to the settings for parsing XML from the given Uri.
-    [ResourceConsumption(ResourceScope.Machine)]
-    [ResourceExposure(ResourceScope.Machine)]
-    public static FastXmlReader Create(string inputUri, XmlReaderSettings settings)
-    {
-      return Create(inputUri, settings, null);
-    }
-
-    // Creates an XmlReader according to the settings and parser context for parsing XML from the given Uri.
-    [ResourceConsumption(ResourceScope.Machine)]
-    [ResourceExposure(ResourceScope.Machine)]
-    private static FastXmlReader Create(string inputUri, XmlReaderSettings settings, XmlParserContext inputContext)
-    {
-      if (settings == null)
-      {
-        settings = new XmlReaderSettings();
-      }
-      return settings.CreateReader(inputUri, inputContext);
     }
 
     // Creates an XmlReader according to the settings for parsing XML from the given stream.
@@ -1117,16 +768,6 @@ namespace TextMonster.Xml
         settings = new XmlReaderSettings();
       }
       return settings.CreateReader(input, baseUri, null);
-    }
-
-    // Creates an XmlReader according to the settings wrapped over the given reader.
-    public static FastXmlReader Create(FastXmlReader reader, XmlReaderSettings settings)
-    {
-      if (settings == null)
-      {
-        settings = new XmlReaderSettings();
-      }
-      return settings.CreateReader(reader);
     }
 
     internal static int CalcBufferSize(Stream input)

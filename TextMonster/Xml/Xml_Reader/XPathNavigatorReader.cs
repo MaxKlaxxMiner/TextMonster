@@ -59,29 +59,6 @@ namespace TextMonster.Xml.Xml_Reader
       return XPathNavigatorReader.convertFromXPathNodeType[(int)typ];
     }
 
-    internal object UnderlyingObject
-    {
-      get
-      {
-        return this.nav.UnderlyingObject;
-      }
-    }
-
-    static public XPathNavigatorReader Create(XPathNavigator navToRead)
-    {
-      XPathNavigator nav = navToRead.Clone();
-      IXmlLineInfo xli = nav as IXmlLineInfo;
-      IXmlSchemaInfo xsi = nav as IXmlSchemaInfo;
-      if (null == xsi)
-      {
-        return new XPathNavigatorReader(nav, xli, xsi);
-      }
-      else
-      {
-        return new XPathNavigatorReaderWithSI(nav, xli, xsi);
-      }
-    }
-
     protected XPathNavigatorReader(XPathNavigator navToRead, IXmlLineInfo xli, IXmlSchemaInfo xsi)
     {
       // Need clone that can be moved independently of original navigator

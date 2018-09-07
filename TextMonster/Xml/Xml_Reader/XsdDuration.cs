@@ -111,15 +111,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     /// <summary>
-    /// Constructs an XsdDuration from a string in the xsd:duration format.  Components are stored with loss
-    /// of fidelity (except in the case of overflow).
-    /// </summary>
-    public XsdDuration(string s)
-      : this(s, DurationType.Duration)
-    {
-    }
-
-    /// <summary>
     /// Constructs an XsdDuration from a string in the xsd:duration format.  Components are stored without loss
     /// of fidelity (except in the case of overflow).
     /// </summary>
@@ -207,15 +198,6 @@ namespace TextMonster.Xml.Xml_Reader
     public int Nanoseconds
     {
       get { return (int)(this.nanoseconds & ~NegativeBit); }
-    }
-
-    /// <summary>
-    /// Internal helper method that converts an Xsd duration to a TimeSpan value.  This code uses the estimate
-    /// that there are 365 days in the year and 30 days in a month.
-    /// </summary>
-    public TimeSpan ToTimeSpan()
-    {
-      return ToTimeSpan(DurationType.Duration);
     }
 
     /// <summary>

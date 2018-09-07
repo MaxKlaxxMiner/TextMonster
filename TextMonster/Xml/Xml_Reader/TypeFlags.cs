@@ -2,7 +2,6 @@ namespace TextMonster.Xml.Xml_Reader
 {
   internal enum TypeFlags
   {
-    None = 0x0,
     Abstract = 0x1,
     Reference = 0x2,
     Special = 0x4,

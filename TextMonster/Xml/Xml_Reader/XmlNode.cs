@@ -896,15 +896,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    // Looks up the closest xmlns declaration for the given
-    // prefix that is in scope for the current node and returns
-    // the namespace URI in the declaration.
-    public virtual string GetNamespaceOfPrefix(string prefix)
-    {
-      string namespaceName = GetNamespaceOfPrefixStrict(prefix);
-      return namespaceName != null ? namespaceName : string.Empty;
-    }
-
     internal string GetNamespaceOfPrefixStrict(string prefix)
     {
       XmlDocument doc = Document;
@@ -983,15 +974,6 @@ namespace TextMonster.Xml.Xml_Reader
       return null;
     }
 
-    // Looks up the closest xmlns declaration for the given namespace
-    // URI that is in scope for the current node and returns
-    // the prefix defined in that declaration.
-    public virtual string GetPrefixOfNamespace(string namespaceURI)
-    {
-      string prefix = GetPrefixOfNamespaceStrict(namespaceURI);
-      return prefix != null ? prefix : string.Empty;
-    }
-
     internal string GetPrefixOfNamespaceStrict(string namespaceURI)
     {
       XmlDocument doc = Document;
@@ -1060,35 +1042,6 @@ namespace TextMonster.Xml.Xml_Reader
         }
       }
       return null;
-    }
-
-    // Retrieves the first child element with the specified name.
-    public virtual XmlElement this[string name]
-    {
-      get
-      {
-        for (XmlNode n = FirstChild; n != null; n = n.NextSibling)
-        {
-          if (n.NodeType == XmlNodeType.Element && n.Name == name)
-            return (XmlElement)n;
-        }
-        return null;
-      }
-    }
-
-    // Retrieves the first child element with the specified LocalName and
-    // NamespaceURI.
-    public virtual XmlElement this[string localname, string ns]
-    {
-      get
-      {
-        for (XmlNode n = FirstChild; n != null; n = n.NextSibling)
-        {
-          if (n.NodeType == XmlNodeType.Element && n.LocalName == localname && n.NamespaceURI == ns)
-            return (XmlElement)n;
-        }
-        return null;
-      }
     }
 
     internal virtual void SetParent(XmlNode node)
@@ -1225,11 +1178,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         return string.Empty;
       }
-    }
-
-    internal virtual string GetXPAttribute(string localName, string namespaceURI)
-    {
-      return String.Empty;
     }
 
     internal virtual bool IsText

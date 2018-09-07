@@ -538,11 +538,6 @@ namespace TextMonster.Xml.Xml_Reader
     static private readonly DatatypeImplementation c_year = new Datatype_year();
     static private readonly DatatypeImplementation c_yearMonth = new Datatype_yearMonth();
 
-    //V1 compat types
-    static internal readonly DatatypeImplementation c_normalizedStringV1Compat = new Datatype_normalizedStringV1Compat();
-    static internal readonly DatatypeImplementation c_tokenV1Compat = new Datatype_tokenV1Compat();
-
-    // XQuery types
     static private readonly DatatypeImplementation c_anyAtomicType = new Datatype_anyAtomicType();
     static private readonly DatatypeImplementation c_dayTimeDuration = new Datatype_dayTimeDuration();
     static private readonly DatatypeImplementation c_untypedAtomicType = new Datatype_untypedAtomicType();

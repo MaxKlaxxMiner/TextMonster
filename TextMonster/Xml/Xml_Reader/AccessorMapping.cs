@@ -14,19 +14,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal AccessorMapping()
     { }
 
-    protected AccessorMapping(AccessorMapping mapping)
-      : base(mapping)
-    {
-      this.typeDesc = mapping.typeDesc;
-      this.attribute = mapping.attribute;
-      this.elements = mapping.elements;
-      this.sortedElements = mapping.sortedElements;
-      this.text = mapping.text;
-      this.choiceIdentifier = mapping.choiceIdentifier;
-      this.xmlns = mapping.xmlns;
-      this.ignore = mapping.ignore;
-    }
-
     internal TypeDesc TypeDesc
     {
       get { return typeDesc; }

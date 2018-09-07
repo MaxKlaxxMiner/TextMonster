@@ -63,11 +63,6 @@ namespace TextMonster.Xml.Xml_Reader
       XsiNil = nameTable.Add("nil");
     }
 
-    public bool PsviAugmentation
-    {
-      set { psviAugmentation = value; }
-    }
-
     public bool Validate(XmlNode nodeToValidate)
     {
       XmlSchemaObject partialValidationType = null;

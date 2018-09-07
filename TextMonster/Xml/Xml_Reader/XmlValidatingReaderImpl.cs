@@ -776,58 +776,12 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    // returns the schema type of the current node
-    internal object SchemaType
-    {
-      get
-      {
-        if (validationType != ValidationType.None)
-        {
-          XmlSchemaType schemaTypeObj = coreReaderImpl.InternalSchemaType as XmlSchemaType;
-          if (schemaTypeObj != null && schemaTypeObj.QualifiedName.Namespace == XmlReservedNs.NsXs)
-          {
-            return schemaTypeObj.Datatype;
-          }
-          return coreReaderImpl.InternalSchemaType;
-        }
-        else
-          return null;
-      }
-    }
-
-    // returns the underlying XmlTextReader or XmlTextReaderImpl
-    internal FastXmlReader Reader
-    {
-      get
-      {
-        return (FastXmlReader)coreReader;
-      }
-    }
-
-    // returns the underlying XmlTextReaderImpl
-    internal XmlTextReaderImpl ReaderImpl
-    {
-      get
-      {
-        return coreReaderImpl;
-      }
-    }
-
     // specifies the validation type (None, DDT, XSD, XDR, Auto)
     internal ValidationType ValidationType
     {
       get
       {
         return validationType;
-      }
-      set
-      {
-        if (ReadState != ReadState.Initial)
-        {
-          throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
-        }
-        validationType = value;
-        SetupValidation(value);
       }
     }
 
@@ -841,107 +795,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 #pragma warning restore 618
-
-    // Spefifies whether general entities should be automatically expanded or not
-    internal EntityHandling EntityHandling
-    {
-      get
-      {
-        return coreReaderImpl.EntityHandling;
-      }
-      set
-      {
-        coreReaderImpl.EntityHandling = value;
-      }
-    }
-
-    // Specifies XmlResolver used for opening the XML document and other external references
-    internal XmlResolver XmlResolver
-    {
-      set
-      {
-        coreReaderImpl.XmlResolver = value;
-        validator.XmlResolver = value;
-        schemaCollection.XmlResolver = value;
-      }
-    }
-
-    // Disables or enables support of W3C XML 1.0 Namespaces
-    internal bool Namespaces
-    {
-      get
-      {
-        return coreReaderImpl.Namespaces;
-      }
-      set
-      {
-        coreReaderImpl.Namespaces = value;
-      }
-    }
-
-    // Returns typed value of the current node (based on the type specified by schema)
-    public object ReadTypedValue()
-    {
-      if (validationType == ValidationType.None)
-      {
-        return null;
-      }
-
-      switch (outerReader.NodeType)
-      {
-        case XmlNodeType.Attribute:
-        return coreReaderImpl.InternalTypedValue;
-        case XmlNodeType.Element:
-        if (SchemaType == null)
-        {
-          return null;
-        }
-        XmlSchemaDatatype dtype = (SchemaType is XmlSchemaDatatype) ? (XmlSchemaDatatype)SchemaType : ((XmlSchemaType)SchemaType).Datatype;
-        if (dtype != null)
-        {
-          if (!outerReader.IsEmptyElement)
-          {
-            for (; ; )
-            {
-              if (!outerReader.Read())
-              {
-                throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
-              }
-              XmlNodeType type = outerReader.NodeType;
-              if (type != XmlNodeType.CDATA && type != XmlNodeType.Text &&
-                  type != XmlNodeType.Whitespace && type != XmlNodeType.SignificantWhitespace &&
-                  type != XmlNodeType.Comment && type != XmlNodeType.ProcessingInstruction)
-              {
-                break;
-              }
-            }
-            if (outerReader.NodeType != XmlNodeType.EndElement)
-            {
-              throw new XmlException(Res.Xml_InvalidNodeType, outerReader.NodeType.ToString());
-            }
-          }
-          return coreReaderImpl.InternalTypedValue;
-        }
-        return null;
-
-        case XmlNodeType.EndElement:
-        return null;
-
-        default:
-        if (coreReaderImpl.V1Compat)
-        { //If v1 XmlValidatingReader return null
-          return null;
-        }
-        else
-        {
-          return Value;
-        }
-      }
-    }
-
-    //
-    // Private implementation methods
-    //
 
     private void ParseDtdFromParserContext()
     {
@@ -1052,12 +905,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    internal void Close(bool closeStream)
-    {
-      coreReaderImpl.Close(closeStream);
-      parsingFunction = ParsingFunction.ReaderClosed;
-    }
-
     internal BaseValidator Validator
     {
       get
@@ -1103,14 +950,6 @@ namespace TextMonster.Xml.Xml_Reader
       set
       {
         coreReaderImpl.InternalTypedValue = value;
-      }
-    }
-
-    internal bool Normalization
-    {
-      get
-      {
-        return coreReaderImpl.Normalization;
       }
     }
 

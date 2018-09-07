@@ -44,7 +44,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Xml_InvalidVersionNumber = "Xml_InvalidVersionNumber";
     internal const string Xml_DupAttributeName = "Xml_DupAttributeName";
     internal const string Xml_BadDTDLocation = "Xml_BadDTDLocation";
-    internal const string Xml_ElementNotFoundNs = "Xml_ElementNotFoundNs";
     internal const string Xml_PartialContentNodeTypeNotSupportedEx = "Xml_PartialContentNodeTypeNotSupportedEx";
     internal const string Xml_MultipleDTDsProvided = "Xml_MultipleDTDsProvided";
     internal const string Xml_CanNotBindToReservedNamespace = "Xml_CanNotBindToReservedNamespace";
@@ -62,7 +61,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Xml_NametableMismatch = "Xml_NametableMismatch";
     internal const string Xml_BadNamespaceDecl = "Xml_BadNamespaceDecl";
     internal const string Xml_ErrorParsingEntityName = "Xml_ErrorParsingEntityName";
-    internal const string Xml_InvalidNmToken = "Xml_InvalidNmToken";
     internal const string Xml_EntityRefNesting = "Xml_EntityRefNesting";
     internal const string Xml_CannotResolveEntity = "Xml_CannotResolveEntity";
     internal const string Xml_CannotResolveEntityDtdIgnored = "Xml_CannotResolveEntityDtdIgnored";
@@ -74,7 +72,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Xml_ReadOnlyProperty = "Xml_ReadOnlyProperty";
     internal const string Xml_DtdIsProhibited = "Xml_DtdIsProhibited";
     internal const string Xml_DtdIsProhibitedEx = "Xml_DtdIsProhibitedEx";
-    internal const string Xml_ReadSubtreeNotOnElement = "Xml_ReadSubtreeNotOnElement";
     internal const string Xml_DtdNotAllowedInFragment = "Xml_DtdNotAllowedInFragment";
     internal const string Xml_CannotStartDocumentOnFragment = "Xml_CannotStartDocumentOnFragment";
     internal const string Xml_ErrorOpeningExternalDtd = "Xml_ErrorOpeningExternalDtd";
@@ -93,7 +90,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Xml_NotEnoughSpaceForSurrogatePair = "Xml_NotEnoughSpaceForSurrogatePair";
     internal const string Xml_EmptyUrl = "Xml_EmptyUrl";
     internal const string Xml_InvalidWhitespaceCharacter = "Xml_InvalidWhitespaceCharacter";
-    internal const string Xml_IncompatibleConformanceLevel = "Xml_IncompatibleConformanceLevel";
     internal const string Xml_LimitExceeded = "Xml_LimitExceeded";
     internal const string Xml_ClosedOrErrorReader = "Xml_ClosedOrErrorReader";
     internal const string Xml_CharEntityOverflow = "Xml_CharEntityOverflow";
@@ -149,7 +145,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Xml_DupXmlDecl = "Xml_DupXmlDecl";
     internal const string Xml_CannotWriteXmlDecl = "Xml_CannotWriteXmlDecl";
     internal const string Xml_NoRoot = "Xml_NoRoot";
-    internal const string Xml_InvalidPosition = "Xml_InvalidPosition";
     internal const string Xml_IncompleteEntity = "Xml_IncompleteEntity";
     internal const string Xml_InvalidSurrogateHighChar = "Xml_InvalidSurrogateHighChar";
     internal const string Xml_InvalidSurrogateMissingLowChar = "Xml_InvalidSurrogateMissingLowChar";
@@ -159,7 +154,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Xml_InvalidCharsInIndent = "Xml_InvalidCharsInIndent";
     internal const string Xml_IndentCharsNotWhitespace = "Xml_IndentCharsNotWhitespace";
     internal const string Xml_ConformanceLevelFragment = "Xml_ConformanceLevelFragment";
-    internal const string Xml_InvalidQuote = "Xml_InvalidQuote";
     internal const string Xml_UndefPrefix = "Xml_UndefPrefix";
     internal const string Xml_NoNamespaces = "Xml_NoNamespaces";
     internal const string Xml_InvalidCDataChars = "Xml_InvalidCDataChars";
@@ -168,10 +162,8 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Xml_InvalidNameChars = "Xml_InvalidNameChars";
     internal const string Xml_Closed = "Xml_Closed";
     internal const string Xml_InvalidPrefix = "Xml_InvalidPrefix";
-    internal const string Xml_NotInWriteState = "Xml_NotInWriteState";
     internal const string Xml_SurrogatePairSplit = "Xml_SurrogatePairSplit";
     internal const string Xml_NoMultipleRoots = "Xml_NoMultipleRoots";
-    internal const string XmlConvert_BadUri = "XmlConvert_BadUri";
     internal const string XmlConvert_BadFormat = "XmlConvert_BadFormat";
     internal const string XmlConvert_Overflow = "XmlConvert_Overflow";
     internal const string XmlConvert_TypeBadMapping = "XmlConvert_TypeBadMapping";
@@ -263,9 +255,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Sch_ElementNameRef = "Sch_ElementNameRef";
     internal const string Sch_AttributeNameRef = "Sch_AttributeNameRef";
     internal const string Sch_TextNotAllowed = "Sch_TextNotAllowed";
-    internal const string Sch_UndeclaredType = "Sch_UndeclaredType";
-    internal const string Sch_UndeclaredSimpleType = "Sch_UndeclaredSimpleType";
-    internal const string Sch_UndeclaredEquivClass = "Sch_UndeclaredEquivClass";
     internal const string Sch_AttListPresence = "Sch_AttListPresence";
     internal const string Sch_NotationValue = "Sch_NotationValue";
     internal const string Sch_EnumerationValue = "Sch_EnumerationValue";
@@ -276,9 +265,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Sch_InvalidXsdAttributeDatatypeValue = "Sch_InvalidXsdAttributeDatatypeValue";
     internal const string Sch_ElementValueDataTypeDetailed = "Sch_ElementValueDataTypeDetailed";
     internal const string Sch_InvalidElementDefaultValue = "Sch_InvalidElementDefaultValue";
-    internal const string Sch_NonDeterministic = "Sch_NonDeterministic";
-    internal const string Sch_NonDeterministicAnyEx = "Sch_NonDeterministicAnyEx";
-    internal const string Sch_NonDeterministicAnyAny = "Sch_NonDeterministicAnyAny";
     internal const string Sch_StandAlone = "Sch_StandAlone";
     internal const string Sch_XmlNsAttribute = "Sch_XmlNsAttribute";
     internal const string Sch_AllElement = "Sch_AllElement";
@@ -288,7 +274,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Sch_XsiTypeNotFound = "Sch_XsiTypeNotFound";
     internal const string Sch_XsiTypeAbstract = "Sch_XsiTypeAbstract";
     internal const string Sch_ListFromNonatomic = "Sch_ListFromNonatomic";
-    internal const string Sch_UnionFromUnion = "Sch_UnionFromUnion";
     internal const string Sch_DupLengthFacet = "Sch_DupLengthFacet";
     internal const string Sch_DupMinLengthFacet = "Sch_DupMinLengthFacet";
     internal const string Sch_DupMaxLengthFacet = "Sch_DupMaxLengthFacet";
@@ -339,15 +324,10 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Sch_TotalDigitsConstraintFailed = "Sch_TotalDigitsConstraintFailed";
     internal const string Sch_FractionDigitsConstraintFailed = "Sch_FractionDigitsConstraintFailed";
     internal const string Sch_UnionFailedEx = "Sch_UnionFailedEx";
-    internal const string Sch_NotationRequired = "Sch_NotationRequired";
     internal const string Sch_DupNotationAttribute = "Sch_DupNotationAttribute";
     internal const string Sch_MissingPublicSystemAttribute = "Sch_MissingPublicSystemAttribute";
     internal const string Sch_NotationAttributeOnEmptyElement = "Sch_NotationAttributeOnEmptyElement";
     internal const string Sch_RefNotInScope = "Sch_RefNotInScope";
-    internal const string Sch_UndeclaredIdentityConstraint = "Sch_UndeclaredIdentityConstraint";
-    internal const string Sch_RefInvalidIdentityConstraint = "Sch_RefInvalidIdentityConstraint";
-    internal const string Sch_RefInvalidCardin = "Sch_RefInvalidCardin";
-    internal const string Sch_ReftoKeyref = "Sch_ReftoKeyref";
     internal const string Sch_EmptyXPath = "Sch_EmptyXPath";
     internal const string Sch_UnresolvedPrefix = "Sch_UnresolvedPrefix";
     internal const string Sch_UnresolvedKeyref = "Sch_UnresolvedKeyref";
@@ -384,18 +364,13 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Sch_InvalidNamespaceAttribute = "Sch_InvalidNamespaceAttribute";
     internal const string Sch_InvalidSchemaLocation = "Sch_InvalidSchemaLocation";
     internal const string Sch_ImportTargetNamespace = "Sch_ImportTargetNamespace";
-    internal const string Sch_ImportTargetNamespaceNull = "Sch_ImportTargetNamespaceNull";
     internal const string Sch_GroupDoubleRedefine = "Sch_GroupDoubleRedefine";
     internal const string Sch_ComponentRedefineNotFound = "Sch_ComponentRedefineNotFound";
-    internal const string Sch_GroupRedefineNotFound = "Sch_GroupRedefineNotFound";
     internal const string Sch_AttrGroupDoubleRedefine = "Sch_AttrGroupDoubleRedefine";
-    internal const string Sch_AttrGroupRedefineNotFound = "Sch_AttrGroupRedefineNotFound";
     internal const string Sch_ComplexTypeDoubleRedefine = "Sch_ComplexTypeDoubleRedefine";
-    internal const string Sch_ComplexTypeRedefineNotFound = "Sch_ComplexTypeRedefineNotFound";
     internal const string Sch_SimpleToComplexTypeRedefine = "Sch_SimpleToComplexTypeRedefine";
     internal const string Sch_SimpleTypeDoubleRedefine = "Sch_SimpleTypeDoubleRedefine";
     internal const string Sch_ComplexToSimpleTypeRedefine = "Sch_ComplexToSimpleTypeRedefine";
-    internal const string Sch_SimpleTypeRedefineNotFound = "Sch_SimpleTypeRedefineNotFound";
     internal const string Sch_MinMaxGroupRedefine = "Sch_MinMaxGroupRedefine";
     internal const string Sch_MultipleGroupSelfRef = "Sch_MultipleGroupSelfRef";
     internal const string Sch_MultipleAttrGroupSelfRef = "Sch_MultipleAttrGroupSelfRef";
@@ -447,13 +422,8 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Sch_InvalidPIComment = "Sch_InvalidPIComment";
     internal const string Sch_InvalidAttributeRef = "Sch_InvalidAttributeRef";
     internal const string Sch_OptionalDefaultAttribute = "Sch_OptionalDefaultAttribute";
-    internal const string Sch_AttributeCircularRef = "Sch_AttributeCircularRef";
-    internal const string Sch_IdentityConstraintCircularRef = "Sch_IdentityConstraintCircularRef";
-    internal const string Sch_SubstitutionCircularRef = "Sch_SubstitutionCircularRef";
-    internal const string Sch_InvalidAnyAttribute = "Sch_InvalidAnyAttribute";
     internal const string Sch_DupIdAttribute = "Sch_DupIdAttribute";
     internal const string Sch_InvalidAllElementMax = "Sch_InvalidAllElementMax";
-    internal const string Sch_InvalidAny = "Sch_InvalidAny";
     internal const string Sch_InvalidAnyDetailed = "Sch_InvalidAnyDetailed";
     internal const string Sch_InvalidExamplar = "Sch_InvalidExamplar";
     internal const string Sch_NoExamplar = "Sch_NoExamplar";

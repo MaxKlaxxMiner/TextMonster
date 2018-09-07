@@ -274,54 +274,11 @@ namespace TextMonster.Xml.Xml_Reader
       xmlEncoder.QuoteChar = this.quoteChar;
     }
 
-    // Gets or sets a value indicating whether to do namespace support.
-    public bool Namespaces
-    {
-      set
-      {
-        if (this.currentState != State.Start)
-          throw new InvalidOperationException(Res.GetString(Res.Xml_NotInWriteState));
-
-        this.namespaces = value;
-      }
-    }
-
-    // Indicates how the output is formatted.
-    public Formatting Formatting
-    {
-      set { this.formatting = value; this.indented = value == Formatting.Indented; }
-    }
-
-    // Gets or sets which character to use to quote attribute values.
-    public char QuoteChar
-    {
-      set
-      {
-        if (value != '"' && value != '\'')
-        {
-          throw new ArgumentException(Res.GetString(Res.Xml_InvalidQuote));
-        }
-        this.quoteChar = value;
-        this.xmlEncoder.QuoteChar = value;
-      }
-    }
-
-    //
-    // XmlWriter implementation
-    //
-    // Writes out the XML declaration with the version "1.0".
     public override void WriteStartDocument()
     {
       StartDocument(-1);
     }
 
-    // Writes out the XML declaration with the version "1.0" and the standalone attribute.
-    public override void WriteStartDocument(bool standalone)
-    {
-      StartDocument(standalone ? 1 : 0);
-    }
-
-    // Closes any open elements or attributes and puts the writer back in the Start state.
     public override void WriteEndDocument()
     {
       try
@@ -937,62 +894,6 @@ namespace TextMonster.Xml.Xml_Reader
       textWriter.Flush();
     }
 
-    // Writes out the specified name, ensuring it is a valid Name according to the XML specification 
-    // (http://www.w3.org/TR/1998/REC-xml-19980210#NT-Name
-    public override void WriteName(string name)
-    {
-      try
-      {
-        AutoComplete(Token.Content);
-        InternalWriteName(name, false);
-      }
-      catch
-      {
-        currentState = State.Error;
-        throw;
-      }
-    }
-
-    // Writes out the specified namespace-qualified name by looking up the prefix that is in scope for the given namespace.
-    public override void WriteQualifiedName(string localName, string ns)
-    {
-      try
-      {
-        AutoComplete(Token.Content);
-        if (this.namespaces)
-        {
-          if (ns != null && ns.Length != 0 && ns != stack[top].defaultNs)
-          {
-            string prefix = FindPrefix(ns);
-            if (prefix == null)
-            {
-              if (this.currentState != State.Attribute)
-              {
-                throw new ArgumentException(Res.GetString(Res.Xml_UndefNamespace, ns));
-              }
-              prefix = GeneratePrefix(); // need a prefix if
-              PushNamespace(prefix, ns, false);
-            }
-            if (prefix.Length != 0)
-            {
-              InternalWriteName(prefix, true);
-              textWriter.Write(':');
-            }
-          }
-        }
-        else if (ns != null && ns.Length != 0)
-        {
-          throw new ArgumentException(Res.GetString(Res.Xml_NoNamespaces));
-        }
-        InternalWriteName(localName, true);
-      }
-      catch
-      {
-        currentState = State.Error;
-        throw;
-      }
-    }
-
     // Returns the closest prefix defined in the current namespace scope for the specified namespace URI.
     public override string LookupPrefix(string ns)
     {
@@ -1008,64 +909,6 @@ namespace TextMonster.Xml.Xml_Reader
       return s;
     }
 
-    // Gets an XmlSpace representing the current xml:space scope. 
-    public override XmlSpace XmlSpace
-    {
-      get
-      {
-        for (int i = top; i > 0; i--)
-        {
-          XmlSpace xs = stack[i].xmlSpace;
-          if (xs != XmlSpace.None)
-            return xs;
-        }
-        return XmlSpace.None;
-      }
-    }
-
-    // Gets the current xml:lang scope.
-    public override string XmlLang
-    {
-      get
-      {
-        for (int i = top; i > 0; i--)
-        {
-          String xlang = stack[i].xmlLang;
-          if (xlang != null)
-            return xlang;
-        }
-        return null;
-      }
-    }
-
-    // Writes out the specified name, ensuring it is a valid NmToken
-    // according to the XML specification (http://www.w3.org/TR/1998/REC-xml-19980210#NT-Name).
-    public override void WriteNmToken(string name)
-    {
-      try
-      {
-        AutoComplete(Token.Content);
-
-        if (name == null || name.Length == 0)
-        {
-          throw new ArgumentException(Res.GetString(Res.Xml_EmptyName));
-        }
-        if (!ValidateNames.IsNmtokenNoNamespaces(name))
-        {
-          throw new ArgumentException(Res.GetString(Res.Xml_InvalidNameChars, name));
-        }
-        textWriter.Write(name);
-      }
-      catch
-      {
-        currentState = State.Error;
-        throw;
-      }
-    }
-
-    //
-    // Private implementation methods
-    //
     void StartDocument(int standalone)
     {
       try

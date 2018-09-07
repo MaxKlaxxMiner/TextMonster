@@ -67,16 +67,6 @@ namespace TextMonster.Xml.Xml_Reader
       return i - offset;
     }
 
-    // helper methods
-    internal static bool IsNmtokenNoNamespaces(string s)
-    {
-      int endPos = ParseNmtokenNoNamespaces(s, 0);
-      return endPos > 0 && endPos == s.Length;
-    }
-
-    //-----------------------------------------------
-    // Name parsing (no XML namespaces support)
-    //-----------------------------------------------
     /// <summary>
     /// Attempts to parse the input string as a Name without taking into account the XML Namespaces spec.
     /// What it means is that the ':' character does not delimiter prefix and local name, but it is a regular

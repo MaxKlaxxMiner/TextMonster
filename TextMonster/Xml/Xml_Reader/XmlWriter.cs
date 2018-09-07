@@ -11,9 +11,6 @@ namespace TextMonster.Xml.Xml_Reader
     // Helper buffer for WriteNode(XmlReader, bool)
     char[] writeNodeBuffer;
 
-    // Constants
-    const int WriteNodeBufferSize = 1024;
-
     // Returns the settings describing the features of the the writer. Returns null for V1 XmlWriters (XmlTextWriter).
     public virtual XmlWriterSettings Settings
     {
@@ -27,12 +24,6 @@ namespace TextMonster.Xml.Xml_Reader
     // Writes out the XML declaration with the version "1.0".
 
     public abstract void WriteStartDocument();
-
-    //Writes out the XML declaration with the version "1.0" and the speficied standalone attribute.
-
-    public abstract void WriteStartDocument(bool standalone);
-
-    //Closes any open elements or attributes and puts the writer back in the Start state.
 
     public abstract void WriteEndDocument();
 
@@ -63,14 +54,6 @@ namespace TextMonster.Xml.Xml_Reader
     public void WriteAttributeString(string localName, string value)
     {
       WriteStartAttribute(null, localName, (string)null);
-      WriteString(value);
-      WriteEndAttribute();
-    }
-
-    // Writes out the attribute with the specified prefix, LocalName, NamespaceURI and value.
-    public void WriteAttributeString(string prefix, string localName, string ns, string value)
-    {
-      WriteStartAttribute(prefix, localName, ns);
       WriteString(value);
       WriteEndAttribute();
     }
@@ -145,60 +128,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     // Returns the closest prefix defined in the current namespace scope for the specified namespace URI.
     public abstract string LookupPrefix(string ns);
-
-    // Gets an XmlSpace representing the current xml:space scope.
-    public virtual XmlSpace XmlSpace
-    {
-      get
-      {
-        return XmlSpace.Default;
-      }
-    }
-
-    // Gets the current xml:lang scope.
-    public virtual string XmlLang
-    {
-      get
-      {
-        return string.Empty;
-      }
-    }
-
-    // Scalar Value Methods
-
-    // Writes out the specified name, ensuring it is a valid NmToken according to the XML specification 
-    // (http://www.w3.org/TR/1998/REC-xml-19980210#NT-Name).
-    public virtual void WriteNmToken(string name)
-    {
-      if (name == null || name.Length == 0)
-      {
-        throw new ArgumentException(Res.GetString(Res.Xml_EmptyName));
-      }
-      WriteString(XmlConvert.VerifyNMTOKEN(name, ExceptionType.ArgumentException));
-    }
-
-    // Writes out the specified name, ensuring it is a valid Name according to the XML specification
-    // (http://www.w3.org/TR/1998/REC-xml-19980210#NT-Name).
-    public virtual void WriteName(string name)
-    {
-      WriteString(XmlConvert.VerifyQName(name, ExceptionType.ArgumentException));
-    }
-
-    // Writes out the specified namespace-qualified name by looking up the prefix that is in scope for the given namespace.
-    public virtual void WriteQualifiedName(string localName, string ns)
-    {
-      if (ns != null && ns.Length > 0)
-      {
-        string prefix = LookupPrefix(ns);
-        if (prefix == null)
-        {
-          throw new ArgumentException(Res.GetString(Res.Xml_UndefNamespace, ns));
-        }
-        WriteString(prefix);
-        WriteString(":");
-      }
-      WriteString(localName);
-    }
 
     // Writes out the specified value.
     public virtual void WriteValue(object value)
@@ -280,255 +209,6 @@ namespace TextMonster.Xml.Xml_Reader
       WriteString(XmlConvert.ToString(value));
     }
 
-    // XmlReader Helper Methods
-
-    // Writes out all the attributes found at the current position in the specified XmlReader.
-    public virtual void WriteAttributes(FastXmlReader reader, bool defattr)
-    {
-      if (null == reader)
-      {
-        throw new ArgumentNullException("reader");
-      }
-
-      if (reader.NodeType == XmlNodeType.Element || reader.NodeType == XmlNodeType.XmlDeclaration)
-      {
-        if (reader.MoveToFirstAttribute())
-        {
-          WriteAttributes(reader, defattr);
-          reader.MoveToElement();
-        }
-      }
-      else if (reader.NodeType != XmlNodeType.Attribute)
-      {
-        throw new XmlException(Res.Xml_InvalidPosition, string.Empty);
-      }
-      else
-      {
-        do
-        {
-          // we need to check both XmlReader.IsDefault and XmlReader.SchemaInfo.IsDefault. 
-          // If either of these is true and defattr=false, we should not write the attribute out
-          if (defattr || !reader.IsDefaultInternal)
-          {
-            WriteStartAttribute(reader.Prefix, reader.LocalName, reader.NamespaceURI);
-            while (reader.ReadAttributeValue())
-            {
-              if (reader.NodeType == XmlNodeType.EntityReference)
-              {
-                WriteEntityRef(reader.Name);
-              }
-              else
-              {
-                WriteString(reader.Value);
-              }
-            }
-            WriteEndAttribute();
-          }
-        }
-        while (reader.MoveToNextAttribute());
-      }
-    }
-
-    // Copies the current node from the given reader to the writer (including child nodes), and if called on an element moves the XmlReader 
-    // to the corresponding end element.
-    public virtual void WriteNode(FastXmlReader reader, bool defattr)
-    {
-      if (null == reader)
-      {
-        throw new ArgumentNullException("reader");
-      }
-
-      bool canReadChunk = reader.CanReadValueChunk;
-      int d = reader.NodeType == XmlNodeType.None ? -1 : reader.Depth;
-      do
-      {
-        switch (reader.NodeType)
-        {
-          case XmlNodeType.Element:
-          WriteStartElement(reader.Prefix, reader.LocalName, reader.NamespaceURI);
-          WriteAttributes(reader, defattr);
-          if (reader.IsEmptyElement)
-          {
-            WriteEndElement();
-            break;
-          }
-          break;
-          case XmlNodeType.Text:
-          if (canReadChunk)
-          {
-            if (writeNodeBuffer == null)
-            {
-              writeNodeBuffer = new char[WriteNodeBufferSize];
-            }
-            int read;
-            while ((read = reader.ReadValueChunk(writeNodeBuffer, 0, WriteNodeBufferSize)) > 0)
-            {
-              this.WriteChars(writeNodeBuffer, 0, read);
-            }
-          }
-          else
-          {
-
-            WriteString(reader.Value);
-
-          }
-          break;
-          case XmlNodeType.Whitespace:
-          case XmlNodeType.SignificantWhitespace:
-
-          WriteWhitespace(reader.Value);
-
-          break;
-          case XmlNodeType.CDATA:
-          WriteCData(reader.Value);
-          break;
-          case XmlNodeType.EntityReference:
-          WriteEntityRef(reader.Name);
-          break;
-          case XmlNodeType.XmlDeclaration:
-          case XmlNodeType.ProcessingInstruction:
-          WriteProcessingInstruction(reader.Name, reader.Value);
-          break;
-          case XmlNodeType.DocumentType:
-          WriteDocType(reader.Name, reader.GetAttribute("PUBLIC"), reader.GetAttribute("SYSTEM"), reader.Value);
-          break;
-
-          case XmlNodeType.Comment:
-          WriteComment(reader.Value);
-          break;
-          case XmlNodeType.EndElement:
-          WriteFullEndElement();
-          break;
-        }
-      } while (reader.Read() && (d < reader.Depth || (d == reader.Depth && reader.NodeType == XmlNodeType.EndElement)));
-    }
-
-    // Copies the current node from the given XPathNavigator to the writer (including child nodes).
-    public virtual void WriteNode(XPathNavigator navigator, bool defattr)
-    {
-      if (navigator == null)
-      {
-        throw new ArgumentNullException("navigator");
-      }
-      int iLevel = 0;
-
-      navigator = navigator.Clone();
-
-      while (true)
-      {
-        bool mayHaveChildren = false;
-        XPathNodeType nodeType = navigator.NodeType;
-
-        switch (nodeType)
-        {
-          case XPathNodeType.Element:
-          WriteStartElement(navigator.Prefix, navigator.LocalName, navigator.NamespaceURI);
-
-          // Copy attributes
-          if (navigator.MoveToFirstAttribute())
-          {
-            do
-            {
-              IXmlSchemaInfo schemaInfo = navigator.SchemaInfo;
-              if (defattr || (schemaInfo == null || !schemaInfo.IsDefault))
-              {
-                WriteStartAttribute(navigator.Prefix, navigator.LocalName, navigator.NamespaceURI);
-                // copy string value to writer
-                WriteString(navigator.Value);
-                WriteEndAttribute();
-              }
-            } while (navigator.MoveToNextAttribute());
-            navigator.MoveToParent();
-          }
-
-          // Copy namespaces
-          if (navigator.MoveToFirstNamespace(XPathNamespaceScope.Local))
-          {
-            WriteLocalNamespaces(navigator);
-            navigator.MoveToParent();
-          }
-          mayHaveChildren = true;
-          break;
-          case XPathNodeType.Attribute:
-          // do nothing on root level attribute
-          break;
-          case XPathNodeType.Text:
-          WriteString(navigator.Value);
-          break;
-          case XPathNodeType.SignificantWhitespace:
-          case XPathNodeType.Whitespace:
-          WriteWhitespace(navigator.Value);
-          break;
-          case XPathNodeType.Root:
-          mayHaveChildren = true;
-          break;
-          case XPathNodeType.Comment:
-          WriteComment(navigator.Value);
-          break;
-          case XPathNodeType.ProcessingInstruction:
-          WriteProcessingInstruction(navigator.LocalName, navigator.Value);
-          break;
-          case XPathNodeType.Namespace:
-          // do nothing on root level namespace
-          break;
-          default:
-          break;
-        }
-
-        if (mayHaveChildren)
-        {
-          // If children exist, move down to next level
-          if (navigator.MoveToFirstChild())
-          {
-            iLevel++;
-            continue;
-          }
-          else
-          {
-            // EndElement
-            if (navigator.NodeType == XPathNodeType.Element)
-            {
-              if (navigator.IsEmptyElement)
-              {
-                WriteEndElement();
-              }
-              else
-              {
-                WriteFullEndElement();
-              }
-            }
-          }
-        }
-
-        // No children
-        while (true)
-        {
-          if (iLevel == 0)
-          {
-            // The entire subtree has been copied
-            return;
-          }
-
-          if (navigator.MoveToNext())
-          {
-            // Found a sibling, so break to outer loop
-            break;
-          }
-
-          // No siblings, so move up to previous level
-          iLevel--;
-          navigator.MoveToParent();
-
-          // EndElement
-          if (navigator.NodeType == XPathNodeType.Element)
-            WriteFullEndElement();
-        }
-      }
-    }
-
-    // Element Helper Methods
-
-    // Writes out an element with the specified name containing the specified string value.
     public void WriteElementString(string localName, String value)
     {
       WriteElementString(localName, null, value);
@@ -556,28 +236,6 @@ namespace TextMonster.Xml.Xml_Reader
       if (disposing && WriteState != WriteState.Closed)
       {
         Close();
-      }
-    }
-
-    // Copy local namespaces on the navigator's current node to the raw writer. The namespaces are returned by the navigator in reversed order. 
-    // The recursive call reverses them back.
-    private void WriteLocalNamespaces(XPathNavigator nsNav)
-    {
-      string prefix = nsNav.LocalName;
-      string ns = nsNav.Value;
-
-      if (nsNav.MoveToNextNamespace(XPathNamespaceScope.Local))
-      {
-        WriteLocalNamespaces(nsNav);
-      }
-
-      if (prefix.Length == 0)
-      {
-        WriteAttributeString(string.Empty, "xmlns", XmlReservedNs.NsXmlNs, ns);
-      }
-      else
-      {
-        WriteAttributeString("xmlns", prefix, XmlReservedNs.NsXmlNs, ns);
       }
     }
 

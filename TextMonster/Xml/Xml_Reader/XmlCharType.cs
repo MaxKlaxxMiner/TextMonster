@@ -527,18 +527,6 @@ namespace TextMonster.Xml.Xml_Reader
       return true;
     }
 
-    static internal bool IsOnlyDigits(char[] chars, int startPos, int len)
-    {
-      for (int i = startPos; i < startPos + len; i++)
-      {
-        if (!IsDigit(chars[i]))
-        {
-          return false;
-        }
-      }
-      return true;
-    }
-
     internal int IsPublicId(string str)
     {
       if (str != null)

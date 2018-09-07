@@ -828,19 +828,6 @@ namespace TextMonster.Xml.Xml_Reader
       return InternalValidateEndElement(schemaInfo, null);
     }
 
-    public object ValidateEndElement(XmlSchemaInfo schemaInfo, object typedValue)
-    {
-      if (typedValue == null)
-      {
-        throw new ArgumentNullException("typedValue");
-      }
-      if (textValue.Length > 0)
-      {
-        throw new InvalidOperationException(Res.GetString(Res.Sch_InvalidEndElementCall));
-      }
-      return InternalValidateEndElement(schemaInfo, typedValue);
-    }
-
     public void SkipToEndElement(XmlSchemaInfo schemaInfo)
     {
       if (validationStack.Length <= 1)

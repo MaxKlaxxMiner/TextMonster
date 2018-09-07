@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
@@ -484,200 +483,6 @@ namespace TextMonster.Xml.Xml_Reader
       return t.Name;
     }
 
-    internal static Type GetArrayElementType(Type type, string memberInfo)
-    {
-      if (type.IsArray)
-        return type.GetElementType();
-      else if (IsArraySegment(type))
-        return null;
-      else if (typeof(ICollection).IsAssignableFrom(type))
-        return GetCollectionElementType(type, memberInfo);
-      else if (typeof(IEnumerable).IsAssignableFrom(type))
-      {
-        TypeFlags flags = TypeFlags.None;
-        return GetEnumeratorElementType(type, ref flags);
-      }
-      else
-        return null;
-    }
-
-    internal static MemberMapping[] GetAllMembers(StructMapping mapping)
-    {
-      if (mapping.BaseMapping == null)
-        return mapping.Members;
-      ArrayList list = new ArrayList();
-      GetAllMembers(mapping, list);
-      return (MemberMapping[])list.ToArray(typeof(MemberMapping));
-    }
-
-    internal static void GetAllMembers(StructMapping mapping, ArrayList list)
-    {
-      if (mapping.BaseMapping != null)
-      {
-        GetAllMembers(mapping.BaseMapping, list);
-      }
-      for (int i = 0; i < mapping.Members.Length; i++)
-      {
-        list.Add(mapping.Members[i]);
-      }
-    }
-
-    internal static MemberMapping[] GetAllMembers(StructMapping mapping, System.Collections.Generic.Dictionary<string, MemberInfo> memberInfos)
-    {
-      MemberMapping[] mappings = GetAllMembers(mapping);
-      PopulateMemberInfos(mapping, mappings, memberInfos);
-      return mappings;
-    }
-
-    internal static MemberMapping[] GetSettableMembers(StructMapping structMapping)
-    {
-      ArrayList list = new ArrayList();
-      GetSettableMembers(structMapping, list);
-      return (MemberMapping[])list.ToArray(typeof(MemberMapping));
-    }
-
-    static void GetSettableMembers(StructMapping mapping, ArrayList list)
-    {
-      if (mapping.BaseMapping != null)
-      {
-        GetSettableMembers(mapping.BaseMapping, list);
-      }
-
-      if (mapping.Members != null)
-      {
-        foreach (MemberMapping memberMapping in mapping.Members)
-        {
-          MemberInfo memberInfo = memberMapping.MemberInfo;
-          if (memberInfo != null && memberInfo.MemberType == MemberTypes.Property)
-          {
-            PropertyInfo propertyInfo = memberInfo as PropertyInfo;
-            if (propertyInfo != null && !CanWriteProperty(propertyInfo, memberMapping.TypeDesc))
-            {
-              throw new InvalidOperationException(Res.GetString(Res.XmlReadOnlyPropertyError, propertyInfo.DeclaringType, propertyInfo.Name));
-            }
-          }
-          list.Add(memberMapping);
-        }
-      }
-    }
-
-    static bool CanWriteProperty(PropertyInfo propertyInfo, TypeDesc typeDesc)
-    {
-      // If the property is a collection, we don't need a setter.
-      if (typeDesc.Kind == TypeKind.Collection || typeDesc.Kind == TypeKind.Enumerable)
-      {
-        return true;
-      }
-      // Else the property needs a public setter.
-      return propertyInfo.SetMethod != null && propertyInfo.SetMethod.IsPublic;
-    }
-
-    internal static MemberMapping[] GetSettableMembers(StructMapping mapping, System.Collections.Generic.Dictionary<string, MemberInfo> memberInfos)
-    {
-      MemberMapping[] mappings = GetSettableMembers(mapping);
-      PopulateMemberInfos(mapping, mappings, memberInfos);
-      return mappings;
-    }
-
-    static void PopulateMemberInfos(StructMapping structMapping, MemberMapping[] mappings, System.Collections.Generic.Dictionary<string, MemberInfo> memberInfos)
-    {
-      memberInfos.Clear();
-      for (int i = 0; i < mappings.Length; ++i)
-      {
-        memberInfos[mappings[i].Name] = mappings[i].MemberInfo;
-        if (mappings[i].ChoiceIdentifier != null)
-          memberInfos[mappings[i].ChoiceIdentifier.MemberName] = mappings[i].ChoiceIdentifier.MemberInfo;
-        if (mappings[i].CheckSpecifiedMemberInfo != null)
-          memberInfos[mappings[i].Name + "Specified"] = mappings[i].CheckSpecifiedMemberInfo;
-      }
-
-      // The scenario here is that user has one base class A and one derived class B and wants to serialize/deserialize an object of B.
-      // There's one virtual property defined in A and overrided by B. Without the replacing logic below, the code generated will always
-      // try to access the property defined in A, rather than B.
-      // The logic here is to:
-      // 1) Check current members inside memberInfos dictionary and figure out whether there's any override or new properties defined in the derived class.
-      //    If so, replace the one on the base class with the one on the derived class.
-      // 2) Do the same thing for the memberMapping array. Note that we need to create a new copy of MemberMapping object since the old one could still be referenced
-      //    by the StructMapping of the baseclass, so updating it directly could lead to other issues.
-      Dictionary<string, MemberInfo> replaceList = null;
-      MemberInfo replacedInfo = null;
-      foreach (KeyValuePair<string, MemberInfo> pair in memberInfos)
-      {
-        if (ShouldBeReplaced(pair.Value, structMapping.TypeDesc.Type, out replacedInfo))
-        {
-          if (replaceList == null)
-          {
-            replaceList = new Dictionary<string, MemberInfo>();
-          }
-
-          replaceList.Add(pair.Key, replacedInfo);
-        }
-      }
-
-      if (replaceList != null)
-      {
-        foreach (KeyValuePair<string, MemberInfo> pair in replaceList)
-        {
-          memberInfos[pair.Key] = pair.Value;
-        }
-        for (int i = 0; i < mappings.Length; i++)
-        {
-          MemberInfo mi;
-          if (replaceList.TryGetValue(mappings[i].Name, out mi))
-          {
-            MemberMapping newMapping = mappings[i].Clone();
-            newMapping.MemberInfo = mi;
-            mappings[i] = newMapping;
-          }
-        }
-      }
-    }
-
-    static bool ShouldBeReplaced(MemberInfo memberInfoToBeReplaced, Type derivedType, out MemberInfo replacedInfo)
-    {
-      replacedInfo = memberInfoToBeReplaced;
-      Type currentType = derivedType;
-      Type typeToBeReplaced = memberInfoToBeReplaced.DeclaringType;
-
-      if (typeToBeReplaced.IsAssignableFrom(currentType))
-      {
-        while (currentType != typeToBeReplaced)
-        {
-          TypeInfo currentInfo = currentType.GetTypeInfo();
-
-          foreach (PropertyInfo info in currentInfo.DeclaredProperties)
-          {
-            if (info.Name == memberInfoToBeReplaced.Name)
-            {
-              // we have a new modifier situation: property names are the same but the declaring types are different
-              replacedInfo = info;
-              if (replacedInfo != memberInfoToBeReplaced)
-              {
-                return true;
-              }
-            }
-          }
-          foreach (FieldInfo info in currentInfo.DeclaredFields)
-          {
-            if (info.Name == memberInfoToBeReplaced.Name)
-            {
-              // we have a new modifier situation: field names are the same but the declaring types are different
-              replacedInfo = info;
-              if (replacedInfo != memberInfoToBeReplaced)
-              {
-                return true;
-              }
-            }
-          }
-
-          // we go one level down and try again
-          currentType = currentType.BaseType;
-        }
-      }
-
-      return false;
-    }
-
     static TypeFlags GetConstructorFlags(Type type, ref Exception exception)
     {
       ConstructorInfo ctor = type.GetConstructor(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[0], null);
@@ -860,20 +665,9 @@ namespace TextMonster.Xml.Xml_Reader
       return new XmlQualifiedName(name, ns);
     }
 
-    internal ICollection Types
-    {
-      get { return this.typeDescs.Keys; }
-    }
-
     internal void AddTypeMapping(TypeMapping typeMapping)
     {
       typeMappings.Add(typeMapping);
     }
-
-    internal ICollection TypeMappings
-    {
-      get { return typeMappings; }
-    }
-    internal static Hashtable PrimtiveTypes { get { return primitiveTypes; } }
   }
 }

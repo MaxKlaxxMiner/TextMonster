@@ -315,11 +315,6 @@ namespace TextMonster.Xml.Xml_Reader
       WriteStartDocumentImpl(XmlStandalone.Omit);
     }
 
-    public override void WriteStartDocument(bool standalone)
-    {
-      WriteStartDocumentImpl(standalone ? XmlStandalone.Yes : XmlStandalone.No);
-    }
-
     public override void WriteEndDocument()
     {
       try
@@ -1313,7 +1308,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public override XmlSpace XmlSpace
+    public virtual XmlSpace XmlSpace
     {
       get
       {
@@ -1323,7 +1318,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public override string XmlLang
+    public virtual string XmlLang
     {
       get
       {
@@ -1333,7 +1328,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public override void WriteQualifiedName(string localName, string ns)
+    public virtual void WriteQualifiedName(string localName, string ns)
     {
       try
       {

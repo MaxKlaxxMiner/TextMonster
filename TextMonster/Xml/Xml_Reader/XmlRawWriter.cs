@@ -23,11 +23,6 @@ namespace TextMonster.Xml.Xml_Reader
       throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
     }
 
-    public override void WriteStartDocument(bool standalone)
-    {
-      throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
-    }
-
     public override void WriteEndDocument()
     {
       throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
@@ -74,36 +69,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
       }
-    }
-
-    // Raw writers do not have to keep track of xml:space.
-    public override XmlSpace XmlSpace
-    {
-      get { throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation)); }
-    }
-
-    // Raw writers do not have to keep track of xml:lang.
-    public override string XmlLang
-    {
-      get { throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation)); }
-    }
-
-    // Raw writers do not have to verify NmToken values.
-    public override void WriteNmToken(string name)
-    {
-      throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
-    }
-
-    // Raw writers do not have to verify Name values.
-    public override void WriteName(string name)
-    {
-      throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
-    }
-
-    // Raw writers do not have to verify QName values.
-    public override void WriteQualifiedName(string localName, string ns)
-    {
-      throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
     }
 
     // Forward call to WriteString(string).
@@ -169,22 +134,6 @@ namespace TextMonster.Xml.Xml_Reader
       // For compatibility with custom writers, XmlWriter writes DateTimeOffset as DateTime. 
       // Our internal writers should use the DateTimeOffset-String conversion from XmlConvert.
       WriteString(XmlConvert.ToString(value));
-    }
-
-    // Copying to XmlRawWriter is not currently supported.
-    public override void WriteAttributes(FastXmlReader reader, bool defattr)
-    {
-      throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
-    }
-
-    public override void WriteNode(FastXmlReader reader, bool defattr)
-    {
-      throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
-    }
-
-    public override void WriteNode(XPathNavigator navigator, bool defattr)
-    {
-      throw new InvalidOperationException(Res.GetString(Res.Xml_InvalidOperation));
     }
 
     // Get and set the namespace resolver that's used by this RawWriter to resolve prefixes.

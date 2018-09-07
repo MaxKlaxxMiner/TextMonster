@@ -484,15 +484,5 @@ namespace TextMonster.Xml.Xml_Reader
     internal override XPathNodeType XPNodeType { get { return XPathNodeType.Element; } }
 
     internal override string XPLocalName { get { return LocalName; } }
-
-    internal override string GetXPAttribute(string localName, string ns)
-    {
-      if (ns == OwnerDocument.strReservedXmlns)
-        return null;
-      XmlAttribute attr = GetAttributeNode(localName, ns);
-      if (attr != null)
-        return attr.Value;
-      return string.Empty;
-    }
   }
 }

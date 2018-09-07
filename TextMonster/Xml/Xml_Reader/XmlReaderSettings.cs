@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Runtime.Versioning;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -347,38 +346,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
 
-    [ResourceConsumption(ResourceScope.Machine)]
-    [ResourceExposure(ResourceScope.Machine)]
-    internal FastXmlReader CreateReader(String inputUri, XmlParserContext inputContext)
-    {
-      if (inputUri == null)
-      {
-        throw new ArgumentNullException("inputUri");
-      }
-      if (inputUri.Length == 0)
-      {
-        throw new ArgumentException(Res.GetString(Res.XmlConvert_BadUri), "inputUri");
-      }
-
-      // resolve and open the url
-      XmlResolver tmpResolver = this.GetXmlResolver();
-      if (tmpResolver == null)
-      {
-        tmpResolver = CreateDefaultResolver();
-      }
-
-      // create text XML reader
-      FastXmlReader reader = new XmlTextReaderImpl(inputUri, this, inputContext, tmpResolver);
-
-      // wrap with validating reader
-      if (this.ValidationType != ValidationType.None)
-      {
-        reader = AddValidation(reader);
-      }
-
-      return reader;
-    }
-
     internal FastXmlReader CreateReader(Stream input, Uri baseUri, string baseUriString, XmlParserContext inputContext)
     {
       if (input == null)
@@ -430,16 +397,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
 
       return reader;
-    }
-
-    internal FastXmlReader CreateReader(FastXmlReader reader)
-    {
-      if (reader == null)
-      {
-        throw new ArgumentNullException("reader");
-      }
-      // wrap with conformance layer (if needed)
-      return AddConformanceWrapper(reader);
     }
 
     internal bool ReadOnly
@@ -532,131 +489,6 @@ namespace TextMonster.Xml.Xml_Reader
     private XmlValidatingReaderImpl CreateDtdValidatingReader(FastXmlReader baseReader)
     {
       return new XmlValidatingReaderImpl(baseReader, this.GetEventHandler(), (this.ValidationFlags & XmlSchemaValidationFlags.ProcessIdentityConstraints) != 0);
-    }
-
-    internal FastXmlReader AddConformanceWrapper(FastXmlReader baseReader)
-    {
-      XmlReaderSettings baseReaderSettings = baseReader.Settings;
-      bool checkChars = false;
-      bool noWhitespace = false;
-      bool noComments = false;
-      bool noPIs = false;
-      DtdProcessing dtdProc = (DtdProcessing)(-1);
-      bool needWrap = false;
-
-      if (baseReaderSettings == null)
-      {
-
-#pragma warning disable 618
-
-        if (this.conformanceLevel != ConformanceLevel.Auto && this.conformanceLevel != FastXmlReader.GetV1ConformanceLevel(baseReader))
-        {
-          throw new InvalidOperationException(Res.GetString(Res.Xml_IncompatibleConformanceLevel, this.conformanceLevel.ToString()));
-        }
-
-        // get the V1 XmlTextReader ref
-        XmlTextReader v1XmlTextReader = baseReader as XmlTextReader;
-        if (v1XmlTextReader == null)
-        {
-          XmlValidatingReader vr = baseReader as XmlValidatingReader;
-          if (vr != null)
-          {
-            v1XmlTextReader = (XmlTextReader)vr.Reader;
-          }
-        }
-
-        // assume the V1 readers already do all conformance checking; 
-        // wrap only if IgnoreWhitespace, IgnoreComments, IgnoreProcessingInstructions or ProhibitDtd is true;
-        if (this.ignoreWhitespace)
-        {
-          WhitespaceHandling wh = WhitespaceHandling.All;
-          // special-case our V1 readers to see if whey already filter whitespaces
-          if (v1XmlTextReader != null)
-          {
-            wh = v1XmlTextReader.WhitespaceHandling;
-          }
-
-          if (wh == WhitespaceHandling.All)
-          {
-            noWhitespace = true;
-            needWrap = true;
-          }
-        }
-        if (this.ignoreComments)
-        {
-          noComments = true;
-          needWrap = true;
-        }
-        if (this.ignorePIs)
-        {
-          noPIs = true;
-          needWrap = true;
-        }
-        // DTD processing
-        DtdProcessing baseDtdProcessing = DtdProcessing.Parse;
-        if (v1XmlTextReader != null)
-        {
-          baseDtdProcessing = v1XmlTextReader.DtdProcessing;
-        }
-        if ((this.dtdProcessing == DtdProcessing.Prohibit && baseDtdProcessing != DtdProcessing.Prohibit) ||
-            (this.dtdProcessing == DtdProcessing.Ignore && baseDtdProcessing == DtdProcessing.Parse))
-        {
-          dtdProc = this.dtdProcessing;
-          needWrap = true;
-        }
-#pragma warning restore 618
-      }
-      else
-      {
-        if (this.conformanceLevel != baseReaderSettings.ConformanceLevel && this.conformanceLevel != ConformanceLevel.Auto)
-        {
-          throw new InvalidOperationException(Res.GetString(Res.Xml_IncompatibleConformanceLevel, this.conformanceLevel.ToString()));
-        }
-        if (this.checkCharacters && !baseReaderSettings.CheckCharacters)
-        {
-          checkChars = true;
-          needWrap = true;
-        }
-        if (this.ignoreWhitespace && !baseReaderSettings.IgnoreWhitespace)
-        {
-          noWhitespace = true;
-          needWrap = true;
-        }
-        if (this.ignoreComments && !baseReaderSettings.IgnoreComments)
-        {
-          noComments = true;
-          needWrap = true;
-        }
-        if (this.ignorePIs && !baseReaderSettings.IgnoreProcessingInstructions)
-        {
-          noPIs = true;
-          needWrap = true;
-        }
-
-        if ((this.dtdProcessing == DtdProcessing.Prohibit && baseReaderSettings.DtdProcessing != DtdProcessing.Prohibit) ||
-            (this.dtdProcessing == DtdProcessing.Ignore && baseReaderSettings.DtdProcessing == DtdProcessing.Parse))
-        {
-          dtdProc = this.dtdProcessing;
-          needWrap = true;
-        }
-      }
-
-      if (needWrap)
-      {
-        IXmlNamespaceResolver readerAsNSResolver = baseReader as IXmlNamespaceResolver;
-        if (readerAsNSResolver != null)
-        {
-          return new XmlCharCheckingReaderWithNS(baseReader, readerAsNSResolver, checkChars, noWhitespace, noComments, noPIs, dtdProc);
-        }
-        else
-        {
-          return new XmlCharCheckingReader(baseReader, checkChars, noWhitespace, noComments, noPIs, dtdProc);
-        }
-      }
-      else
-      {
-        return baseReader;
-      }
     }
 
     private static bool? s_enableLegacyXmlSettings = null;

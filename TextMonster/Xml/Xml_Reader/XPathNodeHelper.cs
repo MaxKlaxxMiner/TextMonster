@@ -296,64 +296,6 @@
     }
 
     /// <summary>
-    /// Return the first preceding sibling of the specified node.  If no such sibling exists, then do not set
-    /// pageNode or idxNode and return false.
-    /// </summary>
-    public static bool GetPreviousContentSibling(ref XPathNode[] pageNode, ref int idxNode)
-    {
-      XPathNode[] pageParent = pageNode, pagePrec, pageAnc;
-      int idxParent = idxNode, idxPrec, idxAnc;
-
-      // Since nodes are laid out in document order on pages, the algorithm is:
-      //   1. Get parent of current node
-      //   2. If no parent, then there is no previous sibling, so return false
-      //   3. Get node that immediately precedes the current node in document order
-      //   4. If preceding node is parent, then there is no previous sibling, so return false
-      //   5. Walk ancestors of preceding node, until parent of current node is found
-      idxParent = pageParent[idxParent].GetParent(out pageParent);
-      if (idxParent != 0)
-      {
-        idxPrec = idxNode - 1;
-        if (idxPrec == 0)
-        {
-          // Need to get previous page
-          pagePrec = pageNode[0].PageInfo.PreviousPage;
-          idxPrec = pagePrec.Length - 1;
-        }
-        else
-        {
-          // Previous node is on the same page
-          pagePrec = pageNode;
-        }
-
-        // If parent node is previous node, then no previous sibling
-        if (idxParent == idxPrec && pageParent == pagePrec)
-          return false;
-
-        // Find child of parent node by walking ancestor chain
-        pageAnc = pagePrec;
-        idxAnc = idxPrec;
-        do
-        {
-          pagePrec = pageAnc;
-          idxPrec = idxAnc;
-          idxAnc = pageAnc[idxAnc].GetParent(out pageAnc);
-        }
-        while (idxAnc != idxParent || pageAnc != pageParent);
-
-        // We found the previous sibling, but if it's an attribute node, then return false
-        if (pagePrec[idxPrec].NodeType != XPathNodeType.Attribute)
-        {
-          pageNode = pagePrec;
-          idxNode = idxPrec;
-          return true;
-        }
-      }
-
-      return false;
-    }
-
-    /// <summary>
     /// Return the attribute of the specified node that has the specified name.  If no such attribute exists,
     /// then do not set pageNode or idxNode and return false.  Assume that the localName has been atomized with respect
     /// to this document's name table, but not the namespaceName.

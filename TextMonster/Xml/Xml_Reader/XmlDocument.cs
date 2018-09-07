@@ -781,44 +781,6 @@ namespace TextMonster.Xml.Xml_Reader
       return new XmlWhitespace(text, this);
     }
 
-    // Returns an XmlNodeList containing
-    // a list of all descendant elements that match the specified name.
-    public virtual XmlNodeList GetElementsByTagName(String name)
-    {
-      return new XmlElementList(this, name);
-    }
-
-    // DOM Level 2
-
-    // Creates an XmlAttribute with the specified LocalName
-    // and NamespaceURI.
-    public XmlAttribute CreateAttribute(String qualifiedName, String namespaceURI)
-    {
-      string prefix = String.Empty;
-      string localName = String.Empty;
-
-      SplitName(qualifiedName, out prefix, out localName);
-      return CreateAttribute(prefix, localName, namespaceURI);
-    }
-
-    // Creates an XmlElement with the specified LocalName and
-    // NamespaceURI.
-    public XmlElement CreateElement(String qualifiedName, String namespaceURI)
-    {
-      string prefix = String.Empty;
-      string localName = String.Empty;
-      SplitName(qualifiedName, out prefix, out localName);
-      return CreateElement(prefix, localName, namespaceURI);
-    }
-
-    // Returns a XmlNodeList containing
-    // a list of all descendant elements that match the specified name.
-    public virtual XmlNodeList GetElementsByTagName(String localName, String namespaceURI)
-    {
-      return new XmlElementList(this, localName, namespaceURI);
-    }
-
-    // Returns the XmlElement with the specified ID.
     public virtual XmlElement GetElementById(string elementId)
     {
       if (htElementIdMap != null)
@@ -836,12 +798,6 @@ namespace TextMonster.Xml.Xml_Reader
         }
       }
       return null;
-    }
-
-    // Imports a node from another document to this document.
-    public virtual XmlNode ImportNode(XmlNode node, bool deep)
-    {
-      return ImportNodeInternal(node, deep);
     }
 
     private XmlNode ImportNodeInternal(XmlNode node, bool deep)
@@ -963,14 +919,6 @@ namespace TextMonster.Xml.Xml_Reader
       return elem;
     }
 
-    // Gets or sets a value indicating whether to preserve whitespace.
-    public bool PreserveWhitespace
-    {
-      get { return preserveWhitespace; }
-      set { preserveWhitespace = value; }
-    }
-
-    // Gets a value indicating whether the node is read-only.
     public override bool IsReadOnly
     {
       get { return false; }
@@ -996,159 +944,7 @@ namespace TextMonster.Xml.Xml_Reader
     internal bool ActualLoadingStatus
     {
       get { return actualLoadingStatus; }
-      set { actualLoadingStatus = value; }
     }
-
-
-    // Creates a XmlNode with the specified XmlNodeType, Prefix, Name, and NamespaceURI.
-    public virtual XmlNode CreateNode(XmlNodeType type, string prefix, string name, string namespaceURI)
-    {
-      switch (type)
-      {
-        case XmlNodeType.Element:
-        if (prefix != null)
-          return CreateElement(prefix, name, namespaceURI);
-        else
-          return CreateElement(name, namespaceURI);
-
-        case XmlNodeType.Attribute:
-        if (prefix != null)
-          return CreateAttribute(prefix, name, namespaceURI);
-        else
-          return CreateAttribute(name, namespaceURI);
-
-        case XmlNodeType.Text:
-        return CreateTextNode(string.Empty);
-
-        case XmlNodeType.CDATA:
-        return CreateCDataSection(string.Empty);
-
-        case XmlNodeType.EntityReference:
-        return CreateEntityReference(name);
-
-        case XmlNodeType.ProcessingInstruction:
-        return CreateProcessingInstruction(name, string.Empty);
-
-        case XmlNodeType.XmlDeclaration:
-        return CreateXmlDeclaration("1.0", null, null);
-
-        case XmlNodeType.Comment:
-        return CreateComment(string.Empty);
-
-        case XmlNodeType.DocumentFragment:
-        return CreateDocumentFragment();
-
-        case XmlNodeType.DocumentType:
-        return CreateDocumentType(name, string.Empty, string.Empty, string.Empty);
-
-        case XmlNodeType.Document:
-        return new XmlDocument();
-
-        case XmlNodeType.SignificantWhitespace:
-        return CreateSignificantWhitespace(string.Empty);
-
-        case XmlNodeType.Whitespace:
-        return CreateWhitespace(string.Empty);
-
-        default:
-        throw new ArgumentException(Res.GetString(Res.Arg_CannotCreateNode, type));
-      }
-    }
-
-    // Creates an XmlNode with the specified node type, Name, and
-    // NamespaceURI.
-    public virtual XmlNode CreateNode(string nodeTypeString, string name, string namespaceURI)
-    {
-      return CreateNode(ConvertToNodeType(nodeTypeString), name, namespaceURI);
-    }
-
-    // Creates an XmlNode with the specified XmlNodeType, Name, and
-    // NamespaceURI.
-    public virtual XmlNode CreateNode(XmlNodeType type, string name, string namespaceURI)
-    {
-      return CreateNode(type, null, name, namespaceURI);
-    }
-
-    // Creates an XmlNode object based on the information in the XmlReader.
-    // The reader must be positioned on a node or attribute.
-    [PermissionSetAttribute(SecurityAction.InheritanceDemand, Name = "FullTrust")]
-    public virtual XmlNode ReadNode(FastXmlReader reader)
-    {
-      XmlNode node = null;
-      try
-      {
-        IsLoading = true;
-        XmlLoader loader = new XmlLoader();
-        node = loader.ReadCurrentNode(this, reader);
-      }
-      finally
-      {
-        IsLoading = false;
-      }
-      return node;
-    }
-
-    internal XmlNodeType ConvertToNodeType(string nodeTypeString)
-    {
-      if (nodeTypeString == "element")
-      {
-        return XmlNodeType.Element;
-      }
-      else if (nodeTypeString == "attribute")
-      {
-        return XmlNodeType.Attribute;
-      }
-      else if (nodeTypeString == "text")
-      {
-        return XmlNodeType.Text;
-      }
-      else if (nodeTypeString == "cdatasection")
-      {
-        return XmlNodeType.CDATA;
-      }
-      else if (nodeTypeString == "entityreference")
-      {
-        return XmlNodeType.EntityReference;
-      }
-      else if (nodeTypeString == "entity")
-      {
-        return XmlNodeType.Entity;
-      }
-      else if (nodeTypeString == "processinginstruction")
-      {
-        return XmlNodeType.ProcessingInstruction;
-      }
-      else if (nodeTypeString == "comment")
-      {
-        return XmlNodeType.Comment;
-      }
-      else if (nodeTypeString == "document")
-      {
-        return XmlNodeType.Document;
-      }
-      else if (nodeTypeString == "documenttype")
-      {
-        return XmlNodeType.DocumentType;
-      }
-      else if (nodeTypeString == "documentfragment")
-      {
-        return XmlNodeType.DocumentFragment;
-      }
-      else if (nodeTypeString == "notation")
-      {
-        return XmlNodeType.Notation;
-      }
-      else if (nodeTypeString == "significantwhitespace")
-      {
-        return XmlNodeType.SignificantWhitespace;
-      }
-      else if (nodeTypeString == "whitespace")
-      {
-        return XmlNodeType.Whitespace;
-      }
-      throw new ArgumentException(Res.GetString(Res.Xdom_Invalid_NT_String, nodeTypeString));
-    }
-
 
     private XmlTextReader SetupReader(XmlTextReader tr)
     {
@@ -1157,49 +953,6 @@ namespace TextMonster.Xml.Xml_Reader
       if (this.HasSetResolver)
         tr.XmlResolver = GetResolver();
       return tr;
-    }
-
-    // Loads the XML document from the specified URL.
-    [ResourceConsumption(ResourceScope.Machine)]
-    [ResourceExposure(ResourceScope.Machine)]
-    public virtual void Load(string filename)
-    {
-      XmlTextReader reader = SetupReader(new XmlTextReader(filename, NameTable));
-      try
-      {
-        Load(reader);
-      }
-      finally
-      {
-        reader.Close();
-      }
-    }
-
-    public virtual void Load(Stream inStream)
-    {
-      XmlTextReader reader = SetupReader(new XmlTextReader(inStream, NameTable));
-      try
-      {
-        Load(reader);
-      }
-      finally
-      {
-        reader.Impl.Close(false);
-      }
-    }
-
-    // Loads the XML document from the specified TextReader.
-    public virtual void Load(TextReader txtReader)
-    {
-      XmlTextReader reader = SetupReader(new XmlTextReader(txtReader, NameTable));
-      try
-      {
-        Load(reader);
-      }
-      finally
-      {
-        reader.Impl.Close(false);
-      }
     }
 
     // Loads the XML document from the specified XmlReader.
@@ -1241,23 +994,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    //TextEncoding is the one from XmlDeclaration if there is any
-    internal Encoding TextEncoding
-    {
-      get
-      {
-        if (Declaration != null)
-        {
-          string value = Declaration.Encoding;
-          if (value.Length > 0)
-          {
-            return System.Text.Encoding.GetEncoding(value);
-          }
-        }
-        return null;
-      }
-    }
-
     public override string InnerText
     {
       set
@@ -1278,88 +1014,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    // Saves the XML document to the specified file.
-    //Saves out the to the file with exact content in the XmlDocument.
-    [ResourceConsumption(ResourceScope.Machine)]
-    [ResourceExposure(ResourceScope.Machine)]
-    public virtual void Save(string filename)
-    {
-      if (DocumentElement == null)
-        throw new XmlException(Res.Xml_InvalidXmlDocument, Res.GetString(Res.Xdom_NoRootEle));
-      XmlDOMTextWriter xw = new XmlDOMTextWriter(filename, TextEncoding);
-      try
-      {
-        if (preserveWhitespace == false)
-          xw.Formatting = Formatting.Indented;
-        WriteTo(xw);
-        xw.Flush();
-      }
-      finally
-      {
-        xw.Close();
-      }
-    }
-
-    //Saves out the to the file with exact content in the XmlDocument.
-    public virtual void Save(Stream outStream)
-    {
-      XmlDOMTextWriter xw = new XmlDOMTextWriter(outStream, TextEncoding);
-      if (preserveWhitespace == false)
-        xw.Formatting = Formatting.Indented;
-      WriteTo(xw);
-      xw.Flush();
-    }
-
-    // Saves the XML document to the specified TextWriter.
-    //
-    //Saves out the file with xmldeclaration which has encoding value equal to
-    //that of textwriter's encoding
-    public virtual void Save(TextWriter writer)
-    {
-      XmlDOMTextWriter xw = new XmlDOMTextWriter(writer);
-      if (preserveWhitespace == false)
-        xw.Formatting = Formatting.Indented;
-      Save(xw);
-    }
-
-    // Saves the XML document to the specified XmlWriter.
-    // 
-    //Saves out the file with xmldeclaration which has encoding value equal to
-    //that of textwriter's encoding
-    public virtual void Save(XmlWriter w)
-    {
-      XmlNode n = this.FirstChild;
-      if (n == null)
-        return;
-      if (w.WriteState == WriteState.Start)
-      {
-        if (n is XmlDeclaration)
-        {
-          if (Standalone.Length == 0)
-            w.WriteStartDocument();
-          else if (Standalone == "yes")
-            w.WriteStartDocument(true);
-          else if (Standalone == "no")
-            w.WriteStartDocument(false);
-          n = n.NextSibling;
-        }
-        else
-        {
-          w.WriteStartDocument();
-        }
-      }
-      while (n != null)
-      {
-        //Debug.Assert( n.NodeType != XmlNodeType.XmlDeclaration );
-        n.WriteTo(w);
-        n = n.NextSibling;
-      }
-      w.Flush();
-    }
-
-    // Saves the node to the specified XmlWriter.
-    // 
-    //Writes out the to the file with exact content in the XmlDocument.
     public override void WriteTo(XmlWriter w)
     {
       WriteContentTo(w);
@@ -1374,11 +1028,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         n.WriteTo(xw);
       }
-    }
-
-    public void Validate(ValidationEventHandler validationEventHandler)
-    {
-      Validate(validationEventHandler, this);
     }
 
     public void Validate(ValidationEventHandler validationEventHandler, XmlNode nodeToValidate)

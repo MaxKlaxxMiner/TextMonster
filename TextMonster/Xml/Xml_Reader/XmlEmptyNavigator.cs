@@ -72,11 +72,6 @@
       get { return string.Empty; }
     }
 
-    public override bool HasChildren
-    {
-      get { return false; }
-    }
-
 
     //-----------------------------------------------
     // IXmlNamespaceResolver
@@ -99,11 +94,6 @@
     }
 
     public override bool MoveToNext()
-    {
-      return false;
-    }
-
-    public override bool MoveToPrevious()
     {
       return false;
     }

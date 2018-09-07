@@ -95,11 +95,7 @@ namespace TextMonster.Xml.Xml_Reader
       decimal decimalValue = (decimal)value;
       return CheckValueFacets(decimalValue, datatype);
     }
-    internal override Exception CheckValueFacets(byte value, XmlSchemaDatatype datatype)
-    {
-      decimal decimalValue = (decimal)value;
-      return CheckValueFacets(decimalValue, datatype);
-    }
+
     internal override bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype)
     {
       return MatchEnumeration(datatype.ValueConverter.ToDecimal(value), enumeration, datatype.ValueConverter);

@@ -134,19 +134,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return attributeType; }
     }
 
-    internal FastXmlReader Validate(FastXmlReader reader, XmlResolver resolver, XmlSchemaSet schemaSet, ValidationEventHandler valEventHandler)
-    {
-      if (schemaSet != null)
-      {
-        XmlReaderSettings readerSettings = new XmlReaderSettings();
-        readerSettings.ValidationType = ValidationType.Schema;
-        readerSettings.Schemas = schemaSet;
-        readerSettings.ValidationEventHandler += valEventHandler;
-        return new XsdValidatingReader(reader, resolver, readerSettings, this);
-      }
-      return null;
-    }
-
     [XmlIgnore]
     internal XmlSchemaDatatype Datatype
     {

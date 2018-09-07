@@ -796,10 +796,7 @@ namespace TextMonster.Xml.Xml_Reader
     {
       return null;
     }
-    internal virtual Exception CheckValueFacets(byte value, XmlSchemaDatatype datatype)
-    {
-      return null;
-    }
+
     internal virtual Exception CheckValueFacets(DateTime value, XmlSchemaDatatype datatype)
     {
       return null;
