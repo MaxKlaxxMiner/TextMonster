@@ -278,60 +278,6 @@ namespace TextMonster.Xml.Xml_Reader
       return (XmlAttribute)Attributes.SetNamedItem(newAttr);
     }
 
-    // Removes the specified XmlAttribute.
-    public virtual XmlAttribute RemoveAttributeNode(XmlAttribute oldAttr)
-    {
-      if (HasAttributes)
-        return (XmlAttribute)Attributes.Remove(oldAttr);
-      return null;
-    }
-
-    // Returns a XmlNodeList containing
-    // a list of all descendant elements that match the specified name.
-    public virtual XmlNodeList GetElementsByTagName(string name)
-    {
-      return new XmlElementList(this, name);
-    }
-
-    //
-    // DOM Level 2
-    //
-
-    // Returns the value for the attribute with the specified LocalName and NamespaceURI.
-    public virtual string GetAttribute(string localName, string namespaceURI)
-    {
-      XmlAttribute attr = GetAttributeNode(localName, namespaceURI);
-      if (attr != null)
-        return attr.Value;
-      return String.Empty;
-    }
-
-    // Sets the value of the attribute with the specified name
-    // and namespace.
-    public virtual string SetAttribute(string localName, string namespaceURI, string value)
-    {
-      XmlAttribute attr = GetAttributeNode(localName, namespaceURI);
-      if (attr == null)
-      {
-        attr = OwnerDocument.CreateAttribute(string.Empty, localName, namespaceURI);
-        attr.Value = value;
-        Attributes.InternalAppendAttribute(attr);
-      }
-      else
-      {
-        attr.Value = value;
-      }
-
-      return value;
-    }
-
-    // Removes an attribute specified by LocalName and NamespaceURI.
-    public virtual void RemoveAttribute(string localName, string namespaceURI)
-    {
-      //Debug.Assert(namespaceURI != null);
-      RemoveAttributeNode(localName, namespaceURI);
-    }
-
     // Returns the XmlAttribute with the specified LocalName and NamespaceURI.
     public virtual XmlAttribute GetAttributeNode(string localName, string namespaceURI)
     {
@@ -341,50 +287,10 @@ namespace TextMonster.Xml.Xml_Reader
       return null;
     }
 
-    // Adds the specified XmlAttribute.
-    public virtual XmlAttribute SetAttributeNode(string localName, string namespaceURI)
-    {
-      XmlAttribute attr = GetAttributeNode(localName, namespaceURI);
-      if (attr == null)
-      {
-        attr = OwnerDocument.CreateAttribute(string.Empty, localName, namespaceURI);
-        Attributes.InternalAppendAttribute(attr);
-      }
-      return attr;
-    }
-
-    // Removes the XmlAttribute specified by LocalName and NamespaceURI.
-    public virtual XmlAttribute RemoveAttributeNode(string localName, string namespaceURI)
-    {
-      //Debug.Assert(namespaceURI != null);
-      if (HasAttributes)
-      {
-        XmlAttribute attr = GetAttributeNode(localName, namespaceURI);
-        Attributes.Remove(attr);
-        return attr;
-      }
-      return null;
-    }
-
-    // Returns a XmlNodeList containing 
-    // a list of all descendant elements that match the specified name.
-    public virtual XmlNodeList GetElementsByTagName(string localName, string namespaceURI)
-    {
-      //Debug.Assert(namespaceURI != null);
-      return new XmlElementList(this, localName, namespaceURI);
-    }
-
     // Determines whether the current node has the specified attribute.
     public virtual bool HasAttribute(string name)
     {
       return GetAttributeNode(name) != null;
-    }
-
-    // Determines whether the current node has the specified
-    // attribute from the specified namespace.
-    public virtual bool HasAttribute(string localName, string namespaceURI)
-    {
-      return GetAttributeNode(localName, namespaceURI) != null;
     }
 
     // Saves the current node to the specified XmlWriter.
@@ -484,14 +390,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         node.WriteTo(w);
       }
-    }
-
-    // Removes the attribute node with the specified index from the attribute collection.
-    public virtual XmlNode RemoveAttributeAt(int i)
-    {
-      if (HasAttributes)
-        return attributes.RemoveAt(i);
-      return null;
     }
 
     // Removes all attributes from the element.

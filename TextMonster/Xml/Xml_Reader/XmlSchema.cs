@@ -206,24 +206,9 @@ namespace TextMonster.Xml.Xml_Reader
       get { return items; }
     }
 
-    // Compiled info
-    /// <include file='doc\XmlSchema.uex' path='docs/doc[@for="XmlSchema.IsCompiled"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    [XmlIgnore]
-    public bool IsCompiled
-    {
-      get
-      {
-        return isCompiled || isCompiledBySet;
-      }
-    }
-
     [XmlIgnore]
     internal bool IsCompiledBySet
     {
-      get { return isCompiledBySet; }
       set { isCompiledBySet = value; }
     }
 
@@ -320,17 +305,6 @@ namespace TextMonster.Xml.Xml_Reader
       set { id = value; }
     }
 
-    /// <include file='doc\XmlSchema.uex' path='docs/doc[@for="XmlSchema.UnhandledAttributes"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    [XmlAnyAttribute]
-    public XmlAttribute[] UnhandledAttributes
-    {
-      get { return moreAttributes; }
-      set { moreAttributes = value; }
-    }
-
     /// <include file='doc\XmlSchema.uex' path='docs/doc[@for="XmlSchema.Groups"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
@@ -410,24 +384,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
       get { return errorCount; }
       set { errorCount = value; }
-    }
-
-    internal new XmlSchema Clone()
-    {
-      XmlSchema that = new XmlSchema();
-      that.attributeFormDefault = this.attributeFormDefault;
-      that.elementFormDefault = this.elementFormDefault;
-      that.blockDefault = this.blockDefault;
-      that.finalDefault = this.finalDefault;
-      that.targetNs = this.targetNs;
-      that.version = this.version;
-      that.includes = this.includes;
-
-      that.Namespaces = this.Namespaces;
-      that.items = this.items;
-      that.BaseUri = this.BaseUri;
-
-      return that;
     }
 
     internal XmlSchema DeepClone()

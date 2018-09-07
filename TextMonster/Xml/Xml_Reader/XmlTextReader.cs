@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Versioning;
 using System.Security.Permissions;
-using System.Text;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -302,16 +301,6 @@ namespace TextMonster.Xml.Xml_Reader
       return impl.LookupPrefix(namespaceName);
     }
 
-    // This pragma disables a warning that the return type is not CLS-compliant, but generics are part of CLS in Whidbey. 
-#pragma warning disable 3002
-    // FXCOP: ExplicitMethodImplementationsInUnsealedClassesHaveVisibleAlternates
-    // public versions of IXmlNamespaceResolver methods, so that XmlTextReader subclasses can access them
-    public IDictionary<string, string> GetNamespacesInScope(XmlNamespaceScope scope)
-    {
-      return impl.GetNamespacesInScope(scope);
-    }
-#pragma warning restore 3002
-
     //
     // XmlTextReader 
     //
@@ -326,33 +315,19 @@ namespace TextMonster.Xml.Xml_Reader
       set { impl.Normalization = value; }
     }
 
-    public Encoding Encoding
-    {
-      get { return impl.Encoding; }
-    }
-
     public WhitespaceHandling WhitespaceHandling
     {
       get { return impl.WhitespaceHandling; }
       set { impl.WhitespaceHandling = value; }
     }
 
-    [Obsolete("Use DtdProcessing property instead.")]
-    public bool ProhibitDtd
-    {
-      get { return impl.DtdProcessing == DtdProcessing.Prohibit; }
-      set { impl.DtdProcessing = value ? DtdProcessing.Prohibit : DtdProcessing.Parse; }
-    }
-
     public DtdProcessing DtdProcessing
     {
       get { return impl.DtdProcessing; }
-      set { impl.DtdProcessing = value; }
     }
 
     public EntityHandling EntityHandling
     {
-      get { return impl.EntityHandling; }
       set { impl.EntityHandling = value; }
     }
 

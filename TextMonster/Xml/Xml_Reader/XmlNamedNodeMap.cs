@@ -42,15 +42,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // Removes the node specified by name.
-    public virtual XmlNode RemoveNamedItem(String name)
-    {
-      int offset = FindNodeOffset(name);
-      if (offset >= 0)
-      {
-        return RemoveNodeAt(offset);
-      }
-      return null;
-    }
 
     // Gets the number of nodes in this XmlNamedNodeMap.
     public virtual int Count

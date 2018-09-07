@@ -274,20 +274,12 @@ namespace TextMonster.Xml.Xml_Reader
     private const int MaxBytesToMove = 128;
     private const int ApproxXmlDeclLength = 80;
     private const int NodesInitialSize = 8;
-    private const int InitialParsingStateStackSize = 2;
     private const int InitialParsingStatesDepth = 2;
-    private const int DtdChidrenInitialSize = 2;
     private const int MaxByteSequenceLen = 6;  // max bytes per character
     private const int MaxAttrDuplWalkCount = 250;
     private const int MinWhitespaceLookahedCount = 4096;
 
     private const string XmlDeclarationBegining = "<?xml";
-
-    internal XmlTextReaderImpl()
-    {
-      curNode = new NodeData();
-      parsingFunction = ParsingFunction.NoData;
-    }
 
     // Initializes a new instance of the XmlTextReaderImpl class with the specified XmlNameTable.
     // This constructor is used when creating XmlTextReaderImpl for V1 XmlTextReader
@@ -421,20 +413,11 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    // Initializes a new instance of the XmlTextReaderImpl class with the specified stream, baseUri and nametable
-    // This constructor is used when creating XmlTextReaderImpl for V1 XmlTextReader
-    internal XmlTextReaderImpl(Stream input)
-      : this(string.Empty, input, new NameTable())
-    {
-    }
     internal XmlTextReaderImpl(Stream input, XmlNameTable nt)
       : this(string.Empty, input, nt)
     {
     }
-    internal XmlTextReaderImpl(string url, Stream input)
-      : this(url, input, new NameTable())
-    {
-    }
+
     internal XmlTextReaderImpl(string url, Stream input, XmlNameTable nt)
       : this(nt)
     {
@@ -461,10 +444,7 @@ namespace TextMonster.Xml.Xml_Reader
       : this(string.Empty, input, nt)
     {
     }
-    internal XmlTextReaderImpl(string url, TextReader input)
-      : this(url, input, new NameTable())
-    {
-    }
+
     internal XmlTextReaderImpl(string url, TextReader input, XmlNameTable nt)
       : this(nt)
     {
@@ -9947,7 +9927,7 @@ namespace TextMonster.Xml.Xml_Reader
       public override IDictionary<string, string> GetNamespacesInScope(XmlNamespaceScope scope) { return null; }
       public override string LookupNamespace(string prefix) { return string.Empty; }
       public override string LookupPrefix(string uri) { return null; }
-      public override bool HasNamespace(string prefix) { return false; }
+      public virtual bool HasNamespace(string prefix) { return false; }
     }
 
     private class DtdDefaultAttributeInfoToNodeDataComparer : IComparer<object>

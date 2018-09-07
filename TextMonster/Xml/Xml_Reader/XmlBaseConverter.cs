@@ -147,7 +147,6 @@ namespace TextMonster.Xml.Xml_Reader
     public override object ChangeType(double value, Type destinationType) { return (object)ChangeType((object)value, destinationType, null); }
     public override object ChangeType(int value, Type destinationType) { return (object)ChangeType((object)value, destinationType, null); }
     public override object ChangeType(long value, Type destinationType) { return (object)ChangeType((object)value, destinationType, null); }
-    public override object ChangeType(float value, Type destinationType) { return (object)ChangeType((object)value, destinationType, null); }
     public override object ChangeType(string value, Type destinationType, IXmlNamespaceResolver nsResolver) { return (object)ChangeType((object)value, destinationType, nsResolver); }
     public override object ChangeType(object value, Type destinationType) { return this.ChangeType(value, destinationType, null); }
 

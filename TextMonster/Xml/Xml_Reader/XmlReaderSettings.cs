@@ -447,10 +447,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal bool ReadOnly
     {
-      get
-      {
-        return isReadOnly;
-      }
       set
       {
         isReadOnly = value;
@@ -532,24 +528,6 @@ namespace TextMonster.Xml.Xml_Reader
       else if (this.validationType == ValidationType.DTD)
       {
         reader = CreateDtdValidatingReader(reader);
-      }
-      return reader;
-    }
-
-    private FastXmlReader AddValidationAndConformanceWrapper(FastXmlReader reader)
-    {
-      // wrap with DTD validating reader
-      if (this.validationType == ValidationType.DTD)
-      {
-        reader = CreateDtdValidatingReader(reader);
-      }
-      // add conformance checking (must go after DTD validation because XmlValidatingReader works only on XmlTextReader),
-      // but before XSD validation because of typed value access
-      reader = AddConformanceWrapper(reader);
-
-      if (this.validationType == ValidationType.Schema)
-      {
-        reader = new XsdValidatingReader(reader, GetXmlResolver_CheckConfig(), this);
       }
       return reader;
     }

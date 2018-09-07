@@ -3,7 +3,6 @@ using System.Globalization;
 using System.Resources;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
-using System.Threading;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -243,11 +242,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return this.linePosition; }
     }
 
-    public string SourceUri
-    {
-      get { return this.sourceUri; }
-    }
-
     public override string Message
     {
       get
@@ -262,18 +256,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         return res;
       }
-    }
-
-    internal static bool IsCatchableException(Exception e)
-    {
-      return !(
-          e is StackOverflowException ||
-          e is OutOfMemoryException ||
-          e is ThreadAbortException ||
-          e is ThreadInterruptedException ||
-          e is NullReferenceException ||
-          e is AccessViolationException
-      );
     }
   };
 }

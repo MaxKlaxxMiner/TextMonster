@@ -307,24 +307,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public DateTime ToZulu()
-    {
-      switch (InternalKind)
-      {
-        case XsdDateTimeKind.Zulu:
-        // set it to UTC
-        return new DateTime(dt.Ticks, DateTimeKind.Utc);
-        case XsdDateTimeKind.LocalEastOfZulu:
-        // Adjust to UTC and then convert to local in the current time zone
-        return new DateTime(dt.Subtract(new TimeSpan(ZoneHour, ZoneMinute, 0)).Ticks, DateTimeKind.Utc);
-        case XsdDateTimeKind.LocalWestOfZulu:
-        // Adjust to UTC and then convert to local in the current time zone
-        return new DateTime(dt.Add(new TimeSpan(ZoneHour, ZoneMinute, 0)).Ticks, DateTimeKind.Utc);
-        default:
-        return dt;
-      }
-    }
-
     /// <summary>
     /// Cast to DateTime
     /// The following table describes the behaviors of getting the default value

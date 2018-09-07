@@ -236,16 +236,6 @@
     }
 
 
-    /// <include file='doc\XmlSchemaComplexType.uex' path='docs/doc[@for="XmlSchemaComplexType.ContentType"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    [XmlIgnore]
-    public XmlSchemaContentType ContentType
-    {
-      get { return SchemaContentType; }
-    }
-
     /// <include file='doc\XmlSchemaComplexType.uex' path='docs/doc[@for="XmlSchemaComplexType.ContentTypeParticle"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
@@ -293,23 +283,6 @@
       get { return attributeWildcard; }
     }
 
-    /// <include file='doc\XmlSchemaComplexType.uex' path='docs/doc[@for="XmlSchemaComplexType.LocalElements"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    [XmlIgnore]
-    internal XmlSchemaObjectTable LocalElements
-    {
-      get
-      {
-        if (localElements == null)
-        {
-          localElements = new XmlSchemaObjectTable();
-        }
-        return localElements;
-      }
-    }
-
     internal void SetContentTypeParticle(XmlSchemaParticle value)
     {
       contentTypeParticle = value;
@@ -330,17 +303,6 @@
       get
       {
         return (pvFlags & wildCardMask) != 0;
-      }
-      set
-      {
-        if (value)
-        {
-          pvFlags = (byte)(pvFlags | wildCardMask);
-        }
-        else
-        {
-          pvFlags = (byte)(pvFlags & ~wildCardMask);
-        }
       }
     }
 

@@ -210,10 +210,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     public IXmlLineInfo LineInfoProvider
     {
-      get
-      {
-        return positionInfo;
-      }
       set
       {
         if (value == null)
@@ -229,10 +225,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     public Uri SourceUri
     {
-      get
-      {
-        return sourceUri;
-      }
       set
       {
         sourceUri = value;
@@ -242,10 +234,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     public object ValidationEventSender
     {
-      get
-      {
-        return validationEventSender;
-      }
       set
       {
         validationEventSender = value;

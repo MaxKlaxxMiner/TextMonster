@@ -287,18 +287,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return constraints != null && constraints.Count > 0; }
     }
 
-    internal bool IsLocalTypeDerivationChecked
-    {
-      get
-      {
-        return isLocalTypeDerivationChecked;
-      }
-      set
-      {
-        isLocalTypeDerivationChecked = value;
-      }
-    }
-
     internal SchemaElementDecl ElementDecl
     {
       get { return elementDecl; }

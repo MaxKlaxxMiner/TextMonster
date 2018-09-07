@@ -10,15 +10,10 @@ namespace TextMonster.Xml.Xml_Reader
   /// </devdoc>
   public abstract class XmlSerializerImplementation
   {
-    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializerImplementation.Reader"]/*' />
-    public virtual XmlSerializationReader Reader { get { throw new NotSupportedException(); } }
     /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializerImplementation.Writer"]/*' />
     public virtual XmlSerializationWriter Writer { get { throw new NotSupportedException(); } }
-    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializerImplementation.ReadMethods"]/*' />
-    public virtual Hashtable ReadMethods { get { throw new NotSupportedException(); } }
+
     /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializerImplementation.WriteMethods"]/*' />
     public virtual Hashtable WriteMethods { get { throw new NotSupportedException(); } }
-    /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlSerializerImplementation.TypedSerializers"]/*' />
-    public virtual Hashtable TypedSerializers { get { throw new NotSupportedException(); } }
   }
 }

@@ -185,15 +185,6 @@ namespace TextMonster.Xml.Xml_Reader
 
     internal XmlReaderSettings ReaderSettings
     {
-      get
-      {
-        if (readerSettings == null)
-        {
-          readerSettings = new XmlReaderSettings();
-          readerSettings.DtdProcessing = DtdProcessing.Prohibit;
-        }
-        return readerSettings;
-      }
       set
       {
         readerSettings = value;

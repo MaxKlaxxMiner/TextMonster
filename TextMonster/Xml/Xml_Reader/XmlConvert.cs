@@ -370,11 +370,6 @@ namespace TextMonster.Xml.Xml_Reader
       return null;
     }
 
-    internal static string VerifyQName(string name)
-    {
-      return VerifyQName(name, ExceptionType.XmlException);
-    }
-
     internal static unsafe string VerifyQName(string name, ExceptionType exceptionType)
     {
       if (name == null || name.Length == 0)

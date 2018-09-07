@@ -134,10 +134,7 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Xml_ExpectExternalIdOrEntityValue = "Xml_ExpectExternalIdOrEntityValue";
     internal const string Xml_ExpectIgnoreOrInclude = "Xml_ExpectIgnoreOrInclude";
     internal const string Xml_UnsupportedClass = "Xml_UnsupportedClass";
-    internal const string Xml_NullResolver = "Xml_NullResolver";
     internal const string Xml_RelativeUriNotSupported = "Xml_RelativeUriNotSupported";
-    internal const string Xml_UntrustedCodeSettingResolver = "Xml_UntrustedCodeSettingResolver";
-    internal const string Xml_WriterAsyncNotSetException = "Xml_WriterAsyncNotSetException";
     internal const string Xml_PrefixForEmptyNs = "Xml_PrefixForEmptyNs";
     internal const string Xml_InvalidCommentChars = "Xml_InvalidCommentChars";
     internal const string Xml_UndefNamespace = "Xml_UndefNamespace";

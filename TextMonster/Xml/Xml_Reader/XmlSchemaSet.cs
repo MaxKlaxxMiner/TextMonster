@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Versioning;
 using System.Threading;
 
 namespace TextMonster.Xml.Xml_Reader
@@ -283,92 +282,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
     //Public Methods
-
-    /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.Add1"]/*' />
-    /// <devdoc>
-    ///    <para>Add the schema located by the given URL into the schema schemas.
-    ///       If the given schema references other namespaces, the schemas for those other
-    ///       namespaces are NOT automatically loaded.</para>
-    /// </devdoc>
-    [ResourceConsumption(ResourceScope.Machine)]
-    [ResourceExposure(ResourceScope.Machine)]
-    public XmlSchema Add(String targetNamespace, String schemaUri)
-    {
-      if (schemaUri == null || schemaUri.Length == 0)
-      {
-        throw new ArgumentNullException("schemaUri");
-      }
-      if (targetNamespace != null)
-      {
-        targetNamespace = XmlComplianceUtil.CDataNormalize(targetNamespace);
-      }
-      XmlSchema schema = null;
-      lock (InternalSyncObject)
-      {
-        //Check if schema from url has already been added
-        XmlResolver tempResolver = readerSettings.GetXmlResolver();
-        if (tempResolver == null)
-        {
-          tempResolver = new XmlUrlResolver();
-        }
-        Uri tempSchemaUri = tempResolver.ResolveUri(null, schemaUri);
-        if (IsSchemaLoaded(tempSchemaUri, targetNamespace, out schema))
-        {
-          return schema;
-        }
-        else
-        {
-          //Url already not processed; Load SOM from url
-          FastXmlReader reader = FastXmlReader.Create(schemaUri, readerSettings);
-          try
-          {
-            schema = Add(targetNamespace, ParseSchema(targetNamespace, reader)); //
-            while (reader.Read()) ;// wellformness check; 
-          }
-          finally
-          {
-            reader.Close();
-          }
-        }
-      }
-      return schema;
-    }
-
-
-    /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.Add4"]/*' />
-    /// <devdoc>
-    ///    <para>Add the given schema into the schema schemas.
-    ///       If the given schema references other namespaces, the schemas for those
-    ///       other namespaces are NOT automatically loaded.</para>
-    /// </devdoc>
-    public XmlSchema Add(String targetNamespace, FastXmlReader schemaDocument)
-    {
-      if (schemaDocument == null)
-      {
-        throw new ArgumentNullException("schemaDocument");
-      }
-      if (targetNamespace != null)
-      {
-        targetNamespace = XmlComplianceUtil.CDataNormalize(targetNamespace);
-      }
-      lock (InternalSyncObject)
-      {
-        XmlSchema schema = null;
-        Uri schemaUri = new Uri(schemaDocument.BaseURI, UriKind.RelativeOrAbsolute);
-        if (IsSchemaLoaded(schemaUri, targetNamespace, out schema))
-        {
-          return schema;
-        }
-        else
-        {
-          DtdProcessing dtdProcessing = this.readerSettings.DtdProcessing;
-          SetDtdProcessing(schemaDocument);
-          schema = Add(targetNamespace, ParseSchema(targetNamespace, schemaDocument));
-          this.readerSettings.DtdProcessing = dtdProcessing; //reset dtdProcessing setting
-          return schema;
-        }
-      }
-    }
 
 
     /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.Add5"]/*' />

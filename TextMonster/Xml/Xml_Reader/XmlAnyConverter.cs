@@ -191,16 +191,6 @@ namespace TextMonster.Xml.Xml_Reader
       return ChangeTypeWildcardSource(value, destinationType, null);
     }
 
-    public override object ChangeType(float value, Type destinationType)
-    {
-      if (destinationType == null) throw new ArgumentNullException("destinationType");
-
-      if (destinationType == ObjectType) destinationType = DefaultClrType;
-      if (destinationType == XmlAtomicValueType) return (new XmlAtomicValue(XmlSchemaType.GetBuiltInSimpleType(XmlTypeCode.Float), value));
-
-      return ChangeTypeWildcardSource(value, destinationType, null);
-    }
-
     public override object ChangeType(string value, Type destinationType, IXmlNamespaceResolver nsResolver)
     {
       if (value == null) throw new ArgumentNullException("value");

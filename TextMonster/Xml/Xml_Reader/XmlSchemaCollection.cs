@@ -214,18 +214,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    private void SendValidationEvent(XmlSchemaException e)
-    {
-      if (validationEventHandler != null)
-      {
-        validationEventHandler(this, new ValidationEventArgs(e));
-      }
-      else
-      {
-        throw e;
-      }
-    }
-
     internal ValidationEventHandler EventHandler
     {
       get

@@ -113,7 +113,6 @@
     <Compile Include="Xml\Xml_Reader\XmlReflectionImporter.cs" />
     <Compile Include="Xml\Xml_Reader\XmlReflectionMember.cs" />
     <Compile Include="Xml\Xml_Reader\XmlSchemaProviderAttribute.cs" />
-    <Compile Include="Xml\Xml_Reader\XmlSerializationPrimitiveReader.cs" />
     <Compile Include="Xml\Xml_Reader\XmlSerializationPrimitiveWriter.cs" />
     <Compile Include="Xml\Xml_Reader\XmlSerializationWriteCallback.cs" />
     <Compile Include="Xml\Xml_Reader\DebuggerDisplayXmlNodeProxy.cs" />

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom.Compiler;
 using System.Collections;
 using System.Reflection;
 using System.Runtime.Versioning;
@@ -18,7 +17,6 @@ namespace TextMonster.Xml.Xml_Reader
     Hashtable writerMethods;
     Hashtable readerMethods;
     TempMethodDictionary methods;
-    static object[] emptyObjectArray = new object[0];
     Hashtable assemblies = new Hashtable();
     static volatile FileIOPermission fileIOPermission;
 
@@ -26,10 +24,7 @@ namespace TextMonster.Xml.Xml_Reader
     {
       internal MethodInfo writeMethod;
       internal MethodInfo readMethod;
-      internal string name;
-      internal string ns;
       internal bool isSoap;
-      internal string methodKey;
     }
 
     internal TempAssembly(XmlMapping[] xmlMappings, Type[] types, string defaultNamespace, string location, Evidence evidence)
@@ -104,12 +99,9 @@ namespace TextMonster.Xml.Xml_Reader
       {
         TempMethod method = new TempMethod();
         method.isSoap = xmlMappings[i].IsSoap;
-        method.methodKey = xmlMappings[i].Key;
         XmlTypeMapping xmlTypeMapping = xmlMappings[i] as XmlTypeMapping;
         if (xmlTypeMapping != null)
         {
-          method.name = xmlTypeMapping.ElementName;
-          method.ns = xmlTypeMapping.Namespace;
         }
         methods.Add(xmlMappings[i].Key, method);
       }
@@ -132,15 +124,6 @@ namespace TextMonster.Xml.Xml_Reader
       string serializerName = null;
 
       // Packaged apps do not support loading generated serializers.
-      return null;
-    }
-
-
-    // SxS: This method does not take any resource name and does not expose any resources to the caller.
-    // It's OK to suppress the SxS warning.
-
-    internal static Assembly GenerateAssembly(XmlMapping[] xmlMappings, Type[] types, string defaultNamespace, Evidence evidence, XmlSerializerCompilerParameters parameters, Assembly assembly, Hashtable assemblies)
-    {
       return null;
     }
 
@@ -200,50 +183,6 @@ namespace TextMonster.Xml.Xml_Reader
         }
       }
       return encodingStyle;
-    }
-
-    internal static FileIOPermission FileIOPermission
-    {
-      get
-      {
-        if (fileIOPermission == null)
-          fileIOPermission = new FileIOPermission(PermissionState.Unrestricted);
-        return fileIOPermission;
-      }
-    }
-
-    internal object InvokeReader(XmlMapping mapping, FastXmlReader xmlReader, XmlDeserializationEvents events, string encodingStyle)
-    {
-      XmlSerializationReader reader = null;
-      try
-      {
-        encodingStyle = ValidateEncodingStyle(encodingStyle, mapping.Key);
-        reader = Contract.Reader;
-        reader.Init(xmlReader, events, encodingStyle, this);
-        if (methods[mapping.Key].readMethod == null)
-        {
-          if (readerMethods == null)
-          {
-            readerMethods = Contract.ReadMethods;
-          }
-          string methodName = (string)readerMethods[mapping.Key];
-          if (methodName == null)
-          {
-            throw new InvalidOperationException(Res.GetString(Res.XmlNotSerializable, mapping.Accessor.Name));
-          }
-          methods[mapping.Key].readMethod = GetMethodFromType(reader.GetType(), methodName, pregeneratedAssmbly ? this.assembly : null);
-        }
-        return methods[mapping.Key].readMethod.Invoke(reader, emptyObjectArray);
-      }
-      catch (SecurityException e)
-      {
-        throw new InvalidOperationException(Res.GetString(Res.XmlNoPartialTrust), e);
-      }
-      finally
-      {
-        if (reader != null)
-          reader.Dispose();
-      }
     }
 
     internal void InvokeWriter(XmlMapping mapping, XmlWriter xmlWriter, object o, XmlSerializerNamespaces namespaces, string encodingStyle, string id)
@@ -325,101 +264,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
   }
 
-  sealed class XmlSerializerCompilerParameters
-  {
-    bool needTempDirAccess;
-    CompilerParameters parameters;
-    XmlSerializerCompilerParameters(CompilerParameters parameters, bool needTempDirAccess)
-    {
-      this.needTempDirAccess = needTempDirAccess;
-      this.parameters = parameters;
-    }
-
-    internal bool IsNeedTempDirAccess { get { return this.needTempDirAccess; } }
-    internal CompilerParameters CodeDomParameters { get { return this.parameters; } }
-
-    internal static XmlSerializerCompilerParameters Create(string location)
-    {
-      return null;
-    }
-
-    internal static XmlSerializerCompilerParameters Create(CompilerParameters parameters, bool needTempDirAccess)
-    {
-      return new XmlSerializerCompilerParameters(parameters, needTempDirAccess);
-    }
-  }
-
-  /// <include file='doc\XmlSerializerVersionAttribute.uex' path='docs/doc[@for="XmlSerializerVersionAttribute"]/*' />
-  /// <devdoc>
-  ///    <para>[To be supplied.]</para>
-  /// </devdoc>
-  [AttributeUsage(AttributeTargets.Assembly)]
-  public sealed class XmlSerializerVersionAttribute : System.Attribute
-  {
-    string mvid;
-    string serializerVersion;
-    string ns;
-    Type type;
-
-    /// <include file='doc\XmlSerializerVersionAttribute.uex' path='docs/doc[@for="XmlSerializerVersionAttribute.XmlSerializerVersionAttribute"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlSerializerVersionAttribute()
-    {
-    }
-
-    /// <include file='doc\XmlSerializerVersionAttribute.uex' path='docs/doc[@for="XmlSerializerVersionAttribute.XmlSerializerAssemblyAttribute1"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlSerializerVersionAttribute(Type type)
-    {
-      this.type = type;
-    }
-
-    /// <include file='doc\XmlSerializerVersionAttribute.uex' path='docs/doc[@for="XmlSerializerVersionAttribute.ParentAssemblyId"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public string ParentAssemblyId
-    {
-      get { return mvid; }
-      set { mvid = value; }
-    }
-
-    /// <include file='doc\XmlSerializerVersionAttribute.uex' path='docs/doc[@for="XmlSerializerVersionAttribute.ParentAssemblyId"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public string Version
-    {
-      get { return serializerVersion; }
-      set { serializerVersion = value; }
-    }
-
-
-    /// <include file='doc\XmlSerializerVersionAttribute.uex' path='docs/doc[@for="XmlSerializerVersionAttribute.Namespace"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public string Namespace
-    {
-      get { return ns; }
-      set { ns = value; }
-    }
-
-    /// <include file='doc\XmlSerializerVersionAttribute.uex' path='docs/doc[@for="XmlSerializerVersionAttribute.TypeName"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public Type Type
-    {
-      get { return type; }
-      set { type = value; }
-    }
-  }
-
   internal class Soap12
   {
     private Soap12() { }
@@ -447,11 +291,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         return onUnknownNode;
       }
-
-      set
-      {
-        onUnknownNode = value;
-      }
     }
 
     /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlDeserializationEvents.OnUnknownAttribute"]/*' />
@@ -460,10 +299,6 @@ namespace TextMonster.Xml.Xml_Reader
       get
       {
         return onUnknownAttribute;
-      }
-      set
-      {
-        onUnknownAttribute = value;
       }
     }
 
@@ -474,10 +309,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         return onUnknownElement;
       }
-      set
-      {
-        onUnknownElement = value;
-      }
     }
 
     /// <include file='doc\XmlSerializer.uex' path='docs/doc[@for="XmlDeserializationEvents.OnUnreferencedObject"]/*' />
@@ -486,10 +317,6 @@ namespace TextMonster.Xml.Xml_Reader
       get
       {
         return onUnreferencedObject;
-      }
-      set
-      {
-        onUnreferencedObject = value;
       }
     }
   }
@@ -527,58 +354,6 @@ namespace TextMonster.Xml.Xml_Reader
       this.lineNumber = lineNumber;
       this.linePosition = linePosition;
     }
-
-
-    /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlAttributeEventArgs.ObjectBeingDeserialized"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public object ObjectBeingDeserialized
-    {
-      get { return o; }
-    }
-
-    /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlAttributeEventArgs.Attr"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlAttribute Attr
-    {
-      get { return attr; }
-    }
-
-    /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlAttributeEventArgs.LineNumber"]/*' />
-    /// <devdoc>
-    ///    <para>
-    ///       Gets the current line number.
-    ///    </para>
-    /// </devdoc>
-    public int LineNumber
-    {
-      get { return lineNumber; }
-    }
-
-    /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlAttributeEventArgs.LinePosition"]/*' />
-    /// <devdoc>
-    ///    <para>
-    ///       Gets the current line position.
-    ///    </para>
-    /// </devdoc>
-    public int LinePosition
-    {
-      get { return linePosition; }
-    }
-
-    /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlAttributeEventArgs.Attributes"]/*' />
-    /// <devdoc>
-    ///    <para>
-    ///       List the qnames of attributes expected in the current context.
-    ///    </para>
-    /// </devdoc>
-    public string ExpectedAttributes
-    {
-      get { return qnames == null ? string.Empty : qnames; }
-    }
   }
 
   /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlElementEventHandler"]/*' />
@@ -600,18 +375,6 @@ namespace TextMonster.Xml.Xml_Reader
       this.qnames = qnames;
       this.lineNumber = lineNumber;
       this.linePosition = linePosition;
-    }
-
-    /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlElementEventArgs.ObjectBeingDeserialized"]/*' />
-    public object ObjectBeingDeserialized
-    {
-      get { return o; }
-    }
-
-    /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlElementEventArgs.Attr"]/*' />
-    public XmlElement Element
-    {
-      get { return elem; }
     }
 
     /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlElementEventArgs.LineNumber"]/*' />

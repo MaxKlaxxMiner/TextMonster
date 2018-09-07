@@ -105,47 +105,6 @@ namespace TextMonster.Xml.Xml_Reader
       checkDeserializeAdvances = false;
     }
 
-    /// <include file='doc\XmlSerializationReader.uex' path='docs/doc[@for="XmlSerializationReader.InitIDs"]/*' />
-    protected abstract void InitIDs();
-
-    // this method must be called before any generated deserialization methods are called
-    internal void Init(FastXmlReader r, XmlDeserializationEvents events, string encodingStyle, TempAssembly tempAssembly)
-    {
-      this.events = events;
-      if (checkDeserializeAdvances)
-      {
-        this.countingReader = new XmlCountingReader(r);
-        this.r = this.countingReader;
-      }
-      else
-        this.r = r;
-      this.d = null;
-      this.soap12 = (encodingStyle == Soap12.Encoding);
-      Init(tempAssembly);
-
-      schemaNsID = r.NameTable.Add(XmlSchema.Namespace);
-      schemaNs2000ID = r.NameTable.Add("http://www.w3.org/2000/10/XMLSchema");
-      schemaNs1999ID = r.NameTable.Add("http://www.w3.org/1999/XMLSchema");
-      schemaNonXsdTypesNsID = r.NameTable.Add(UrtTypes.Namespace);
-      instanceNsID = r.NameTable.Add(XmlSchema.InstanceNamespace);
-      instanceNs2000ID = r.NameTable.Add("http://www.w3.org/2000/10/XMLSchema-instance");
-      instanceNs1999ID = r.NameTable.Add("http://www.w3.org/1999/XMLSchema-instance");
-      soapNsID = r.NameTable.Add(Soap.Encoding);
-      soap12NsID = r.NameTable.Add(Soap12.Encoding);
-      schemaID = r.NameTable.Add("schema");
-      wsdlNsID = r.NameTable.Add(Wsdl.Namespace);
-      wsdlArrayTypeID = r.NameTable.Add(Wsdl.ArrayType);
-      nullID = r.NameTable.Add("null");
-      nilID = r.NameTable.Add("nil");
-      typeID = r.NameTable.Add("type");
-      arrayTypeID = r.NameTable.Add("arrayType");
-      itemTypeID = r.NameTable.Add("itemType");
-      arraySizeID = r.NameTable.Add("arraySize");
-      arrayID = r.NameTable.Add("Array");
-      urTypeID = r.NameTable.Add(Soap.UrType);
-      InitIDs();
-    }
-
     /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.DecodeName"]/*' />
     protected bool DecodeName
     {

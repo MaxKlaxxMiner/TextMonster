@@ -78,28 +78,5 @@ namespace TextMonster.Xml.Xml_Reader
     Error:
       return exception;
     }
-
-    internal override void VerifySchemaValid(XmlSchemaObjectTable notations, XmlSchemaObject caller)
-    {
-
-      // Only datatypes that are derived from NOTATION by specifying a value for enumeration can be used in a schema.
-      // Furthermore, the value of all enumeration facets must match the name of a notation declared in the current schema.                    //
-      for (Datatype_NOTATION dt = this; dt != null; dt = (Datatype_NOTATION)dt.Base)
-      {
-        if (dt.Restriction != null && (dt.Restriction.Flags & RestrictionFlags.Enumeration) != 0)
-        {
-          for (int i = 0; i < dt.Restriction.Enumeration.Count; ++i)
-          {
-            XmlQualifiedName notation = (XmlQualifiedName)dt.Restriction.Enumeration[i];
-            if (!notations.Contains(notation))
-            {
-              throw new XmlSchemaException(Res.Sch_NotationRequired, caller);
-            }
-          }
-          return;
-        }
-      }
-      throw new XmlSchemaException(Res.Sch_NotationRequired, caller);
-    }
   }
 }

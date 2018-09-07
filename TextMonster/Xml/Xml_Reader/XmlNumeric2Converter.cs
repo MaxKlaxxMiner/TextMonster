@@ -156,20 +156,6 @@ namespace TextMonster.Xml.Xml_Reader
       return ChangeListType(value, destinationType, null);
     }
 
-    public override object ChangeType(float value, Type destinationType)
-    {
-      if (destinationType == null) throw new ArgumentNullException("destinationType");
-
-      if (destinationType == ObjectType) destinationType = DefaultClrType;
-      if (destinationType == DoubleType) return ((double)(float)value);
-      if (destinationType == SingleType) return ((float)value);
-      if (destinationType == StringType) return this.ToString((float)value);
-      if (destinationType == XmlAtomicValueType) return (new XmlAtomicValue(SchemaType, value));
-      if (destinationType == XPathItemType) return (new XmlAtomicValue(SchemaType, value));
-
-      return ChangeListType(value, destinationType, null);
-    }
-
     public override object ChangeType(string value, Type destinationType, IXmlNamespaceResolver nsResolver)
     {
       if (value == null) throw new ArgumentNullException("value");

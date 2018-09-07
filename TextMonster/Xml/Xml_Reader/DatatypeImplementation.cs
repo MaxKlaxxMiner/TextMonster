@@ -223,39 +223,6 @@ namespace TextMonster.Xml.Xml_Reader
       return (XmlSchemaSimpleType)builtinTypes[qname];
     }
 
-    internal static XmlSchemaSimpleType GetNormalizedStringTypeV1Compat()
-    {
-      if (normalizedStringTypeV1Compat == null)
-      {
-        XmlSchemaSimpleType correctType = GetSimpleTypeFromTypeCode(XmlTypeCode.NormalizedString);
-        XmlSchemaSimpleType tempNormalizedStringTypeV1Compat = correctType.Clone() as XmlSchemaSimpleType;
-        tempNormalizedStringTypeV1Compat.SetDatatype(c_normalizedStringV1Compat);
-        tempNormalizedStringTypeV1Compat.ElementDecl = new SchemaElementDecl(c_normalizedStringV1Compat);
-        tempNormalizedStringTypeV1Compat.ElementDecl.SchemaType = tempNormalizedStringTypeV1Compat;
-        normalizedStringTypeV1Compat = tempNormalizedStringTypeV1Compat;
-      }
-      return normalizedStringTypeV1Compat;
-    }
-
-    internal static XmlSchemaSimpleType GetTokenTypeV1Compat()
-    {
-      if (tokenTypeV1Compat == null)
-      {
-        XmlSchemaSimpleType correctType = GetSimpleTypeFromTypeCode(XmlTypeCode.Token);
-        XmlSchemaSimpleType tempTokenTypeV1Compat = correctType.Clone() as XmlSchemaSimpleType;
-        tempTokenTypeV1Compat.SetDatatype(c_tokenV1Compat);
-        tempTokenTypeV1Compat.ElementDecl = new SchemaElementDecl(c_tokenV1Compat);
-        tempTokenTypeV1Compat.ElementDecl.SchemaType = tempTokenTypeV1Compat;
-        tokenTypeV1Compat = tempTokenTypeV1Compat;
-      }
-      return tokenTypeV1Compat;
-    }
-
-    internal static XmlSchemaSimpleType[] GetBuiltInTypes()
-    {
-      return enumToTypeCode;
-    }
-
     internal static XmlTypeCode GetPrimitiveTypeCode(XmlTypeCode typeCode)
     {
       XmlSchemaSimpleType currentType = enumToTypeCode[(int)typeCode];
@@ -264,16 +231,6 @@ namespace TextMonster.Xml.Xml_Reader
         currentType = currentType.BaseXmlSchemaType as XmlSchemaSimpleType;
       }
       return currentType.TypeCode;
-    }
-
-    internal virtual XmlSchemaDatatype DeriveByRestriction(XmlSchemaObjectCollection facets, XmlNameTable nameTable, XmlSchemaType schemaType)
-    {
-      DatatypeImplementation dt = (DatatypeImplementation)MemberwiseClone();
-      dt.restriction = this.FacetsChecker.ConstructRestriction(this, facets, nameTable);
-      dt.baseType = this;
-      dt.parentSchemaType = schemaType;
-      dt.valueConverter = null; //re-set old datatype's valueconverter
-      return dt;
     }
 
     internal override XmlSchemaDatatype DeriveByList(XmlSchemaType schemaType)
@@ -298,17 +255,6 @@ namespace TextMonster.Xml.Xml_Reader
       dt.parentSchemaType = schemaType;
       return dt;
     }
-
-    internal new static DatatypeImplementation DeriveByUnion(XmlSchemaSimpleType[] types, XmlSchemaType schemaType)
-    {
-      DatatypeImplementation dt = new Datatype_union(types);
-      dt.baseType = c_anySimpleType; //Base type of a union is anySimpleType
-      dt.variety = XmlSchemaDatatypeVariety.Union;
-      dt.parentSchemaType = schemaType;
-      return dt;
-    }
-
-    internal virtual void VerifySchemaValid(XmlSchemaObjectTable notations, XmlSchemaObject caller) {/*noop*/}
 
     public override bool IsDerivedFrom(XmlSchemaDatatype datatype)
     {

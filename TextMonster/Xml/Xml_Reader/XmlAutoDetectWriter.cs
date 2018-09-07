@@ -328,28 +328,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     /// <summary>
-    /// If the specified text consist only of whitespace, then cache the whitespace, as it is not enough to
-    /// force the creation of a wrapped writer.  Otherwise, create a wrapped writer if one has not yet been
-    /// created and return true.
-    /// </summary>
-    private bool TextBlockCreatesWriter(string textBlock)
-    {
-      if (this.wrapped == null)
-      {
-        // Whitespace-only text blocks aren't enough to determine Xml vs. Html
-        if (XmlCharType.Instance.IsOnlyWhitespace(textBlock))
-        {
-          return false;
-        }
-
-        // Non-whitespace text block selects Xml method
-        CreateWrappedWriter(XmlOutputMethod.Xml);
-      }
-
-      return true;
-    }
-
-    /// <summary>
     /// Create either the Html or Xml writer and send any cached events to it.
     /// </summary>
     private void CreateWrappedWriter(XmlOutputMethod outMethod)

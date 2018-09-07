@@ -448,15 +448,6 @@ namespace TextMonster.Xml.Xml_Reader
       return;
     }
 
-    internal void WriteRaw(string value)
-    {
-      if (cacheAttrValue)
-      {
-        attrValue.Append(value);
-      }
-      textWriter.Write(value);
-    }
-
     internal void WriteRaw(char[] array, int offset, int count)
     {
       if (null == array)
@@ -514,11 +505,6 @@ namespace TextMonster.Xml.Xml_Reader
         attrValue.Append(';');
       }
       WriteEntityRefImpl(name);
-    }
-
-    internal void Flush()
-    {
-      // 
     }
 
     //

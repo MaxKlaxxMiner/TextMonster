@@ -35,24 +35,6 @@ namespace TextMonster.Xml.Xml_Reader
       get { return accessor; }
     }
 
-    /// <include file='doc\XmlMapping.uex' path='docs/doc[@for="XmlMapping.ElementName"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public string ElementName
-    {
-      get { return Xml_Reader.Accessor.UnescapeName(Accessor.Name); }
-    }
-
-    /// <include file='doc\XmlMapping.uex' path='docs/doc[@for="XmlMapping.Namespace"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public string Namespace
-    {
-      get { return accessor.Namespace; }
-    }
-
     internal bool GenerateSerializer
     {
       set { generateSerializer = value; }
@@ -86,15 +68,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         throw new InvalidOperationException(Res.GetString(Res.XmlMelformMapping));
       }
-    }
-    internal static bool IsShallow(XmlMapping[] mappings)
-    {
-      for (int i = 0; i < mappings.Length; i++)
-      {
-        if (mappings[i] == null || mappings[i].shallow)
-          return true;
-      }
-      return false;
     }
   }
 }

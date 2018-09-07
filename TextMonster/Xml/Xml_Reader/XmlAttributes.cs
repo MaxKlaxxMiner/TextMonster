@@ -217,7 +217,6 @@ namespace TextMonster.Xml.Xml_Reader
     public XmlTextAttribute XmlText
     {
       get { return xmlText; }
-      set { xmlText = value; }
     }
 
     /// <include file='doc\XmlAttributes.uex' path='docs/doc[@for="XmlAttributes.XmlArray"]/*' />
@@ -256,7 +255,6 @@ namespace TextMonster.Xml.Xml_Reader
     public bool XmlIgnore
     {
       get { return xmlIgnore; }
-      set { xmlIgnore = value; }
     }
 
     /// <include file='doc\XmlAttributes.uex' path='docs/doc[@for="XmlAttributes.XmlType"]/*' />
@@ -266,7 +264,6 @@ namespace TextMonster.Xml.Xml_Reader
     public XmlTypeAttribute XmlType
     {
       get { return xmlType; }
-      set { xmlType = value; }
     }
 
     /// <include file='doc\XmlAttributes.uex' path='docs/doc[@for="XmlAttributes.XmlRoot"]/*' />
@@ -276,7 +273,6 @@ namespace TextMonster.Xml.Xml_Reader
     public XmlRootAttribute XmlRoot
     {
       get { return xmlRoot; }
-      set { xmlRoot = value; }
     }
 
     /// <include file='doc\XmlAttributes.uex' path='docs/doc[@for="XmlAttributes.XmlAnyElement"]/*' />
@@ -295,7 +291,6 @@ namespace TextMonster.Xml.Xml_Reader
     public XmlAnyAttributeAttribute XmlAnyAttribute
     {
       get { return xmlAnyAttribute; }
-      set { xmlAnyAttribute = value; }
     }
 
     /// <include file='doc\XmlAttributes.uex' path='docs/doc[@for="XmlAttributes.XmlChoiceIdentifier"]/*' />
@@ -311,7 +306,6 @@ namespace TextMonster.Xml.Xml_Reader
     public bool Xmlns
     {
       get { return xmlns; }
-      set { xmlns = value; }
     }
   }
 }

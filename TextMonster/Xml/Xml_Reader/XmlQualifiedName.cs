@@ -268,23 +268,5 @@ namespace TextMonster.Xml.Xml_Reader
     {
       return (XmlQualifiedName)MemberwiseClone();
     }
-
-    internal static int Compare(XmlQualifiedName a, XmlQualifiedName b)
-    {
-      if (null == a)
-      {
-        return (null == b) ? 0 : -1;
-      }
-      if (null == b)
-      {
-        return 1;
-      }
-      int i = String.CompareOrdinal(a.Namespace, b.Namespace);
-      if (i == 0)
-      {
-        i = String.CompareOrdinal(a.Name, b.Name);
-      }
-      return i;
-    }
   }
 }

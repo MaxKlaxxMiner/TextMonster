@@ -310,41 +310,11 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.FromXmlQualifiedName"]/*' />
-    protected string FromXmlQualifiedName(XmlQualifiedName xmlQualifiedName)
-    {
-      return FromXmlQualifiedName(xmlQualifiedName, true);
-    }
-
-    /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.FromXmlQualifiedName"]/*' />
     protected string FromXmlQualifiedName(XmlQualifiedName xmlQualifiedName, bool ignoreEmpty)
     {
       if (xmlQualifiedName == null) return null;
       if (xmlQualifiedName.IsEmpty && ignoreEmpty) return null;
       return GetQualifiedName(EscapeName ? XmlConvert.EncodeLocalName(xmlQualifiedName.Name) : xmlQualifiedName.Name, xmlQualifiedName.Namespace);
-    }
-
-    /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.WriteStartElement"]/*' />
-    protected void WriteStartElement(string name)
-    {
-      WriteStartElement(name, null, null, false, null);
-    }
-
-    /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.WriteStartElement1"]/*' />
-    protected void WriteStartElement(string name, string ns)
-    {
-      WriteStartElement(name, ns, null, false, null);
-    }
-
-    /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.WriteStartElement4"]/*' />
-    protected void WriteStartElement(string name, string ns, bool writePrefixed)
-    {
-      WriteStartElement(name, ns, null, writePrefixed, null);
-    }
-
-    /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.WriteStartElement2"]/*' />
-    protected void WriteStartElement(string name, string ns, object o)
-    {
-      WriteStartElement(name, ns, o, false, null);
     }
 
     /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.WriteStartElement3"]/*' />

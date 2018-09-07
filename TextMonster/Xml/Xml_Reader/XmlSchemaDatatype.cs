@@ -278,11 +278,6 @@ namespace TextMonster.Xml.Xml_Reader
       return DatatypeImplementation.FromXdrName(name);
     }
 
-    internal static XmlSchemaDatatype DeriveByUnion(XmlSchemaSimpleType[] types, XmlSchemaType schemaType)
-    {
-      return DatatypeImplementation.DeriveByUnion(types, schemaType);
-    }
-
     internal static string XdrCanonizeUri(string uri, XmlNameTable nameTable, SchemaNames schemaNames)
     {
       string canonicalUri;

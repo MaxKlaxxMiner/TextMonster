@@ -3,7 +3,6 @@ using System.Collections;
 using System.Globalization;
 using System.IO;
 using System.Runtime.Versioning;
-using System.Security;
 using System.Security.Permissions;
 using System.Text;
 
@@ -365,33 +364,6 @@ namespace TextMonster.Xml.Xml_Reader
       return resolver;
     }
 
-    public virtual XmlResolver XmlResolver
-    {
-      set
-      {
-        if (value != null)
-        {
-          try
-          {
-            new NamedPermissionSet("FullTrust").Demand();
-          }
-          catch (SecurityException e)
-          {
-            throw new SecurityException(Res.GetString(Res.Xml_UntrustedCodeSettingResolver), e);
-          }
-        }
-
-        resolver = value;
-        if (!bSetResolver)
-          bSetResolver = true;
-
-        XmlDocumentType dtd = this.DocumentType;
-        if (dtd != null)
-        {
-          dtd.DtdSchemaInfo = null;
-        }
-      }
-    }
     internal override bool IsValidChildType(XmlNodeType type)
     {
       switch (type)

@@ -248,26 +248,6 @@ namespace TextMonster.Xml.Xml_Reader
       return ChangeTypeWildcardSource(value, destinationType, null);
     }
 
-    public virtual object ChangeType(DateTimeOffset value, Type destinationType)
-    {
-      if (destinationType == null) throw new ArgumentNullException("destinationType");
-
-      if (destinationType == ObjectType) destinationType = DefaultClrType;
-      if (destinationType == StringType) return DateTimeOffsetToString((DateTimeOffset)value);
-
-      return ChangeTypeWildcardSource(value, destinationType, null);
-    }
-
-    public virtual object ChangeType(decimal value, Type destinationType)
-    {
-      if (destinationType == null) throw new ArgumentNullException("destinationType");
-
-      if (destinationType == ObjectType) destinationType = DefaultClrType;
-      if (destinationType == StringType) return XmlConvert.ToString((decimal)value);
-
-      return ChangeTypeWildcardSource(value, destinationType, null);
-    }
-
     public override object ChangeType(double value, Type destinationType)
     {
       if (destinationType == null) throw new ArgumentNullException("destinationType");
@@ -294,16 +274,6 @@ namespace TextMonster.Xml.Xml_Reader
 
       if (destinationType == ObjectType) destinationType = DefaultClrType;
       if (destinationType == StringType) return XmlConvert.ToString((long)value);
-
-      return ChangeTypeWildcardSource(value, destinationType, null);
-    }
-
-    public override object ChangeType(float value, Type destinationType)
-    {
-      if (destinationType == null) throw new ArgumentNullException("destinationType");
-
-      if (destinationType == ObjectType) destinationType = DefaultClrType;
-      if (destinationType == StringType) return XmlConvert.ToString((float)value);
 
       return ChangeTypeWildcardSource(value, destinationType, null);
     }

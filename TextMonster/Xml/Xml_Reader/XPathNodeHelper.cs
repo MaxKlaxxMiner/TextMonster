@@ -354,62 +354,6 @@
     }
 
     /// <summary>
-    /// Return a previous sibling element of the specified node that has the specified name.  If no such
-    /// sibling exists, or if the node is not content-typed, then do not set pageNode or idxNode and
-    /// return false.  Assume that the localName has been atomized with respect to this document's name table,
-    /// but not the namespaceName.
-    /// </summary>
-    public static bool GetPreviousElementSibling(ref XPathNode[] pageNode, ref int idxNode, string localName, string namespaceName)
-    {
-      XPathNode[] page = pageNode;
-      int idx = idxNode;
-
-      if (page[idx].NodeType != XPathNodeType.Attribute)
-      {
-        while (true)
-        {
-          if (!GetPreviousContentSibling(ref page, ref idx))
-            break;
-
-          if (page[idx].ElementMatch(localName, namespaceName))
-          {
-            pageNode = page;
-            idxNode = idx;
-            return true;
-          }
-        }
-      }
-
-      return false;
-    }
-
-    /// <summary>
-    /// Return a previous sibling of the specified node that has the specified type.  If no such
-    /// sibling exists, then do not set pageNode or idxNode and return false.
-    /// </summary>
-    public static bool GetPreviousContentSibling(ref XPathNode[] pageNode, ref int idxNode, XPathNodeType typ)
-    {
-      XPathNode[] page = pageNode;
-      int idx = idxNode;
-      int mask = XPathNavigator.GetContentKindMask(typ);
-
-      while (true)
-      {
-        if (!GetPreviousContentSibling(ref page, ref idx))
-          break;
-
-        if (((1 << (int)page[idx].NodeType) & mask) != 0)
-        {
-          pageNode = page;
-          idxNode = idx;
-          return true;
-        }
-      }
-
-      return false;
-    }
-
-    /// <summary>
     /// Return the attribute of the specified node that has the specified name.  If no such attribute exists,
     /// then do not set pageNode or idxNode and return false.  Assume that the localName has been atomized with respect
     /// to this document's name table, but not the namespaceName.

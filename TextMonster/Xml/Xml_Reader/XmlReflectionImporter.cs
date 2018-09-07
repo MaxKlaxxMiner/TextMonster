@@ -39,15 +39,6 @@ namespace TextMonster.Xml.Xml_Reader
       Element
     }
 
-    /// <include file='doc\XmlReflectionImporter.uex' path='docs/doc[@for="XmlReflectionImporter.XmlReflectionImporter"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlReflectionImporter()
-      : this(null, null)
-    {
-    }
-
     /// <include file='doc\XmlReflectionImporter.uex' path='docs/doc[@for="XmlReflectionImporter.XmlReflectionImporter1"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
@@ -110,15 +101,6 @@ namespace TextMonster.Xml.Xml_Reader
       arrayNestingLevel = previousNestingLevel;
       savedArrayItemAttributes = previousArrayItemAttributes;
       savedArrayNamespace = previousArrayNamespace;
-    }
-
-    /// <include file='doc\XmlReflectionImporter.uex' path='docs/doc[@for="XmlReflectionImporter.ImportTypeMapping"]/*' />
-    /// <devdoc>
-    ///    <para>[To be supplied.]</para>
-    /// </devdoc>
-    public XmlTypeMapping ImportTypeMapping(Type type)
-    {
-      return ImportTypeMapping(type, null, null);
     }
 
     /// <include file='doc\XmlReflectionImporter.uex' path='docs/doc[@for="XmlReflectionImporter.ImportTypeMapping3"]/*' />

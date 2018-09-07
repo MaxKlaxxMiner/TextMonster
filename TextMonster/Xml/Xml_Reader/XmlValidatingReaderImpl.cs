@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Versioning;
-using System.Text;
 
 namespace TextMonster.Xml.Xml_Reader
 {
@@ -392,13 +391,6 @@ namespace TextMonster.Xml.Xml_Reader
     }
 
     // Returns encoding of the XML document
-    internal Encoding Encoding
-    {
-      get
-      {
-        return coreReaderImpl.Encoding;
-      }
-    }
 
     // Returns the number of attributes on the current node.
     public override int AttributeCount

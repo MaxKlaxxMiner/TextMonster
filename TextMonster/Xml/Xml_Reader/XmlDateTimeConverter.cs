@@ -204,20 +204,6 @@ namespace TextMonster.Xml.Xml_Reader
       return ChangeListType(value, destinationType, null);
     }
 
-    public virtual object ChangeType(DateTimeOffset value, Type destinationType)
-    {
-      if (destinationType == null) throw new ArgumentNullException("destinationType");
-
-      if (destinationType == ObjectType) destinationType = DefaultClrType;
-      if (destinationType == DateTimeType) return this.ToDateTime((DateTimeOffset)value);
-      if (destinationType == DateTimeOffsetType) return ((DateTimeOffset)value);
-      if (destinationType == StringType) return this.ToString((DateTimeOffset)value);
-      if (destinationType == XmlAtomicValueType) return (new XmlAtomicValue(SchemaType, (DateTimeOffset)value));
-      if (destinationType == XPathItemType) return (new XmlAtomicValue(SchemaType, (DateTimeOffset)value));
-
-      return ChangeListType(value, destinationType, null);
-    }
-
     public override object ChangeType(string value, Type destinationType, IXmlNamespaceResolver nsResolver)
     {
       if (value == null) throw new ArgumentNullException("value");

@@ -75,12 +75,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    /// <include file='doc\XmlSchemaObjectTable.uex' path='docs/doc[@for="XmlSchemaObjectTable.Contains"]/*' />
-    public bool Contains(XmlQualifiedName name)
-    {
-      return table.ContainsKey(name);
-    }
-
     /// <include file='doc\XmlSchemaObjectTable.uex' path='docs/doc[@for="XmlSchemaObjectTable.this"]/*' />
     public XmlSchemaObject this[XmlQualifiedName name]
     {

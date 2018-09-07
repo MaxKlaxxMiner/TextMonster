@@ -274,23 +274,9 @@ namespace TextMonster.Xml.Xml_Reader
       xmlEncoder.QuoteChar = this.quoteChar;
     }
 
-    //
-    // XmlTextWriter properties
-    //
-    // Gets the XmlTextWriter base stream.
-    public Stream BaseStream
-    {
-      get
-      {
-        StreamWriter streamWriter = textWriter as StreamWriter;
-        return (streamWriter == null ? null : streamWriter.BaseStream);
-      }
-    }
-
     // Gets or sets a value indicating whether to do namespace support.
     public bool Namespaces
     {
-      get { return this.namespaces; }
       set
       {
         if (this.currentState != State.Start)
@@ -303,33 +289,12 @@ namespace TextMonster.Xml.Xml_Reader
     // Indicates how the output is formatted.
     public Formatting Formatting
     {
-      get { return this.formatting; }
       set { this.formatting = value; this.indented = value == Formatting.Indented; }
-    }
-
-    // Gets or sets how many IndentChars to write for each level in the hierarchy when Formatting is set to "Indented".
-    public int Indentation
-    {
-      get { return this.indentation; }
-      set
-      {
-        if (value < 0)
-          throw new ArgumentException(Res.GetString(Res.Xml_InvalidIndentation));
-        this.indentation = value;
-      }
-    }
-
-    // Gets or sets which character to use for indenting when Formatting is set to "Indented".
-    public char IndentChar
-    {
-      get { return this.indentChar; }
-      set { this.indentChar = value; }
     }
 
     // Gets or sets which character to use to quote attribute values.
     public char QuoteChar
     {
-      get { return this.quoteChar; }
       set
       {
         if (value != '"' && value != '\'')

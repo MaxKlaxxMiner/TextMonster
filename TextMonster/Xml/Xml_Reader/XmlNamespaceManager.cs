@@ -292,37 +292,5 @@ namespace TextMonster.Xml.Xml_Reader
       }
       return null;
     }
-
-    public virtual bool HasNamespace(string prefix)
-    {
-      // Don't assume that prefix is atomized
-      for (int thisDecl = lastDecl; nsdecls[thisDecl].scopeId == scopeId; thisDecl--)
-      {
-        if (String.Equals(nsdecls[thisDecl].prefix, prefix) && nsdecls[thisDecl].uri != null)
-        {
-          if (prefix.Length > 0 || nsdecls[thisDecl].uri.Length > 0)
-          {
-            return true;
-          }
-          return false;
-        }
-      }
-      return false;
-    }
-
-    internal bool GetNamespaceDeclaration(int idx, out string prefix, out string uri)
-    {
-      idx = lastDecl - idx;
-      if (idx < 0)
-      {
-        prefix = uri = null;
-        return false;
-      }
-
-      prefix = nsdecls[idx].prefix;
-      uri = nsdecls[idx].uri;
-
-      return true;
-    }
   } //XmlNamespaceManager
 }

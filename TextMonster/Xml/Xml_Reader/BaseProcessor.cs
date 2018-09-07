@@ -231,11 +231,6 @@ namespace TextMonster.Xml.Xml_Reader
       SendValidationEvent(new XmlSchemaException(code, source), severity);
     }
 
-    protected void SendValidationEvent(XmlSchemaException e)
-    {
-      SendValidationEvent(e, XmlSeverityType.Error);
-    }
-
     protected void SendValidationEvent(string code, string msg, XmlSchemaObject source, XmlSeverityType severity)
     {
       SendValidationEvent(new XmlSchemaException(code, msg, source), severity);
@@ -254,18 +249,6 @@ namespace TextMonster.Xml.Xml_Reader
       else if (severity == XmlSeverityType.Error)
       {
         throw e;
-      }
-    }
-
-    protected void SendValidationEventNoThrow(XmlSchemaException e, XmlSeverityType severity)
-    {
-      if (severity == XmlSeverityType.Error)
-      {
-        errorCount++;
-      }
-      if (eventHandler != null)
-      {
-        eventHandler(null, new ValidationEventArgs(e, severity));
       }
     }
   };

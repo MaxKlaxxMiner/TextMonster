@@ -305,11 +305,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         return mergeCDataSections;
       }
-      set
-      {
-        CheckReadOnly("MergeCDataSections");
-        mergeCDataSections = value;
-      }
     }
 
     // Used in Html writer when writing Meta element.  Null denotes the default media type.
@@ -318,11 +313,6 @@ namespace TextMonster.Xml.Xml_Reader
       get
       {
         return mediaType;
-      }
-      set
-      {
-        CheckReadOnly("MediaType");
-        mediaType = value;
       }
     }
 
@@ -389,10 +379,6 @@ namespace TextMonster.Xml.Xml_Reader
       get
       {
         return indent;
-      }
-      set
-      {
-        indent = value;
       }
     }
 

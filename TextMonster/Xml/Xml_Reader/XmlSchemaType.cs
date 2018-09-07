@@ -284,16 +284,6 @@ namespace TextMonster.Xml.Xml_Reader
       return false;
     }
 
-
-    internal static bool IsDerivedFromDatatype(XmlSchemaDatatype derivedDataType, XmlSchemaDatatype baseDataType, XmlSchemaDerivationMethod except)
-    {
-      if (DatatypeImplementation.AnySimpleType.Datatype == baseDataType)
-      {
-        return true;
-      }
-      return derivedDataType.IsDerivedFrom(baseDataType);
-    }
-
     [XmlIgnore]
     internal override string NameAttribute
     {

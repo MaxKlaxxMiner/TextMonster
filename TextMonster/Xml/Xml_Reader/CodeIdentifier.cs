@@ -227,28 +227,5 @@ namespace TextMonster.Xml.Xml_Reader
         sb.Append("[]");
       }
     }
-
-    static string EscapeKeywords(string identifier, CodeDomProvider codeProvider)
-    {
-      if (identifier == null || identifier.Length == 0) return identifier;
-      string originalIdentifier = identifier;
-      string[] names = identifier.Split(new char[] { '.', ',', '<', '>' });
-      StringBuilder sb = new StringBuilder();
-      int separator = -1;
-      for (int i = 0; i < names.Length; i++)
-      {
-        if (separator >= 0)
-        {
-          sb.Append(originalIdentifier.Substring(separator, 1));
-        }
-        separator++;
-        separator += names[i].Length;
-        string escapedName = names[i].Trim();
-        EscapeKeywords(escapedName, codeProvider, sb);
-      }
-      if (sb.Length != originalIdentifier.Length)
-        return sb.ToString();
-      return originalIdentifier;
-    }
   }
 }
