@@ -65,9 +65,6 @@ namespace TextMonster.Xml.Xml_Reader
     private XmlAttribute namespaceXml;
 
     static internal EmptyEnumerator EmptyEnumerator = new EmptyEnumerator();
-    static internal IXmlSchemaInfo NotKnownSchemaInfo = new XmlSchemaInfo(XmlSchemaValidity.NotKnown);
-    static internal IXmlSchemaInfo ValidSchemaInfo = new XmlSchemaInfo(XmlSchemaValidity.Valid);
-    static internal IXmlSchemaInfo InvalidSchemaInfo = new XmlSchemaInfo(XmlSchemaValidity.Invalid);
 
     // Initializes a new instance of the XmlDocument class.
     public XmlDocument()
@@ -999,28 +996,6 @@ namespace TextMonster.Xml.Xml_Reader
           return (XmlEntity)(entites.GetNamedItem(name));
       }
       return null;
-    }
-
-    public override IXmlSchemaInfo SchemaInfo
-    {
-      get
-      {
-        if (reportValidity)
-        {
-          XmlElement documentElement = DocumentElement;
-          if (documentElement != null)
-          {
-            switch (documentElement.SchemaInfo.Validity)
-            {
-              case XmlSchemaValidity.Valid:
-              return ValidSchemaInfo;
-              case XmlSchemaValidity.Invalid:
-              return InvalidSchemaInfo;
-            }
-          }
-        }
-        return NotKnownSchemaInfo;
-      }
     }
 
     public override String BaseURI

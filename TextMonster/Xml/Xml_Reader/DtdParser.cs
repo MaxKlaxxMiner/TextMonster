@@ -295,13 +295,6 @@ namespace TextMonster.Xml.Xml_Reader
     //
     #region IDtdParser Members
 
-    IDtdInfo IDtdParser.ParseInternalDtd(IDtdParserAdapter adapter, bool saveInternalSubset)
-    {
-      Initialize(adapter);
-      Parse(saveInternalSubset);
-      return schemaInfo;
-    }
-
     IDtdInfo IDtdParser.ParseFreeFloatingDtd(string baseUri, string docTypeName, string publicId, string systemId, string internalSubset, IDtdParserAdapter adapter)
     {
       InitializeFreeFloatingDtd(baseUri, docTypeName, publicId, systemId, internalSubset, adapter);

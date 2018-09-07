@@ -411,16 +411,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
       return null;
     }
-
-    XmlQualifiedName IDtdInfo.Name
-    {
-      get { return docTypeName; }
-    }
-
-    string IDtdInfo.InternalDtdSubset
-    {
-      get { return internalDtdSubset; }
-    }
     #endregion
   }
 }

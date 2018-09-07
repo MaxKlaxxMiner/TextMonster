@@ -778,14 +778,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
     }
 
-    public virtual IXmlSchemaInfo SchemaInfo
-    {
-      get
-      {
-        return XmlDocument.NotKnownSchemaInfo;
-      }
-    }
-
     public virtual String BaseURI
     {
       get

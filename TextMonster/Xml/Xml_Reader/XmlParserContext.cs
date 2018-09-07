@@ -142,14 +142,5 @@ namespace TextMonster.Xml.Xml_Reader
         return _encoding;
       }
     }
-
-    internal bool HasDtdInfo
-    {
-      get
-      {
-        return (_internalSubset != string.Empty || _pubId != string.Empty || _sysId != string.Empty);
-      }
-    }
-
   } // class XmlContext
 }

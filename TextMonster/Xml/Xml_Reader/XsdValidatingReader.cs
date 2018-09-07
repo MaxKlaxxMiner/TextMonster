@@ -141,10 +141,6 @@ namespace TextMonster.Xml.Xml_Reader
       validator.ValidationEventSender = this;
       validator.ValidationEventHandler += readerSettings.GetEventHandler();
       validator.LineInfoProvider = this.lineInfo;
-      if (validator.ProcessSchemaHints)
-      {
-        validator.SchemaSet.ReaderSettings.DtdProcessing = readerSettings.DtdProcessing;
-      }
       validator.SetDtdSchemaInfo(reader.DtdInfo);
       if (partialValidationType != null)
       {

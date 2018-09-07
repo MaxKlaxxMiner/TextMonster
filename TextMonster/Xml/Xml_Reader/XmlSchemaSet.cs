@@ -111,7 +111,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
 
       readerSettings.NameTable = nameTable;
-      readerSettings.DtdProcessing = DtdProcessing.Prohibit;
 
       compilationSettings = new XmlSchemaCompilationSettings();
       cachedCompiledInfo = new SchemaInfo();

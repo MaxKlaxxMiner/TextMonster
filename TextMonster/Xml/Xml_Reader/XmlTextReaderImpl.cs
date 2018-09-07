@@ -172,7 +172,6 @@ namespace TextMonster.Xml.Xml_Reader
     bool normalize;
     bool supportNamespaces = true;
     WhitespaceHandling whitespaceHandling;
-    DtdProcessing dtdProcessing = DtdProcessing.Parse;
     EntityHandling entityHandling;
     bool ignorePIs;
     bool ignoreComments;
@@ -383,7 +382,6 @@ namespace TextMonster.Xml.Xml_Reader
       ps.lineNo = lineNumberOffset + 1;
       ps.lineStartPos = -linePositionOffset - 1;
       curNode.SetLineInfo(ps.LineNo - 1, ps.LinePos - 1);
-      dtdProcessing = settings.DtdProcessing;
       maxCharactersInDocument = settings.MaxCharactersInDocument;
       maxCharactersFromEntities = settings.MaxCharactersFromEntities;
 
@@ -539,12 +537,6 @@ namespace TextMonster.Xml.Xml_Reader
         InitStreamInput(laterInitParam.inputbaseUri, reportedBaseUri, stream, null, 0, enc);
 
         reportedEncoding = ps.encoding;
-
-        // parse DTD
-        if (laterInitParam.inputContext != null && laterInitParam.inputContext.HasDtdInfo)
-        {
-          ProcessDtdFromParserContext(laterInitParam.inputContext);
-        }
       }
       catch
       {
@@ -605,11 +597,6 @@ namespace TextMonster.Xml.Xml_Reader
 
       reportedEncoding = ps.encoding;
 
-      // parse DTD
-      if (laterInitParam.inputContext != null && laterInitParam.inputContext.HasDtdInfo)
-      {
-        ProcessDtdFromParserContext(laterInitParam.inputContext);
-      }
       laterInitParam = null;
     }
 
@@ -645,12 +632,6 @@ namespace TextMonster.Xml.Xml_Reader
 
       reportedEncoding = ps.encoding;
 
-      // parse DTD
-      if (laterInitParam.inputContext != null && laterInitParam.inputContext.HasDtdInfo)
-      {
-        ProcessDtdFromParserContext(laterInitParam.inputContext);
-      }
-
       laterInitParam = null;
     }
 
@@ -678,7 +659,6 @@ namespace TextMonster.Xml.Xml_Reader
         settings.IgnoreWhitespace = (whitespaceHandling == WhitespaceHandling.Significant);
         settings.IgnoreProcessingInstructions = ignorePIs;
         settings.IgnoreComments = ignoreComments;
-        settings.DtdProcessing = dtdProcessing;
         settings.MaxCharactersInDocument = maxCharactersInDocument;
         settings.MaxCharactersFromEntities = maxCharactersFromEntities;
 
@@ -2182,24 +2162,6 @@ namespace TextMonster.Xml.Xml_Reader
       }
       this.fragmentType = fragmentType;
       this.fragment = true;
-    }
-
-    private void ProcessDtdFromParserContext(XmlParserContext context)
-    {
-      switch (dtdProcessing)
-      {
-        case DtdProcessing.Prohibit:
-        ThrowWithoutLineInfo(Res.Xml_DtdIsProhibitedEx);
-        break;
-        case DtdProcessing.Ignore:
-        // do nothing
-        break;
-        case DtdProcessing.Parse:
-        ParseDtdFromParserContext();
-        break;
-        default:
-        break;
-      }
     }
 
     // SxS: This method resolve Uri but does not expose it to the caller. It's OK to suppress the warning.
@@ -5099,11 +5061,6 @@ namespace TextMonster.Xml.Xml_Reader
     {
       IDtdEntityInfo entity = null;
 
-      if (dtdInfo == null && fragmentParserContext != null && fragmentParserContext.HasDtdInfo && dtdProcessing == DtdProcessing.Parse)
-      {
-        ParseDtdFromParserContext();
-      }
-
       if (dtdInfo == null ||
            ((entity = dtdInfo.LookupEntity(name)) == null))
       {
@@ -5727,11 +5684,6 @@ namespace TextMonster.Xml.Xml_Reader
     // Parses DOCTYPE declaration
     private bool ParseDoctypeDecl()
     {
-      if (dtdProcessing == DtdProcessing.Prohibit)
-      {
-        ThrowWithoutLineInfo(v1Compat ? Res.Xml_DtdIsProhibited : Res.Xml_DtdIsProhibitedEx);
-      }
-
       // parse 'DOCTYPE'
       while (ps.charsUsed - ps.charPos < 8)
       {
@@ -5762,38 +5714,8 @@ namespace TextMonster.Xml.Xml_Reader
 
       EatWhitespaces(null);
 
-      // Parse DTD
-      if (dtdProcessing == DtdProcessing.Parse)
-      {
-        curNode.SetLineInfo(ps.LineNo, ps.LinePos);
-
-        ParseDtd();
-
-        nextParsingFunction = parsingFunction;
-        parsingFunction = ParsingFunction.ResetAttributesRootLevel;
-        return true;
-      }
-      // Skip DTD
-      else
-      {
-        SkipDtd();
-        return false;
-      }
-    }
-
-    private void ParseDtd()
-    {
-      IDtdParser dtdParser = DtdParser.Create();
-
-      dtdInfo = dtdParser.ParseInternalDtd(new DtdParserProxy(this), true);
-
-      if ((validatingReaderCompatFlag || !v1Compat) && (dtdInfo.HasDefaultAttributes || dtdInfo.HasNonCDataAttributes))
-      {
-        addDefaultAttributesAndNormalize = true;
-      }
-
-      curNode.SetNamedNode(XmlNodeType.DocumentType, dtdInfo.Name.ToString(), string.Empty, null);
-      curNode.SetValue(dtdInfo.InternalDtdSubset);
+      SkipDtd();
+      return false;
     }
 
     private void SkipDtd()
@@ -6975,7 +6897,7 @@ namespace TextMonster.Xml.Xml_Reader
       }
       else
       {
-        Throw(dtdProcessing == DtdProcessing.Ignore ? Res.Xml_CannotResolveEntityDtdIgnored : Res.Xml_CannotResolveEntity, entityName);
+        Throw(Res.Xml_CannotResolveEntityDtdIgnored, entityName);
       }
     }
 
@@ -7806,20 +7728,6 @@ namespace TextMonster.Xml.Xml_Reader
         return true;
       }
       return false;
-    }
-
-    private void ParseDtdFromParserContext()
-    {
-      IDtdParser dtdParser = DtdParser.Create();
-
-      // Parse DTD
-      dtdInfo = dtdParser.ParseFreeFloatingDtd(fragmentParserContext.BaseURI, fragmentParserContext.DocTypeName, fragmentParserContext.PublicId,
-                                               fragmentParserContext.SystemId, fragmentParserContext.InternalSubset, new DtdParserProxy(this));
-
-      if ((validatingReaderCompatFlag || !v1Compat) && (dtdInfo.HasDefaultAttributes || dtdInfo.HasNonCDataAttributes))
-      {
-        addDefaultAttributesAndNormalize = true;
-      }
     }
 
     bool MoveToNextContentNode(bool moveIfOnContentNode)

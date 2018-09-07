@@ -31,9 +31,6 @@ namespace TextMonster.Xml.Xml_Reader
     bool ignorePIs;
     bool ignoreComments;
 
-    // security settings
-    DtdProcessing dtdProcessing;
-
     //Validation settings
     ValidationType validationType;
     XmlSchemaValidationFlags validationFlags;
@@ -227,24 +224,6 @@ namespace TextMonster.Xml.Xml_Reader
       {
         CheckReadOnly("IgnoreComments");
         ignoreComments = value;
-      }
-    }
-
-    public DtdProcessing DtdProcessing
-    {
-      get
-      {
-        return dtdProcessing;
-      }
-      set
-      {
-        CheckReadOnly("DtdProcessing");
-
-        if ((uint)value > (uint)DtdProcessing.Parse)
-        {
-          throw new ArgumentOutOfRangeException("value");
-        }
-        dtdProcessing = value;
       }
     }
 
@@ -446,7 +425,6 @@ namespace TextMonster.Xml.Xml_Reader
       ignoreWhitespace = false;
       ignorePIs = false;
       ignoreComments = false;
-      dtdProcessing = DtdProcessing.Prohibit;
       closeInput = false;
 
       maxCharactersInDocument = 0;

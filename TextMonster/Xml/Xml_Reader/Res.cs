@@ -61,7 +61,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Xml_BadNamespaceDecl = "Xml_BadNamespaceDecl";
     internal const string Xml_ErrorParsingEntityName = "Xml_ErrorParsingEntityName";
     internal const string Xml_EntityRefNesting = "Xml_EntityRefNesting";
-    internal const string Xml_CannotResolveEntity = "Xml_CannotResolveEntity";
     internal const string Xml_CannotResolveEntityDtdIgnored = "Xml_CannotResolveEntityDtdIgnored";
     internal const string Xml_CannotResolveExternalSubset = "Xml_CannotResolveExternalSubset";
     internal const string Xml_CannotResolveUrl = "Xml_CannotResolveUrl";
@@ -69,8 +68,6 @@ namespace TextMonster.Xml.Xml_Reader
     internal const string Xml_ExternalEntityInStandAloneDocument = "Xml_ExternalEntityInStandAloneDocument";
     internal const string Xml_DtdAfterRootElement = "Xml_DtdAfterRootElement";
     internal const string Xml_ReadOnlyProperty = "Xml_ReadOnlyProperty";
-    internal const string Xml_DtdIsProhibited = "Xml_DtdIsProhibited";
-    internal const string Xml_DtdIsProhibitedEx = "Xml_DtdIsProhibitedEx";
     internal const string Xml_DtdNotAllowedInFragment = "Xml_DtdNotAllowedInFragment";
     internal const string Xml_CannotStartDocumentOnFragment = "Xml_CannotStartDocumentOnFragment";
     internal const string Xml_ErrorOpeningExternalDtd = "Xml_ErrorOpeningExternalDtd";

@@ -215,7 +215,6 @@
     <Compile Include="Xml\Xml_Reader\BaseProcessor.cs" />
     <Compile Include="Xml\Xml_Reader\XmlSchemaCompilationSettings.cs" />
     <Compile Include="Xml\Xml_Reader\RedefineEntry.cs" />
-    <Compile Include="Xml\Xml_Reader\DtdProcessing.cs" />
     <Compile Include="Xml\Xml_Reader\XmlSchemaValidationFlags.cs" />
     <Compile Include="Xml\Xml_Reader\XmlValueGetter.cs" />
     <Compile Include="Xml\Xml_Reader\ValidatingReaderNodeData.cs" />

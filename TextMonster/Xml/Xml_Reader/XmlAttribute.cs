@@ -101,14 +101,6 @@ namespace TextMonster.Xml.Xml_Reader
       set { InnerText = value; } //use InnerText which has perf optimization
     }
 
-    public override IXmlSchemaInfo SchemaInfo
-    {
-      get
-      {
-        return name;
-      }
-    }
-
     public override String InnerText
     {
       set

@@ -405,14 +405,6 @@ namespace TextMonster.Xml.Xml_Reader
       base.RemoveAll();
     }
 
-    public override IXmlSchemaInfo SchemaInfo
-    {
-      get
-      {
-        return name;
-      }
-    }
-
     public override string InnerText
     {
       get

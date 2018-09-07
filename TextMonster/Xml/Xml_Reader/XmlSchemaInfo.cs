@@ -17,12 +17,6 @@
       Clear();
     }
 
-    internal XmlSchemaInfo(XmlSchemaValidity validity)
-      : this()
-    {
-      this.validity = validity;
-    }
-
     public XmlSchemaValidity Validity
     {
       get

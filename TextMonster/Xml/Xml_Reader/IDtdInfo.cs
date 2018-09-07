@@ -13,17 +13,6 @@ namespace TextMonster.Xml.Xml_Reader
   /// </summary>
   internal interface IDtdInfo
   {
-
-    /// <summary>
-    /// DOCTYPE name
-    /// </summary>
-    XmlQualifiedName Name { get; }
-
-    /// <summary>
-    /// Internal DTD subset as specified in the XML document
-    /// </summary>
-    string InternalDtdSubset { get; }
-
     /// <summary>
     /// Returns true if the DTD contains any declaration of a default attribute
     /// </summary>
